@@ -1,0 +1,60 @@
+###############################################################################
+#                   check-sr-results.py configuration file                    #
+###############################################################################
+
+# Note: for the moment, this checks for SystemReady IR results.
+---
+
+check-sr-results-configuration:
+tree:
+  - file: acs-console.log
+  - dir: acs_results
+    tree:
+      - file: results.md
+      - dir: app_output
+        tree:
+          - file: CapsuleApp_ESRT_table_info.log
+          - file: CapsuleApp_FMP_protocol_info.log
+      - dir: fwts
+        tree:
+          - file: FWTSResults.log
+      - dir: linux_dump
+        tree:
+          - file: lspci.log
+            can-be-empty:
+      - dir: sct_results
+        tree:
+          - dir: EfiCompliantBBTest
+            tree:
+              - file: EfiCompliant.ini
+          - dir: Overall
+            tree:
+              - file: Summary.ekl
+              - file: Summary.log
+          - dir: Sequence
+            tree:
+              - file: EBBR_manual.seq
+              - file: EBBR.seq
+      - dir: uefi
+        tree:
+          - file: BsaResults.log
+      - dir: uefi_dump
+        tree:
+          - file: acpiview_l.log
+          - file: acpiview.log
+          - file: acpiview_r.log
+          - file: bcfg.log
+          - file: devices.log
+          - file: dh.log
+          - file: dmpstore.log
+          - file: drivers.log
+          - file: memmap.log
+          - file: pci.log
+          - file: smbiosview.log
+  - dir: fw
+    tree:
+      - file: u-boot-sniff.log
+      - file: capsule-update.log
+        optional:
+  - dir: os-logs
+  - file: report.txt
