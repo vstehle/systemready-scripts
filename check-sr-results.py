@@ -29,6 +29,53 @@ yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
 green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
 
 
+# A class to account for statistics
+class Stats:
+    counters = ['check', 'pass', 'warning', 'error']
+
+    colors = {
+        'pass': green,
+        'warning': yellow,
+        'error': red,
+    }
+
+    def __init__(self):
+        self.data = {}
+
+        for c in Stats.counters:
+            self.data[c] = 0
+
+    def _counter_str(self, x):
+        n = self.data[x]
+        color = Stats.colors[x] if n and x in Stats.colors else ''
+        return f'{color}{n} {x}(s){normal}'
+
+    def __str__(self):
+        return ', '.join(
+            map(lambda x: self._counter_str(x), Stats.counters))
+
+    # Add the counters of a Stats objects to self.
+    def add(self, x):
+        for c in Stats.counters:
+            self.data[c] += x.data[c]
+
+    def _inc(self, x):
+        self.data[x] += 1
+        self.data['check'] += 1
+
+    # Increment 'pass' counter.
+    def inc_pass(self):
+        self._inc('pass')
+
+    # Increment 'warning' counter.
+    def inc_warning(self):
+        self._inc('warning')
+
+    # Increment 'error' counter.
+    def inc_error(self):
+        self._inc('error')
+
+
 # Load YAML configuration file.
 # See the README.md for details on the file format.
 def load_config(filename):
@@ -46,23 +93,33 @@ def load_config(filename):
 # The following properties in the yaml configuration can relax the check:
 # - optional
 # - can-be-empty
+# We return a Stats object.
 def check_file(conffile, dirname):
     filename = f"{dirname}/{conffile['file']}"
     logging.debug(f"Check `{filename}'")
+    stats = Stats()
 
     if os.path.isfile(filename):
         logging.debug(f"`{filename}' {green}exists{normal}")
+        stats.inc_pass()
 
         if os.path.getsize(filename) > 0:
             logging.debug(f"`{filename}' {green}not empty{normal}")
+            stats.inc_pass()
         elif 'can-be-empty' in conffile:
             logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
+            stats.inc_warning()
         else:
             logging.error(f"`{filename}' {red}empty{normal}")
+            stats.inc_error()
     elif 'optional' in conffile:
         logging.warning(f"`{filename}' {yellow}missing (optional){normal}")
+        stats.inc_warning()
     else:
         logging.error(f"`{filename}' {red}missing{normal}")
+        stats.inc_error()
+
+    return stats
 
 
 # Check a dir
@@ -70,40 +127,55 @@ def check_file(conffile, dirname):
 # The following properties in the yaml configuration can relax the check:
 # - optional
 # - can-be-empty
+# If the dir has a tree, we recurse with check_tree().
+# We return a Stats object.
 def check_dir(confdir, dirname):
     subdir = f"{dirname}/{confdir['dir']}"
     logging.debug(f"Check `{subdir}/'")
+    stats = Stats()
 
     if os.path.isdir(subdir):
         logging.debug(f"`{subdir}/' {green}exists{normal}")
+        stats.inc_pass()
 
         if len(os.listdir(subdir)) > 0:
             logging.debug(f"`{subdir}/' {green}not empty{normal}")
+            stats.inc_pass()
 
             if 'tree' in confdir:
-                check_tree(confdir['tree'], subdir)
+                stats.add(check_tree(confdir['tree'], subdir))
         elif 'can-be-empty' in confdir:
             logging.warning(f"`{subdir}/' {yellow}empty (allowed){normal}")
+            stats.inc_warning()
         else:
             logging.error(f"`{subdir}/' {red}empty{normal}")
+            stats.inc_error()
     elif 'optional' in confdir:
         logging.warning(f"`{subdir}/' {yellow}missing (optional){normal}")
+        stats.inc_warning()
     else:
         logging.error(f"`{subdir}/' {red}missing{normal}")
+        stats.inc_error()
+
+    return stats
 
 
 # Recursively check a tree
+# We return a Stats object.
 def check_tree(conftree, dirname):
     logging.debug(f"Check `{dirname}/'")
     assert(isinstance(conftree, list))
+    stats = Stats()
 
     for e in conftree:
         if 'file' in e:
-            check_file(e, dirname)
+            stats.add(check_file(e, dirname))
         elif 'dir' in e:
-            check_dir(e, dirname)
+            stats.add(check_dir(e, dirname))
         else:
             raise Exception
+
+    return stats
 
 
 if __name__ == '__main__':
@@ -124,4 +196,5 @@ if __name__ == '__main__':
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
     conf = load_config(f'{here}/check-sr-results.yaml')
-    check_tree(conf['tree'], '.')
+    stats = check_tree(conf['tree'], '.')
+    logging.info(stats)
