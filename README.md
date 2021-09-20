@@ -4,9 +4,13 @@ A collection of scripts to help with SystemReady compliance.
 
 ## Dependencies
 
+The `check-sr-results.py` SystemReady results checker needs the [chardet]
+python3 module. On some Linux distros it is available as `python3-chardet`.
+
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
+[chardet]: https://github.com/chardet/chardet
 [pandoc]: https://pandoc.org
 
 ## SystemReady results checker
