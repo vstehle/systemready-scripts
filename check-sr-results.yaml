@@ -34,6 +34,9 @@ tree:
           - dir: Sequence
             tree:
               - file: EBBR_manual.seq
+                # ACS-IR BETA 0 only has EBBR.seq, not EBBR_manual.seq so make
+                # it optional for now.
+                optional:
               - file: EBBR.seq
       - dir: uefi
         tree:
