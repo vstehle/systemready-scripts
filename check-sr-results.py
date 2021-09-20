@@ -20,13 +20,19 @@ else:
     yaml_load_args = {}
 
 # Colors
-curses.setupterm()
-setafb = curses.tigetstr('setaf') or ''
-setaf = setafb.decode()
-normal = curses.tigetstr('sgr0').decode() or ''
-red = curses.tparm(setafb, curses.COLOR_RED).decode() or ''
-yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
-green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
+normal = ''
+red = ''
+yellow = ''
+green = ''
+
+if os.isatty(sys.stdout.fileno()):
+    curses.setupterm()
+    setafb = curses.tigetstr('setaf') or ''
+    setaf = setafb.decode()
+    normal = curses.tigetstr('sgr0').decode() or ''
+    red = curses.tparm(setafb, curses.COLOR_RED).decode() or ''
+    yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
+    green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
 
 
 # A class to account for statistics
