@@ -6,7 +6,7 @@ import sys
 import yaml
 import os
 import curses
-import chardet
+from chardet.universaldetector import UniversalDetector
 
 try:
     from packaging import version
@@ -104,9 +104,16 @@ def check_file_contains(must_contain, filename):
     assert(len(must_contain))
 
     # Open the file in binary mode and auto-detect its codec first
-    with open(filename, 'rb') as f:
-        enc = chardet.detect(f.read())['encoding']
+    detector = UniversalDetector()
 
+    with open(filename, 'rb') as f:
+        for line in f:
+            detector.feed(line)
+            if detector.done:
+                break
+
+    detector.close()
+    enc = detector.result['encoding']
     logging.debug(f"Encoding {enc}")
 
     q = list(must_contain)
