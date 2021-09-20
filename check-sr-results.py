@@ -6,6 +6,7 @@ import sys
 import yaml
 import os
 import curses
+import chardet
 
 try:
     from packaging import version
@@ -94,11 +95,55 @@ def load_config(filename):
     return conf
 
 
+# Check that a file contains what it must.
+# must_contain is a list of strings to look for in the file, in order.
+# We can deal with utf-16.
+# We return a Stats object.
+def check_file_contains(must_contain, filename):
+    logging.debug(f"Check that file `{filename}' contains {must_contain}")
+    assert(len(must_contain))
+
+    # Open the file in binary mode and auto-detect its codec first
+    with open(filename, 'rb') as f:
+        enc = chardet.detect(f.read())['encoding']
+
+    logging.debug(f"Encoding {enc}")
+
+    q = list(must_contain)
+    pat = q.pop(0)
+    logging.debug(f"Looking for `{pat}'")
+    stats = Stats()
+
+    # Re-open the file with the proper encoding and look for patterns
+    with open(filename, encoding=enc) as f:
+        for i, line in enumerate(f):
+            line = line.rstrip()
+
+            if line.find(pat) >= 0:
+                logging.debug(
+                    f"`{pat}' {green}found at line {i + 1}{normal}: `{line}'")
+                stats.inc_pass()
+
+                if not len(q):
+                    pat = None
+                    break
+
+                pat = q.pop(0)
+
+    if pat is not None:
+        logging.error(f"{red}Could not find `{pat}'{normal} in `{filename}'")
+        stats.inc_error()
+
+    return stats
+
+
 # Check a file
 # We check is a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
 # - optional
 # - can-be-empty
+# If the file has a 'must-contain' property, we look for all signatures in its
+# contents in order.
 # We return a Stats object.
 def check_file(conffile, dirname):
     filename = f"{dirname}/{conffile['file']}"
@@ -112,6 +157,11 @@ def check_file(conffile, dirname):
         if os.path.getsize(filename) > 0:
             logging.debug(f"`{filename}' {green}not empty{normal}")
             stats.inc_pass()
+
+            if 'must-contain' in conffile:
+                stats.add(
+                    check_file_contains(conffile['must-contain'], filename))
+
         elif 'can-be-empty' in conffile:
             logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
             stats.inc_warning()

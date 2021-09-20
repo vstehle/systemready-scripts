@@ -31,6 +31,9 @@ tree:
   - file: <filename>
     optional:                   # If present, the file can be missing
     can-be-emtpy:               # If present, the file can be empty
+    must-contain:               # If present, the file contents is checked
+      - <string>                # This string must be present in the file
+      - ...
   - dir: <dirname>
     optional:                   # If present, the directory can be missing
     can-be-emtpy:               # If present, the directory can be empty
@@ -40,6 +43,10 @@ tree:
 
 Trees can contain files and/or dirs.
 Only dirs can contain trees.
+
+When a file has a `must-contain` property, its content is checked to verify that
+all entries are present in the file, in order. Files encoded in UTF-16 are
+handled correctly automatically.
 
 ## Miscellaneous
 

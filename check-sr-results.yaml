@@ -14,7 +14,11 @@ tree:
       - dir: app_output
         tree:
           - file: CapsuleApp_ESRT_table_info.log
+            must-contain:
+              - ESRT TABLE
           - file: CapsuleApp_FMP_protocol_info.log
+            must-contain:
+              - FMP DATA
       - dir: fwts
         tree:
           - file: FWTSResults.log
