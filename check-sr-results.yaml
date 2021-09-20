@@ -10,7 +10,16 @@ tree:
   - file: acs-console.log
   - dir: acs_results
     tree:
-      - file: results.md
+      - file: result.md
+        must-contain:
+          - SCT Summary
+          - Dropped:|0|
+          - Failure:|0|
+          - Warning:|0|
+          - Dropped by group
+          - Failure by group
+          - Ignored by group
+          - Warning by group
       - dir: app_output
         tree:
           - file: CapsuleApp_ESRT_table_info.log
