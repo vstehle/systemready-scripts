@@ -56,11 +56,11 @@ def check_file(conffile, dirname):
         if os.path.getsize(filename) > 0:
             logging.debug(f"`{filename}' {green}not empty{normal}")
         elif 'can-be-empty' in conffile:
-            logging.error(f"`{filename}' {yellow}empty (allowed){normal}")
+            logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{filename}' {red}empty{normal}")
     elif 'optional' in conffile:
-        logging.error(f"`{filename}' {yellow}missing (optional){normal}")
+        logging.warning(f"`{filename}' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{filename}' {red}missing{normal}")
 
@@ -83,11 +83,11 @@ def check_dir(confdir, dirname):
             if 'tree' in confdir:
                 check_tree(confdir['tree'], subdir)
         elif 'can-be-empty' in confdir:
-            logging.error(f"`{subdir}/' {yellow}empty (allowed){normal}")
+            logging.warning(f"`{subdir}/' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{subdir}/' {red}empty{normal}")
     elif 'optional' in confdir:
-        logging.error(f"`{subdir}/' {yellow}missing (optional){normal}")
+        logging.warning(f"`{subdir}/' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{subdir}/' {red}missing{normal}")
 
