@@ -54,10 +54,19 @@ tree:
           - file: memmap.log
           - file: pci.log
           - file: smbiosview.log
+  - dir: docs
+    optional:
   - dir: fw
     tree:
       - file: u-boot-sniff.log
+      - file: uefi-sniff.log
+        optional:
       - file: capsule-update.log
+        optional:
+  - dir: manual-results
+    optional:
+    tree:
+      - dir: bsa-linux
         optional:
   - dir: os-logs
   - file: report.txt
