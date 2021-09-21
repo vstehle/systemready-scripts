@@ -8,6 +8,18 @@
 check-sr-results-configuration:
 tree:
   - file: acs-console.log
+    must-contain:
+      - Booting `bbr/bsa'
+      - Test preparing...
+      - Done!
+      - BSA Architecture Compliance Suite
+      # We explicitly allow the Bsa.efi NOT to complete by NOT looking for the
+      # end message. It is only informative and it hits crashes on some
+      # platforms.
+      - 'EFI stub: Booting Linux Kernel...'
+      - Linux version
+      - 'Test: UEFI'
+      - '/ #'
   - dir: acs_results
     tree:
       - file: result.md
