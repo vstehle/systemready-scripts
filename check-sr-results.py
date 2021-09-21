@@ -137,7 +137,7 @@ def check_file_contains(must_contain, filename):
     stats = Stats()
 
     # Open the file with the proper encoding and look for patterns
-    with open(filename, encoding=enc) as f:
+    with open(filename, encoding=enc, errors='replace') as f:
         for i, line in enumerate(f):
             line = line.rstrip()
 
