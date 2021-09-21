@@ -95,6 +95,31 @@ def load_config(filename):
     return conf
 
 
+# Detect file encoding
+# We return the encoding or None
+def detect_file_encoding(filename):
+    logging.debug(f"Detect encoding of `{filename}'")
+
+    detector = UniversalDetector()
+    enc = None
+
+    with open(filename, 'rb') as f:
+        for i, line in enumerate(f):
+            detector.feed(line)
+
+            if detector.done:
+                detector.close()
+                enc = detector.result['encoding']
+                break
+
+            if i > 999:
+                logging.debug('Giving up')
+                break
+
+    logging.debug(f"Encoding {enc}")
+    return enc
+
+
 # Check that a file contains what it must.
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
@@ -103,25 +128,14 @@ def check_file_contains(must_contain, filename):
     logging.debug(f"Check that file `{filename}' contains {must_contain}")
     assert(len(must_contain))
 
-    # Open the file in binary mode and auto-detect its codec first
-    detector = UniversalDetector()
-
-    with open(filename, 'rb') as f:
-        for line in f:
-            detector.feed(line)
-            if detector.done:
-                break
-
-    detector.close()
-    enc = detector.result['encoding']
-    logging.debug(f"Encoding {enc}")
+    enc = detect_file_encoding(filename)
 
     q = list(must_contain)
     pat = q.pop(0)
     logging.debug(f"Looking for `{pat}'")
     stats = Stats()
 
-    # Re-open the file with the proper encoding and look for patterns
+    # Open the file with the proper encoding and look for patterns
     with open(filename, encoding=enc) as f:
         for i, line in enumerate(f):
             line = line.rstrip()
