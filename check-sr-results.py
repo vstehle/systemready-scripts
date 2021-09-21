@@ -133,6 +133,7 @@ def check_file_contains(must_contain, filename):
     q = list(must_contain)
     pat = q.pop(0)
     logging.debug(f"Looking for `{pat}'")
+    assert(isinstance(pat, str))
     stats = Stats()
 
     # Open the file with the proper encoding and look for patterns
