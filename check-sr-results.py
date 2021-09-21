@@ -265,6 +265,8 @@ if __name__ == '__main__':
                ' (https://gitlab.arm.com/systemready/systemready-template).')
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
+    parser.add_argument(
+        '--dir', help='Specify directory to check', default='.')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -279,5 +281,5 @@ if __name__ == '__main__':
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
     conf = load_config(f'{here}/check-sr-results.yaml')
-    stats = check_tree(conf['tree'], '.')
+    stats = check_tree(conf['tree'], args.dir)
     logging.info(stats)
