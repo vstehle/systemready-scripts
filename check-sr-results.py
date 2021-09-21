@@ -256,6 +256,11 @@ if __name__ == '__main__':
         format='%(levelname)s %(funcName)s: %(message)s',
         level=logging.DEBUG if args.debug else logging.INFO)
 
+    ln = logging.getLevelName(logging.WARNING)
+    logging.addLevelName(logging.WARNING, f"{yellow}{ln}{normal}")
+    ln = logging.getLevelName(logging.ERROR)
+    logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
+
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
     conf = load_config(f'{here}/check-sr-results.yaml')
