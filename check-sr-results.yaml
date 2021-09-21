@@ -33,6 +33,9 @@ tree:
           - Ignored by group
           - Warning by group
       - dir: app_output
+        # This directory was not present when using ACS-IR BETA 0 so make it
+        # optional.
+        optional:
         tree:
           - file: CapsuleApp_ESRT_table_info.log
             must-contain:
@@ -72,6 +75,9 @@ tree:
           - file: acpiview.log
           - file: acpiview_r.log
           - file: bcfg.log
+            # This file was not present when using ACS-IR BETA 0 so make it
+            # optional.
+            optional:
           - file: devices.log
           - file: dh.log
           - file: dmpstore.log
