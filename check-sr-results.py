@@ -37,6 +37,19 @@ if os.isatty(sys.stdout.fileno()):
     green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
 
 
+# Compute the plural of a word.
+def maybe_plural(n, word):
+    if n < 2:
+        return word
+
+    ll = word[len(word) - 1].lower()
+
+    if ll == 'd' or ll == 's':
+        return word
+    else:
+        return f'{word}s'
+
+
 # A class to account for statistics
 class Stats:
     counters = ['check', 'pass', 'warning', 'error']
@@ -56,7 +69,7 @@ class Stats:
     def _counter_str(self, x):
         n = self.data[x]
         color = Stats.colors[x] if n and x in Stats.colors else ''
-        return f'{color}{n} {x}(s){normal}'
+        return f'{color}{n} {maybe_plural(n, x)}{normal}'
 
     def __str__(self):
         return ', '.join(
