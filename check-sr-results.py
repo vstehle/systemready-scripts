@@ -160,15 +160,14 @@ def check_file_contains(must_contain, filename):
 
 
 # Check a file
-# We check is a file exists and is not empty.
+# We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
 # - optional
 # - can-be-empty
 # If the file has a 'must-contain' property, we look for all signatures in its
 # contents in order.
 # We return a Stats object.
-def check_file(conffile, dirname):
-    filename = f"{dirname}/{conffile['file']}"
+def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
     stats = Stats()
 
@@ -208,31 +207,30 @@ def check_file(conffile, dirname):
 # If the dir has a tree, we recurse with check_tree().
 # We return a Stats object.
 def check_dir(confdir, dirname):
-    subdir = f"{dirname}/{confdir['dir']}"
-    logging.debug(f"Check `{subdir}/'")
+    logging.debug(f"Check `{dirname}/'")
     stats = Stats()
 
-    if os.path.isdir(subdir):
-        logging.debug(f"`{subdir}/' {green}exists{normal}")
+    if os.path.isdir(dirname):
+        logging.debug(f"`{dirname}/' {green}exists{normal}")
         stats.inc_pass()
 
-        if len(os.listdir(subdir)) > 0:
-            logging.debug(f"`{subdir}/' {green}not empty{normal}")
+        if len(os.listdir(dirname)) > 0:
+            logging.debug(f"`{dirname}/' {green}not empty{normal}")
             stats.inc_pass()
 
             if 'tree' in confdir:
-                stats.add(check_tree(confdir['tree'], subdir))
+                stats.add(check_tree(confdir['tree'], dirname))
         elif 'can-be-empty' in confdir:
-            logging.warning(f"`{subdir}/' {yellow}empty (allowed){normal}")
+            logging.warning(f"`{dirname}/' {yellow}empty (allowed){normal}")
             stats.inc_warning()
         else:
-            logging.error(f"`{subdir}/' {red}empty{normal}")
+            logging.error(f"`{dirname}/' {red}empty{normal}")
             stats.inc_error()
     elif 'optional' in confdir:
-        logging.warning(f"`{subdir}/' {yellow}missing (optional){normal}")
+        logging.warning(f"`{dirname}/' {yellow}missing (optional){normal}")
         stats.inc_warning()
     else:
-        logging.error(f"`{subdir}/' {red}missing{normal}")
+        logging.error(f"`{dirname}/' {red}missing{normal}")
         stats.inc_error()
 
     return stats
@@ -247,9 +245,9 @@ def check_tree(conftree, dirname):
 
     for e in conftree:
         if 'file' in e:
-            stats.add(check_file(e, dirname))
+            stats.add(check_file(e, f"{dirname}/{e['file']}"))
         elif 'dir' in e:
-            stats.add(check_dir(e, dirname))
+            stats.add(check_dir(e, f"{dirname}/{e['dir']}"))
         else:
             raise Exception
 
