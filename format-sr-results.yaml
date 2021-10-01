@@ -1,0 +1,47 @@
+###############################################################################
+#                   format-sr-results.py configuration file                   #
+###############################################################################
+
+# Note: for the moment, this formats SystemReady IR results.
+---
+
+format-sr-results-configuration:
+subs:
+  - heading: Firmware
+    paragraph: TBD
+    subs:
+      - heading: Setup
+        paragraph: TBD
+      - heading: U-Boot sniff test
+        paragraph: TBD
+      - heading: UEFI sniff test
+        paragraph: TBD
+      - heading: Capsule update
+        paragraph: TBD
+  - heading: EBBR Compliance
+    paragraph: TBD
+    subs:
+      - heading: SCT
+        extract:
+          filename: acs_results/result.md
+          find: '# SCT Summary'
+          first-line: 4
+          last-line:
+        paragraph: TBD
+      - heading: Manual SCT tests
+        paragraph: TBD
+      - heading: FWTS
+        extract:
+          filename: acs_results/fwts/FWTSResults.log
+          find: Test Failure Summary
+          first-line: -2
+        paragraph: TBD
+  - heading: BSA Compliance (informative)
+    paragraph: TBD
+    subs:
+      - heading: Bsa.efi (informative)
+        paragraph: TBD
+      - heading: Linux bsa (informative)
+        paragraph: TBD
+  - heading: OS Installs
+    paragraph: TBD

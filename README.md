@@ -57,6 +57,76 @@ parent directory is scanned and all matching entries are considered. If the
 file or dir entry with the pattern is not marked `optional', there must be at
 least one match.
 
+## SystemReady results formatter
+
+The `format-sr-results.py` script produces a report from a SystemReady
+certification results tree, layout as described in the [SystemReady template].
+
+When specifying the `--md` option, a report in markdown format is produced. It
+is then possible to convert the report to pdf or HTML format with [pandoc].
+
+When specifying the `--jira` option, a text file suitable for copy-and-paste into a
+Jira ticket is produced.
+
+### Configuration file
+
+The `format-sr-results.yaml` configuration describes the report to produce.
+
+YAML file format:
+
+```{.yaml}
+---
+format-sr-results-configuration: # Mandatory
+subs:
+  - heading: <heading name>           # Paragraph's title
+    extract:                          # Optional extraction info
+      filename: <filename>            # File to extract from
+      find: <text>                    # Look for this text in file
+      first-line: <n>                 # Extract from this relative line
+      last-line: <n or text or None>  # Optional; when to stop extract
+    paragraph: <paragraph text>       # Paragraph's contents
+    subs:                             # If present, analysis will recurse
+      - heading: <sub-heading name>   # This title is one level lower
+      ...
+  - heading: <heading name>
+  ...
+```
+
+An `extract` block allows to specify that part of a file needs to be extracted
+and output to the report.
+
+The file with `filename` is scanned to find the `find` pattern first.
+
+The contents of `filename` is then extracted, started from `first-line`. The
+`first-line` line number is relative to the matching line (line 0) and can be
+negative.
+
+* If `last-line` is specified, the extraction stops at this line and it is not
+  included in the extracted text. Otherwise extraction continues until the end
+  of the file.
+
+* If `last-line` is a number, it is a relative line number similar to
+  `first-line`.
+
+* If `last-line` is a text, extraction stops when reaching a line, which matches
+  this text.
+
+* If `last-line` is empty, extraction stops when reaching an empty line.
+
+### Internal data format
+
+The internal python data format corresponds closely to a flattened view of the
+results obtained as per the YAML configuration file:
+
+```{.py}
+[
+  {'heading': <title>, 'level': <n>},
+  {'extract': <text>},
+  {'paragraph': <text>},
+  ...
+]
+```
+
 ## Miscellaneous
 
 ### Documentation
