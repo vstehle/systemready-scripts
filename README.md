@@ -32,13 +32,13 @@ YAML file format:
 ---
 check-sr-results-configuration: # Mandatory
 tree:
-  - file: <filename>
+  - file: <filename or pattern>
     optional:                   # If present, the file can be missing
     can-be-emtpy:               # If present, the file can be empty
     must-contain:               # If present, the file contents is checked
       - <string>                # This string must be present in the file
       - ...
-  - dir: <dirname>
+  - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     can-be-emtpy:               # If present, the directory can be empty
     tree:                       # If present, verification will recurse
@@ -51,6 +51,11 @@ Only dirs can contain trees.
 When a file has a `must-contain` property, its content is checked to verify that
 all entries are present in the file, in order. Files encoded in UTF-16 are
 handled correctly automatically.
+
+Filenames and dirnames can be UNIX shell glob patterns, in which case their
+parent directory is scanned and all matching entries are considered. If the
+file or dir entry with the pattern is not marked `optional', there must be at
+least one match.
 
 ## Miscellaneous
 

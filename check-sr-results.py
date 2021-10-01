@@ -7,6 +7,7 @@ import yaml
 import os
 import curses
 from chardet.universaldetector import UniversalDetector
+import glob
 
 try:
     from packaging import version
@@ -236,8 +237,16 @@ def check_dir(confdir, dirname):
     return stats
 
 
+# Return True if a string is a glob pattern, False otherwise.
+def is_glob(x):
+    e = glob.escape(x)
+    return x != e
+
+
 # Recursively check a tree
 # We return a Stats object.
+# Files and directories names may be glob patterns. We need to handle the case
+# of glob vs. non-glob explicitly, as a glob pattern may return an empty list.
 def check_tree(conftree, dirname):
     logging.debug(f"Check `{dirname}/'")
     assert(isinstance(conftree, list))
@@ -245,11 +254,26 @@ def check_tree(conftree, dirname):
 
     for e in conftree:
         if 'file' in e:
-            stats.add(check_file(e, f"{dirname}/{e['file']}"))
+            pathname = f"{dirname}/{e['file']}"
+            check = check_file
         elif 'dir' in e:
-            stats.add(check_dir(e, f"{dirname}/{e['dir']}"))
+            pathname = f"{dirname}/{e['dir']}"
+            check = check_dir
         else:
             raise Exception
+
+        if is_glob(pathname):
+            t = list(glob.glob(pathname))
+            logging.debug(f"{pathname} -> {t}")
+
+            if len(t) == 0 and 'optional' not in e:
+                logging.error(f"`{pathname}' {red}missing{normal}")
+                stats.inc_error()
+        else:
+            t = [pathname]
+
+        for x in t:
+            stats.add(check(e, x))
 
     return stats
 
