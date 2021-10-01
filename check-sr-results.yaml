@@ -75,6 +75,13 @@ tree:
                 # it optional for now.
                 optional:
               - file: EBBR.seq
+                must-contain:
+                  - '[Test Case]'
+                  - Revision=
+                  - Guid=
+                  - Name=
+                  - Order=
+                  - Iterations=
       - dir: uefi
         tree:
           - file: BsaResults.log
@@ -122,8 +129,36 @@ tree:
   - dir: fw
     tree:
       - file: u-boot-sniff.log
+        must-contain:
+          # We check only that all non-hw-related commands are there for now.
+          # RTC is a special case as we have an emulation in U-Boot.
+          # We omit the bootefi hello and selftest as not everybody keeps them
+          # in production.
+          - help
+          - version
+          - printenv
+          - printenv -e
+          - bdinfo
+          - rtc list
+          - efidebug devices
+          - efidebug drivers
+          - efidebug dh
+          - efidebug memmap
+          - efidebug tables
+          - efidebug boot dump
       - file: uefi-sniff.log
         optional:
+        must-contain:
+          - pci
+          - drivers
+          - devices
+          - devtree
+          - dmpstore
+          - dh -d -v
+          - memmap
+          - smbiosview
+          - CapsuleApp.efi -P
+          - CapsuleApp.efi -E
       - file: capsule-update.log
         optional:
   - dir: manual-results
@@ -132,4 +167,22 @@ tree:
       - dir: bsa-linux
         optional:
   - dir: os-logs
+    tree:
+      - dir: '*-*'
+        tree:
+          - file: '*console.log'
+            must-contain:
+              - Linux version
+              - dmesg
+              - lspci -vvv
+              - lscpu
+              - lsblk
+              - dmidecode
+              - uname -a
+              - efibootmgr
+              - tar
+          - file: '*sys-firmware.tar.gz'
   - file: report.txt
+    must-contain:
+      - General information
+      - Test Logs collected
