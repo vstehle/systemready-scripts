@@ -128,6 +128,8 @@ results obtained as per the YAML configuration file:
 ]
 ```
 
+The internal data can be dumped to file with the `--dump` option.
+
 ## Miscellaneous
 
 ### Documentation

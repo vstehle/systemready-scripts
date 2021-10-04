@@ -6,6 +6,7 @@ import sys
 import yaml
 import os
 import curses
+import pprint
 
 try:
     from packaging import version
@@ -189,6 +190,15 @@ def output_jira(results, filename):
                 raise Exception
 
 
+# Dump results.
+def output_dump(results, filename):
+    logging.debug(f"Dump to `{filename}'")
+
+    with open(filename, 'w') as f:
+        pp = pprint.PrettyPrinter(stream=f)
+        pp.pprint(results)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Produce a report from a SystemReady results tree.',
@@ -203,6 +213,8 @@ if __name__ == '__main__':
         '--md', help='Specify markdown output filename')
     parser.add_argument(
         '--jira', help='Specify Jira-suitable text output filename')
+    parser.add_argument(
+        '--dump', help='Specify dump output filename')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -219,8 +231,11 @@ if __name__ == '__main__':
     conf = load_config(f'{here}/format-sr-results.yaml')
     results = analyze_subs(conf['subs'], args.dir)
 
-    if 'md' in args:
+    if args.md is not None:
         output_markdown(results, args.md)
 
-    if 'jira' in args:
+    if args.jira is not None:
         output_jira(results, args.jira)
+
+    if args.dump is not None:
+        output_dump(results, args.dump)
