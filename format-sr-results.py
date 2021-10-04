@@ -6,7 +6,6 @@ import sys
 import yaml
 import os
 import curses
-import re
 
 try:
     from packaging import version
@@ -83,6 +82,7 @@ def extract(x, dirname):
     # Second pass: extract.
     res = ''
     ex = False
+    first_line = found + int(x['first-line']) if 'first-line' in x else found
 
     with open(filename) as f:
         for i, line in enumerate(f):
@@ -103,7 +103,7 @@ def extract(x, dirname):
                         f"{green}Found{normal} empty line {ln}")
                     break
 
-            if ln < found + int(x['first-line']):
+            if ln < first_line:
                 continue
 
             # Extract this line.

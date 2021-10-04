@@ -99,7 +99,8 @@ The file with `filename` is scanned to find the `find` pattern first.
 
 The contents of `filename` is then extracted, started from `first-line`. The
 `first-line` line number is relative to the matching line (line 0) and can be
-negative.
+negative. If `first-line` is omitted, it defaults to 0, which means "extract
+starting from matching line".
 
 * If `last-line` is specified, the extraction stops at this line and it is not
   included in the extracted text. Otherwise extraction continues until the end
