@@ -20,6 +20,8 @@ tree:
       - Linux version
       - 'Test: UEFI'
       - '/ #'
+    warn-if-contains:
+      - -dirty
   - dir: acs_results
     tree:
       - file: result.md
@@ -152,6 +154,8 @@ tree:
           - efidebug memmap
           - efidebug tables
           - efidebug boot dump
+        warn-if-contains:
+          - -dirty
       - file: uefi-sniff.log
         optional:
         must-contain:

@@ -157,7 +157,7 @@ def check_file_contains(must_contain, filename):
 
             if line.find(pat) >= 0:
                 logging.debug(
-                    f"`{pat}' {green}found at line {i + 1}{normal}: `{line}'")
+                    f"`{pat}' {green}found{normal} at line {i + 1}: `{line}'")
                 stats.inc_pass()
 
                 if not len(q):
@@ -167,8 +167,43 @@ def check_file_contains(must_contain, filename):
                 pat = q.pop(0)
 
     if pat is not None:
-        logging.error(f"{red}Could not find `{pat}'{normal} in `{filename}'")
+        logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
         stats.inc_error()
+
+    return stats
+
+
+# Warn if a file contains specific patterns.
+# warn_if is a list of strings to look for in the file.
+# Order is not taken into account.
+# We can deal with utf-16.
+# We return a Stats object.
+# We report only the first match of each pattern.
+def warn_if_contains(warn_if, filename):
+    logging.debug(f"Warn if file `{filename}' contains {warn_if}")
+    enc = detect_file_encoding(filename)
+    stats = Stats()
+    pats = set(warn_if)
+
+    # Open the file with the proper encoding and look for patterns
+    with open(filename, encoding=enc, errors='replace') as f:
+        for i, line in enumerate(f):
+            line = line.rstrip()
+
+            if len(pats) == 0:
+                break
+
+            for p in list(pats):
+                if line.find(p) >= 0:
+                    logging.warn(
+                        f"`{p}' {yellow}found{normal} in `{filename}'"
+                        f" at line {i + 1}: `{line}'")
+                    stats.inc_warning()
+                    pats.remove(p)
+
+    if len(warn_if) > 0 and len(warn_if) == len(pats):
+        logging.debug(f"{green}No warning pattern{normal} in `{filename}'")
+        stats.inc_pass()
 
     return stats
 
@@ -196,6 +231,10 @@ def check_file(conffile, filename):
             if 'must-contain' in conffile:
                 stats.add(
                     check_file_contains(conffile['must-contain'], filename))
+
+            if 'warn-if-contains' in conffile:
+                stats.add(
+                    warn_if_contains(conffile['warn-if-contains'], filename))
 
         elif 'can-be-empty' in conffile:
             logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
