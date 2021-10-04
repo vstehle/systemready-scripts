@@ -40,6 +40,9 @@ subs:
     paragraph: TBD
     subs:
       - heading: Bsa.efi (informative)
+        extract:
+          filename: acs_results/uefi/BsaResults.log
+          find: ------------
         paragraph: TBD
       - heading: Linux bsa (informative)
         paragraph: TBD
