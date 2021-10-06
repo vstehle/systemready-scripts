@@ -195,7 +195,7 @@ def warn_if_contains(warn_if, filename):
 
             for p in list(pats):
                 if line.find(p) >= 0:
-                    logging.warn(
+                    logging.warning(
                         f"`{p}' {yellow}found{normal} in `{filename}'"
                         f" at line {i + 1}: `{line}'")
                     stats.inc_warning()
