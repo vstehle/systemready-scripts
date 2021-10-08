@@ -27,13 +27,16 @@ yellow = ''
 green = ''
 
 if os.isatty(sys.stdout.fileno()):
-    curses.setupterm()
-    setafb = curses.tigetstr('setaf') or ''
-    setaf = setafb.decode()
-    normal = curses.tigetstr('sgr0').decode() or ''
-    red = curses.tparm(setafb, curses.COLOR_RED).decode() or ''
-    yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
-    green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
+    try:
+        curses.setupterm()
+        setafb = curses.tigetstr('setaf') or bytes()
+        setaf = setafb.decode()
+        normal = curses.tigetstr('sgr0').decode() or ''
+        red = curses.tparm(setafb, curses.COLOR_RED).decode() or ''
+        yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
+        green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
+    except Exception:
+        pass
 
 
 # Load YAML configuration file.
