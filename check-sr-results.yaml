@@ -184,8 +184,8 @@ tree:
         tree:
           - file: '*console.log'
             must-contain:
-              - Linux version
               - dmesg
+              - Linux version
               - lspci -vvv
               - lscpu
               - lsblk
