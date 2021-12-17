@@ -1,0 +1,70 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title: SystemReady IR results check rules schema
+description: |
+    SystemReady IR results are expected to conform to a certain format,
+    described in https://gitlab.arm.com/systemready/systemready-template.
+
+    The check-sr-results.py scripts verifies requirements on those results,
+    using the check-sr-results.yaml configuration file.
+
+    This schema describes requirements on the configuration file. It can be used
+    by the valid.py script.
+
+    See the README for details.
+definitions:
+    array-of-strings:
+        type: array
+        minItems: 1
+        items:
+            type: string
+    tree:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+            type: object
+            oneOf:
+                - '$ref': '#/definitions/file'
+                - '$ref': '#/definitions/dir'
+    file:
+        type: object
+        properties:
+            file:
+                type: string
+            must-contain:
+                '$ref': '#/definitions/array-of-strings'
+            warn-if-contains:
+                '$ref': '#/definitions/array-of-strings'
+            can-be-empty:
+                const: null
+            optional:
+                const: null
+        required:
+            - file
+            # must-contain is optional
+            # warn-if-contains is optional
+            # can-be-empty is optional
+            # optional is optional
+    dir:
+        type: object
+        properties:
+            dir:
+                type: string
+            tree:
+                '$ref': '#/definitions/tree'
+            optional:
+                const: null
+        required:
+            - dir
+            # tree is optional
+            # optional is optional
+type: object
+properties:
+    check-sr-results-configuration:
+        const: null
+    tree:
+        '$ref': '#/definitions/tree'
+required:
+    - check-sr-results-configuration
+    - tree
