@@ -174,10 +174,19 @@ tree:
       - file: capsule-update.log
         optional:
   - dir: manual-results
-    optional:
     tree:
       - dir: bsa-linux
-        optional:
+        tree:
+          - file: console.log
+            must-contain:
+              - insmod /lib/modules/bsa_acs.ko
+              - /bin/bsa
+              # The 'init BSA Driver' does not show up with ACS-IR < v1.0: do
+              # not check it for now.
+              # The 'BSA Architecture Compliance Suite' headline is sometimes
+              # garbled in the UART log due to kernel messages. We therefore
+              # explicitely do not check it.
+              - BSA tests complete
   - dir: os-logs
     tree:
       - dir: '*-*'
