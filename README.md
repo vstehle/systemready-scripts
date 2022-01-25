@@ -63,6 +63,10 @@ parent directory is scanned and all matching entries are considered. If the
 file or dir entry with the pattern is not marked `optional', there must be at
 least one match.
 
+The `schemas/check-sr-results-schema.yaml` file describes this configuration
+file format and can be used with the `validate.py` script to validate the
+configuration. This is run during [Sanity checks].
+
 ## SystemReady results formatter
 
 The `format-sr-results.py` script produces a report from a SystemReady
@@ -120,6 +124,10 @@ starting from matching line".
 
 * If `last-line` is empty, extraction stops when reaching an empty line.
 
+The `schemas/format-sr-results-schema.yaml` file describes this configuration
+file format and can be used with the `validate.py` script to validate the
+configuration. This is run during [Sanity checks].
+
 ### Internal data format
 
 The internal python data format corresponds closely to a flattened view of the
@@ -157,4 +165,8 @@ To perform some sanity checks in this repository, run:
 $ make check
 ```
 
-This will run a number of checkers and reports errors. See `make help`.
+This will run a number of checkers and reports errors. This validates the
+configuration files of the [SystemReady results checker] and of the [SystemReady
+results formatter] using the `validate.py` script.
+
+See `make help`.

@@ -20,6 +20,10 @@ doc: README.pdf
 check:
 	yamllint .
 	flake8
+	./validate.py --schema schemas/check-sr-results-schema.yaml \
+		check-sr-results.yaml
+	./validate.py --schema schemas/format-sr-results-schema.yaml \
+		format-sr-results.yaml
 
 clean:
 	-rm -f README.pdf
