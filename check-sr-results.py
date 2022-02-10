@@ -42,6 +42,10 @@ if os.isatty(sys.stdout.fileno()):
     except Exception:
         pass
 
+# Maximum number of lines to examine for file encoding detection.
+# This will be set by the command line argument parser.
+detect_file_encoding_limit = None
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -132,7 +136,7 @@ def detect_file_encoding(filename):
                 enc = detector.result['encoding']
                 break
 
-            if i > 999:
+            if i > detect_file_encoding_limit:
                 logging.debug('Giving up')
                 break
 
@@ -430,11 +434,15 @@ if __name__ == '__main__':
                     ' results tree.',
         epilog='We expect the tree to be layout as described in the'
                ' SystemReady template'
-               ' (https://gitlab.arm.com/systemready/systemready-template).')
+               ' (https://gitlab.arm.com/systemready/systemready-template).',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to check', default='.')
+    parser.add_argument(
+        '--detect-file-encoding-limit', type=int, default=999,
+        help='Specify file encoding detection limit, in number of lines')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -445,6 +453,8 @@ if __name__ == '__main__':
     logging.addLevelName(logging.WARNING, f"{yellow}{ln}{normal}")
     ln = logging.getLevelName(logging.ERROR)
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
+
+    detect_file_encoding_limit = args.detect_file_encoding_limit
 
     check_prerequisites()
 
