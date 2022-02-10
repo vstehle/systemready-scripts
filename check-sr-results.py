@@ -9,6 +9,8 @@ import curses
 from chardet.universaldetector import UniversalDetector
 import glob
 import hashlib
+import re
+import subprocess
 
 try:
     from packaging import version
@@ -212,6 +214,37 @@ def warn_if_contains(warn_if, filename):
     return stats
 
 
+# subprocess.run() wrapper
+def run(*args, **kwargs):
+    logging.debug(f"Running {args} {kwargs}")
+    cp = subprocess.run(*args, **kwargs)
+    logging.debug(f"{cp}")
+    return cp
+
+
+# If a file is an archive we know of, check its integrity.
+# We know about tar(-gz) for now.
+# TODO! More archives types.
+# We return a Stats object.
+def maybe_check_archive(filename):
+    stats = Stats()
+
+    if re.match(r'.*\.(tar|tar\.gz|tgz)$', filename):
+        logging.debug(f"Checking archive `{filename}'")
+
+        cp = run(
+            f"tar tf {filename} >/dev/null", shell=True,
+            capture_output=True)
+
+        if cp.returncode:
+            logging.error(f"{red}Bad archive{normal} `{filename}'")
+            stats.inc_error()
+        else:
+            stats.inc_pass()
+
+    return stats
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -219,6 +252,7 @@ def warn_if_contains(warn_if, filename):
 # - can-be-empty
 # If the file has a 'must-contain' property, we look for all signatures in its
 # contents in order.
+# We perform some more checks on archives.
 # We return a Stats object.
 def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
@@ -239,6 +273,9 @@ def check_file(conffile, filename):
             if 'warn-if-contains' in conffile:
                 stats.add(
                     warn_if_contains(conffile['warn-if-contains'], filename))
+
+            # Check archives integrity.
+            stats.add(maybe_check_archive(filename))
 
         elif 'can-be-empty' in conffile:
             logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
@@ -375,6 +412,18 @@ def check_tree(conftree, dirname):
     return stats
 
 
+# Check that we have all we need.
+def check_prerequisites():
+    logging.debug('Checking prerequisites')
+
+    # Check that we have tar.
+    cp = run('tar --version', shell=True, capture_output=True)
+
+    if cp.returncode:
+        logging.error(f"{red}tar not found{normal}")
+        sys.exit(1)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
@@ -396,6 +445,8 @@ if __name__ == '__main__':
     logging.addLevelName(logging.WARNING, f"{yellow}{ln}{normal}")
     ln = logging.getLevelName(logging.ERROR)
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
+
+    check_prerequisites()
 
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)

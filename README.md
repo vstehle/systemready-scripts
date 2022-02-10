@@ -6,6 +6,7 @@ A collection of scripts to help with SystemReady compliance.
 
 The `check-sr-results.py` SystemReady results checker needs the [chardet]
 python3 module. On some Linux distros it is available as `python3-chardet`.
+The `tar` program must be installed.
 
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
@@ -68,6 +69,9 @@ Filenames and dirnames can be UNIX shell glob patterns, in which case their
 parent directory is scanned and all matching entries are considered. If the
 file or dir entry with the pattern is not marked `optional', there must be at
 least one match.
+
+When a file is detected as a tar archive (according to its filename), its
+integrity is automatically checked using `tar`.
 
 The `schemas/check-sr-results-schema.yaml` file describes this configuration
 file format and can be used with the `validate.py` script to validate the
