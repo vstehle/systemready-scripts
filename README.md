@@ -24,13 +24,19 @@ template].
 ### Configuration file
 
 The `check-sr-results.yaml` configuration describes the verifications to
-perform.
+perform. It also contains some data to identify the ACS-IR that was used and to
+deduce the certification version.
 
 YAML file format:
 
 ```{.yaml}
 ---
 check-sr-results-configuration: # Mandatory
+ebbr_seq_files:			# A list of known EBBR.seq sequence files
+  - sha256: 6b83dbfb...		# sha256 of the sequence file to recognize
+    name: ACS-IR vX		# Corresponding ACS-IR identifier
+    version: IR vY		# Corresponding cert version
+  - ...
 tree:
   - file: <filename or pattern>
     optional:                   # If present, the file can be missing

@@ -8,6 +8,7 @@ import os
 import curses
 from chardet.universaldetector import UniversalDetector
 import glob
+import hashlib
 
 try:
     from packaging import version
@@ -298,6 +299,47 @@ def is_glob(x):
     return x != e
 
 
+# Compute the sha256 of a file.
+# Return the hash or None.
+def hash_file(filename):
+    logging.debug(f"Hash `{filename}'")
+    hm = 'sha256'
+    hl = hashlib.new(hm)
+
+    with open(filename, 'rb') as f:
+        hl.update(f.read())
+
+    h = hl.hexdigest()
+    logging.debug(f"{hm} {h} {filename}")
+    return h
+
+
+# Try to identify the EBBR.seq file using its sha256 in a list of known
+# versions in conf.
+# Return the identifier and SystemReady version or None, None.
+def identify_ebbr_seq(conf, dirname):
+    logging.debug(f"Identify EBBR.seq in `{dirname}/'")
+    ebbr_seq = f"{dirname}/acs_results/sct_results/Sequence/EBBR.seq"
+
+    if not os.path.isfile(ebbr_seq):
+        logging.warning(
+            f"{yellow}Missing{normal} `{ebbr_seq}' sequence file...")
+        return None, None
+
+    h = hash_file(ebbr_seq)
+
+    # Try to identify the seq file
+    for x in conf['ebbr_seq_files']:
+        if x['sha256'] == h:
+            logging.info(
+                f"""{green}Identified{normal} `{ebbr_seq}'"""
+                f""" as "{x['name']}" (SystemReady {x['version']}).""")
+            return x['name'], x['version']
+
+    logging.warning(f"{yellow}Could not identify{normal} `{ebbr_seq}'...")
+    return None, None
+
+
 # Recursively check a tree
 # We return a Stats object.
 # Files and directories names may be glob patterns. We need to handle the case
@@ -357,6 +399,10 @@ if __name__ == '__main__':
 
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
+
+    # Identify EBBR.seq to detect SystemReady version.
     conf = load_config(f'{here}/check-sr-results.yaml')
+    seq_id, ver = identify_ebbr_seq(conf, args.dir)
+
     stats = check_tree(conf['tree'], args.dir)
     logging.info(stats)
