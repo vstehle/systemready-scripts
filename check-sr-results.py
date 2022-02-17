@@ -282,14 +282,12 @@ def check_file(conffile, filename):
             stats.add(maybe_check_archive(filename))
 
         elif 'can-be-empty' in conffile:
-            logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
-            stats.inc_warning()
+            logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{filename}' {red}empty{normal}")
             stats.inc_error()
     elif 'optional' in conffile:
-        logging.warning(f"`{filename}' {yellow}missing (optional){normal}")
-        stats.inc_warning()
+        logging.debug(f"`{filename}' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{filename}' {red}missing{normal}")
         stats.inc_error()
@@ -319,14 +317,12 @@ def check_dir(confdir, dirname):
             if 'tree' in confdir:
                 stats.add(check_tree(confdir['tree'], dirname))
         elif 'can-be-empty' in confdir:
-            logging.warning(f"`{dirname}/' {yellow}empty (allowed){normal}")
-            stats.inc_warning()
+            logging.debug(f"`{dirname}/' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{dirname}/' {red}empty{normal}")
             stats.inc_error()
     elif 'optional' in confdir:
-        logging.warning(f"`{dirname}/' {yellow}missing (optional){normal}")
-        stats.inc_warning()
+        logging.debug(f"`{dirname}/' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{dirname}/' {red}missing{normal}")
         stats.inc_error()
