@@ -46,6 +46,7 @@ definitions:
             # warn-if-contains is optional
             # can-be-empty is optional
             # optional is optional
+        additionalProperties: false
     dir:
         type: object
         properties:
@@ -59,6 +60,7 @@ definitions:
             - dir
             # tree is optional
             # optional is optional
+        additionalProperties: false
 type: object
 properties:
     check-sr-results-configuration:
@@ -68,3 +70,4 @@ properties:
 required:
     - check-sr-results-configuration
     - tree
+additionalProperties: false

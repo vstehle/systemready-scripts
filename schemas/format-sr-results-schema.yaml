@@ -43,6 +43,7 @@ definitions:
                     - find
                     # first-line is optional
                     # last-line is optional
+                additionalProperties: false
             paragraph:
                 type: string
             subs:
@@ -52,6 +53,7 @@ definitions:
             # extract is optional
             - paragraph
             # subs is optional
+        additionalProperties: false
 type: object
 properties:
     format-sr-results-configuration:
@@ -61,3 +63,4 @@ properties:
 required:
     - format-sr-results-configuration
     - subs
+additionalProperties: false
