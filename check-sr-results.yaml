@@ -16,6 +16,8 @@ ebbr_seq_files:
   - sha256: d66485b5e436409ef8c0667baf5250e784cbf292f2b9ef1b3893d474a0585fae
     name: ACS-IR v21.09_1.0
     version: IR v1.1
+
+# The following tree applies to all ACS-IR versions.
 tree:
   - file: acs-console.log
     must-contain:
@@ -47,9 +49,6 @@ tree:
           - Ignored by group
           - Warning by group
       - dir: app_output
-        # This directory was not present when using ACS-IR BETA 0 so make it
-        # optional.
-        optional:
         tree:
           - file: CapsuleApp_ESRT_table_info.log
             must-contain:
@@ -91,9 +90,6 @@ tree:
           - dir: Sequence
             tree:
               - file: EBBR_manual.seq
-                # ACS-IR BETA 0 only has EBBR.seq, not EBBR_manual.seq so make
-                # it optional for now.
-                optional:
               - file: EBBR.seq
                 must-contain:
                   - '[Test Case]'
@@ -117,9 +113,6 @@ tree:
           - file: acpiview.log
           - file: acpiview_r.log
           - file: bcfg.log
-            # This file was not present when using ACS-IR BETA 0 so make it
-            # optional.
-            optional:
           - file: devices.log
             must-contain:
               - Device Name
@@ -220,3 +213,38 @@ tree:
     must-contain:
       - General information
       - Test Logs collected
+
+overlays:
+  # A few files were not present in ACS-IR v21.05_0.8_BETA-0; make them
+  # optional.
+  - ebbr_seq_files: [ACS-IR v21.05_0.8_BETA-0]
+    tree:
+      - dir: acs_results
+        tree:
+          - dir: uefi_dump
+            tree:
+              - file: bcfg.log
+                optional:
+          - dir: sct_results
+            tree:
+              - dir: Sequence
+                tree:
+                  - file: EBBR_manual.seq
+                    optional:
+
+  # A few files were only present in ACS-IR v21.05_0.8_BETA-0; make them
+  # optional for the subsequent ACS-IR versions.
+  - ebbr_seq_files: [ACS-IR v21.07_0.9_BETA, ACS-IR v21.09_1.0]
+    tree:
+      - dir: acs_results
+        tree:
+          - dir: uefi_dump
+            tree:
+              - file: acpiview_l.log
+                optional:
+              - file: acpiview.log
+                optional:
+              - file: acpiview_r.log
+                optional:
+              - file: smbiosview.log
+                optional:

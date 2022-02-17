@@ -424,6 +424,72 @@ def check_prerequisites():
         sys.exit(1)
 
 
+# Overlay the src file over the dst file, in-place.
+def overlay_file(src, dst):
+    logging.debug(f"Overlay file {src['file']}")
+
+    for k, v in src.items():
+        logging.debug(f"Overlay {k}")
+        dst[k] = v
+
+
+# Overlay the src dir over the dst dir, in-place.
+def overlay_dir(src, dst):
+    logging.debug(f"Overlay dir {src['dir']}")
+
+    for k, v in src.items():
+        logging.debug(f"Overlay {k}")
+
+        # We have a special case when "merging" tree.
+        if k == 'tree' and 'tree' in dst:
+            overlay_tree(src['tree'], dst['tree'])
+            continue
+
+        dst[k] = v
+
+
+# Overlay the src tree over the dst tree, in-place.
+def overlay_tree(src, dst):
+    # Prepare two LUTs.
+    files = {}
+    dirs = {}
+
+    for x in dst:
+        if 'file' in x:
+            files[x['file']] = x
+        elif 'dir' in x:
+            dirs[x['dir']] = x
+        else:
+            raise
+
+    # Overlay each entry.
+    for x in src:
+        if 'file' in x:
+            if x['file'] in files:
+                overlay_file(x, files[x['file']])
+            else:
+                logging.debug(f"Adding file {x['file']}")
+                dst.append(x)
+        elif 'dir' in x:
+            if x['dir'] in dirs:
+                overlay_dir(x, dirs[x['dir']])
+            else:
+                logging.debug(f"Adding dir {x['dir']}")
+                dst.append(x)
+        else:
+            raise
+
+
+# Apply all the overlays matching the seq_id to the main tree.
+def apply_overlays(conf, seq_id):
+    for i, o in enumerate(conf['overlays']):
+        if seq_id not in o['ebbr_seq_files']:
+            continue
+
+        logging.debug(f"Applying overlay {i}")
+        overlay_tree(o['tree'], conf['tree'])
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
@@ -460,6 +526,10 @@ if __name__ == '__main__':
     # Identify EBBR.seq to detect SystemReady version.
     conf = load_config(f'{here}/check-sr-results.yaml')
     seq_id, ver = identify_ebbr_seq(conf, args.dir)
+
+    if 'overlays' in conf:
+        apply_overlays(conf, seq_id)
+        del conf['overlays']
 
     stats = check_tree(conf['tree'], args.dir)
     logging.info(stats)
