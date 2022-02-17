@@ -490,6 +490,13 @@ def apply_overlays(conf, seq_id):
         overlay_tree(o['tree'], conf['tree'])
 
 
+def dump_config(conf, filename):
+    logging.debug(f'Dump {filename}')
+
+    with open(filename, 'w') as yamlfile:
+        yaml.dump(conf, yamlfile, Dumper=yaml.CDumper)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
@@ -505,6 +512,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--detect-file-encoding-limit', type=int, default=999,
         help='Specify file encoding detection limit, in number of lines')
+    parser.add_argument('--dump-config', help='Output yaml config filename')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -530,6 +538,9 @@ if __name__ == '__main__':
     if 'overlays' in conf:
         apply_overlays(conf, seq_id)
         del conf['overlays']
+
+    if args.dump_config is not None:
+        dump_config(conf, args.dump_config)
 
     stats = check_tree(conf['tree'], args.dir)
     logging.info(stats)
