@@ -65,9 +65,44 @@ type: object
 properties:
     check-sr-results-configuration:
         const: null
+    ebbr_seq_files:
+        type: array
+        items:
+            type: object
+            properties:
+                sha256:
+                    type: string
+                    pattern: '[0-9a-f]{64}'
+                name:
+                    type: string
+                version:
+                    type: string
+                    pattern: 'IR v1.[01]'
+            required:
+                - sha256
+                - name
+            additionalProperties: false
     tree:
         '$ref': '#/definitions/tree'
+    overlays:
+        type: array
+        items:
+            type: object
+            properties:
+                ebbr_seq_files:
+                    type: array
+                    minItems: 1
+                    items:
+                        type: string
+                tree:
+                    '$ref': '#/definitions/tree'
+            required:
+                - ebbr_seq_files
+                - tree
+            additionalProperties: false
 required:
     - check-sr-results-configuration
+    - ebbr_seq_files
     - tree
+    # overlays is optional
 additionalProperties: false

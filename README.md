@@ -6,6 +6,7 @@ A collection of scripts to help with SystemReady compliance.
 
 The `check-sr-results.py` SystemReady results checker needs the [chardet]
 python3 module. On some Linux distros it is available as `python3-chardet`.
+The `tar` program must be installed.
 
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
@@ -24,13 +25,34 @@ template].
 ### Configuration file
 
 The `check-sr-results.yaml` configuration describes the verifications to
-perform.
+perform. It also contains some data to identify the ACS-IR that was used and to
+deduce the certification version.
 
-YAML file format:
+The `schemas/check-sr-results-schema.yaml` file describes this configuration
+file format and can be used with the `validate.py` script to validate the
+configuration. This is run during [Sanity checks].
+
+The YAML configuration file starts with:
 
 ```{.yaml}
 ---
 check-sr-results-configuration: # Mandatory
+```
+
+A section contains data, which allow to determine the ACS-IR version and IR
+certification version from the EBBR.seq sequence file hash:
+
+```{.yaml}
+ebbr_seq_files:                 # A list of known EBBR.seq sequence files
+  - sha256: 6b83dbfb...         # sha256 of the sequence file to recognize
+    name: ACS-IR vX             # Corresponding ACS-IR identifier
+    version: IR vY              # Corresponding cert version
+  - ...
+```
+
+The main section describes the file and dirs tree, with checks:
+
+```{.yaml}
 tree:
   - file: <filename or pattern>
     optional:                   # If present, the file can be missing
@@ -63,9 +85,21 @@ parent directory is scanned and all matching entries are considered. If the
 file or dir entry with the pattern is not marked `optional', there must be at
 least one match.
 
-The `schemas/check-sr-results-schema.yaml` file describes this configuration
-file format and can be used with the `validate.py` script to validate the
-configuration. This is run during [Sanity checks].
+When a file is detected as a tar archive (according to its filename), its
+integrity is automatically checked using `tar`.
+
+The overlays section describes trees definitions, which can be overlayed to the
+main tree section, depending on the detected ACS-IR version:
+
+```{.yaml}
+overlays:
+  - ebbr_seq_files: [<seq file id>, ...]
+    tree:                       # If the detected seq file id matches, this tree
+      ...                       # will be overlayed.
+```
+
+All keys are overwritten violently except `tree`, which is overlayed
+recursively.
 
 ## SystemReady results formatter
 

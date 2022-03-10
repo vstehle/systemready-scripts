@@ -8,6 +8,9 @@ import os
 import curses
 from chardet.universaldetector import UniversalDetector
 import glob
+import hashlib
+import re
+import subprocess
 
 try:
     from packaging import version
@@ -38,6 +41,10 @@ if os.isatty(sys.stdout.fileno()):
         green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
     except Exception:
         pass
+
+# Maximum number of lines to examine for file encoding detection.
+# This will be set by the command line argument parser.
+detect_file_encoding_limit = None
 
 
 # Compute the plural of a word.
@@ -129,7 +136,7 @@ def detect_file_encoding(filename):
                 enc = detector.result['encoding']
                 break
 
-            if i > 999:
+            if i > detect_file_encoding_limit:
                 logging.debug('Giving up')
                 break
 
@@ -211,6 +218,37 @@ def warn_if_contains(warn_if, filename):
     return stats
 
 
+# subprocess.run() wrapper
+def run(*args, **kwargs):
+    logging.debug(f"Running {args} {kwargs}")
+    cp = subprocess.run(*args, **kwargs)
+    logging.debug(f"{cp}")
+    return cp
+
+
+# If a file is an archive we know of, check its integrity.
+# We know about tar(-gz) for now.
+# TODO! More archives types.
+# We return a Stats object.
+def maybe_check_archive(filename):
+    stats = Stats()
+
+    if re.match(r'.*\.(tar|tar\.gz|tgz)$', filename):
+        logging.debug(f"Checking archive `{filename}'")
+
+        cp = run(
+            f"tar tf {filename} >/dev/null", shell=True,
+            capture_output=True)
+
+        if cp.returncode:
+            logging.error(f"{red}Bad archive{normal} `{filename}'")
+            stats.inc_error()
+        else:
+            stats.inc_pass()
+
+    return stats
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -218,6 +256,7 @@ def warn_if_contains(warn_if, filename):
 # - can-be-empty
 # If the file has a 'must-contain' property, we look for all signatures in its
 # contents in order.
+# We perform some more checks on archives.
 # We return a Stats object.
 def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
@@ -239,15 +278,16 @@ def check_file(conffile, filename):
                 stats.add(
                     warn_if_contains(conffile['warn-if-contains'], filename))
 
+            # Check archives integrity.
+            stats.add(maybe_check_archive(filename))
+
         elif 'can-be-empty' in conffile:
-            logging.warning(f"`{filename}' {yellow}empty (allowed){normal}")
-            stats.inc_warning()
+            logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{filename}' {red}empty{normal}")
             stats.inc_error()
     elif 'optional' in conffile:
-        logging.warning(f"`{filename}' {yellow}missing (optional){normal}")
-        stats.inc_warning()
+        logging.debug(f"`{filename}' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{filename}' {red}missing{normal}")
         stats.inc_error()
@@ -277,14 +317,12 @@ def check_dir(confdir, dirname):
             if 'tree' in confdir:
                 stats.add(check_tree(confdir['tree'], dirname))
         elif 'can-be-empty' in confdir:
-            logging.warning(f"`{dirname}/' {yellow}empty (allowed){normal}")
-            stats.inc_warning()
+            logging.debug(f"`{dirname}/' {yellow}empty (allowed){normal}")
         else:
             logging.error(f"`{dirname}/' {red}empty{normal}")
             stats.inc_error()
     elif 'optional' in confdir:
-        logging.warning(f"`{dirname}/' {yellow}missing (optional){normal}")
-        stats.inc_warning()
+        logging.debug(f"`{dirname}/' {yellow}missing (optional){normal}")
     else:
         logging.error(f"`{dirname}/' {red}missing{normal}")
         stats.inc_error()
@@ -296,6 +334,47 @@ def check_dir(confdir, dirname):
 def is_glob(x):
     e = glob.escape(x)
     return x != e
+
+
+# Compute the sha256 of a file.
+# Return the hash or None.
+def hash_file(filename):
+    logging.debug(f"Hash `{filename}'")
+    hm = 'sha256'
+    hl = hashlib.new(hm)
+
+    with open(filename, 'rb') as f:
+        hl.update(f.read())
+
+    h = hl.hexdigest()
+    logging.debug(f"{hm} {h} {filename}")
+    return h
+
+
+# Try to identify the EBBR.seq file using its sha256 in a list of known
+# versions in conf.
+# Return the identifier and SystemReady version or None, None.
+def identify_ebbr_seq(conf, dirname):
+    logging.debug(f"Identify EBBR.seq in `{dirname}/'")
+    ebbr_seq = f"{dirname}/acs_results/sct_results/Sequence/EBBR.seq"
+
+    if not os.path.isfile(ebbr_seq):
+        logging.warning(
+            f"{yellow}Missing{normal} `{ebbr_seq}' sequence file...")
+        return None, None
+
+    h = hash_file(ebbr_seq)
+
+    # Try to identify the seq file
+    for x in conf['ebbr_seq_files']:
+        if x['sha256'] == h:
+            logging.info(
+                f"""{green}Identified{normal} `{ebbr_seq}'"""
+                f""" as "{x['name']}" (SystemReady {x['version']}).""")
+            return x['name'], x['version']
+
+    logging.warning(f"{yellow}Could not identify{normal} `{ebbr_seq}'...")
+    return None, None
 
 
 # Recursively check a tree
@@ -333,17 +412,107 @@ def check_tree(conftree, dirname):
     return stats
 
 
+# Check that we have all we need.
+def check_prerequisites():
+    logging.debug('Checking prerequisites')
+
+    # Check that we have tar.
+    cp = run('tar --version', shell=True, capture_output=True)
+
+    if cp.returncode:
+        logging.error(f"{red}tar not found{normal}")
+        sys.exit(1)
+
+
+# Overlay the src file over the dst file, in-place.
+def overlay_file(src, dst):
+    logging.debug(f"Overlay file {src['file']}")
+
+    for k, v in src.items():
+        logging.debug(f"Overlay {k}")
+        dst[k] = v
+
+
+# Overlay the src dir over the dst dir, in-place.
+def overlay_dir(src, dst):
+    logging.debug(f"Overlay dir {src['dir']}")
+
+    for k, v in src.items():
+        logging.debug(f"Overlay {k}")
+
+        # We have a special case when "merging" tree.
+        if k == 'tree' and 'tree' in dst:
+            overlay_tree(src['tree'], dst['tree'])
+            continue
+
+        dst[k] = v
+
+
+# Overlay the src tree over the dst tree, in-place.
+def overlay_tree(src, dst):
+    # Prepare two LUTs.
+    files = {}
+    dirs = {}
+
+    for x in dst:
+        if 'file' in x:
+            files[x['file']] = x
+        elif 'dir' in x:
+            dirs[x['dir']] = x
+        else:
+            raise
+
+    # Overlay each entry.
+    for x in src:
+        if 'file' in x:
+            if x['file'] in files:
+                overlay_file(x, files[x['file']])
+            else:
+                logging.debug(f"Adding file {x['file']}")
+                dst.append(x)
+        elif 'dir' in x:
+            if x['dir'] in dirs:
+                overlay_dir(x, dirs[x['dir']])
+            else:
+                logging.debug(f"Adding dir {x['dir']}")
+                dst.append(x)
+        else:
+            raise
+
+
+# Apply all the overlays matching the seq_id to the main tree.
+def apply_overlays(conf, seq_id):
+    for i, o in enumerate(conf['overlays']):
+        if seq_id not in o['ebbr_seq_files']:
+            continue
+
+        logging.debug(f"Applying overlay {i}")
+        overlay_tree(o['tree'], conf['tree'])
+
+
+def dump_config(conf, filename):
+    logging.debug(f'Dump {filename}')
+
+    with open(filename, 'w') as yamlfile:
+        yaml.dump(conf, yamlfile, Dumper=yaml.CDumper)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
                     ' results tree.',
         epilog='We expect the tree to be layout as described in the'
                ' SystemReady template'
-               ' (https://gitlab.arm.com/systemready/systemready-template).')
+               ' (https://gitlab.arm.com/systemready/systemready-template).',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to check', default='.')
+    parser.add_argument(
+        '--detect-file-encoding-limit', type=int, default=999,
+        help='Specify file encoding detection limit, in number of lines')
+    parser.add_argument('--dump-config', help='Output yaml config filename')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -355,8 +524,23 @@ if __name__ == '__main__':
     ln = logging.getLevelName(logging.ERROR)
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
+    detect_file_encoding_limit = args.detect_file_encoding_limit
+
+    check_prerequisites()
+
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
+
+    # Identify EBBR.seq to detect SystemReady version.
     conf = load_config(f'{here}/check-sr-results.yaml')
+    seq_id, ver = identify_ebbr_seq(conf, args.dir)
+
+    if 'overlays' in conf:
+        apply_overlays(conf, seq_id)
+        del conf['overlays']
+
+    if args.dump_config is not None:
+        dump_config(conf, args.dump_config)
+
     stats = check_tree(conf['tree'], args.dir)
     logging.info(stats)
