@@ -1,0 +1,91 @@
+#!/bin/bash
+set -eu
+
+# This script is a companion to the SystemReady IR - IoT integration, test, and
+# certification guide (https://developer.arm.com/documentation/DUI1101/a/).
+# It is used in the appendix "Run the ACS-IR image on QEMU".
+
+top="$(pwd)"
+j="$(nproc)"
+
+# Install repo
+if [ ! -s "$top/repo" ]; then
+	echo '>>> Installing repo'
+	cd "$top"
+	rm -f repo
+	curl https://storage.googleapis.com/git-repo-downloads/repo >repo
+	chmod +x repo
+	[ -s repo ]
+fi
+
+# Compile a U-Boot firmware for qemu
+if [ ! -s "$top/firmware-working/nor_flash.bin" ]; then
+	echo '>>> Compiling U-Boot firmware'
+	cd "$top"
+	rm -fr firmware-working
+	mkdir firmware-working
+	cd firmware-working
+	"$top/repo" init --depth=1 -u https://gitlab.arm.com/systemready/firmware-build/u-boot-manifest
+	"$top/repo" sync -j"$j" --no-clone-bundle
+	make qemu_arm64_defconfig
+	make -j"$j"
+	[ -s nor_flash.bin ]
+fi
+
+# Prepare an EFI System Partition (ESP) image using genimage
+if [ ! -s "$top/images/esp.img" ]; then
+	echo '>>> Preparing an EFI System Partition'
+	cd "$top"
+	rm -fr genimage genimage.cfg root tmp images
+	git clone https://github.com/pengutronix/genimage.git -b v15
+	cd genimage
+	./autogen.sh
+	./configure
+	make -j"$j"
+	[ -s genimage ]
+
+	cd "$top"
+	cat >genimage.cfg <<END
+config {}
+
+image esp.vfat {
+	vfat {
+		extraargs = "-F 32"
+	}
+	empty = true
+	size = 256M
+}
+
+image esp.img {
+	hdimage {
+		partition-table-type = gpt
+	}
+
+	partition esp {
+		partition-type-uuid = U
+		image = esp.vfat
+	}
+}
+END
+	mkdir root
+	PATH="$PATH:/sbin" ./genimage/genimage genimage.cfg
+	[ -s images/esp.img ]
+fi
+
+# Download and uncompress the SystemReady ACS-IR image
+if [ ! -s "$top/ir_acs_live_image.img" ]; then
+	echo '>>> Retrieving the SystemReady ACS-IR image'
+	cd "$top"
+	rm -f ir_acs_live_image.img.xz
+	wget https://github.com/ARM-software/arm-systemready/raw/main/IR/prebuilt_images/v21.09_1.0/ir_acs_live_image.img.xz
+	xz -d ir_acs_live_image.img.xz
+	[ -s ir_acs_live_image.img ]
+fi
+
+# Launch the Arm64 QEMU
+echo '>>> Launching qemu'
+make -C "$top/firmware-working" qemu-fip QEMU_EXTRA="\
+    -drive file=$top/images/esp.img,if=none,format=raw,id=mydrive1 \
+    -device virtio-blk-device,drive=mydrive1 \
+    -drive file=$top/ir_acs_live_image.img,if=none,format=raw,id=mydrive0 \
+    -device virtio-blk-device,drive=mydrive0"
