@@ -175,7 +175,8 @@ tree:
           - CapsuleApp.efi -P
           - CapsuleApp.efi -E
       - file: capsule-update.log
-        optional:
+        must-contain:
+          - CapsuleApp.efi
   - dir: manual-results
     tree:
       - dir: bsa-linux
