@@ -144,6 +144,22 @@ def detect_file_encoding(filename):
     return enc
 
 
+# Cleanup a line
+# - Right-strip the line
+# - Remove the most annoying escape sequences
+# Returns the cleaned-up line.
+def cleanup_line(line):
+    line = line.rstrip()
+    line = re.sub(r'\x1B\[K', '', line)
+    line = re.sub(r'\x1B\(B', '', line)
+    line = re.sub(r'\x1B\[[\x30-\x3F]*[\x20-\x2F]*[\x40-\x7E]', '', line)
+
+    while re.search(r'\x08', line):
+        line = re.sub(r'.\x08', '', line)
+
+    return line
+
+
 # Check that a file contains what it must.
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
@@ -163,7 +179,7 @@ def check_file_contains(must_contain, filename):
     # Open the file with the proper encoding and look for patterns
     with open(filename, encoding=enc, errors='replace') as f:
         for i, line in enumerate(f):
-            line = line.rstrip()
+            line = cleanup_line(line)
 
             if line.find(pat) >= 0:
                 logging.debug(
@@ -198,7 +214,7 @@ def warn_if_contains(warn_if, filename):
     # Open the file with the proper encoding and look for patterns
     with open(filename, encoding=enc, errors='replace') as f:
         for i, line in enumerate(f):
-            line = line.rstrip()
+            line = cleanup_line(line)
 
             if len(pats) == 0:
                 break
