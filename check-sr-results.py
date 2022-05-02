@@ -155,7 +155,7 @@ def cleanup_line(line):
     line = re.sub(r'\x1B\[[\x30-\x3F]*[\x20-\x2F]*[\x40-\x7E]', '', line)
 
     while re.search(r'\x08', line):
-        line = re.sub(r'.\x08', '', line)
+        line = re.sub(r'.?\x08', '', line)
 
     return line
 
