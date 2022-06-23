@@ -2,6 +2,10 @@
 
 A collection of scripts to help with SystemReady compliance.
 
+## Branches
+
+For IR 1.1 certification, git branch `ir1` of this repository should be used.
+
 ## Dependencies
 
 The `check-sr-results.py` SystemReady results checker needs the [chardet]
