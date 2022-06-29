@@ -1,0 +1,113 @@
+#!/bin/bash
+set -eu
+
+# Unit test for capsule-tool.py.
+
+# Verify that two files differ.
+# $1, $2: files
+assert_files_differ()
+{
+	if cmp -b "$1" "$2"; then
+		false
+	else
+		echo -n 'different, ' >&3
+	fi
+}
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing capsule tool... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure capsule-tool.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+tmp=$(mktemp -d)
+trap 'rm -fr "$tmp"' EXIT
+
+echo -n 'image, ' >&3
+img="$tmp/image.bin"
+dd if=/dev/urandom of="$img" bs=123 count=1
+
+echo -n 'unauthenticated capsule, ' >&3
+unauth="$tmp/unauthenticated.bin"
+
+mkeficapsule \
+	--index 1 --guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
+	"$img" "$unauth"
+
+if capsule-tool.py "$unauth"; then
+	false
+else
+	echo -n 'does not validate, ' >&3
+fi
+
+capsule-tool.py --force "$unauth"
+echo -n 'does with force, ' >&3
+
+echo -n 'copy, ' >&3
+copy="$tmp/copy.bin"
+capsule-tool.py --force --output "$copy" "$unauth"
+
+cmp -b "$unauth" "$copy"
+echo -n 'identical, ' >&3
+
+echo -n 'extract, ' >&3
+ext="$tmp/extract.bin"
+capsule-tool.py --force --extract "$ext" "$unauth"
+
+cmp -b "$img" "$ext"
+echo -n 'identical, ' >&3
+
+echo -n 'certificate, ' >&3
+
+openssl req -x509 -sha256 -newkey rsa:2048 -subj /CN=CRT/ \
+	-keyout "$tmp/CRT.key" -out "$tmp/CRT.crt" -nodes -days 365
+
+echo -n 'authenticated capsule, ' >&3
+auth="$tmp/authenticated.bin"
+
+mkeficapsule \
+	--monotonic-count 1 \
+	--private-key "$tmp/CRT.key" \
+	--certificate "$tmp/CRT.crt" \
+	--index 1 \
+	--guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
+	"$img" "$auth"
+
+hexdump "$auth" >"$auth.hex"
+
+echo -n 'validate, ' >&3
+capsule-tool.py "$auth"
+
+echo -n 'tamper, ' >&3
+tamp="$tmp/tampered.bin"
+capsule-tool.py --tamper --output "$tamp" "$auth"
+hexdump "$tamp" >"$tamp.hex"
+assert_files_differ "$auth" "$tamp"
+
+dif="$tmp/diff"
+diff -u "$auth.hex" "$tamp.hex" |tee "$dif"
+add=$(grep -c '^+0' "$dif")
+sub=$(grep -c '^-0' "$dif")
+
+(( (add == 1) && (sub == 1) ))
+echo -n 'one line changed, ' >&3
+
+echo -n 'de-authenticate, ' >&3
+deauth="$tmp/deauthenticated.bin"
+capsule-tool.py --de-authenticate --output "$deauth" "$auth"
+assert_files_differ "$auth" "$deauth"
+
+cmp -b "$unauth" "$deauth"
+echo -n 'same as unauthenticated, ' >&3
+
+echo 'ok.' >&3

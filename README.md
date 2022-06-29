@@ -12,10 +12,14 @@ The `check-sr-results.py` SystemReady results checker needs the [chardet]
 python3 module. On some Linux distros it is available as `python3-chardet`.
 The `tar` program must be installed.
 
+The `capsule-tool.py` script needs the [construct] python3 module, which might
+be available on your Linux distro as `python3-construct`.
+
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
 [chardet]: https://github.com/chardet/chardet
+[construct]: https://construct.readthedocs.io/en/latest/
 [pandoc]: https://pandoc.org
 
 ## SystemReady results checker
@@ -181,6 +185,53 @@ results obtained as per the YAML configuration file:
 ```
 
 The internal data can be dumped to file with the `--dump` option.
+
+## Capsule tool
+
+The `capsule-tool.py` script allows to perform various operations on UEFI
+Capsules:
+
+- Validation
+- De-authentication
+- Tempering
+
+See the online help for all options and the `tests/test-capsule-tool` unit test
+for examples. Also, see the [Dependencies].
+
+### Validating capsules
+
+Validation is done by default on the input capsule:
+
+```{.sh}
+$ ./capsule-tool.py capsule.bin
+```
+
+The `--force` command line option can be used to force processing even in the
+case of validation error:
+
+```{.sh}
+$ ./capsule-tool.py --force capsule.bin ...
+```
+
+### De-authenticating capsules
+
+Capsules can be "de-authenticated" using the `--de-authenticate` command line
+option. This will turn off the authentication flag and remove the authentication
+information. The modified capsule can be saved using the `--output` option:
+
+```{.sh}
+$ ./capsule-tool.py --de-authenticate --output output.bin capsule.bin
+```
+
+### Tampering with capsules
+
+Capsules can be "tampered with" using the `--tamper` command line option. This
+will invert one bit at random in the firmware image part. The modified capsule
+can be saved using the `--output` option:
+
+```{.sh}
+$ ./capsule-tool.py --tamper --output output.bin capsule.bin
+```
 
 ## Miscellaneous
 

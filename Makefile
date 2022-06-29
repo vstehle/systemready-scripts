@@ -24,6 +24,7 @@ check:
 		check-sr-results.yaml
 	./validate.py --schema schemas/format-sr-results-schema.yaml \
 		format-sr-results.yaml
+	./tests/test-capsule-tool
 
 clean:
 	-rm -f README.pdf
