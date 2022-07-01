@@ -208,3 +208,8 @@ configuration files of the [SystemReady results checker] and of the [SystemReady
 results formatter] using the `validate.py` script.
 
 See `make help`.
+
+## License
+
+This work is licensed under the New BSD License (BSD-3-Clause). See the LICENSE
+file.
