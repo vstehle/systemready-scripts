@@ -22,9 +22,9 @@ install [pandoc].
 
 The `check-sr-results.py` script performs a number of verifications in a
 SystemReady certification results tree, layout as described in the [SystemReady
-template].
+IR template].
 
-[SystemReady template]: https://gitlab.arm.com/systemready/systemready-template
+[SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
 ### Configuration file
 
@@ -108,7 +108,7 @@ recursively.
 ## SystemReady results formatter
 
 The `format-sr-results.py` script produces a report from a SystemReady
-certification results tree, layout as described in the [SystemReady template].
+certification results tree, layout as described in the [SystemReady IR template].
 
 When specifying the `--md` option, a report in markdown format is produced. It
 is then possible to convert the report to pdf or HTML format with [pandoc].

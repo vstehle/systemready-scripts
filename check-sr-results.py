@@ -517,9 +517,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
                     ' results tree.',
-        epilog='We expect the tree to be layout as described in the'
-               ' SystemReady template'
-               ' (https://gitlab.arm.com/systemready/systemready-template).',
+        epilog='We expect the tree to be layout as described in the '
+               'SystemReady IR template '
+               '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')

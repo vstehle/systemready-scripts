@@ -3,7 +3,7 @@ $schema: http://json-schema.org/draft-07/schema#
 title: SystemReady IR results check rules schema
 description: |
     SystemReady IR results are expected to conform to a certain format,
-    described in https://gitlab.arm.com/systemready/systemready-template.
+    described in https://gitlab.arm.com/systemready/systemready-ir-template.
 
     The check-sr-results.py scripts verifies requirements on those results,
     using the check-sr-results.yaml configuration file.

@@ -205,9 +205,9 @@ def output_dump(results, filename):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Produce a report from a SystemReady results tree.',
-        epilog='We expect the tree to be layout as described in the'
-               ' SystemReady template'
-               ' (https://gitlab.arm.com/systemready/systemready-template).')
+        epilog='We expect the tree to be layout as described in the '
+               'SystemReady IR template '
+               '(https://gitlab.arm.com/systemready/systemready-ir-template).')
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
