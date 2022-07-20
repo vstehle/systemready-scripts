@@ -67,6 +67,7 @@ properties:
         const: null
     ebbr_seq_files:
         type: array
+        uniqueItems: true
         items:
             type: object
             properties:
@@ -86,12 +87,14 @@ properties:
         '$ref': '#/definitions/tree'
     overlays:
         type: array
+        uniqueItems: true
         items:
             type: object
             properties:
                 ebbr_seq_files:
                     type: array
                     minItems: 1
+                    uniqueItems: true
                     items:
                         type: string
                 tree:
