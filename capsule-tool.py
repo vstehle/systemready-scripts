@@ -5,6 +5,9 @@ import logging
 import construct
 import sys
 import random
+import os
+import guid
+import subprocess
 
 
 # Define the GUID structure so that it is visually similar to the definitions
@@ -127,9 +130,8 @@ efi_capsule = construct.Struct(
 
 # Verify capsule sanity
 # We expect an authenticated capsule in FMP format
-# Return False if there are errors
-# When force is True we run all checks to the end in all cases, otherwise we
-# return at the first error.
+# Return False at the first error, True otherwise.
+# When force, we run all checks to the end and return True in all cases.
 def sanity_check_capsule(capsule, force=False):
     r = True
 
@@ -202,7 +204,7 @@ def sanity_check_capsule(capsule, force=False):
             'error': 'Unknown Version not 3!',
             'debug': 'Found Version 3'
         },
-        # TODO! Check UpdateImageTypeId guid with a database
+        # UpdateImageTypeId is checked separately by check_capsule_guid.
         # No check for UpdateImageIndex.
         # reserved_bytes
         {
@@ -328,6 +330,45 @@ def sanity_check_capsule(capsule, force=False):
 
     if r:
         logging.info('Valid authenticated capsule in FMP format')
+    elif force:
+        logging.warning('Invalid capsule but forced to continue anyway')
+        r = True
+
+    return r
+
+
+# Identify and check capsule GUID
+# Return True if GUID matches the expected GUID (if not None), False otherwise.
+# When force, we return True in all cases.
+def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
+    logging.debug(f"Check capsule GUID, expected: `{exp_guid}'")
+
+    fmcih = capsule.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
+    g = guid.Guid(efi_guid.build(fmcih.UpdateImageTypeId))
+
+    # Identify
+    cmd = [guid_tool, f'{g}']
+    logging.debug(f"Run {cmd}")
+    o = subprocess.check_output(cmd)
+    o = o.decode().rstrip()
+    logging.debug(o)
+
+    logging.info(f"Capsule update image type id `{g}' is: {o}")
+
+    # Verify
+    r = True
+
+    if exp_guid is not None:
+        e = guid.Guid(exp_guid)
+
+        if g == e:
+            logging.info("Capsule GUID is the expected one")
+        else:
+            logging.error(f"Capsule GUID `{g}' while expecting `{e}'!")
+            r = False
+
+    if not r and force:
+        logging.warning('Bad capsule GUID but forced to continue anyway')
 
     return r
 
@@ -382,6 +423,8 @@ def extract_image(capsule, filename):
 
 
 if __name__ == '__main__':
+    me = os.path.realpath(__file__)
+    here = os.path.dirname(me)
     parser = argparse.ArgumentParser(
         description='Manipulate UEFI Capsules.',
         epilog=(
@@ -396,9 +439,14 @@ if __name__ == '__main__':
     parser.add_argument(
         '--de-authenticate', action='store_true',
         help='Remove capsule authentication')
+    parser.add_argument(
+        '--expected-guid', help='Specify expected update image type id GUID')
     parser.add_argument('--extract', help='Extract image to file')
     parser.add_argument(
         '--force', action='store_true', help='Force processing')
+    parser.add_argument(
+        '--guid-tool', help='Specify guid-tool.py path',
+        default=f'{here}/guid-tool.py')
     parser.add_argument('--output', help='Capsule output file')
     parser.add_argument(
         '--tamper', action='store_true',
@@ -414,11 +462,13 @@ if __name__ == '__main__':
     capsule = efi_capsule.parse_file(args.capsule)
 
     if not sanity_check_capsule(capsule, args.force):
-        if args.force:
-            logging.warning('Invalid capsule but continuing anyway...')
-        else:
-            logging.error('Invalid capsule; exiting')
-            sys.exit(1)
+        logging.error('Invalid capsule; exiting')
+        sys.exit(1)
+
+    if not check_capsule_guid(capsule, args.guid_tool, args.expected_guid,
+                              args.force):
+        logging.error('Bad capsule GUID; exiting')
+        sys.exit(1)
 
     # Options, which modify the capsule.
 

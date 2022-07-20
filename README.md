@@ -196,7 +196,10 @@ Capsules:
 - Tempering
 
 See the online help for all options and the `tests/test-capsule-tool` unit test
-for examples. Also, see the [Dependencies].
+for examples.
+
+The `capsule-tool.py` script depends on the `guid-tool.py` script to check the
+capsule GUID. Also, see the [Dependencies].
 
 ### Validating capsules
 
@@ -205,6 +208,9 @@ Validation is done by default on the input capsule:
 ```{.sh}
 $ ./capsule-tool.py capsule.bin
 ```
+
+The capsule GUID can be verified to match a specific GUID passed with the
+`--expected-guid` option.
 
 The `--force` command line option can be used to force processing even in the
 case of validation error:

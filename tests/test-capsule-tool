@@ -54,7 +54,7 @@ else
 fi
 
 capsule-tool.py --force "$unauth" |& tee "$out"
-grep -q 'continuing anyway' "$out"
+grep -q 'continue anyway' "$out"
 echo -n 'does with force, ' >&3
 
 echo -n 'copy, ' >&3
@@ -92,6 +92,21 @@ hexdump "$auth" >"$auth.hex"
 echo -n 'validate, ' >&3
 capsule-tool.py "$auth" |& tee "$out"
 grep -q 'Valid authenticated capsule in FMP format' "$out"
+grep -q 'QEMU_ARM64_UBOOT_IMAGE_GUID' "$out"
+
+capsule-tool.py --expected-guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
+	"$auth" |& tee "$out"
+
+grep -q 'expected one' "$out"
+echo -n 'guid expected, ' >&3
+
+if capsule-tool.py --expected-guid 12345678-1234-1234-1234-123456789abc \
+	"$auth" |& tee "$out"; then
+	false
+else
+	grep -q 'Bad capsule GUID' "$out"
+	echo -n 'unexpected guid caught, ' >&3
+fi
 
 echo -n 'tamper, ' >&3
 tamp="$tmp/tampered.bin"
