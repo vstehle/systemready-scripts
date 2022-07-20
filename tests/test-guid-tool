@@ -1,0 +1,40 @@
+#!/bin/bash
+set -eu
+
+# Unit test for guid-tool.py.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing guid tool... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure guid-tool.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+tmp=$(mktemp -d)
+trap 'rm -fr "$tmp"' EXIT
+
+log="$tmp/log"
+guid-tool.py 12345678-1234-1234-123456789abcdef0 |& tee "$log"
+grep -q Unknown "$log"
+echo -n 'unknown guid not recognized, ' >&3
+
+guid-tool.py ae13ff2d-9ad4-4e25-9ac86d80b3b22147 |& tee "$log"
+grep -q 'U-Boot FIT firmware image type' "$log"
+echo -n 'known guid recognized, ' >&3
+
+if guid-tool.py ABC; then
+	false
+else
+	echo -n 'invalid guid rejected, ' >&3
+fi
+
+echo 'ok.' >&3

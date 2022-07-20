@@ -233,6 +233,14 @@ can be saved using the `--output` option:
 $ ./capsule-tool.py --tamper --output output.bin capsule.bin
 ```
 
+## GUID tool
+
+The `guid-tool.py` script allows to verify if a UEFI GUID is in the database of
+known GUIDs.
+
+See the online help for all options and the `tests/test-guid-tool` unit test
+for examples.
+
 ## Miscellaneous
 
 ### Documentation
