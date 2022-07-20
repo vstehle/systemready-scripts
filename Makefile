@@ -1,6 +1,9 @@
 # Simple makefile to perform static checks and generate the documentation with
 # pandoc.
-.PHONY: all doc help clean check
+.PHONY: all doc help clean check %.run-test
+
+TESTS = $(wildcard tests/*)
+TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
 
 all: doc
 
@@ -17,14 +20,16 @@ doc: README.pdf
 %.pdf: %.md pandoc.yaml
 	pandoc -o$@ $< pandoc.yaml
 
-check:
+%.run-test: $(basename $@)
+	./$(basename $@)
+
+check:	$(TEST_TARGETS)
 	yamllint .
 	flake8
 	./validate.py --schema schemas/check-sr-results-schema.yaml \
 		check-sr-results.yaml
 	./validate.py --schema schemas/format-sr-results-schema.yaml \
 		format-sr-results.yaml
-	./tests/test-capsule-tool
 
 clean:
 	-rm -f README.pdf
