@@ -22,7 +22,8 @@ properties:
             properties:
                 guid:
                     type: string
-                    pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{16}'
+                    pattern: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\
+                        [0-9a-f]{12}"
                 description:
                     type: string
             required:

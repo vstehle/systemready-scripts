@@ -6,7 +6,7 @@
 
 guid-tool-database:
 known-guids:
-  - guid: ae13ff2d-9ad4-4e25-9ac86d80b3b22147
+  - guid: ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147
     description: U-Boot FIT firmware image type
-  - guid: e2bb9c06-70e9-4b14-97a35a7913176e3f
+  - guid: e2bb9c06-70e9-4b14-97a3-5a7913176e3f
     description: U-Boot RAW firmware image type

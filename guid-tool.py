@@ -15,7 +15,8 @@ import sys
 # Return None if s is not a valid GUID.
 def guid_bytes(s):
     m = re.match(
-        r'([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{16})$',
+        r'([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-'
+        r'([0-9a-f]{12})$',
         s, re.IGNORECASE)
 
     if not m:
@@ -25,10 +26,11 @@ def guid_bytes(s):
     r = bytearray()
     r += struct.pack('<I', int(m[1], base=16))
     r += struct.pack('<H', int(m[2], base=16))
-    r += struct.pack('<H', int(m[3], base=16))
+    r += struct.pack('>H', int(m[3], base=16))
+    r += struct.pack('<H', int(m[4], base=16))
 
-    for i in range(0, 16, 2):
-        r += struct.pack('<B', int(m[4][i:i + 2], base=16))
+    for i in range(0, 12, 2):
+        r += struct.pack('<B', int(m[5][i:i + 2], base=16))
 
     return bytes(r)
 

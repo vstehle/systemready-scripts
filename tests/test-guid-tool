@@ -23,11 +23,11 @@ tmp=$(mktemp -d)
 trap 'rm -fr "$tmp"' EXIT
 
 out="$tmp/out"
-guid-tool.py 12345678-1234-1234-123456789abcdef0 |& tee "$out"
+guid-tool.py 12345678-1234-1234-1234-56789abcdef0 |& tee "$out"
 grep -q Unknown "$out"
 echo -n 'unknown guid not recognized, ' >&3
 
-guid-tool.py ae13ff2d-9ad4-4e25-9ac86d80b3b22147 |& tee "$out"
+guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 |& tee "$out"
 grep -q 'U-Boot FIT firmware image type' "$out"
 echo -n 'known guid recognized, ' >&3
 

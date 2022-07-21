@@ -13,12 +13,15 @@ efi_guid = construct.Struct(
     "TimeLow" / construct.Hex(construct.Int32ul),
     "TimeMid" / construct.Hex(construct.Int16ul),
     "TimeHighAndVersion" / construct.Hex(construct.Int16ul),
-    "ClockAndNode" / construct.Hex(construct.Int8ul)[8]
+    "ClockSeqHighAndReserved" / construct.Hex(construct.Int8ul),
+    "ClockSeqLow" / construct.Hex(construct.Int8ul),
+    "Node" / construct.Hex(construct.Int8ul)[6]
 )
 
 EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID = efi_guid.build(dict(
     TimeLow=0x6dcbd5ed, TimeMid=0xe82d, TimeHighAndVersion=0x4c44,
-    ClockAndNode=[0xbd, 0xa1, 0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a]))
+    ClockSeqHighAndReserved=0xbd, ClockSeqLow=0xa1,
+    Node=[0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a]))
 
 CAPSULE_FLAGS_PERSIST_ACROSS_RESET = 0x10000
 CAPSULE_FLAGS_POPULATE_SYSTEM_TABLE = 0x20000
@@ -31,7 +34,8 @@ WIN_CERT_TYPE_EFI_GUID = 0xEF1
 
 EFI_CERT_TYPE_PKCS7_GUID = efi_guid.build(dict(
     TimeLow=0x4aafd29d, TimeMid=0x68df, TimeHighAndVersion=0x49ee,
-    ClockAndNode=[0x8a, 0xa9, 0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7]))
+    ClockSeqHighAndReserved=0x8a, ClockSeqLow=0xa9,
+    Node=[0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7]))
 
 efi_capsule = construct.Struct(
     "CapsuleHeader" / construct.Struct(
