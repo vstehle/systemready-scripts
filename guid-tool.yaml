@@ -7,6 +7,48 @@
 guid-tool-database:
 known-guids:
   - guid: ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147
-    description: U-Boot FIT firmware image type
+    description: U-Boot legacy (< v2022.07)
+        EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID
   - guid: e2bb9c06-70e9-4b14-97a3-5a7913176e3f
-    description: U-Boot RAW firmware image type
+    description: U-Boot legacy (< v2022.07)
+        EFI_FIRMWARE_IMAGE_TYPE_UBOOT_RAW_GUID
+  - guid: 7a32a939-ab92-467b-9152-74771b95e646
+    description: U-Boot v2022.07 IMX8MM_CL_IOT_GATE_FIT_IMAGE_GUID
+  - guid: 0bf1165c-1831-4864-945e-ac3d3848f499
+    description: U-Boot v2022.07 IMX8MM_CL_IOT_GATE_OPTEE_FIT_IMAGE_GUID
+  - guid: b1251e89-384a-4635-a806-3aa0b0e9f965
+    description: U-Boot v2022.07 IMX8MP_RSB3720A1_4G_FIT_IMAGE_GUID
+  - guid: b5fb6f08-e142-4db1-97ea-5fd36b9be5b9
+    description: U-Boot v2022.07 IMX8MP_RSB3720A1_6G_FIT_IMAGE_GUID
+  - guid: d488e45a-4929-4b55-8c14-86cea2cd6629
+    description: U-Boot v2022.07 KONTRON_SL_MX8MM_FIT_IMAGE_GUID
+  - guid: c898e959-5b1f-4e6d-88e0-40d45cca1399
+    description: U-Boot v2022.07 KONTRON_PITX_IMX8M_FIT_IMAGE_GUID
+  - guid: 86ebd44f-feb8-466f-8bb8-890618456d8b
+    description: U-Boot v2022.07 KONTRON_SL28_FIT_IMAGE_GUID
+  - guid: f885b085-99f8-45af-847d-d514107a4a2c
+    description: U-Boot v2022.07 QEMU_ARM_UBOOT_IMAGE_GUID
+  - guid: 058b7d83-50d5-4c47-a195-60d86ad341c4
+    description: U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID
+  - guid: 09d7cf52-0720-4710-91d1-08469b7fe9c8
+    description: U-Boot v2022.07 SANDBOX_UBOOT_IMAGE_GUID
+  - guid: 5a7021f5-fef2-48b4-aaba-832e777418c0
+    description: U-Boot v2022.07 SANDBOX_UBOOT_ENV_IMAGE_GUID
+  - guid: 3673b45d-6a7c-46f3-9e60-adabb03f7937
+    description: U-Boot v2022.07 SANDBOX_FIT_IMAGE_GUID
+  - guid: 53a92e83-4ef4-473a-8b0d-b5d8c7b2d600
+    description: U-Boot v2022.07 DEVELOPERBOX_UBOOT_IMAGE_GUID
+  - guid: 880866e9-84ba-4793-a908-33e0b916f398
+    description: U-Boot v2022.07 DEVELOPERBOX_FIP_IMAGE_GUID
+  - guid: c1b629f1-ce0e-4894-82bf-f0a38387e630
+    description: U-Boot v2022.07 DEVELOPERBOX_OPTEE_IMAGE_GUID
+  - guid: 20c5fba5-0171-457f-b9cd-f5129cd07228
+    description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID Versal
+  - guid: de6066e8-0256-4fad-8238-e406e274c4cf
+    description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID ZynqMP
+  - guid: cf9ecfd4-938b-41c5-8551-1f883ab7dc18
+    description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID ZynqMP
+  - guid: 1ba29a15-9969-40aa-b424-e86121618664
+    description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID Zynq common
+  - guid: 1a5178f0-87d3-4f36-ac63-3b31a23be305
+    description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID Zynq common

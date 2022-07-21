@@ -28,7 +28,7 @@ grep -q Unknown "$out"
 echo -n 'unknown guid not recognized, ' >&3
 
 guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 |& tee "$out"
-grep -q 'U-Boot FIT firmware image type' "$out"
+grep -q 'EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID' "$out"
 echo -n 'known guid recognized, ' >&3
 
 if guid-tool.py ABC |& tee "$out"; then
