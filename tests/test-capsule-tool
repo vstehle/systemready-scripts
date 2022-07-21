@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eu -o pipefail
 
 # Unit test for capsule-tool.py.
 
@@ -44,13 +44,17 @@ mkeficapsule \
 	--index 1 --guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$img" "$unauth"
 
-if capsule-tool.py "$unauth"; then
+out="$tmp/log"
+if capsule-tool.py "$unauth" |& tee "$out"; then
 	false
 else
+	grep -q 'Missing authentication flag' "$out"
+	grep -q 'Invalid capsule' "$out"
 	echo -n 'does not validate, ' >&3
 fi
 
-capsule-tool.py --force "$unauth"
+capsule-tool.py --force "$unauth" |& tee "$out"
+grep -q 'continuing anyway' "$out"
 echo -n 'does with force, ' >&3
 
 echo -n 'copy, ' >&3
@@ -86,7 +90,8 @@ mkeficapsule \
 hexdump "$auth" >"$auth.hex"
 
 echo -n 'validate, ' >&3
-capsule-tool.py "$auth"
+capsule-tool.py "$auth" |& tee "$out"
+grep -q 'Valid authenticated capsule in FMP format' "$out"
 
 echo -n 'tamper, ' >&3
 tamp="$tmp/tampered.bin"
@@ -95,7 +100,11 @@ hexdump "$tamp" >"$tamp.hex"
 assert_files_differ "$auth" "$tamp"
 
 dif="$tmp/diff"
-diff -u "$auth.hex" "$tamp.hex" |tee "$dif"
+
+if diff -u "$auth.hex" "$tamp.hex" |& tee "$dif"; then
+	false
+fi
+
 add=$(grep -c '^+0' "$dif")
 sub=$(grep -c '^-0' "$dif")
 

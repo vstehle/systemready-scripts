@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eu -o pipefail
 
 # Unit test for guid-tool.py.
 
@@ -31,9 +31,10 @@ guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 |& tee "$out"
 grep -q 'U-Boot FIT firmware image type' "$out"
 echo -n 'known guid recognized, ' >&3
 
-if guid-tool.py ABC; then
+if guid-tool.py ABC |& tee "$out"; then
 	false
 else
+	grep -q Invalid "$out"
 	echo -n 'invalid guid rejected, ' >&3
 fi
 
