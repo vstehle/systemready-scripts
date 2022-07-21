@@ -8,6 +8,28 @@ import sys
 import guid
 
 
+# Validate YAML GUIDs database
+# We check our magic marker and also for duplicate descriptions.
+def validate_guids_db(db):
+    logging.debug("Validate db")
+
+    assert 'guid-tool-database' in db
+
+    h = {}
+
+    for x in db['known-guids']:
+        d = x['description']
+        g = x['guid']
+
+        if d in h:
+            logging.error(
+                f"Duplicate description `{d}' for guid `{g}', "
+                f"already used for guid `{h[d]}'")
+            raise Exception
+
+        h[d] = g
+
+
 # Load YAML GUIDs database
 # We create _Guid entries holding Guid objects.
 def load_guids_db(filename):
@@ -19,7 +41,7 @@ def load_guids_db(filename):
     if db is None:
         db = []
 
-    assert 'guid-tool-database' in db
+    validate_guids_db(db)
     logging.debug('{} entries'.format(len(db)))
 
     # Create _Guid entries holding Guid objects.
