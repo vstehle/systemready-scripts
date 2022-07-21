@@ -32,6 +32,7 @@ check:	$(TEST_TARGETS)
 		format-sr-results.yaml
 	./validate.py --schema schemas/guid-tool-schema.yaml \
 		guid-tool.yaml
+	python3 -m doctest guid.py
 
 clean:
 	-rm -f README.pdf

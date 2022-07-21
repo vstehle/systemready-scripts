@@ -4,39 +4,12 @@ import argparse
 import logging
 import os
 import yaml
-import re
-import struct
 import sys
-
-
-# Convert GUID string to bytes.
-# We use the right binary representation taking care of endianness, even if we
-# don't strictly have to today.
-# Return None if s is not a valid GUID.
-def guid_bytes(s):
-    m = re.match(
-        r'([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-'
-        r'([0-9a-f]{12})$',
-        s, re.IGNORECASE)
-
-    if not m:
-        logging.debug(f"Invalid GUID {s}")
-        return None
-
-    r = bytearray()
-    r += struct.pack('<I', int(m[1], base=16))
-    r += struct.pack('<H', int(m[2], base=16))
-    r += struct.pack('>H', int(m[3], base=16))
-    r += struct.pack('<H', int(m[4], base=16))
-
-    for i in range(0, 12, 2):
-        r += struct.pack('<B', int(m[5][i:i + 2], base=16))
-
-    return bytes(r)
+import guid
 
 
 # Load YAML GUIDs database
-# We create guid-bytes entries.
+# We create _Guid entries holding Guid objects.
 def load_guids_db(filename):
     logging.debug(f"Load `{filename}'")
 
@@ -49,24 +22,22 @@ def load_guids_db(filename):
     assert 'guid-tool-database' in db
     logging.debug('{} entries'.format(len(db)))
 
-    # Create guid-bytes entries.
+    # Create _Guid entries holding Guid objects.
     for x in db['known-guids']:
-        x['guid-bytes'] = guid_bytes(x['guid'])
+        x['_Guid'] = guid.Guid(x['guid'])
 
     return db
 
 
-def lookup_guid(guid, db):
-    logging.debug(f"Lookup {guid}")
+# Find and print the description corresponding to a Guid object
+# in our database.
+# Print 'Unknown' if not found.
+def lookup_guid(g, db):
+    logging.debug(f"Lookup {g}")
     r = 'Unknown'
-    gb = guid_bytes(guid)
-
-    if gb is None:
-        logging.error('Invalid')
-        sys.exit(1)
 
     for x in db['known-guids']:
-        if x['guid-bytes'] == gb:
+        if x['_Guid'] == g:
             r = x['description']
             break
 
@@ -91,5 +62,11 @@ if __name__ == '__main__':
         format='%(levelname)s %(funcName)s: %(message)s',
         level=logging.DEBUG if args.debug else logging.INFO)
 
+    try:
+        g = guid.Guid(args.guid)
+    except Exception:
+        logging.error(f"Invalid GUID `{args.guid}'!")
+        sys.exit(1)
+
     db = load_guids_db(args.guids_db)
-    lookup_guid(args.guid, db)
+    lookup_guid(g, db)
