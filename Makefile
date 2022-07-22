@@ -2,7 +2,7 @@
 # pandoc.
 .PHONY: all doc help clean check %.run-test
 
-TESTS = $(wildcard tests/*)
+TESTS = $(wildcard tests/test-*)
 TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
 
 all: doc
