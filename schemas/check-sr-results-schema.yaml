@@ -1,5 +1,7 @@
 ---
-$schema: http://json-schema.org/draft-07/schema#
+$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/check-sr-results-schema.yaml'
+$schema: https://json-schema.org/draft/2020-12/schema
 title: SystemReady IR results check rules schema
 description: |
     SystemReady IR results are expected to conform to a certain format,
@@ -12,7 +14,7 @@ description: |
     by the valid.py script.
 
     See the README for details.
-definitions:
+$defs:
     array-of-strings:
         type: array
         minItems: 1
@@ -25,17 +27,17 @@ definitions:
         items:
             type: object
             oneOf:
-                - '$ref': '#/definitions/file'
-                - '$ref': '#/definitions/dir'
+                - '$ref': '#/$defs/file'
+                - '$ref': '#/$defs/dir'
     file:
         type: object
         properties:
             file:
                 type: string
             must-contain:
-                '$ref': '#/definitions/array-of-strings'
+                '$ref': '#/$defs/array-of-strings'
             warn-if-contains:
-                '$ref': '#/definitions/array-of-strings'
+                '$ref': '#/$defs/array-of-strings'
             can-be-empty:
                 const: null
             optional:
@@ -53,7 +55,7 @@ definitions:
             dir:
                 type: string
             tree:
-                '$ref': '#/definitions/tree'
+                '$ref': '#/$defs/tree'
             optional:
                 const: null
         required:
@@ -84,7 +86,7 @@ properties:
                 - name
             additionalProperties: false
     tree:
-        '$ref': '#/definitions/tree'
+        '$ref': '#/$defs/tree'
     overlays:
         type: array
         uniqueItems: true
@@ -98,7 +100,7 @@ properties:
                     items:
                         type: string
                 tree:
-                    '$ref': '#/definitions/tree'
+                    '$ref': '#/$defs/tree'
             required:
                 - ebbr_seq_files
                 - tree

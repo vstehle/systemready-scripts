@@ -1,5 +1,7 @@
 ---
-$schema: http://json-schema.org/draft-07/schema#
+$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/guid-tool-schema.yaml'
+$schema: https://json-schema.org/draft/2020-12/schema
 title: SystemReady IR guid tool database schema
 description: |
     The guid-tool.py scripts verifies if UEFI GUIDs are already known using the
