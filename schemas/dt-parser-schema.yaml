@@ -1,0 +1,116 @@
+---
+$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/dt-parser-schema.yaml'
+$schema: https://json-schema.org/draft/2020-12/schema
+title: SystemReady IR dt parser configuration schema
+description: |
+    The dt-parser.py script uses configurations files in YAML format to perform
+    a number of transformations on the parsed entries.
+
+    This schema describes requirements on the configuration file. It can be used
+    by the valid.py script.
+
+    See the README for details.
+$defs:
+    filename:
+        type: string
+type: array
+minItems: 1
+uniqueItems: true
+items:
+    type: object
+    properties:
+        rule:
+            type: string
+        criteria:
+            type: object
+            properties:
+                devicetree_node:
+                    type: string
+                dt_validate_lines:
+                    type: array
+                    items:
+                        type: string
+                dt_validate_schema:
+                    '$ref': '#/$defs/filename'
+                dtc_warning_name:
+                    enum:
+                        - addr_size_cells
+                        - alias_paths
+                        - avoid_default_addr_size
+                        - avoid_unnecessary_addr_size
+                        - chosen_node_bootargs
+                        - chosen_node_is_root
+                        - chosen_node_stdout_path
+                        - clocks_property
+                        - cooling_device_property
+                        - dma_ranges_format
+                        - dmas_property
+                        - gpios_property
+                        - graph_child_address
+                        - graph_endpoint
+                        - graph_nodes
+                        - graph_port
+                        - hwlocks_property
+                        - i2c_bus_bridge
+                        - i2c_bus_reg
+                        - interrupt_map
+                        - interrupt_provider
+                        - interrupts_extended_property
+                        - interrupts_property
+                        - io_channels_property
+                        - iommus_property
+                        - mboxes_property
+                        - msi_parent_property
+                        - mux_controls_property
+                        - names_is_string_list
+                        - node_name_vs_property_name
+                        - obsolete_chosen_interrupt_controller
+                        - pci_bridge
+                        - pci_device_bus_num
+                        - pci_device_reg
+                        - phys_property
+                        - power_domains_property
+                        - pwms_property
+                        - ranges_format
+                        - reg_format
+                        - resets_property
+                        - simple_bus_bridge
+                        - simple_bus_reg
+                        - sound_dai_property
+                        - spi_bus_bridge
+                        - spi_bus_reg
+                        - thermal_sensors_property
+                        - unique_unit_address
+                        - unit_address_format
+                        - unit_address_vs_reg
+                file:
+                    '$ref': '#/$defs/filename'
+                line:
+                    type: string
+                linenum:
+                    type: integer
+                    minimum: 1
+                type:
+                    enum:
+                        - dt-validate warning
+                        - dtc warning
+                warning_message:
+                    type: string
+            additionalProperties: false
+        update:
+            type: object
+            properties:
+                type:
+                    enum:
+                        - dt-validate warning missing property
+                        - dt-validate warning naming
+                        - dt-validate warning no schema
+                        - dt-validate warning not an array
+                        - dt-validate warning spurious property
+                        - ignored
+    required:
+        - rule
+        - criteria
+        - update
+    additionalProperties: false

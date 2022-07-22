@@ -1,0 +1,53 @@
++ '[' -e dump.dtb ']'
++ qemu-system-aarch64 -cpu cortex-a72 -device virtio-rng-device,rng=rng0 -device virtio-balloon-device -m 2048 -machine virt,secure=on,dumpdtb=dump.dtb -monitor null -net nic,model=virtio -net user -no-acpi -nodefaults -nographic -rtc base=utc,clock=host -serial stdio -smp 2 -accel tcg,thread=multi -d unimp,guest_errors -object rng-random,filename=/dev/urandom,id=rng0
+qemu-system-aarch64: info: dtb dumped to dump.dtb. Exiting.
++ '[' -e dump.dts ']'
++ dtc -o dump.dts -O dts -I dtb -s dump.dtb
+dump.dts: Warning (avoid_unnecessary_addr_size): /gpio-keys: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+dump.dts: Warning (unique_unit_address): /flash@0: duplicate unit-address (also used in node /secflash@0)
++ '[' -e dump.yaml ']'
++ dtc -o dump.yaml -O yaml -I dts -s dump.dts
+dump.dts:72.12-82.4: Warning (avoid_unnecessary_addr_size): /gpio-keys: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+dump.dts:60.10-64.4: Warning (unique_unit_address): /flash@0: duplicate unit-address (also used in node /secflash@0)
+dump.dts:139.3-28: Warning (clocks_property): /pl011@9000000:clocks: cell 0 is not a phandle reference
+dump.dts:139.3-28: Warning (clocks_property): /pl011@9000000:clocks: cell 1 is not a phandle reference
+dump.dts:147.3-28: Warning (clocks_property): /pl011@9040000:clocks: cell 0 is not a phandle reference
+dump.dts:147.3-28: Warning (clocks_property): /pl011@9040000:clocks: cell 1 is not a phandle reference
+dump.dts:157.3-21: Warning (clocks_property): /pl031@9010000:clocks: cell 0 is not a phandle reference
+dump.dts:166.3-21: Warning (clocks_property): /pl061@9030000:clocks: cell 0 is not a phandle reference
+dump.dts:177.3-21: Warning (clocks_property): /pl061@90b0000:clocks: cell 0 is not a phandle reference
+dump.dts:132.3-25: Warning (msi_parent_property): /pcie@10000000:msi-parent: cell 0 is not a phandle reference
+dump.dts:78.4-31: Warning (gpios_property): /gpio-keys/poweroff:gpios: cell 0 is not a phandle reference
+dump.dts:86.3-30: Warning (gpios_property): /gpio-poweroff:gpios: cell 0 is not a phandle reference
+dump.dts:93.3-30: Warning (gpios_property): /gpio-restart:gpios: cell 0 is not a phandle reference
++ ./dt-schema/tools/dt-validate -m -s linux/Documentation/devicetree/bindings/ dump.dtb
+/home/vinste01/systemreadyir/dt/dump.dtb: /: 'model' is a required property
+	From schema: /home/vinste01/systemreadyir/dt/dt-schema/dtschema/schemas/root-node.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: platform@c000000: $nodename:0: 'platform@c000000' does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+	From schema: /home/vinste01/systemreadyir/dt/dt-schema/dtschema/schemas/simple-bus.yaml
+dump.dtb:0:0: /platform@c000000: failed to match any schema with compatible: ['qemu,platform', 'simple-bus']
+/home/vinste01/systemreadyir/dt/dump.dtb: pl061@90b0000: $nodename:0: 'pl061@90b0000' does not match '^gpio@[0-9a-f]+$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/gpio/pl061-gpio.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl061@9030000: $nodename:0: 'pl061@9030000' does not match '^gpio@[0-9a-f]+$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/gpio/pl061-gpio.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl061@9030000: 'interrupt-controller' is a required property
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/gpio/pl061-gpio.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl061@9030000: '#interrupt-cells' is a required property
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/gpio/pl061-gpio.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl031@9010000: $nodename:0: 'pl031@9010000' does not match '^rtc(@.*|-[0-9a-f])*$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/rtc/arm,pl031.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl011@9040000: $nodename:0: 'pl011@9040000' does not match '^serial(@.*)?$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/serial/pl011.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: pl011@9000000: $nodename:0: 'pl011@9000000' does not match '^serial(@.*)?$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/serial/pl011.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: intc@8000000: $nodename:0: 'intc@8000000' does not match '^interrupt-controller(@[0-9a-f,]+)*$'
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/interrupt-controller/arm,gic.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: intc@8000000: #address-cells:0:0: 2 is not one of [0, 1]
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/interrupt-controller/arm,gic.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: intc@8000000: #size-cells:0:0: 1 was expected
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/interrupt-controller/arm,gic.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: timer: compatible: 'oneOf' conditional failed, one must be fixed:
+	['arm,armv8-timer', 'arm,armv7-timer'] is too long
+	'arm,armv8-timer' is not one of ['arm,cortex-a15-timer']
+	'arm,armv8-timer' is not one of ['arm,armv7-timer']
+	From schema: /home/vinste01/systemreadyir/dt/linux/Documentation/devicetree/bindings/timer/arm,arch_timer.yaml

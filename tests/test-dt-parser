@@ -1,0 +1,66 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for dt-parser.py.
+# Usage: test-dt-parser [keep]
+# We keep our temporary folder when `keep' is specified.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing dt parser... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure dt-parser.py and validate.py are in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+out="$tmp/out"
+dt-parser.py "$data/qemu.log" |& tee "$out"
+echo -n 'parse, ' >&3
+
+unp=$(grep -c 'WARNING parse: Unparsed line' "$out")
+((unp == 1))
+echo -n 'one unparsed line, ' >&3
+
+dt-parser.py --config /dev/null "$data/qemu.log"
+echo -n 'null config, ' >&3
+
+dt-parser.py --print "$data/qemu.log" |& tee "$out"
+grep -q 'is not one of' "$out"
+echo -n 'print, ' >&3
+
+yaml="$tmp/dt.yaml"
+dt-parser.py --yaml "$yaml" "$data/qemu.log"
+echo -n 'yaml, ' >&3
+
+validate.py --schema schemas/dt-parser-yaml-schema.yaml "$yaml"
+echo -n 'valid, ' >&3
+
+dt-parser.py --config "$data/test-config.yaml" "$data/qemu.log" |& tee "$out"
+grep -q '14  dt-validate warning' "$out"
+grep -q '14  dtc warning' "$out"
+grep -q ' 1  ignored' "$out"
+echo -n 'rule, ' >&3
+
+dt-parser.py --config /dev/null \
+	--filter "x['devicetree_node'] == '/pl031@9010000:clocks'" \
+	"$data/qemu.log" |& tee "$out"
+grep -q '1  dtc warning' "$out"
+echo -n 'filter, ' >&3
+
+echo 'ok.' >&3

@@ -32,6 +32,10 @@ check:	$(TEST_TARGETS)
 		format-sr-results.yaml
 	./validate.py --schema schemas/guid-tool-schema.yaml \
 		guid-tool.yaml
+	./validate.py --schema schemas/dt-parser-schema.yaml \
+		dt-parser.yaml
+	./validate.py --schema schemas/dt-parser-schema.yaml \
+		tests/data/test-dt-parser/test-config.yaml
 	python3 -m doctest guid.py
 
 clean:

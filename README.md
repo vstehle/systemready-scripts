@@ -247,6 +247,87 @@ known GUIDs.
 See the online help for all options and the `tests/test-guid-tool` unit test
 for examples.
 
+## Devicetree parser
+
+The `dt-parser.py` script allows to parse the logs of Devicetree related tools.
+
+Parsing a log file is done with the following command:
+
+```{.sh}
+$ ./dt-parser.py input.log
+```
+
+See the online help for all options and see the `tests/test-dt-parser` unit test
+for more examples.
+
+### Configuration file format
+
+The `dt-parser.yaml` configuration is used by default (this can be changed with
+the `--config` option). The configuration file is in [YAML] format. It contains
+a list of rules:
+
+``` {.yaml}
+- rule: name/description
+  criteria:
+    key1: value1
+    key2: value2
+    ...
+  update:
+    key3: value3
+    key4: value4
+    ...
+- rule...
+```
+
+Rules name/description must be unique. There are constraints on the allowed
+key/values pairs. See the `schemas/dt-parser-schema.yaml` schema for exact file
+format.
+
+[YAML]: https://yaml.org
+
+### Rule processing
+
+The rules from the configuration will be applied to each entry one by one in the
+following manner:
+
+* An attempt is made at matching all the keys/values of the rule's 'criteria'
+  dict to the keys/values of the entry dict. Matching entry and criteria is done
+  with a "relaxed" comparison (more below).
+  - If there is no match, processing moves on to the next rule.
+  - If there is a match:
+    1. The entry dict is updated with the 'update' dict of the rule.
+    2. An 'updated_by_rule' key is set in the entry dict to the rule name.
+    3. Finally, no more rule is applied to that entry.
+
+An entry value and a criteria value match if the criteria value string is
+present anywhere in the entry value string.
+For example, the entry value "abcde" matches the criteria value "cd".
+
+You can use `--debug` to see more details about which rules are applied to the
+entries.
+
+### Filtering data
+
+The `--filter` option allows to specify a python3 expression, which is used as a
+filter. The expression is evaluated for each entry; if it evaluates to True the
+entry is kept, otherwise it is omitted. The expression has access to the entry
+as dict "x".
+
+Example command, which keeps only the entries with a message containing "failed
+to match":
+
+``` {.sh}
+$ ./dt-parser.py --filter "'failed to match' in x['warning_message']" ...
+```
+
+Filtering takes place after the configuration rules, which are described above,
+and before any output. Therefore entries can be filtered before saving to a YAML
+file for example:
+
+``` {.sh}
+$ ./dt-parser.py --filter "x['type'] != 'ignored'" --yaml out.yaml ...
+```
+
 ## Miscellaneous
 
 ### Documentation

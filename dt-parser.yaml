@@ -1,0 +1,241 @@
+###############################################################################
+#                        dt-parser.py configuration file                      #
+###############################################################################
+
+# Rules defined in this configuration are applied in order to the tests.
+# Only the first matching rule does actually update the test.
+# Criteria fields are matched in a "relaxed" manner (substrings can match).
+# See README.md for details.
+---
+
+###############################################################################
+#                              dtc warnings                                   #
+###############################################################################
+
+# We force the following dtc warning entries specific to U-Boot as `ignored'.
+
+- rule: Ignore dtc warnings about U-Boot binman nodes.
+    The binman nodes are specific to U-Boot.
+  criteria:
+    devicetree_node: /binman/
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore dtc warnings about phandle references.
+  criteria:
+    type: dtc warning
+    warning_message: is not a phandle reference
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about unnecessary addr size.
+    This is similar to Linux kernel default DTC_FLAGS
+    -Wno-avoid_unnecessary_addr_size.
+  criteria:
+    dtc_warning_name: avoid_unnecessary_addr_size
+    type: dtc warning
+  update:
+    type: ignored
+
+# We force the following dtc warning entries corresponding to a Linux kernel
+# default DTC_FLAGS as `ignored'.
+
+- rule: Ignore all dtc warnings about duplicate unit address.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-unique_unit_address.
+  criteria:
+    dtc_warning_name: unique_unit_address
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about unit address vs reg.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-unit_address_vs_reg.
+  criteria:
+    dtc_warning_name: unit_address_vs_reg
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about simple bus reg.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-simple_bus_reg.
+  criteria:
+    dtc_warning_name: simple_bus_reg
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about alias paths.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-alias_paths.
+  criteria:
+    dtc_warning_name: alias_paths
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about graph child address.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-graph_child_address.
+  criteria:
+    dtc_warning_name: graph_child_address
+    type: dtc warning
+  update:
+    type: ignored
+
+- rule: Ignore all dtc warnings about interrupt provider.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-interrupt_provider.
+  criteria:
+    dtc_warning_name: interrupt_provider
+    type: dtc warning
+  update:
+    type: ignored
+
+###############################################################################
+#                           dt-validate warnings                              #
+###############################################################################
+
+# We force the following dt-validate warning entries specific to U-Boot as
+# `ignored'.
+
+- rule: Ignore dt-validate warnings about U-Boot fit.
+    The fit nodes are specific to U-Boot.
+  criteria:
+    devicetree_node: fit
+    dt_validate_schema: vendor-prefixes.yaml
+    type: dt-validate warning
+    warning_message: '''fit,external-offset'', ''fit,fdt-list'' do not match any
+      of the regexes: '
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot dm properties types.
+    The u-boot,dm-* properties are specific to U-Boot.
+  criteria:
+    devicetree_node: /
+    type: dt-validate warning
+    line: 'u-boot,dm-'
+    warning_message: 'True is not of type ''object'''
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot dm properties names.
+    The u-boot,dm-* properties are specific to U-Boot.
+  criteria:
+    type: dt-validate warning
+    warning_message: '''u-boot,dm-pre-reloc'', ''u-boot,dm-spl'' do not match
+      any of the regexes: ''pinctrl-[0-9]+'''
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot dm spl property name.
+    The u-boot,dm-spl property is specific to U-Boot.
+  criteria:
+    type: dt-validate warning
+    warning_message: '''u-boot,dm-spl'' does not match any of the regexes: '
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot configurations.
+    The configurations node is specific to U-Boot.
+  criteria:
+    devicetree_node: configurations
+    type: dt-validate warning
+    warning_message: '''@config-SEQ'' does not match any of the regexes: '
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot fdt SEQ.
+    The images/fdt-SEQ node is specific to U-Boot.
+  criteria:
+    devicetree_node: images
+    type: dt-validate warning
+    warning_message: '''@fdt-SEQ'' does not match any of the regexes: '
+  update:
+    type: ignored
+
+# We force the following dt-validate warning entries corresponding to a Linux
+# kernel default DTC_FLAGS as `ignored'.
+
+- rule: Ignore dt-validate warnings about missing ranges property.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-unit_address_vs_reg.
+  criteria:
+    dt_validate_schema: simple-bus.yaml
+    type: dt-validate warning
+    warning_message: '''ranges'' is a required property'
+  update:
+    type: ignored
+
+- rule: 'Ignore dt-validate warnings about unexpected #address-cells and
+    #size-cells.
+    This is similar to Linux kernel default DTC_FLAGS
+    -Wno-avoid_unnecessary_addr_size.'
+  criteria:
+    type: dt-validate warning
+    warning_message: 'Unevaluated properties are not allowed
+      (''#address-cells'', ''#size-cells'' were unexpected)'
+  update:
+    type: ignored
+
+- rule: Ignore all dt-validate warnings about missing interrupt cells.
+    This is similar to Linux kernel default DTC_FLAGS -Wno-interrupt_provider.
+  criteria:
+    type: dt-validate warning
+    warning_message: '''#interrupt-cells'' is a required property'
+  update:
+    type: ignored
+
+# We categorizethe following common dt-validate warning entries.
+# This is only to ease analysis; those issues still need to be dealt with.
+
+- rule: Categorize all dt-validate warnings about missing schema as `no schema'
+    for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: 'failed to match any schema with compatible: '
+  update:
+    type: dt-validate warning no schema
+
+- rule: Categorize all dt-validate warnings about non-matching names as
+    `naming' for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: ' not match any of the regexes:'
+  update:
+    type: dt-validate warning naming
+
+- rule: Categorize all dt-validate warnings about non-matching names (2) as
+    `naming' for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: ' does not match ''^'
+  update:
+    type: dt-validate warning naming
+
+- rule: Categorize all dt-validate warnings about required properties as
+    `missing property' for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: is a required property
+  update:
+    type: dt-validate warning missing property
+
+- rule: Categorize all dt-validate warnings about invalid properties as
+    `spurious property' for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: 'should not be valid under {''type'': ''object''}'
+  update:
+    type: dt-validate warning spurious property
+
+- rule: Categorize all dt-validate warnings about non-array properties as `not
+    an array' for easier analysis.
+    This is only to ease analysis; those issues still need to be dealt with.
+  criteria:
+    type: dt-validate warning
+    warning_message: ' is not of type ''array'''
+  update:
+    type: dt-validate warning not an array

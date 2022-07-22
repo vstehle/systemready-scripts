@@ -1,0 +1,10 @@
+---
+- rule: Force one entry as ignored for testing
+  criteria:
+    devicetree_node: /pl011@9040000:clocks
+    dtc_warning_name: clocks_property
+    file: dump.dts
+    type: dtc warning
+    warning_message: cell 0 is not a phandle reference
+  update:
+    type: ignored
