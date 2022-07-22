@@ -2,6 +2,8 @@
 set -eu -o pipefail
 
 # Unit test for guid-tool.py.
+# Usage: test-guid-tool [keep]
+# We keep our temporary folder when `keep' is specified.
 
 # Redirect all output to a log in current folder.
 # Keep stdout on fd 3.
@@ -19,8 +21,12 @@ here="${me%/*}"
 export PATH="$here/..:$PATH"
 
 # Temporary folder.
-tmp=$(mktemp -d)
-trap 'rm -fr "$tmp"' EXIT
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
 
 out="$tmp/out"
 guid-tool.py 12345678-1234-1234-1234-56789abcdef0 |& tee "$out"
@@ -33,9 +39,9 @@ echo -n 'known guid recognized, ' >&3
 
 if guid-tool.py ABC |& tee "$out"; then
 	false
-else
-	grep -q Invalid "$out"
-	echo -n 'invalid guid rejected, ' >&3
 fi
+
+grep -q Invalid "$out"
+echo -n 'invalid guid rejected, ' >&3
 
 echo 'ok.' >&3

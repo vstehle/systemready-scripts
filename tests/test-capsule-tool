@@ -2,6 +2,8 @@
 set -eu -o pipefail
 
 # Unit test for capsule-tool.py.
+# Usage: test-capsule-tool [keep]
+# We keep our temporary folder when `keep' is specified.
 
 # Verify that two files differ.
 # $1, $2: files
@@ -9,9 +11,9 @@ assert_files_differ()
 {
 	if cmp -b "$1" "$2"; then
 		false
-	else
-		echo -n 'different, ' >&3
 	fi
+
+	echo -n 'different, ' >&3
 }
 
 # Redirect all output to a log in current folder.
@@ -30,8 +32,12 @@ here="${me%/*}"
 export PATH="$here/..:$PATH"
 
 # Temporary folder.
-tmp=$(mktemp -d)
-trap 'rm -fr "$tmp"' EXIT
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
 
 echo -n 'image, ' >&3
 img="$tmp/image.bin"
@@ -45,13 +51,14 @@ mkeficapsule \
 	"$img" "$unauth"
 
 out="$tmp/log"
+
 if capsule-tool.py "$unauth" |& tee "$out"; then
 	false
-else
-	grep -q 'Missing authentication flag' "$out"
-	grep -q 'Invalid capsule' "$out"
-	echo -n 'does not validate, ' >&3
 fi
+
+grep -q 'Missing authentication flag' "$out"
+grep -q 'Invalid capsule' "$out"
+echo -n 'does not validate, ' >&3
 
 capsule-tool.py --force "$unauth" |& tee "$out"
 grep -q 'continue anyway' "$out"
@@ -103,10 +110,10 @@ echo -n 'guid expected, ' >&3
 if capsule-tool.py --expected-guid 12345678-1234-1234-1234-123456789abc \
 	"$auth" |& tee "$out"; then
 	false
-else
-	grep -q 'Bad capsule GUID' "$out"
-	echo -n 'unexpected guid caught, ' >&3
 fi
+
+grep -q 'Bad capsule GUID' "$out"
+echo -n 'unexpected guid caught, ' >&3
 
 echo -n 'tamper, ' >&3
 tamp="$tmp/tampered.bin"
