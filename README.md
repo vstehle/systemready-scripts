@@ -125,6 +125,18 @@ The conditions are strings. A condition is true when its string matches
 All keys are overwritten violently except `tree`, which is overlayed
 recursively.
 
+### Checking IR 1.x results
+
+By default the `check-sr-results.py` script targets the latest IR version (at
+the time of writing: IR 2.0).
+
+The recommended method to verify IR v1.x results is to use branch `ir1` of this
+repository.
+
+Nevertheless, a `check-sr-results-ir1.yaml` configuration file is kept here for
+convenience. It allows to check IR v1.x results with the latest version of the
+script.
+
 ## SystemReady results formatter
 
 The `format-sr-results.py` script produces a report from a SystemReady

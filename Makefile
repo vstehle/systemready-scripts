@@ -28,6 +28,8 @@ check:	$(TEST_TARGETS)
 	flake8
 	./validate.py --schema schemas/check-sr-results-schema.yaml \
 		check-sr-results.yaml
+	./validate.py --schema schemas/check-sr-results-schema.yaml \
+		check-sr-results-ir1.yaml
 	./validate.py --schema schemas/format-sr-results-schema.yaml \
 		format-sr-results.yaml
 	./validate.py --schema schemas/guid-tool-schema.yaml \
