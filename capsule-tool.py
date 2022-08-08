@@ -353,7 +353,10 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
     o = o.decode().rstrip()
     logging.debug(o)
 
-    logging.info(f"Capsule update image type id `{g}' is: {o}")
+    if o == 'Unknown':
+        logging.info(f"Capsule update image type id `{g}' is: {o}")
+    else:
+        logging.warning(f"Capsule update image type id `{g}' is known: {o}")
 
     # Verify
     r = True
