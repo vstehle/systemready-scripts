@@ -25,7 +25,7 @@ type: object
 properties:
     identify-database:
         const: null
-    ebbr_seq_files:
+    known-files:
         type: array
         minItems: 1
         uniqueItems: true
@@ -37,15 +37,37 @@ properties:
                     pattern: '[0-9a-f]{64}'
                 name:
                     type: string
-                version:
+                path:
                     type: string
-                    pattern: 'IR v1.[01]'
             required:
                 - sha256
                 - name
+                - path
+            additionalProperties: false
+    versions:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+            type: object
+            properties:
+                files:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                        type: string
+                version:
+                    type: string
+                    enum:
+                        - IR v1.0
+                        - IR v1.1
+            required:
+                - files
                 - version
             additionalProperties: false
 required:
     - identify-database
-    - ebbr_seq_files
+    - known-files
+    - versions
 additionalProperties: false

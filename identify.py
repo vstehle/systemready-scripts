@@ -45,30 +45,72 @@ def hash_file(filename):
     return h
 
 
-# Try to identify the EBBR.seq file using its sha256 in a list of known
-# versions in db.
-# Return the identifier and SystemReady version or None, None.
-def identify_ebbr_seq(db, dirname):
-    logging.debug(f"Identify EBBR.seq in `{dirname}/'")
-    ebbr_seq = f"{dirname}/acs_results/sct_results/Sequence/EBBR.seq"
+# Compute the sha256 of a file, with caching.
+# cache must be initialized as an empty dict.
+def hash_file_cached(filename, cache):
+    logging.debug(f"Hash/cache `{filename}'")
 
-    if not os.path.isfile(ebbr_seq):
-        logging.warning(
-            f"Missing `{ebbr_seq}' sequence file...")
-        return None, None
+    if filename in cache:
+        logging.debug('Cache hit')
+        h = cache[filename]
+    else:
+        logging.debug('Cache miss')
+        h = hash_file(filename)
+        cache[filename] = h
 
-    h = hash_file(ebbr_seq)
+    return h
 
-    # Try to identify the seq file
-    for x in db['ebbr_seq_files']:
-        if x['sha256'] == h:
-            logging.debug(
-                f"""Identified `{ebbr_seq}'"""
-                f""" as "{x['name']}" (SystemReady {x['version']}).""")
-            return x['name'], x['version']
 
-    logging.debug(f"Could not identify `{ebbr_seq}'...")
-    return None, None
+# Identify all known files, using their paths and details from the db.
+# We know how to identify a file with its sha256 sum.
+# Return a list of identified files dictionaries:
+#   'path': The file path, including dirname.
+#   'name': The file identifier.
+def identify_files(db, dirname):
+    logging.debug(f"Identify files in `{dirname}/'")
+    h_cache = {}
+    r = []
+
+    for x in db['known-files']:
+        filename = f"{dirname}/{x['path']}"
+
+        if not os.path.isfile(filename):
+            continue
+
+        if 'sha256' in x:
+            if x['sha256'] == hash_file_cached(filename, h_cache):
+                logging.debug(f"""Identified `{filename}' as "{x['name']}".""")
+                r.append({'path': filename, 'name': x['name']})
+
+    if not len(r):
+        logging.debug('Could not identify any file...')
+
+    return r
+
+
+# Try to identify the SystemReady version from the list of known files.
+# Return None when unknown.
+def identify_ver(db, files):
+    logging.debug(f"Identify ver from {files}")
+    found_names = set()
+
+    for f in files:
+        found_names.add(f['name'])
+
+    for x in db['versions']:
+        found = True
+
+        for file_name in x['files']:
+            if file_name not in found_names:
+                found = False
+                break
+
+        if found:
+            logging.debug(f"""Identified as "{x['version']}".""")
+            return x['version']
+
+    logging.debug('Could not identify version...')
+    return None
 
 
 if __name__ == '__main__':
@@ -90,6 +132,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--identify-db', help='Identify database YAML file',
         default=f'{here}/identify.yaml')
+    parser.add_argument(
+        '--known-files', action='store_true',
+        help='Print all recognised files')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -97,13 +142,17 @@ if __name__ == '__main__':
         level=logging.DEBUG if args.debug else logging.INFO)
 
     db = load_identify_db(args.identify_db)
-    seq_id, ver = identify_ebbr_seq(db, args.dir)
+    files = identify_files(db, args.dir)
+    ver = identify_ver(db, files)
+
+    for f in files:
+        path = f['path']
+
+        if args.known_files or args.ebbr_seq and 'EBBR.seq' in path:
+            print(f"{path}: {f['name']}")
 
     if ver is None:
         logging.error('Unknown')
         sys.exit(1)
-
-    if args.ebbr_seq:
-        print(f"EBBR.seq from {seq_id}")
 
     print(f"SystemReady {ver}")
