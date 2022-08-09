@@ -332,6 +332,14 @@ file for example:
 $ ./dt-parser.py --filter "x['type'] != 'ignored'" --yaml out.yaml ...
 ```
 
+## Identify
+
+The `identify.py` script allows to identify IR results when layout as described
+in the [SystemReady IR template].
+
+See the online help for all options and the `tests/test-identify` unit test for
+examples.
+
 ## Miscellaneous
 
 ### Documentation

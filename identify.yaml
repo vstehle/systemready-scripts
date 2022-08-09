@@ -1,0 +1,17 @@
+###############################################################################
+#                          identify.py database                               #
+###############################################################################
+
+---
+
+identify-database:
+ebbr_seq_files:
+  - sha256: 6b83dbfbd1f07fc61a918297f02f449591a72131b64ac746f969a4210f97aee8
+    name: ACS-IR v21.05_0.8_BETA-0
+    version: IR v1.0
+  - sha256: c06684b3f8b35871e37b9447f609f9aab6070a7ca1c4ba63a52e029c018c9b73
+    name: ACS-IR v21.07_0.9_BETA
+    version: IR v1.0
+  - sha256: d66485b5e436409ef8c0667baf5250e784cbf292f2b9ef1b3893d474a0585fae
+    name: ACS-IR v21.09_1.0
+    version: IR v1.1
