@@ -8,7 +8,6 @@ import os
 import curses
 from chardet.universaldetector import UniversalDetector
 import glob
-import hashlib
 import re
 import subprocess
 
@@ -376,44 +375,36 @@ def is_glob(x):
     return x != e
 
 
-# Compute the sha256 of a file.
-# Return the hash or None.
-def hash_file(filename):
-    logging.debug(f"Hash `{filename}'")
-    hm = 'sha256'
-    hl = hashlib.new(hm)
+# Try to identify the results.
+# We call the external script `identify.py'.
+# Return the EBBR.seq file identifier and SystemReady version in case of
+# success, or None, None.
+def identify_ebbr_seq(dirname, identify):
+    cmd = [identify, '--dir', dirname, '--ebbr-seq']
+    logging.debug(f"Run {cmd}")
 
-    with open(filename, 'rb') as f:
-        hl.update(f.read())
+    try:
+        o = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+    except Exception as e:
+        logging.debug('Bad exit status!')
+        o = e.output
 
-    h = hl.hexdigest()
-    logging.debug(f"{hm} {h} {filename}")
-    return h
+    o = o.decode().splitlines()
+    logging.debug(o)
+    seq_id, ver = None, None
 
+    if o is not None and len(o) and 'Unknown' not in o[-1]:
+        m = re.match(r'EBBR\.seq from (.*)', o[0])
+        if m:
+            seq_id = m[1]
 
-# Try to identify the EBBR.seq file using its sha256 in a list of known
-# versions in conf.
-# Return the identifier and SystemReady version or None, None.
-def identify_ebbr_seq(conf, dirname):
-    logging.debug(f"Identify EBBR.seq in `{dirname}/'")
-    ebbr_seq = f"{dirname}/acs_results/sct_results/Sequence/EBBR.seq"
+        ver = o[-1]
 
-    if not os.path.isfile(ebbr_seq):
-        logging.warning(
-            f"{yellow}Missing{normal} `{ebbr_seq}' sequence file...")
-        return None, None
+    if seq_id is not None and ver is not None:
+        logging.info(f"""{green}Identified{normal} as "{seq_id}" ({ver}).""")
+        return seq_id, ver
 
-    h = hash_file(ebbr_seq)
-
-    # Try to identify the seq file
-    for x in conf['ebbr_seq_files']:
-        if x['sha256'] == h:
-            logging.info(
-                f"""{green}Identified{normal} `{ebbr_seq}'"""
-                f""" as "{x['name']}" (SystemReady {x['version']}).""")
-            return x['name'], x['version']
-
-    logging.warning(f"{yellow}Could not identify{normal} `{ebbr_seq}'...")
+    logging.warning(f"{yellow}Could not identify...{normal}")
     return None, None
 
 
@@ -538,6 +529,8 @@ def dump_config(conf, filename):
 
 
 if __name__ == '__main__':
+    me = os.path.realpath(__file__)
+    here = os.path.dirname(me)
     parser = argparse.ArgumentParser(
         description='Perform a number of verifications on a SystemReady'
                     ' results tree.',
@@ -553,6 +546,9 @@ if __name__ == '__main__':
         '--detect-file-encoding-limit', type=int, default=999,
         help='Specify file encoding detection limit, in number of lines')
     parser.add_argument('--dump-config', help='Output yaml config filename')
+    parser.add_argument(
+        '--identify', help='Specify identify.py path',
+        default=f'{here}/identify.py')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -573,7 +569,7 @@ if __name__ == '__main__':
 
     # Identify EBBR.seq to detect SystemReady version.
     conf = load_config(f'{here}/check-sr-results.yaml')
-    seq_id, ver = identify_ebbr_seq(conf, args.dir)
+    seq_id, ver = identify_ebbr_seq(args.dir, args.identify)
 
     if 'overlays' in conf:
         apply_overlays(conf, seq_id)

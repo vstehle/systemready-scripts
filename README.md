@@ -28,6 +28,8 @@ The `check-sr-results.py` script performs a number of verifications in a
 SystemReady certification results tree, layout as described in the [SystemReady
 IR template].
 
+The `check-sr-results.py` script depends on the `identify.py` script.
+
 [SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
 ### Configuration file
@@ -336,6 +338,8 @@ $ ./dt-parser.py --filter "x['type'] != 'ignored'" --yaml out.yaml ...
 
 The `identify.py` script allows to identify IR results when layout as described
 in the [SystemReady IR template].
+
+This script is used by the `check-sr-results.py` script.
 
 See the online help for all options and the `tests/test-identify` unit test for
 examples.

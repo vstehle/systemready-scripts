@@ -70,24 +70,6 @@ type: object
 properties:
     check-sr-results-configuration:
         const: null
-    ebbr_seq_files:
-        type: array
-        uniqueItems: true
-        items:
-            type: object
-            properties:
-                sha256:
-                    type: string
-                    pattern: '[0-9a-f]{64}'
-                name:
-                    type: string
-                version:
-                    type: string
-                    pattern: 'IR v1.[01]'
-            required:
-                - sha256
-                - name
-            additionalProperties: false
     tree:
         '$ref': '#/$defs/tree'
     overlays:
@@ -110,7 +92,6 @@ properties:
             additionalProperties: false
 required:
     - check-sr-results-configuration
-    - ebbr_seq_files
     - tree
     # overlays is optional
 additionalProperties: false
