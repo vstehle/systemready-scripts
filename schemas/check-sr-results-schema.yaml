@@ -38,6 +38,8 @@ $defs:
                 '$ref': '#/$defs/array-of-strings'
             warn-if-contains:
                 '$ref': '#/$defs/array-of-strings'
+            error-if-contains:
+                '$ref': '#/$defs/array-of-strings'
             can-be-empty:
                 const: null
             optional:
@@ -46,6 +48,7 @@ $defs:
             - file
             # must-contain is optional
             # warn-if-contains is optional
+            # error-if-contains is optional
             # can-be-empty is optional
             # optional is optional
         additionalProperties: false

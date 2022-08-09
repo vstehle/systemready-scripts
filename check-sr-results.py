@@ -199,17 +199,20 @@ def check_file_contains(must_contain, filename):
     return stats
 
 
-# Warn if a file contains specific patterns.
-# warn_if is a list of strings to look for in the file.
+# Warn or issue an error if a file contains specific patterns.
+# strings is a list of strings to look for in the file.
 # Order is not taken into account.
 # We can deal with utf-16.
 # We return a Stats object.
 # We report only the first match of each pattern.
-def warn_if_contains(warn_if, filename):
-    logging.debug(f"Warn if file `{filename}' contains {warn_if}")
+# When a match is found, if error_not_warn is True we issue an error, otherwise
+# we issue a warning.
+def if_contains(strings, filename, error_not_warn):
+    action = 'Error' if error_not_warn else 'Warn'
+    logging.debug(f"{action} if file `{filename}' contains {strings}")
     enc = detect_file_encoding(filename)
     stats = Stats()
-    pats = set(warn_if)
+    pats = set(strings)
 
     # Open the file with the proper encoding and look for patterns
     with open(filename, encoding=enc, errors='replace') as f:
@@ -220,18 +223,35 @@ def warn_if_contains(warn_if, filename):
                 break
 
             for p in list(pats):
-                if line.find(p) >= 0:
-                    logging.warning(
-                        f"`{p}' {yellow}found{normal} in `{filename}'"
-                        f" at line {i + 1}: `{line}'")
-                    stats.inc_warning()
+                if p in line:
+                    if error_not_warn:
+                        logging.error(
+                            f"`{p}' {red}found{normal} in `{filename}' "
+                            f"at line {i + 1}: `{line}'")
+                        stats.inc_error()
+                    else:
+                        logging.warning(
+                            f"`{p}' {yellow}found{normal} in `{filename}' "
+                            f"at line {i + 1}: `{line}'")
+                        stats.inc_warning()
+
                     pats.remove(p)
 
-    if len(warn_if) > 0 and len(warn_if) == len(pats):
-        logging.debug(f"{green}No warning pattern{normal} in `{filename}'")
+    if len(strings) > 0 and len(strings) == len(pats):
+        logging.debug(f"{green}No pattern{normal} in `{filename}'")
         stats.inc_pass()
 
     return stats
+
+
+# Warn if a file contains specific patterns.
+def warn_if_contains(strings, filename):
+    return if_contains(strings, filename, False)
+
+
+# Issue an error if a file contains specific patterns.
+def error_if_contains(strings, filename):
+    return if_contains(strings, filename, True)
 
 
 # subprocess.run() wrapper
@@ -293,6 +313,10 @@ def check_file(conffile, filename):
             if 'warn-if-contains' in conffile:
                 stats.add(
                     warn_if_contains(conffile['warn-if-contains'], filename))
+
+            if 'error-if-contains' in conffile:
+                stats.add(
+                    error_if_contains(conffile['error-if-contains'], filename))
 
             # Check archives integrity.
             stats.add(maybe_check_archive(filename))
