@@ -72,6 +72,8 @@ properties:
                     enum:
                         - IR v1.0
                         - IR v1.1
+                        - IR v2.0
+                        - SIE v1.0
             required:
                 - files
                 - version

@@ -160,6 +160,8 @@ if __name__ == '__main__':
                'Exit status is 0 if identification succeeded, 1 otherwise.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
+        '--bbsr-seq', action='store_true', help='Print the BBSR.seq id')
+    parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to check', default='.')
@@ -184,7 +186,8 @@ if __name__ == '__main__':
     for f in files:
         path = f['path']
 
-        if args.known_files or args.ebbr_seq and 'EBBR.seq' in path:
+        if (args.known_files or args.ebbr_seq and 'EBBR.seq' in path
+           or args.bbsr_seq and 'BBSR.seq' in path):
             print(f"{path}: {f['name']}")
 
     if ver is None:
