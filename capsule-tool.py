@@ -347,11 +347,17 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
     g = guid.Guid(efi_guid.build(fmcih.UpdateImageTypeId))
 
     # Identify
-    cmd = [guid_tool, f'{g}']
+    cmd = f"{guid_tool} {g}"
     logging.debug(f"Run {cmd}")
-    o = subprocess.check_output(cmd)
-    o = o.decode().rstrip()
-    logging.debug(o)
+    cp = subprocess.run(cmd, shell=True, capture_output=True)
+    logging.debug(cp)
+
+    if cp.returncode:
+        logging.error(f"Bad guid tool `{guid_tool}'")
+        sys.exit(1)
+
+    o = cp.stdout.decode().split()
+    o = o[-1]
 
     if o == 'Unknown':
         logging.info(f"Capsule update image type id `{g}' is: {o}")
