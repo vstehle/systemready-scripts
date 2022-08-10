@@ -39,11 +39,21 @@ properties:
                     type: string
                 path:
                     type: string
+                search:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                        type: string
             required:
-                - sha256
+                # sha256 is optional
                 - name
                 - path
+                # search is optional
             additionalProperties: false
+            # We want either sha256 or search.
+            minProperties: 3
+            maxProperties: 3
     versions:
         type: array
         minItems: 1

@@ -344,6 +344,21 @@ This script is used by the `check-sr-results.py` script.
 See the online help for all options and the `tests/test-identify` unit test for
 examples.
 
+### Configuration file
+
+The `identify.yaml` configuration describes how to identify SystemReady versions
+from ACS results.
+
+The `known-files` section describes how to identify specific files with their
+sha256 sum or by searching for specific strings in their contents.
+
+The `versions` section describes how to deduce the SystemReady version when a
+number of specific files are all found.
+
+The `schemas/identify.yaml` file describes this configuration file format and
+can be used with the `validate.py` script to validate the configuration. This is
+run during [Sanity checks].
+
 ## Miscellaneous
 
 ### Documentation

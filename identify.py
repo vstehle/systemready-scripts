@@ -61,8 +61,35 @@ def hash_file_cached(filename, cache):
     return h
 
 
+# Search for strings in a file.
+# Return the sets of strings found and not found.
+def search_file(filename, strings):
+    logging.debug(f"Search for {strings} in `{filename}'")
+    found = set()
+    remain = set(strings)
+
+    with open(filename, 'r') as f:
+        for i, line in enumerate(f):
+            line = line.rstrip()
+
+            for s in list(remain):
+                if s in line:
+                    logging.debug(f"""Found "{s}" at line {i + 1}: `{line}'""")
+                    found.add(s)
+                    remain.remove(s)
+
+            if not len(remain):
+                break
+
+    if len(remain):
+        logging.debug(f"Did not find {remain}")
+
+    return found, remain
+
+
 # Identify all known files, using their paths and details from the db.
 # We know how to identify a file with its sha256 sum.
+# We know how to identify a file by searching for strings in its contents.
 # Return a list of identified files dictionaries:
 #   'path': The file path, including dirname.
 #   'name': The file identifier.
@@ -79,6 +106,15 @@ def identify_files(db, dirname):
 
         if 'sha256' in x:
             if x['sha256'] == hash_file_cached(filename, h_cache):
+                logging.debug(f"""Identified `{filename}' as "{x['name']}".""")
+                r.append({'path': filename, 'name': x['name']})
+
+        if 'search' in x:
+            search = x['search']
+            # This does not benefit from caching.
+            found, remain = search_file(filename, search)
+
+            if not len(remain):
                 logging.debug(f"""Identified `{filename}' as "{x['name']}".""")
                 r.append({'path': filename, 'name': x['name']})
 
