@@ -1,0 +1,27 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for check-sr-results.py.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing check-sr-results... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure check-sr-results.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+echo -n 'none, ' >&3
+check-sr-results.py
+
+echo -n 'empty config, ' >&3
+check-sr-results.py --config /dev/null
+
+echo 'ok.' >&3

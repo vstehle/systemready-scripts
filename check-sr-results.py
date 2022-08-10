@@ -114,6 +114,12 @@ def load_config(filename):
     with open(filename, 'r') as yamlfile:
         conf = yaml.load(yamlfile, **yaml_load_args)
 
+    if conf is None:
+        conf = {
+            'check-sr-results-configuration': None,
+            'tree': []
+        }
+
     assert('check-sr-results-configuration' in conf)
     return conf
 
@@ -534,6 +540,9 @@ if __name__ == '__main__':
                '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
+        '--config', help='Specify YAML configuration file',
+        default=f'{here}/check-sr-results.yaml')
+    parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to check', default='.')
@@ -563,7 +572,7 @@ if __name__ == '__main__':
     here = os.path.dirname(me)
 
     # Identify EBBR.seq to detect SystemReady version.
-    conf = load_config(f'{here}/check-sr-results.yaml')
+    conf = load_config(args.config)
     seq_id, ver = identify_ebbr_seq(args.dir, args.identify)
 
     if 'overlays' in conf:
