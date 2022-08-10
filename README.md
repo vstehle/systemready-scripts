@@ -253,6 +253,11 @@ known GUIDs.
 See the online help for all options and the `tests/test-guid-tool` unit test
 for examples.
 
+## Guid class
+
+The `guid.py` script contains the `Guid` class definition. It is used by the
+`guid-tool.py` and `capsule-tool.py` scripts.
+
 ## Devicetree parser
 
 The `dt-parser.py` script allows to parse the logs of Devicetree related tools.

@@ -95,3 +95,8 @@ class Guid(object):
         return (
             f'{TimeLow:08x}-{TimeMid:04x}-{TimeHighAndVersion:04x}-'
             f'{ClockSeqHighAndReserved.hex()}{ClockSeqLow.hex()}-{Node.hex()}')
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod(verbose=True)
