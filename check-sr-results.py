@@ -254,10 +254,10 @@ def error_if_contains(strings, filename):
 
 
 # subprocess.run() wrapper
-def run(*args, **kwargs):
-    logging.debug(f"Running {args} {kwargs}")
-    cp = subprocess.run(*args, **kwargs)
-    logging.debug(f"{cp}")
+def run(*args):
+    logging.debug(f"Running {args}")
+    cp = subprocess.run(*args, shell=True, capture_output=True)
+    logging.debug(cp)
     return cp
 
 
@@ -270,10 +270,7 @@ def maybe_check_archive(filename):
 
     if re.match(r'.*\.(tar|tar\.gz|tgz)$', filename):
         logging.debug(f"Checking archive `{filename}'")
-
-        cp = run(
-            f"tar tf {filename} >/dev/null", shell=True,
-            capture_output=True)
+        cp = run(f"tar tf {filename} >/dev/null")
 
         if cp.returncode:
             logging.error(f"{red}Bad archive{normal} `{filename}'")
@@ -380,16 +377,14 @@ def is_glob(x):
 # Return the EBBR.seq file identifier and SystemReady version in case of
 # success, or None, None.
 def identify_ebbr_seq(dirname, identify):
-    cmd = [identify, '--dir', dirname, '--ebbr-seq']
-    logging.debug(f"Run {cmd}")
+    logging.debug(f"Identify {dirname}")
+    cp = run(f"{identify} --dir {dirname} --ebbr-seq")
 
-    try:
-        o = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-    except Exception as e:
-        logging.debug('Bad exit status!')
-        o = e.output
+    if cp.returncode:
+        logging.error(f"{red}Bad identify{normal} `{identify}'")
+        sys.exit(1)
 
-    o = o.decode().splitlines()
+    o = cp.stdout.decode().splitlines()
     logging.debug(o)
     seq_id, ver = None, None
 
@@ -448,7 +443,7 @@ def check_prerequisites():
     logging.debug('Checking prerequisites')
 
     # Check that we have tar.
-    cp = run('tar --version', shell=True, capture_output=True)
+    cp = run('tar --version')
 
     if cp.returncode:
         logging.error(f"{red}tar not found{normal}")
