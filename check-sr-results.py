@@ -394,7 +394,7 @@ def identify_ebbr_seq(dirname, identify):
     seq_id, ver = None, None
 
     if o is not None and len(o) and 'Unknown' not in o[-1]:
-        m = re.match(r'EBBR\.seq from (.*)', o[0])
+        m = re.search(r'EBBR\.seq from (.*)', o[0])
         if m:
             seq_id = m[1]
 
