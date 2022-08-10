@@ -468,7 +468,16 @@ if __name__ == '__main__':
         level=logging.DEBUG if args.debug else logging.INFO)
 
     logging.debug(f"Parsing `{args.capsule}'")
-    capsule = efi_capsule.parse_file(args.capsule)
+
+    try:
+        capsule = efi_capsule.parse_file(args.capsule)
+    except Exception as e:
+        logging.error('Could not parse capsule; exiting')
+
+        if args.debug:
+            raise e
+        else:
+            sys.exit(1)
 
     if not sanity_check_capsule(capsule, args.force):
         logging.error('Invalid capsule; exiting')

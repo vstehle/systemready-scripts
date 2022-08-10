@@ -43,14 +43,29 @@ echo -n 'image, ' >&3
 img="$tmp/image.bin"
 dd if=/dev/urandom of="$img" bs=123 count=1
 
+echo -n 'random, ' >&3
+out="$tmp/log"
+
+if capsule-tool.py "$img" |& tee "$out"; then
+	false
+fi
+
+grep -q 'Could not parse capsule' "$out"
+
+echo -n 'zero, ' >&3
+
+if capsule-tool.py /dev/zero |& tee "$out"; then
+	false
+fi
+
+grep -q 'Could not parse capsule' "$out"
+
 echo -n 'unauthenticated capsule, ' >&3
 unauth="$tmp/unauthenticated.bin"
 
 mkeficapsule \
 	--index 1 --guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$img" "$unauth"
-
-out="$tmp/log"
 
 if capsule-tool.py "$unauth" |& tee "$out"; then
 	false
