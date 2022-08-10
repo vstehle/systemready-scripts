@@ -111,3 +111,5 @@ items:
         # updated_by_rule is optional
         - warning_message
     additionalProperties: false
+    # We need at least one dt_validate* or dtc_warning_name property.
+    minProperties: 7

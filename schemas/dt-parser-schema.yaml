@@ -98,6 +98,7 @@ items:
                 warning_message:
                     type: string
             additionalProperties: false
+            minProperties: 1
         update:
             type: object
             properties:
@@ -109,6 +110,7 @@ items:
                         - dt-validate warning not an array
                         - dt-validate warning spurious property
                         - ignored
+            additionalProperties: false
     required:
         - rule
         - criteria
