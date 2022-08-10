@@ -208,7 +208,7 @@ tree:
 overlays:
   # A few files were not present in ACS-IR v21.05_0.8_BETA-0; make them
   # optional.
-  - ebbr_seq_files: [ACS-IR v21.05_0.8_BETA-0]
+  - when-all: [ACS-IR v21.05_0.8_BETA-0]
     tree:
       - dir: acs_results
         tree:
@@ -225,7 +225,7 @@ overlays:
 
   # A few files were only present in ACS-IR v21.05_0.8_BETA-0; make them
   # optional for the subsequent ACS-IR versions.
-  - ebbr_seq_files: [ACS-IR v21.07_0.9_BETA, ACS-IR v21.09_1.0]
+  - when-any: [ACS-IR v21.07_0.9_BETA, ACS-IR v21.09_1.0]
     tree:
       - dir: acs_results
         tree:

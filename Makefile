@@ -38,6 +38,12 @@ check:	$(TEST_TARGETS)
 		tests/data/test-dt-parser/test-config.yaml
 	./validate.py --schema schemas/identify-schema.yaml \
 		identify.yaml
+	./validate.py --schema schemas/check-sr-results-schema.yaml \
+		tests/data/test-check-sr-results/when-any.yaml
+	./validate.py --schema schemas/check-sr-results-schema.yaml \
+		tests/data/test-check-sr-results/when-all.yaml
+	./validate.py --schema schemas/identify-schema.yaml \
+		tests/data/test-check-sr-results/identify.yaml
 	python3 -m doctest guid.py
 
 clean:

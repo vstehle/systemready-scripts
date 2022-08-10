@@ -107,10 +107,20 @@ main tree section, depending on the detected ACS-IR version:
 
 ```{.yaml}
 overlays:
-  - ebbr_seq_files: [<seq file id>, ...]
-    tree:                       # If the detected seq file id matches, this tree
+  - when-any: [<condition>, ...]
+    tree:                       # If any condition is true, this tree
+      ...                       # will be overlayed.
+
+  - when-all: [<condition>, ...]
+    tree:                       # If all conditions are true, this tree
       ...                       # will be overlayed.
 ```
+
+The conditions are strings. A condition is true when its string matches
+(partially or in full) with the set of strings (the context) made of:
+
+* The SystemReady version
+* The files recognized by `identify.py --known-files`
 
 All keys are overwritten violently except `tree`, which is overlayed
 recursively.

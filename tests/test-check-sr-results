@@ -2,6 +2,8 @@
 set -eu -o pipefail
 
 # Unit test for check-sr-results.py.
+# Usage: test-check-sr-results [keep]
+# We keep our temporary folder when `keep' is specified.
 
 # Redirect all output to a log in current folder.
 # Keep stdout on fd 3.
@@ -18,10 +20,53 @@ me=$(realpath "$0")
 here="${me%/*}"
 export PATH="$here/..:$PATH"
 
+# Temporary folder.
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+out="$tmp/out"
+
 echo -n 'none, ' >&3
 check-sr-results.py
 
 echo -n 'empty config, ' >&3
 check-sr-results.py --config /dev/null
+
+echo -n 'when any, ' >&3
+identify="$here/../identify.py --identify-db $data/identify.yaml"
+
+for d in a b; do
+	check-sr-results.py --dir "$data/$d" --config "$data/when-any.yaml" \
+		--identify "$identify" |& tee "$out"
+
+	grep -q 'Identified as SystemReady IR v1.0' "$out"
+	grep -q '0 warning, 0 error' "$out"
+done
+
+check-sr-results.py --dir "$data/ab" --config "$data/when-any.yaml" \
+	--identify "$identify" |& tee "$out"
+
+grep -q 'Identified as SystemReady IR v1.1' "$out"
+grep -q '0 warning, 0 error' "$out"
+
+echo -n 'when all, ' >&3
+for d in a b; do
+	check-sr-results.py --dir "$data/$d" --config "$data/when-all.yaml" \
+		--identify "$identify" |& tee "$out"
+
+	grep -q 'Identified as SystemReady IR v1.0' "$out"
+	grep -q '0 warning, 2 error' "$out"
+done
+
+check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
+	--identify "$identify" |& tee "$out"
+
+grep -q 'Identified as SystemReady IR v1.1' "$out"
+grep -q '0 warning, 0 error' "$out"
 
 echo 'ok.' >&3

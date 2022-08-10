@@ -1,0 +1,14 @@
+---
+check-sr-results-configuration:
+tree:
+  - file: a
+    optional:
+  - file: b
+    optional:
+  - file: dummy
+
+overlays:
+  - when-any: [A, B]
+    tree:
+      - file: dummy
+        optional:

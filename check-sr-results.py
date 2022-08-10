@@ -380,11 +380,12 @@ def is_glob(x):
 
 # Try to identify the results.
 # We call the external script `identify.py'.
-# Return the EBBR.seq file identifier and SystemReady version in case of
-# success, or None, None.
-def identify_ebbr_seq(dirname, identify):
+# Return the list of identified files and the SystemReady version
+# or [], None in case of error.
+def identify(dirname, identify):
     logging.debug(f"Identify {dirname}")
-    cp = run(f"{identify} --dir {dirname} --ebbr-seq")
+
+    cp = run(f"{identify} --dir {dirname} --known-files")
 
     if cp.returncode:
         logging.error(f"{red}Bad identify{normal} `{identify}'")
@@ -392,21 +393,19 @@ def identify_ebbr_seq(dirname, identify):
 
     o = cp.stdout.decode().splitlines()
     logging.debug(o)
-    seq_id, ver = None, None
 
     if o is not None and len(o) and 'Unknown' not in o[-1]:
-        m = re.search(r'EBBR\.seq from (.*)', o[0])
-        if m:
-            seq_id = m[1]
+        files = o[0:-1]
+
+        for f in files:
+            logging.debug(f"""{green}Identified{normal} {f}.""")
 
         ver = o[-1]
-
-    if seq_id is not None and ver is not None:
-        logging.info(f"""{green}Identified{normal} as "{seq_id}" ({ver}).""")
-        return seq_id, ver
+        logging.info(f"""{green}Identified{normal} as {ver}.""")
+        return files, ver
 
     logging.warning(f"{yellow}Could not identify...{normal}")
-    return None, None
+    return [], None
 
 
 # Recursively check a tree
@@ -512,14 +511,38 @@ def overlay_tree(src, dst):
             raise
 
 
-# Apply all the overlays matching the seq_id to the main tree.
-def apply_overlays(conf, seq_id):
-    for i, o in enumerate(conf['overlays']):
-        if seq_id not in o['ebbr_seq_files']:
-            continue
+# Evaluate if a when-condition is true.
+def evaluate_when_condition(conditions, context, any_not_all=True):
+    logging.debug(f"Evaluate {conditions}, any_not_all: {any_not_all}")
+    found_all = True
+    found_some = False
 
-        logging.debug(f"Applying overlay {i}")
-        overlay_tree(o['tree'], conf['tree'])
+    for i, c in enumerate(conditions):
+        for d in context:
+            if c in d:
+                logging.debug(f"`{c}' found in `{d}'")
+                found_some = True
+                break
+        else:
+            logging.debug(f"Did not find `{c}'")
+            found_all = False
+
+    if not any_not_all and found_all or any_not_all and found_some:
+        return True
+    else:
+        return False
+
+
+# Apply all the overlays conditionaly to the main tree.
+def apply_overlays(conf, context):
+    for i, o in enumerate(conf['overlays']):
+
+        if ('when-any' in o
+           and evaluate_when_condition(o['when-any'], context, True)
+           or 'when-all' in o
+           and evaluate_when_condition(o['when-all'], context, False)):
+            logging.debug(f"Applying overlay {i}")
+            overlay_tree(o['tree'], conf['tree'])
 
 
 def dump_config(conf, filename):
@@ -571,12 +594,13 @@ if __name__ == '__main__':
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
 
-    # Identify EBBR.seq to detect SystemReady version.
+    # Identify SystemReady version.
     conf = load_config(args.config)
-    seq_id, ver = identify_ebbr_seq(args.dir, args.identify)
+    files, ver = identify(args.dir, args.identify)
 
     if 'overlays' in conf:
-        apply_overlays(conf, seq_id)
+        context = (ver, *files) if ver is not None else ()
+        apply_overlays(conf, context)
         del conf['overlays']
 
     if args.dump_config is not None:
