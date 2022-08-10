@@ -52,3 +52,30 @@ known-guids:
     description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID Zynq common
   - guid: 1a5178f0-87d3-4f36-ac63-3b31a23be305
     description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID Zynq common
+  - guid: 62af20c0-7016-424a-9bf8-9ccc86584090
+    description: Tianocore wiki PcdSystemFmpCapsuleImageTypeIdGuid
+  - guid: e698490d-c1fa-47fd-8603-69cd678c5c39
+    description: Tianocore wiki Capsule Based System Firmware Update
+        Implementation example
+  - guid: dd3b39b6-d919-46b5-8962-4bb6d2279af7
+    description: Tianocore wiki Change ESRT System Firmware Update GUID example
+  - guid: d34b3d29-0085-4ab3-8be8-84188cc50489
+    description: edk2-platforms AMD OverdriveBoard
+  - guid: 44c850f2-85ff-4be5-bf34-a59528df22d3
+    description: edk2-platforms Hisilicon D03
+  - guid: 7978365d-7978-45fd-ad77-b27693cfe85b
+    description: edk2-platforms Hisilicon D05
+  - guid: df8fe8d1-e937-45b8-9691-c4b5e183874e
+    description: edk2-platforms Hisilicon D06
+  - guid: 62af20c0-7016-424a-9bf8-9ccc86584090
+    description: edk2-platforms Intel QuarkPlatformPkg
+  - guid: 50b94ce5-8b63-4849-8af4-ea479356f0e3
+    description: edk2-platforms Socionext DeveloperBox
+  - guid: 50b94ce5-8b63-4849-8af4-ea479356f0e3
+    description: edk2-platforms Socionext SynQuacerEvalBoard
+  - guid: 757fc475-6b22-4482-868e-ded286f30940
+    description: edk2-platforms Marvell Armada7k8k
+  - guid: 96d4fdcd-1502-424d-9d4c-9b12d2dcae5c
+    description: edk2-platforms Intel Microcode
+  - guid: 4096267b-da0a-42eb-b5eb-fef31d207cb4
+    description: edk2-platforms Intel Vlv2TbltDevicePkg
