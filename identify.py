@@ -5,7 +5,6 @@ import logging
 import os
 import yaml
 import hashlib
-import sys
 
 
 # Validate YAML identify database
@@ -191,7 +190,6 @@ if __name__ == '__main__':
             print(f"{path}: {f['name']}")
 
     if ver is None:
-        logging.error('Unknown')
-        sys.exit(1)
-
-    print(f"SystemReady {ver}")
+        print('Unknown')
+    else:
+        print(f"SystemReady {ver}")

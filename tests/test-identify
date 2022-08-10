@@ -32,10 +32,7 @@ data="$here/data/$(basename "$0")"
 out="$tmp/out"
 
 echo -n 'none, ' >&3
-if identify.py |& tee "$out"; then
-	false
-fi
-
+identify.py |& tee "$out"
 grep -q Unknown "$out"
 
 echo -n 'ir1.0 bet-0, ' >&3
