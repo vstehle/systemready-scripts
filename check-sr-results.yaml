@@ -47,9 +47,11 @@ tree:
             must-contain:
               - ESRT TABLE
               - 'EFI_SYSTEM_RESOURCE_TABLE:'
+              - EFI_SYSTEM_RESOURCE_ENTRY
             error-if-contains:
               - FwResourceCount    - 0x0
               - FwResourceCountMax - 0x0
+              - ESRT - Not Found
           - file: CapsuleApp_FMP_protocol_info.log
             must-contain:
               - FMP DATA
@@ -76,8 +78,8 @@ tree:
                 must-contain:
                   - SystemReady IR ACS v2.0.0 Beta 0
                   - BSA v1.0.1
-                  - Version 1.0.1
                   - BSA Architecture Compliance Suite
+                  - Version 1.0.1
                   - Starting tests
                   - BSA tests complete
       - dir: linux_dump
