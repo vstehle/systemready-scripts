@@ -1,9 +1,24 @@
 # Simple makefile to perform static checks and generate the documentation with
 # pandoc.
-.PHONY: all doc help clean check %.run-test
+.PHONY: all doc help clean check %.run-test %.valid
 
 TESTS = $(wildcard tests/test-*)
 TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
+TEST_LOGS = $(addsuffix .log,$(notdir $(TESTS)))
+
+VALIDS = \
+	check-sr-results-schema.yaml__check-sr-results.yaml \
+	check-sr-results-schema.yaml__check-sr-results-ir1.yaml \
+	format-sr-results-schema.yaml__format-sr-results.yaml \
+	guid-tool-schema.yaml__guid-tool.yaml \
+	dt-parser-schema.yaml__dt-parser.yaml \
+	dt-parser-schema.yaml__tests/data/test-dt-parser/test-config.yaml \
+	identify-schema.yaml__identify.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-any.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-all.yaml \
+	identify-schema.yaml__tests/data/test-check-sr-results/identify.yaml
+
+VALID_TARGETS = $(addsuffix .valid,$(VALIDS))
 
 all: doc
 
@@ -20,33 +35,18 @@ doc: README.pdf
 %.pdf: %.md pandoc.yaml
 	pandoc -o$@ $< pandoc.yaml
 
-%.run-test: $(basename $@)
+%.run-test:
 	./$(basename $@)
 
-check:	$(TEST_TARGETS)
+%.valid:
+	./validate.py --schema schemas/$(word 1,$(subst __, ,$@)) \
+		$(subst .valid,,$(word 2,$(subst __, ,$@)))
+
+
+check:	$(TEST_TARGETS) $(VALID_TARGETS)
 	yamllint .
 	flake8
-	./validate.py --schema schemas/check-sr-results-schema.yaml \
-		check-sr-results.yaml
-	./validate.py --schema schemas/check-sr-results-schema.yaml \
-		check-sr-results-ir1.yaml
-	./validate.py --schema schemas/format-sr-results-schema.yaml \
-		format-sr-results.yaml
-	./validate.py --schema schemas/guid-tool-schema.yaml \
-		guid-tool.yaml
-	./validate.py --schema schemas/dt-parser-schema.yaml \
-		dt-parser.yaml
-	./validate.py --schema schemas/dt-parser-schema.yaml \
-		tests/data/test-dt-parser/test-config.yaml
-	./validate.py --schema schemas/identify-schema.yaml \
-		identify.yaml
-	./validate.py --schema schemas/check-sr-results-schema.yaml \
-		tests/data/test-check-sr-results/when-any.yaml
-	./validate.py --schema schemas/check-sr-results-schema.yaml \
-		tests/data/test-check-sr-results/when-all.yaml
-	./validate.py --schema schemas/identify-schema.yaml \
-		tests/data/test-check-sr-results/identify.yaml
 	python3 -m doctest guid.py
 
 clean:
-	-rm -f README.pdf
+	-rm -f README.pdf $(TEST_LOGS)
