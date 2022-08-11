@@ -483,7 +483,9 @@ if __name__ == '__main__':
         logging.error('Invalid capsule; exiting')
         sys.exit(1)
 
-    if not check_capsule_guid(capsule, args.guid_tool, args.expected_guid,
+    guid_tool = args.guid_tool + (' --debug' if args.debug else '')
+
+    if not check_capsule_guid(capsule, guid_tool, args.expected_guid,
                               args.force):
         logging.error('Bad capsule GUID; exiting')
         sys.exit(1)

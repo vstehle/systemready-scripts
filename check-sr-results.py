@@ -382,7 +382,7 @@ def is_glob(x):
 # We call the external script `identify.py'.
 # Return the list of identified files and the SystemReady version
 # or [], None in case of error.
-def identify(dirname, identify):
+def run_identify(dirname, identify):
     logging.debug(f"Identify {dirname}")
 
     cp = run(f"{identify} --dir {dirname} --known-files")
@@ -596,7 +596,8 @@ if __name__ == '__main__':
 
     # Identify SystemReady version.
     conf = load_config(args.config)
-    files, ver = identify(args.dir, args.identify)
+    identify = args.identify + (' --debug' if args.debug else '')
+    files, ver = run_identify(args.dir, identify)
 
     if 'overlays' in conf:
         context = (ver, *files) if ver is not None else ()
