@@ -48,6 +48,7 @@ tree:
               - ESRT TABLE
               - 'EFI_SYSTEM_RESOURCE_TABLE:'
               - EFI_SYSTEM_RESOURCE_ENTRY
+              - FwClass
             error-if-contains:
               - FwResourceCount    - 0x0
               - FwResourceCountMax - 0x0
