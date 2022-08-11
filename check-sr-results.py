@@ -42,8 +42,12 @@ if os.isatty(sys.stdout.fileno()):
         pass
 
 # Maximum number of lines to examine for file encoding detection.
-# This will be set by the command line argument parser.
+# This will be set after command line argument parsing.
 detect_file_encoding_limit = None
+
+# guid-tool.py command.
+# This will be set after command line argument parsing.
+guid_tool = None
 
 
 # Compute the plural of a word.
@@ -287,6 +291,64 @@ def maybe_check_archive(filename):
     return stats
 
 
+# Identify a GUID
+# We return a Stats object.
+def identify_guid(guid):
+    logging.debug(f"Identify GUID {guid}")
+    stats = Stats()
+    cp = run(f"{guid_tool} {guid}")
+
+    if cp.returncode:
+        # This could be a malformed GUID so deal with it gracefully.
+        logging.error(
+            f"{red}Bad{normal} guid tool return code {cp.returncode} "
+            f"({cp.args})")
+        stats.inc_error()
+
+    else:
+        o = cp.stdout.decode().split()
+        o = o[-1]
+
+        if o == 'Unknown':
+            logging.debug(f"GUID `{guid}' {green}unknown{normal}")
+            stats.inc_pass()
+        else:
+            logging.error(f"GUID `{guid}' {red}is known{normal}: {o}")
+            stats.inc_error()
+
+    return stats
+
+
+# If a file is CapsuleApp_ESRT_table_info.log, check its contents.
+# We return a Stats object.
+def maybe_check_capsuleapp_esrt(filename):
+    stats = Stats()
+
+    if os.path.basename(filename) == 'CapsuleApp_ESRT_table_info.log':
+        logging.debug(f"Check CapsuleApp ESRT `{filename}'")
+        num_guids = 0
+
+        # Open the file with the proper encoding and look for patterns
+        with open(filename, encoding='UTF-16', errors='replace') as f:
+            for i, line in enumerate(f):
+                m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
+                if m:
+                    guid = m[1]
+                    stats.add(identify_guid(guid))
+                    num_guids += 1
+
+        # At least one GUID.
+        if num_guids:
+            logging.debug(
+                f"{green}{num_guids} GUID(s){normal} found in `{filename}'")
+            stats.inc_pass()
+        else:
+            logging.error(f"{red}No GUID{normal} found in `{filename}'")
+            stats.inc_error()
+
+    return stats
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -322,6 +384,10 @@ def check_file(conffile, filename):
 
             # Check archives integrity.
             stats.add(maybe_check_archive(filename))
+
+            # Check CapsuleApp_ESRT_table_info.log.
+            stats.add(
+                maybe_check_capsuleapp_esrt(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
@@ -596,6 +662,9 @@ if __name__ == '__main__':
         help='Specify file encoding detection limit, in number of lines')
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
+        '--guid-tool', help='Specify guid-tool.py path',
+        default=f'{here}/guid-tool.py')
+    parser.add_argument(
         '--identify', help='Specify identify.py path',
         default=f'{here}/identify.py')
     args = parser.parse_args()
@@ -610,6 +679,7 @@ if __name__ == '__main__':
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
     detect_file_encoding_limit = args.detect_file_encoding_limit
+    guid_tool = args.guid_tool + (' --debug' if args.debug else '')
 
     check_prerequisites()
 

@@ -69,4 +69,14 @@ check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
 grep -q 'Identified as SystemReady IR v1.1' "$out"
 grep -q '0 warning, 0 error' "$out"
 
+echo -n 'mockup, ' >&3
+
+check-sr-results.py --dir "$data/mockup" |& tee "$out"
+
+grep -q 'Identified as SystemReady IR v2.0' "$out"
+grep -qv ', 0 error' "$out"
+grep -q 'FwResourceCount' "$out"
+grep -q 'FwResourceCountMax' "$out"
+grep -q 'GUID .* is known' "$out"
+
 echo 'ok.' >&3

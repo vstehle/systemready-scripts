@@ -28,7 +28,8 @@ The `check-sr-results.py` script performs a number of verifications in a
 SystemReady certification results tree, layout as described in the [SystemReady
 IR template].
 
-The `check-sr-results.py` script depends on the `identify.py` script.
+The `check-sr-results.py` script depends on the `identify.py` script and on the
+`guid-tool.py` script to check the GUIDs.
 
 [SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
@@ -125,6 +126,14 @@ The conditions are strings. A condition is true when its string matches
 
 All keys are overwritten violently except `tree`, which is overlayed
 recursively.
+
+#### Automatic checks
+
+A number of checks are performed automatically, without being described in the
+configuration file:
+
+* Integrity of tar/gzip archives
+* GUIDs in `CapsuleApp_ESRT_table_info.log`
 
 ### Checking IR 1.x results
 
@@ -275,6 +284,8 @@ known GUIDs.
 
 See the online help for all options and the `tests/test-guid-tool` unit test
 for examples.
+
+It is used by `check-sr-results.py` and `capsule-tool.py`.
 
 ## Guid class
 
