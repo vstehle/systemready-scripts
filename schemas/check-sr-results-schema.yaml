@@ -61,10 +61,16 @@ $defs:
                 '$ref': '#/$defs/tree'
             optional:
                 const: null
+            min-entries:
+                type: integer
+            max-entries:
+                type: integer
         required:
             - dir
             # tree is optional
             # optional is optional
+            # min-entries is optional
+            # max-entries is optional
         additionalProperties: false
     when-condition:
         type: array

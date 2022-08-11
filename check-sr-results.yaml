@@ -30,6 +30,8 @@ tree:
       - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
         boundary'
   - dir: acs_results
+    min-entries: 8
+    max-entries: 8
     tree:
       - file: result.md
         must-contain:
@@ -42,6 +44,8 @@ tree:
           - Ignored by group
           - Warning by group
       - dir: app_output
+        min-entries: 2
+        max-entries: 2
         tree:
           - file: CapsuleApp_ESRT_table_info.log
             must-contain:
@@ -57,6 +61,8 @@ tree:
             must-contain:
               - FMP DATA
       - dir: fwts
+        min-entries: 1
+        max-entries: 1
         tree:
           - file: FWTSResults.log
             must-contain:
@@ -72,8 +78,12 @@ tree:
               - 'Other failures: NONE'
               - 'Total:'
       - dir: linux_acs
+        min-entries: 1
+        max-entries: 1
         tree:
           - dir: bsa_acs_app
+            min-entries: 1
+            max-entries: 1
             tree:
               - file: BSALinuxResults.log
                 must-contain:
@@ -84,18 +94,26 @@ tree:
                   - Starting tests
                   - BSA tests complete
       - dir: linux_dump
+        min-entries: 1
+        max-entries: 1
         tree:
           - file: lspci.log
             can-be-empty:
       - dir: sct_results
+        min-entries: 3
+        max-entries: 3
         tree:
           - dir: EfiCompliantBBTest
+            min-entries: 1
+            max-entries: 1
             tree:
               - file: EfiCompliant.ini
                 must-contain:
                   - Test Configuration Specific
                   - Platform Specific
           - dir: Overall
+            min-entries: 2
+            max-entries: 2
             tree:
               - file: Summary.ekl
                 must-contain:
@@ -107,6 +125,8 @@ tree:
                   - BBR ACS 1.0.1 (EBBR)
                   - 'Test Finished:'
           - dir: Sequence
+            min-entries: 2
+            max-entries: 2
             tree:
               - file: EBBR_manual.seq
                 must-contain:
@@ -125,6 +145,8 @@ tree:
                   - Order=
                   - Iterations=
       - dir: uefi
+        min-entries: 2
+        max-entries: 2
         tree:
           - file: BsaDevTree.dtb
           # TODO!
@@ -138,6 +160,8 @@ tree:
               - Total Tests run
               - BSA tests complete. Reset the system.
       - dir: uefi_dump
+        min-entries: 7
+        max-entries: 8
         tree:
           - file: bcfg.log
           - file: devices.log
@@ -169,6 +193,7 @@ tree:
   - dir: docs
     optional:
   - dir: fw
+    min-entries: 2
     tree:
       - file: u-boot-sniff.log
         must-contain:
@@ -209,10 +234,11 @@ tree:
   - dir: manual-results
     optional:
   - dir: os-logs
+    min-entries: 2
     tree:
-      - dir: '*-*'
+      - dir: 'linux-*'
         tree:
-          - file: '*console.log'
+          - file: 'console.log'
             must-contain:
               - dmesg
               - Linux version
@@ -226,7 +252,7 @@ tree:
             warn-if-contains:
               - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
                 boundary'
-          - file: '*sys-firmware.tar.gz'
+          - file: 'sys-firmware.tar.gz'
   - file: report.txt
     must-contain:
       - General information

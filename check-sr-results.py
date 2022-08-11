@@ -338,10 +338,12 @@ def check_file(conffile, filename):
 
 
 # Check a dir
-# We check is a dir exists and is not empty.
-# The following properties in the yaml configuration can relax the check:
+# We check if a dir exists and is not empty (min-entries can override the
+# later).
+# The following properties in the yaml configuration can modify the check:
 # - optional
-# - can-be-empty
+# - min-entries
+# - max-entries
 # If the dir has a tree, we recurse with check_tree().
 # We return a Stats object.
 def check_dir(confdir, dirname):
@@ -351,18 +353,38 @@ def check_dir(confdir, dirname):
     if os.path.isdir(dirname):
         logging.debug(f"`{dirname}/' {green}exists{normal}")
         stats.inc_pass()
+        ent = len(os.listdir(dirname))
+        logging.debug(f"`{dirname}/' has {ent} entrie(s)")
+        min_ent = confdir['min-entries'] if 'min-entries' in confdir else 1
 
-        if len(os.listdir(dirname)) > 0:
-            logging.debug(f"`{dirname}/' {green}not empty{normal}")
+        if ent >= min_ent:
+            logging.debug(
+                f"`{dirname}/' {green}has enough entrie(s){normal}: "
+                f"{ent} >= {min_ent}")
             stats.inc_pass()
-
-            if 'tree' in confdir:
-                stats.add(check_tree(confdir['tree'], dirname))
-        elif 'can-be-empty' in confdir:
-            logging.debug(f"`{dirname}/' {yellow}empty (allowed){normal}")
         else:
-            logging.error(f"`{dirname}/' {red}empty{normal}")
+            logging.error(
+                f"`{dirname}/' {red}has too few entrie(s){normal}: "
+                f"{ent} < {min_ent}")
             stats.inc_error()
+
+        if 'max-entries' in confdir:
+            max_ent = confdir['max-entries']
+
+            if ent <= max_ent:
+                logging.debug(
+                    f"`{dirname}/' {green}does not have too many "
+                    f"entrie(s){normal}: {ent} <= {max_ent}")
+                stats.inc_pass()
+            else:
+                logging.error(
+                    f"`{dirname}/' {red}has too many entrie(s){normal}: "
+                    f"{ent} > {max_ent}")
+                stats.inc_error()
+
+        if ent and 'tree' in confdir:
+            stats.add(check_tree(confdir['tree'], dirname))
+
     elif 'optional' in confdir:
         logging.debug(f"`{dirname}/' {yellow}missing (optional){normal}")
     else:

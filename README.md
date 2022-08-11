@@ -78,7 +78,8 @@ tree:
       - ...                     # in the file
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
-    can-be-emtpy:               # If present, the directory can be empty
+    min-entries: <integer>      # Optional
+    max-entries: <integer>      # Optional
     tree:                       # If present, verification will recurse
       ...
 ```
