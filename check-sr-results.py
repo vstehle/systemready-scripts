@@ -359,8 +359,9 @@ def check_uefi_capsule(filename):
     cp = run(f"{capsule_tool} {filename}")
 
     if cp.returncode:
-        logging.error(f"{red}Bad capsule tool{normal} `{capsule_tool}'")
-        sys.exit(1)
+        logging.error(f"Capsule tool {red}failed{normal} on `{filename}'")
+        stats.inc_error()
+        return stats
 
     o = cp.stdout.decode().splitlines()
     logging.debug(o)
@@ -593,6 +594,20 @@ def check_prerequisites():
 
     if cp.returncode:
         logging.error(f"{red}tar not found{normal}")
+        sys.exit(1)
+
+    # Check that we have guid-tool.
+    cp = run(f"{guid_tool} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}guid-tool not found{normal}")
+        sys.exit(1)
+
+    # Check that we have capsule-tool.
+    cp = run(f"{capsule_tool} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}capsule-tool not found{normal}")
         sys.exit(1)
 
 
