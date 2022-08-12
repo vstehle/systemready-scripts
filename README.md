@@ -18,7 +18,7 @@ be available on your Linux distro as `python3-construct`.
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
-To run the tests with `make check` you will need: `yamllint`, `flake8`,
+To run the [Sanity checks] you will also need: `yamllint`, `flake8`,
 `mkeficapsule` and `openssl`.
 
 [chardet]: https://github.com/chardet/chardet
@@ -434,7 +434,7 @@ This will run a number of checkers and reports errors. This validates the
 configuration files of the [SystemReady results checker] and of the [SystemReady
 results formatter] using the `validate.py` script.
 
-See `make help`.
+See `make help` and [Dependencies].
 
 ## License
 

@@ -362,10 +362,12 @@ def check_uefi_capsule(filename):
         logging.error(f"{red}Bad capsule tool{normal} `{capsule_tool}'")
         sys.exit(1)
 
-    o = cp.stderr.decode()
+    o = cp.stdout.decode().splitlines()
+    logging.debug(o)
+    e = cp.stderr.decode()
 
     # Authenticated capsule in FMP format.
-    if 'Valid authenticated capsule in FMP format' in o:
+    if o[0] == 'Valid authenticated capsule in FMP format':
         logging.debug(f"{green}Valid capsule{normal} `{filename}'")
         stats.inc_pass()
     else:
@@ -374,9 +376,9 @@ def check_uefi_capsule(filename):
 
     # GUID.
     m = re.search(
-        r"Capsule update image type id `([0-9a-f-]+)' is known: ([^\n]+)\n", o)
+        r"Capsule update image type id `([0-9a-f-]+)' is known: ([^\n]+)\n", e)
     n = re.search(
-        r"Capsule update image type id `([0-9a-f-]+)' is: Unknown", o)
+        r"Capsule update image type id `([0-9a-f-]+)' is unknown", o[-1])
 
     if m and not n:
         logging.error(

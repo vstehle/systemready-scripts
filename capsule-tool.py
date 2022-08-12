@@ -329,7 +329,7 @@ def sanity_check_capsule(capsule, force=False):
             break
 
     if r:
-        logging.info('Valid authenticated capsule in FMP format')
+        print('Valid authenticated capsule in FMP format')
     elif force:
         logging.warning('Invalid capsule but forced to continue anyway')
         r = True
@@ -360,7 +360,7 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
     o = o[-1]
 
     if o == 'Unknown':
-        logging.info(f"Capsule update image type id `{g}' is: {o}")
+        print(f"Capsule update image type id `{g}' is unknown")
     else:
         logging.warning(f"Capsule update image type id `{g}' is known: {o}")
 
@@ -371,7 +371,7 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
         e = guid.Guid(exp_guid)
 
         if g == e:
-            logging.info("Capsule GUID is the expected one")
+            print("Capsule GUID is the expected one")
         else:
             logging.error(f"Capsule GUID `{g}' while expecting `{e}'!")
             r = False

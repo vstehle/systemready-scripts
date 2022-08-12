@@ -156,4 +156,19 @@ assert_files_differ "$auth" "$deauth"
 cmp -b "$unauth" "$deauth"
 echo -n 'same as unauthenticated, ' >&3
 
+echo -n 'unknown guid, ' >&3
+unk="$tmp/unknown.bin"
+
+mkeficapsule \
+	--monotonic-count 1 \
+	--private-key "$tmp/CRT.key" \
+	--certificate "$tmp/CRT.crt" \
+	--index 1 \
+	--guid 12345678-9abc-def0-1234-56789abcdef0 \
+	"$img" "$unk"
+
+capsule-tool.py "$unk" |& tee "$out"
+grep -q 'Valid authenticated capsule in FMP format' "$out"
+grep -q 'Capsule update image type id .* is unknown' "$out"
+
 echo 'ok.' >&3
