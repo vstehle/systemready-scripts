@@ -650,9 +650,7 @@ if __name__ == '__main__':
                'SystemReady IR template '
                '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument(
-        '--config', help='Specify YAML configuration file',
-        default=f'{here}/check-sr-results.yaml')
+    parser.add_argument('--config', help='Specify YAML configuration file')
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
@@ -687,9 +685,22 @@ if __name__ == '__main__':
     here = os.path.dirname(me)
 
     # Identify SystemReady version.
-    conf = load_config(args.config)
     identify = args.identify + (' --debug' if args.debug else '')
     files, ver = run_identify(args.dir, identify)
+
+    # Choose config.
+    # We default to IR 2.0.
+    # We use IR 1.x when detected.
+    # Command line takes precedence in all cases.
+    config = f'{here}/check-sr-results.yaml'
+
+    if ver is not None and 'IR v1.' in ver:
+        config = f'{here}/check-sr-results-ir1.yaml'
+
+    if args.config:
+        config = args.config
+
+    conf = load_config(config)
 
     if 'overlays' in conf:
         context = (ver, *files) if ver is not None else ()

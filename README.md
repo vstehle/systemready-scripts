@@ -38,6 +38,7 @@ The `check-sr-results.py` script depends on the `identify.py` script and on the
 The `check-sr-results.yaml` configuration describes the verifications to
 perform. It also contains some data to identify the ACS-IR that was used and to
 deduce the certification version.
+For IR v1.x results, the `check-sr-results-ir1.yaml` configuration is used.
 
 The `schemas/check-sr-results-schema.yaml` file describes this configuration
 file format and can be used with the `validate.py` script to validate the
