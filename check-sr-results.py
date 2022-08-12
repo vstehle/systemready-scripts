@@ -49,6 +49,10 @@ detect_file_encoding_limit = None
 # This will be set after command line argument parsing.
 guid_tool = None
 
+# capsule-tool.py command.
+# This will be set after command line argument parsing.
+capsule_tool = None
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -293,7 +297,7 @@ def maybe_check_archive(filename):
 
 # Identify a GUID
 # We return a Stats object.
-def identify_guid(guid):
+def identify_guid(guid, message=''):
     logging.debug(f"Identify GUID {guid}")
     stats = Stats()
     cp = run(f"{guid_tool} {guid}")
@@ -310,10 +314,10 @@ def identify_guid(guid):
         o = o[-1]
 
         if o == 'Unknown':
-            logging.debug(f"GUID `{guid}' {green}unknown{normal}")
+            logging.debug(f"GUID `{guid}' {green}unknown{normal}{message}")
             stats.inc_pass()
         else:
-            logging.error(f"GUID `{guid}' {red}is known{normal}: {o}")
+            logging.error(f"GUID `{guid}' {red}is known{normal}: {o}{message}")
             stats.inc_error()
 
     return stats
@@ -332,7 +336,7 @@ def check_capsuleapp_esrt(filename):
             m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
             if m:
                 guid = m[1]
-                stats.add(identify_guid(guid))
+                stats.add(identify_guid(guid, f", in `{filename}'"))
                 num_guids += 1
 
     # At least one GUID.
@@ -343,6 +347,52 @@ def check_capsuleapp_esrt(filename):
     else:
         logging.error(f"{red}No GUID{normal} found in `{filename}'")
         stats.inc_error()
+
+    return stats
+
+
+# Check UEFI Capsule binary.
+# We return a Stats object.
+def check_uefi_capsule(filename):
+    logging.debug(f"Check UEFI Capsule `{filename}'")
+    stats = Stats()
+    cp = run(f"{capsule_tool} {filename}")
+
+    if cp.returncode:
+        logging.error(f"{red}Bad capsule tool{normal} `{capsule_tool}'")
+        sys.exit(1)
+
+    o = cp.stderr.decode()
+
+    # Authenticated capsule in FMP format.
+    if 'Valid authenticated capsule in FMP format' in o:
+        logging.debug(f"{green}Valid capsule{normal} `{filename}'")
+        stats.inc_pass()
+    else:
+        logging.error(f"{red}Invalid capsule{normal} `{filename}'")
+        stats.inc_error()
+
+    # GUID.
+    m = re.search(
+        r"Capsule update image type id `([0-9a-f-]+)' is known: ([^\n]+)\n", o)
+    n = re.search(
+        r"Capsule update image type id `([0-9a-f-]+)' is: Unknown", o)
+
+    if m and not n:
+        logging.error(
+            f"Capsule GUID `{m[1]}' {red}is known{normal}: {m[2]}, "
+            f"in `{filename}'")
+        stats.inc_error()
+
+    elif n and not m:
+        logging.debug(
+            f"Capsule GUID `{n[1]}' {green}is unknown{normal}, "
+            f"in `{filename}'")
+        stats.inc_pass()
+
+    else:
+        logging.error('Bad capsule guid search!')
+        sys.exit(1)
 
     return stats
 
@@ -386,6 +436,9 @@ def check_file(conffile, filename):
             if 'capsuleapp-esrt' in conffile:
                 # Check CapsuleApp_ESRT_table_info.log.
                 stats.add(check_capsuleapp_esrt(filename))
+
+            if 'uefi-capsule' in conffile:
+                stats.add(check_uefi_capsule(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
@@ -648,6 +701,9 @@ if __name__ == '__main__':
                'SystemReady IR template '
                '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument(
+        '--capsule-tool', help='Specify capsule-tool.py path',
+        default=f'{here}/capsule-tool.py')
     parser.add_argument('--config', help='Specify YAML configuration file')
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
@@ -676,6 +732,7 @@ if __name__ == '__main__':
 
     detect_file_encoding_limit = args.detect_file_encoding_limit
     guid_tool = args.guid_tool + (' --debug' if args.debug else '')
+    capsule_tool = args.capsule_tool + (' --debug' if args.debug else '')
 
     check_prerequisites()
 

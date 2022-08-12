@@ -69,14 +69,37 @@ check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
 grep -q 'Identified as SystemReady IR v1.1' "$out"
 grep -q '0 warning, 0 error' "$out"
 
-echo -n 'mockup, ' >&3
+echo -n 'image, ' >&3
+img="$tmp/image.bin"
+dd if=/dev/urandom of="$img" bs=123 count=1
 
-check-sr-results.py --dir "$data/mockup" |& tee "$out"
+echo -n 'certificate, ' >&3
+
+openssl req -x509 -sha256 -newkey rsa:2048 -subj /CN=CRT/ \
+	-keyout "$tmp/CRT.key" -out "$tmp/CRT.crt" -nodes -days 365
+
+echo -n 'capsule, ' >&3
+cap="$tmp/capsule1.bin"
+
+mkeficapsule \
+	--monotonic-count 1 \
+	--private-key "$tmp/CRT.key" \
+	--certificate "$tmp/CRT.crt" \
+	--index 1 \
+	--guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
+	"$img" "$cap"
+
+echo -n 'mockup, ' >&3
+cp -r "$data/mockup" "$tmp/mockup"
+mkdir -v "$tmp/mockup/fw"
+cp -v "$cap" "$tmp/mockup/fw/"
+check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 
 grep -q 'Identified as SystemReady IR v2.0' "$out"
 grep -qv ', 0 error' "$out"
 grep -q 'FwResourceCount' "$out"
 grep -q 'FwResourceCountMax' "$out"
-grep -q 'GUID .* is known' "$out"
+grep -q ': GUID .* is known' "$out"
+grep -q ': Capsule GUID .* is known' "$out"
 
 echo 'ok.' >&3

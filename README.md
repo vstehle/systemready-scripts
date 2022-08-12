@@ -18,6 +18,9 @@ be available on your Linux distro as `python3-construct`.
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
+To run the tests with `make check` you will need: `yamllint`, `flake8`,
+`mkeficapsule` and `openssl`.
+
 [chardet]: https://github.com/chardet/chardet
 [construct]: https://construct.readthedocs.io/en/latest/
 [pandoc]: https://pandoc.org
@@ -28,8 +31,9 @@ The `check-sr-results.py` script performs a number of verifications in a
 SystemReady certification results tree, layout as described in the [SystemReady
 IR template].
 
-The `check-sr-results.py` script depends on the `identify.py` script and on the
-`guid-tool.py` script to check the GUIDs.
+The `check-sr-results.py` script depends on the `identify.py` script, on the
+`guid-tool.py` script to check the GUIDs and on `capsule-tool.py` to verify the
+capsule.
 
 [SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
@@ -79,8 +83,10 @@ tree:
       - <string>                # We issue an error if this string is present
       - ...                     # in the file
     capsuleapp-esrt:            # If present, the file is
-				# CapsuleApp_ESRT_table_info.log and we check
-				# its GUIDs
+                                # CapsuleApp_ESRT_table_info.log and we check
+                                # its GUIDs
+    uefi-capsule:               # If present, the file is a UEFI Capsule and we
+                                # verify it with capsule-tool.py
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
@@ -241,6 +247,8 @@ for examples.
 
 The `capsule-tool.py` script depends on the `guid-tool.py` script to check the
 capsule GUID. Also, see the [Dependencies].
+
+It is used by `check-sr-results.py`.
 
 ### Validating capsules
 

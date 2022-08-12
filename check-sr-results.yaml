@@ -232,6 +232,8 @@ tree:
       - file: capsule-update.log
         must-contain:
           - CapsuleApp.efi
+      - file: 'capsule*.bin'
+        uefi-capsule:
   - dir: manual-results
     optional:
   - dir: os-logs

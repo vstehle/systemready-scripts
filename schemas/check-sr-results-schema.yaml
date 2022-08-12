@@ -46,6 +46,8 @@ $defs:
                 const: null
             capsuleapp-esrt:
                 const: null
+            uefi-capsule:
+                const: null
         required:
             - file
             # must-contain is optional
@@ -54,6 +56,7 @@ $defs:
             # can-be-empty is optional
             # optional is optional
             # capsuleapp-esrt is optional
+            # uefi-capsule is optional
         additionalProperties: false
     dir:
         type: object
