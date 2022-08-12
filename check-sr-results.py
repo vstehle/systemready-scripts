@@ -319,32 +319,30 @@ def identify_guid(guid):
     return stats
 
 
-# If a file is CapsuleApp_ESRT_table_info.log, check its contents.
+# Check the GUIDs in CapsuleApp_ESRT_table_info.log.
 # We return a Stats object.
-def maybe_check_capsuleapp_esrt(filename):
+def check_capsuleapp_esrt(filename):
+    logging.debug(f"Check CapsuleApp ESRT `{filename}'")
     stats = Stats()
+    num_guids = 0
 
-    if os.path.basename(filename) == 'CapsuleApp_ESRT_table_info.log':
-        logging.debug(f"Check CapsuleApp ESRT `{filename}'")
-        num_guids = 0
+    # Open the file with the proper encoding and look for patterns
+    with open(filename, encoding='UTF-16', errors='replace') as f:
+        for i, line in enumerate(f):
+            m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
+            if m:
+                guid = m[1]
+                stats.add(identify_guid(guid))
+                num_guids += 1
 
-        # Open the file with the proper encoding and look for patterns
-        with open(filename, encoding='UTF-16', errors='replace') as f:
-            for i, line in enumerate(f):
-                m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
-                if m:
-                    guid = m[1]
-                    stats.add(identify_guid(guid))
-                    num_guids += 1
-
-        # At least one GUID.
-        if num_guids:
-            logging.debug(
-                f"{green}{num_guids} GUID(s){normal} found in `{filename}'")
-            stats.inc_pass()
-        else:
-            logging.error(f"{red}No GUID{normal} found in `{filename}'")
-            stats.inc_error()
+    # At least one GUID.
+    if num_guids:
+        logging.debug(
+            f"{green}{num_guids} GUID(s){normal} found in `{filename}'")
+        stats.inc_pass()
+    else:
+        logging.error(f"{red}No GUID{normal} found in `{filename}'")
+        stats.inc_error()
 
     return stats
 
@@ -385,9 +383,9 @@ def check_file(conffile, filename):
             # Check archives integrity.
             stats.add(maybe_check_archive(filename))
 
-            # Check CapsuleApp_ESRT_table_info.log.
-            stats.add(
-                maybe_check_capsuleapp_esrt(filename))
+            if 'capsuleapp-esrt' in conffile:
+                # Check CapsuleApp_ESRT_table_info.log.
+                stats.add(check_capsuleapp_esrt(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")

@@ -48,6 +48,7 @@ tree:
         max-entries: 2
         tree:
           - file: CapsuleApp_ESRT_table_info.log
+            capsuleapp-esrt:
             must-contain:
               - ESRT TABLE
               - 'EFI_SYSTEM_RESOURCE_TABLE:'

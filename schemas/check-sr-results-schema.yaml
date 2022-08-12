@@ -44,6 +44,8 @@ $defs:
                 const: null
             optional:
                 const: null
+            capsuleapp-esrt:
+                const: null
         required:
             - file
             # must-contain is optional
@@ -51,6 +53,7 @@ $defs:
             # error-if-contains is optional
             # can-be-empty is optional
             # optional is optional
+            # capsuleapp-esrt is optional
         additionalProperties: false
     dir:
         type: object

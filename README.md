@@ -78,6 +78,9 @@ tree:
     error-if-contains:          # If present, the file contents is checked
       - <string>                # We issue an error if this string is present
       - ...                     # in the file
+    capsuleapp-esrt:            # If present, the file is
+				# CapsuleApp_ESRT_table_info.log and we check
+				# its GUIDs
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
@@ -134,7 +137,6 @@ A number of checks are performed automatically, without being described in the
 configuration file:
 
 * Integrity of tar/gzip archives
-* GUIDs in `CapsuleApp_ESRT_table_info.log`
 
 ### Checking IR 1.x results
 
