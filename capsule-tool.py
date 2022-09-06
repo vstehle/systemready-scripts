@@ -340,11 +340,17 @@ def sanity_check_capsule(capsule, force=False):
 # Identify and check capsule GUID
 # Return True if GUID matches the expected GUID (if not None), False otherwise.
 # When force, we return True in all cases.
-def check_capsule_guid(capsule, guid_tool, exp_guid, force=False):
+# We print the image type id GUID to stdout when told to.
+def check_capsule_guid(capsule, guid_tool, exp_guid, force=False,
+                       print_guid=False):
     logging.debug(f"Check capsule GUID, expected: `{exp_guid}'")
 
     fmcih = capsule.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
     g = guid.Guid(efi_guid.build(fmcih.UpdateImageTypeId))
+
+    # Print
+    if print_guid:
+        print(f"Image type id GUID: {g}")
 
     # Identify
     cmd = f"{guid_tool} {g}"
@@ -458,6 +464,9 @@ if __name__ == '__main__':
         default=f'{here}/guid-tool.py')
     parser.add_argument('--output', help='Capsule output file')
     parser.add_argument(
+        '--print-guid', action='store_true',
+        help='Print the capsule image type id GUID during check')
+    parser.add_argument(
         '--tamper', action='store_true',
         help='Tamper with capsule firmware image')
     parser.add_argument('capsule', help='Input capsule filename')
@@ -486,7 +495,7 @@ if __name__ == '__main__':
     guid_tool = args.guid_tool + (' --debug' if args.debug else '')
 
     if not check_capsule_guid(capsule, guid_tool, args.expected_guid,
-                              args.force):
+                              args.force, args.print_guid):
         logging.error('Bad capsule GUID; exiting')
         sys.exit(1)
 

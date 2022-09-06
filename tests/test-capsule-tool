@@ -115,6 +115,7 @@ echo -n 'validate, ' >&3
 capsule-tool.py "$auth" |& tee "$out"
 grep -q 'Valid authenticated capsule in FMP format' "$out"
 grep -q 'QEMU_ARM64_UBOOT_IMAGE_GUID' "$out"
+grep -qv 'Image type id GUID: ' "$out"
 
 capsule-tool.py --expected-guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$auth" |& tee "$out"
@@ -170,5 +171,10 @@ mkeficapsule \
 capsule-tool.py "$unk" |& tee "$out"
 grep -q 'Valid authenticated capsule in FMP format' "$out"
 grep -q 'Capsule update image type id .* is unknown' "$out"
+
+
+echo -n 'print guid, ' >&3
+capsule-tool.py --print-guid "$auth" |& tee "$out"
+grep -q 'Image type id GUID: 058b7d83-50d5-4c47-a195-60d86ad341c4' "$out"
 
 echo 'ok.' >&3
