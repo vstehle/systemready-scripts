@@ -53,6 +53,14 @@ guid_tool = None
 # This will be set after command line argument parsing.
 capsule_tool = None
 
+# dtc command.
+# This will be set after command line argument parsing.
+dtc = None
+
+# dt-parser.py command.
+# This will be set after command line argument parsing.
+dt_parser = None
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -400,6 +408,67 @@ def check_uefi_capsule(filename):
     return stats
 
 
+# Check Devicetree blob.
+# We return a Stats object.
+def check_devicetree(filename):
+    logging.debug(f"Check Devicetree `{filename}'")
+    stats = Stats()
+
+    # Verify with dtc.
+    log = f"{filename}.log"
+    cp = run(f"{dtc} -o /dev/null -O dts -I dtb -s -f {filename} >{log} 2>&1")
+
+    if cp.returncode:
+        logging.error(
+            f"dtc {red}failed{normal} on `{filename}' (see {log})")
+        stats.inc_error()
+        return stats
+
+    # Verify the log with dt-parser.
+    cp = run(f"{dt_parser} {log}")
+
+    if cp.returncode:
+        logging.error(f"dt-parser {red}failed{normal} on `{log}'!")
+        stats.inc_error()
+        return stats
+
+    if re.search(r'Unparsed line', cp.stderr.decode()):
+        logging.warning(
+            f"dt-parser reports {yellow}unparsed{normal} with `{log}'!")
+        stats.inc_warning()
+
+    t = cp.stdout.decode().splitlines()
+    logging.debug(t)
+
+    if t[0] != 'Summary' or not re.match(r'-+$', t[1]):
+        logging.error(
+            f"{red}bad dt-parser header{normal} `{t[0]}, {t[1]}' "
+            f"with `{log}'!")
+        stats.inc_error()
+        return stats
+
+    for line in t[2:]:
+        logging.debug(line)
+        m = re.match(r'\s*(\d+)\s+(.+)', line)
+
+        if not m:
+            logging.error(
+                f"{red}bad dt-parser line{normal} `{line}' with `{log}'!")
+            stats.inc_error()
+            continue
+
+        num, typ = m[1], m[2]
+
+        if typ != 'ignored':
+            logging.error(f"{red}{num} dt-parser {typ}{normal} with `{log}'!")
+            stats.inc_error()
+        else:
+            logging.debug(f"{green}{num} dt-parser {typ}{normal} with `{log}'")
+            stats.inc_pass()
+
+    return stats
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -442,6 +511,9 @@ def check_file(conffile, filename):
 
             if 'uefi-capsule' in conffile:
                 stats.add(check_uefi_capsule(filename))
+
+            if 'devicetree' in conffile:
+                stats.add(check_devicetree(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
@@ -610,6 +682,20 @@ def check_prerequisites():
         logging.error(f"{red}capsule-tool not found{normal}")
         sys.exit(1)
 
+    # Check that we have dtc.
+    cp = run(f"{dtc} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}dtc not found{normal}")
+        sys.exit(1)
+
+    # Check that we have dt-parser.
+    cp = run(f"{dt_parser} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}dt-parser not found{normal}")
+        sys.exit(1)
+
 
 # Overlay the src file over the dst file, in-place.
 def overlay_file(src, dst):
@@ -729,6 +815,10 @@ if __name__ == '__main__':
     parser.add_argument(
         '--detect-file-encoding-limit', type=int, default=999,
         help='Specify file encoding detection limit, in number of lines')
+    parser.add_argument('--dtc', help='Specify dtc path', default='dtc')
+    parser.add_argument(
+        '--dt-parser', help='Specify dt-parser.py path',
+        default=f'{here}/dt-parser.py')
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
         '--guid-tool', help='Specify guid-tool.py path',
@@ -750,6 +840,8 @@ if __name__ == '__main__':
     detect_file_encoding_limit = args.detect_file_encoding_limit
     guid_tool = args.guid_tool + (' --debug' if args.debug else '')
     capsule_tool = args.capsule_tool + (' --debug' if args.debug else '')
+    dtc = args.dtc
+    dt_parser = args.dt_parser + (' --debug' if args.debug else '')
 
     check_prerequisites()
 

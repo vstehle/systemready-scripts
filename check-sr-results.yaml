@@ -150,7 +150,7 @@ tree:
         max-entries: 2
         tree:
           - file: BsaDevTree.dtb
-          # TODO!
+            devicetree:
           - file: BsaResults.log
             must-contain:
               - BSA Architecture Compliance Suite

@@ -10,7 +10,7 @@ For IR 1.1 certification, git branch `ir1` of this repository should be used.
 
 The `check-sr-results.py` SystemReady results checker needs the [chardet]
 python3 module. On some Linux distros it is available as `python3-chardet`.
-The `tar` program must be installed.
+The `tar` and `dtc` programs must be installed.
 
 The `capsule-tool.py` script needs the [construct] python3 module, which might
 be available on your Linux distro as `python3-construct`.
@@ -32,8 +32,8 @@ SystemReady certification results tree, layout as described in the [SystemReady
 IR template].
 
 The `check-sr-results.py` script depends on the `identify.py` script, on the
-`guid-tool.py` script to check the GUIDs and on `capsule-tool.py` to verify the
-capsule.
+`guid-tool.py` script to check the GUIDs, on `capsule-tool.py` to verify the
+capsule and on `dt-parser.py` to check the Devicetree blob.
 
 [SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
@@ -87,6 +87,8 @@ tree:
                                 # its GUIDs
     uefi-capsule:               # If present, the file is a UEFI Capsule and we
                                 # verify it with capsule-tool.py
+    devicetree:                 # If present, the file is a Devicetree blob and
+                                # we verify it with dtc and dt-parser.py
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
@@ -306,6 +308,8 @@ The `guid.py` script contains the `Guid` class definition. It is used by the
 ## Devicetree parser
 
 The `dt-parser.py` script allows to parse the logs of Devicetree related tools.
+
+It is used by `check-sr-results.py`.
 
 Parsing a log file is done with the following command:
 

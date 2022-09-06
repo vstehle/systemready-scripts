@@ -48,6 +48,8 @@ $defs:
                 const: null
             uefi-capsule:
                 const: null
+            devicetree:
+                const: null
         required:
             - file
             # must-contain is optional
@@ -57,6 +59,7 @@ $defs:
             # optional is optional
             # capsuleapp-esrt is optional
             # uefi-capsule is optional
+            # devicetree is optional
         additionalProperties: false
     dir:
         type: object
