@@ -101,14 +101,14 @@ grep -q 'FwResourceCount' "$out"
 grep -q 'FwResourceCountMax' "$out"
 grep -q ': GUID .* is known' "$out"
 grep -q ': Capsule GUID .* is known' "$out"
+grep -q '/dev/null: Warning' "$tmp/mockup/acs_results/uefi/BsaDevTree.dtb.log"
 
-echo -n 'devicetree, ' >&3
-cp -r "$data/mockup" "$tmp/dt"
-mkdir -pv "$tmp/dt/acs_results/uefi"
-dd if=/dev/zero of="$tmp/dt/acs_results/uefi/BsaDevTree.dtb" bs=1k count=1
-check-sr-results.py --dir "$tmp/dt" |& tee "$out"
+# We continue using the mockup folder from previous step.
+echo -n 'zero dt, ' >&3
+dd if=/dev/zero of="$tmp/mockup/acs_results/uefi/BsaDevTree.dtb" bs=1k count=1
+check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 
 grep -q 'dtc failed on ' "$out"
-test -e "$tmp/dt/acs_results/uefi/BsaDevTree.dtb.log"
+grep -q 'FATAL ERROR: Blob has incorrect magic number' "$tmp/mockup/acs_results/uefi/BsaDevTree.dtb.log"
 
 echo 'ok.' >&3
