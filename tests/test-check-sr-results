@@ -111,4 +111,12 @@ check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 grep -q 'dtc failed on ' "$out"
 grep -q 'FATAL ERROR: Blob has incorrect magic number' "$tmp/mockup/acs_results/uefi/BsaDevTree.dtb.log"
 
+# We continue using the mockup folder from previous steps.
+echo -n 'unmatched guids, ' >&3
+esrt="$tmp/mockup/acs_results/app_output/CapsuleApp_ESRT_table_info.log"
+iconv -f UTF-16 "$esrt" |sed 's/60D86AD341C4/60D86AD341C5/' >"$tmp/bad-esrt"
+iconv -t UTF-16 "$tmp/bad-esrt" >"$esrt"
+check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
+grep -q 'GUID.* not in ESRT' "$out"
+
 echo 'ok.' >&3

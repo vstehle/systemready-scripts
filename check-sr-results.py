@@ -10,6 +10,7 @@ from chardet.universaldetector import UniversalDetector
 import glob
 import re
 import subprocess
+import guid
 
 try:
     from packaging import version
@@ -60,6 +61,11 @@ dtc = None
 # dt-parser.py command.
 # This will be set after command line argument parsing.
 dt_parser = None
+
+# ESRT GUIDs.
+# This is populated when checking the ESRT, and is used later on to check
+# capsules.
+esrt_guids = set()
 
 
 # Compute the plural of a word.
@@ -332,6 +338,7 @@ def identify_guid(guid, message=''):
 
 
 # Check the GUIDs in CapsuleApp_ESRT_table_info.log.
+# We record the GUIDs for later capsule matching.
 # We return a Stats object.
 def check_capsuleapp_esrt(filename):
     logging.debug(f"Check CapsuleApp ESRT `{filename}'")
@@ -343,8 +350,9 @@ def check_capsuleapp_esrt(filename):
         for i, line in enumerate(f):
             m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
             if m:
-                guid = m[1]
-                stats.add(identify_guid(guid, f", in `{filename}'"))
+                g = guid.Guid(m[1])
+                stats.add(identify_guid(g, f", in `{filename}'"))
+                esrt_guids.add(g)    # Record for later capsule matching.
                 num_guids += 1
 
     # At least one GUID.
@@ -364,7 +372,7 @@ def check_capsuleapp_esrt(filename):
 def check_uefi_capsule(filename):
     logging.debug(f"Check UEFI Capsule `{filename}'")
     stats = Stats()
-    cp = run(f"{capsule_tool} {filename}")
+    cp = run(f"{capsule_tool} --print-guid {filename}")
 
     if cp.returncode:
         logging.error(f"Capsule tool {red}failed{normal} on `{filename}'")
@@ -384,6 +392,24 @@ def check_uefi_capsule(filename):
         stats.inc_error()
 
     # GUID.
+    m = re.match(r'Image type id GUID: ([a-f0-9-]+)', o[1])
+    if m:
+        g = guid.Guid(m[1])
+        logging.debug(f"Capsule image type GUID is `{g}'")
+
+        # Check that we the GUID in the ESRT.
+        if g in esrt_guids:
+            logging.debug(f"GUID `{g}' {green}in ESRT{normal}")
+            stats.inc_pass()
+        else:
+            logging.error(f"GUID `{g}' {red}not in ESRT{normal}")
+            stats.inc_error()
+
+    else:
+        logging.error(
+            f"capsule-tool returned {red}no GUID{normal} from `{filename}'!")
+        stats.inc_error()
+
     m = re.search(
         r"Capsule update image type id `([0-9a-f-]+)' is known: ([^\n]+)\n", e)
     n = re.search(
