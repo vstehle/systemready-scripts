@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Guid(object):
     """The Guid class handle UEFI GUIDs.
 
@@ -39,6 +39,19 @@ class Guid(object):
         Traceback (most recent call last):
             ...
         Exception
+
+        Guids are frozen, which means assigning to the member `b' directly will
+        raise an exception:
+
+        >>> Guid('12345678-1234-5678-1234-56789abcdef0').b = 1234
+        Traceback (most recent call last):
+            ...
+        dataclasses.FrozenInstanceError: cannot assign to field 'b'
+
+        This has the benefit to make Guids hashable and allow to add them to a
+        set for example:
+
+        >>> set().add((Guid('12345678-1234-5678-1234-56789abcdef0')))
         """
 
         if isinstance(x, bytes):
@@ -46,7 +59,7 @@ class Guid(object):
                 logging.debug(f"Invalid GUID bytes {x}")
                 raise Exception
 
-            self.b = x
+            object.__setattr__(self, 'b', x)
 
         elif isinstance(x, str):
             m = re.match(
@@ -64,7 +77,7 @@ class Guid(object):
             r += int(m[3], base=16).to_bytes(2, byteorder='little')
             r += int(m[4], base=16).to_bytes(2, byteorder='big')
             r += bytes.fromhex(m[5])
-            self.b = bytes(r)
+            object.__setattr__(self, 'b', bytes(r))
 
         else:
             logging.debug(f"Invalid GUID type {x}")
