@@ -30,7 +30,7 @@ tree:
       - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
         boundary'
   - dir: acs_results
-    min-entries: 8
+    min-entries: 7  # Allow missing result.md
     max-entries: 8
     tree:
       - file: result.md
