@@ -34,6 +34,8 @@ tree:
     max-entries: 8
     tree:
       - file: result.md
+        sct-parser-result-md:
+          seq-file: sct_results/Sequence/EBBR.seq
         must-contain:
           - SCT Summary
           - Dropped:|0|

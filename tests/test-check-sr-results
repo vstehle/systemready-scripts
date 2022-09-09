@@ -103,6 +103,14 @@ grep -q ': GUID .* is known' "$out"
 grep -q ': Capsule GUID .* is known' "$out"
 grep -q '/dev/null: Warning' "$tmp/mockup/acs_results/uefi/BsaDevTree.dtb.log"
 
+if which parser.py; then
+	echo -n '(parser), ' >&3
+	grep -q '# SCT Summary' "$tmp/mockup/acs_results/result.md"
+else
+	echo -n '(no parser), ' >&3
+	test '!' -e "$tmp/mockup/acs_results/result.md"
+fi
+
 # We continue using the mockup folder from previous step.
 echo -n 'zero dt, ' >&3
 dd if=/dev/zero of="$tmp/mockup/acs_results/uefi/BsaDevTree.dtb" bs=1k count=1

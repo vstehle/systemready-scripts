@@ -89,6 +89,9 @@ tree:
                                 # verify it with capsule-tool.py
     devicetree:                 # If present, the file is a Devicetree blob and
                                 # we verify it with dtc and dt-parser.py
+    sct-parser-result-md:       # If present, the file is the result.md produced
+      seq-file: <filename>      # by the SCT parser and we treat it specially
+                                # (see below)
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
@@ -138,6 +141,13 @@ The conditions are strings. A condition is true when its string matches
 
 All keys are overwritten violently except `tree`, which is overlayed
 recursively.
+
+#### SCT parser result.md
+
+A file marked with the `sct-parser-result-md` property is treated specially:
+
+* If the file is missing we try to re-create it with the SCT parser, using the
+  specified sequence file and the `sct_result/Overall/Summary.ekl` file.
 
 #### Automatic checks
 

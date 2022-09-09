@@ -50,6 +50,15 @@ $defs:
                 const: null
             devicetree:
                 const: null
+            sct-parser-result-md:
+                type: object
+                properties:
+                    seq-file:
+                        enum:
+                            - sct_results/Sequence/EBBR.seq
+                required:
+                    - seq-file
+                additionalProperties: false
         required:
             - file
             # must-contain is optional
@@ -60,6 +69,7 @@ $defs:
             # capsuleapp-esrt is optional
             # uefi-capsule is optional
             # devicetree is optional
+            # sct-parser-result-md is optional
         additionalProperties: false
     dir:
         type: object

@@ -62,6 +62,10 @@ dtc = None
 # This will be set after command line argument parsing.
 dt_parser = None
 
+# (SCT) parser.py command.
+# This will be set after command line argument parsing.
+parser = None
+
 # ESRT GUIDs.
 # This is populated when checking the ESRT, and is used later on to check
 # capsules.
@@ -495,6 +499,21 @@ def check_devicetree(filename):
     return stats
 
 
+# Try to re-create result.md with the SCT parser.
+# This can fail if we do not have parser.py at hand. We do not treat that as an
+# error here but rather rely on subsequent checks.
+def sct_parser(conffile, filename):
+    logging.debug(f"SCT parser `{filename}'")
+    seq = conffile['seq-file']
+    d = os.path.dirname(filename)
+    cp = run(f"cd {d} && {parser} sct_results/Overall/Summary.ekl {seq}")
+
+    if cp.returncode:
+        logging.warning(f"SCT parser {yellow}failed{normal} `{filename}'")
+    else:
+        logging.info(f"{green}Created{normal} `{filename}'")
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -503,10 +522,16 @@ def check_devicetree(filename):
 # If the file has a 'must-contain' property, we look for all signatures in its
 # contents in order.
 # We perform some more checks on archives.
+# We try to re-create missing SCT parser result.md files.
 # We return a Stats object.
 def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
     stats = Stats()
+
+    # Special case for SCT parser result.md: if the file is missing, try to
+    # re-create it with the parser before complaining.
+    if 'sct-parser-result-md' in conffile and not os.path.isfile(filename):
+        sct_parser(conffile['sct-parser-result-md'], filename)
 
     if os.path.isfile(filename):
         logging.debug(f"`{filename}' {green}exists{normal}")
@@ -852,6 +877,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--identify', help='Specify identify.py path',
         default=f'{here}/identify.py')
+    parser.add_argument(
+        '--parser', help='Specify (SCT) parser.py path',
+        default='parser.py')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -868,6 +896,7 @@ if __name__ == '__main__':
     capsule_tool = args.capsule_tool + (' --debug' if args.debug else '')
     dtc = args.dtc
     dt_parser = args.dt_parser + (' --debug' if args.debug else '')
+    parser = args.parser + (' --debug' if args.debug else '')
 
     check_prerequisites()
 
