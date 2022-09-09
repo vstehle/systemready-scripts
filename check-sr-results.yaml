@@ -149,7 +149,7 @@ tree:
                   - Iterations=
       - dir: uefi
         min-entries: 2
-        max-entries: 2
+        max-entries: 3  # Allow to generate BsaDevTree.dtb.log
         tree:
           - file: BsaDevTree.dtb
             devicetree:
