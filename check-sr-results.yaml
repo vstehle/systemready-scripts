@@ -241,9 +241,11 @@ tree:
   - dir: os-logs
     min-entries: 2
     tree:
-      - dir: 'linux-*'
+      - dir: '*-*'
+        warn-if-not-named: 'linux-*'
         tree:
-          - file: 'console.log'
+          - file: '*console.log'
+            warn-if-not-named: console.log
             must-contain:
               - dmesg
               - Linux version
@@ -257,7 +259,8 @@ tree:
             warn-if-contains:
               - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
                 boundary'
-          - file: 'sys-firmware.tar.gz'
+          - file: '*sys-firmware.tar.gz'
+            warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt
     must-contain:
       - General information

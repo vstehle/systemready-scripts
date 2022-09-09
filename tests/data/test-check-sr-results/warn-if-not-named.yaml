@@ -1,0 +1,5 @@
+---
+check-sr-results-configuration:
+tree:
+  - file: '*'
+    warn-if-not-named: a*

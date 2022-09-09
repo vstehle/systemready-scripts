@@ -69,6 +69,26 @@ check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
 grep -q 'Identified as SystemReady IR v1.1' "$out"
 grep -q '0 warning, 0 error' "$out"
 
+echo -n 'warn if not named, ' >&3
+check-sr-results.py --dir "$data/a" --config "$data/warn-if-not-named.yaml" \
+	|& tee "$out"
+
+re='WARNING .*not named in .*a'
+
+if grep -q "$re" "$out"; then
+	false
+fi
+
+grep -q ' 0 warning' "$out"
+
+for d in b ab; do
+	check-sr-results.py --dir "$data/$d" \
+		--config "$data/warn-if-not-named.yaml" |& tee "$out"
+
+	grep -q "$re" "$out"
+	grep -q ' 1 warning' "$out"
+done
+
 echo -n 'image, ' >&3
 img="$tmp/image.bin"
 dd if=/dev/urandom of="$img" bs=123 count=1

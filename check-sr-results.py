@@ -11,6 +11,7 @@ import glob
 import re
 import subprocess
 import guid
+import fnmatch
 
 try:
     from packaging import version
@@ -514,6 +515,22 @@ def sct_parser(conffile, filename):
         logging.info(f"{green}Created{normal} `{filename}'")
 
 
+# Warn if a file or directory name does not match a pattern.
+# We return a Stats object.
+def warn_if_not_named(name, pattern):
+    stats = Stats()
+    bn = os.path.basename(name)
+
+    if fnmatch.fnmatch(bn, pattern):
+        logging.debug(f"`{name}' {green}named in{normal} `{pattern}'")
+        stats.inc_pass()
+    else:
+        logging.warning(f"`{name}' {yellow}not named in{normal} `{pattern}'")
+        stats.inc_warning()
+
+    return stats
+
+
 # Check a file
 # We check if a file exists and is not empty.
 # The following properties in the yaml configuration can relax the check:
@@ -536,6 +553,10 @@ def check_file(conffile, filename):
     if os.path.isfile(filename):
         logging.debug(f"`{filename}' {green}exists{normal}")
         stats.inc_pass()
+
+        if 'warn-if-not-named' in conffile:
+            stats.add(warn_if_not_named(
+                filename, conffile['warn-if-not-named']))
 
         if os.path.getsize(filename) > 0:
             logging.debug(f"`{filename}' {green}not empty{normal}")
@@ -596,6 +617,11 @@ def check_dir(confdir, dirname):
     if os.path.isdir(dirname):
         logging.debug(f"`{dirname}/' {green}exists{normal}")
         stats.inc_pass()
+
+        if 'warn-if-not-named' in confdir:
+            stats.add(warn_if_not_named(
+                dirname, confdir['warn-if-not-named']))
+
         ent = len(os.listdir(dirname))
         logging.debug(f"`{dirname}/' has {ent} entrie(s)")
         min_ent = confdir['min-entries'] if 'min-entries' in confdir else 1

@@ -92,10 +92,14 @@ tree:
     sct-parser-result-md:       # If present, the file is the result.md produced
       seq-file: <filename>      # by the SCT parser and we treat it specially
                                 # (see below)
+    warn-if-not-named: <pat>    # If present we issue warnings when the file
+                                # name does not match the pattern
+
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
     max-entries: <integer>      # Optional
+    warn-if-not-named: <pat>    # Same as for files
     tree:                       # If present, verification will recurse
       ...
 ```
