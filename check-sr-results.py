@@ -12,6 +12,8 @@ import re
 import subprocess
 import guid
 import fnmatch
+import requests
+import tempfile
 
 try:
     from packaging import version
@@ -63,9 +65,17 @@ dtc = None
 # This will be set after command line argument parsing.
 dt_parser = None
 
+# dt-validate command.
+# This will be set after command line argument parsing.
+dt_validate = None
+
 # (SCT) parser.py command.
 # This will be set after command line argument parsing.
 parser = None
+
+# Linux tarball URL.
+# This will be set after command line argument parsing.
+linux_url = None
 
 # ESRT GUIDs.
 # This is populated when checking the ESRT, and is used later on to check
@@ -131,6 +141,56 @@ class Stats:
     # Increment 'error' counter.
     def inc_error(self):
         self._inc('error')
+
+
+# Download (possibly large) file from URL.
+# We raise an exception in case of issue.
+def download_file(url, filename):
+    logging.debug(f"Download {url} -> `{filename}'")
+
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=(1024 * 1024)):
+                f.write(chunk)
+
+
+# Get (cached) bindings folder.
+# If necessary, we download the Linux tarball from a URL and extract it.
+# We raise an exception or exit in case of issue.
+# We cache the bindings in the user's home.
+# We return the dir name.
+def get_bindings():
+    cache = f"{os.path.expanduser('~')}/.check-sr-results"
+    linux_ver = re.sub(r'\.tar\..*', '', os.path.basename(linux_url))
+    bindings = f"{linux_ver}/Documentation/devicetree/bindings"
+    cached = f"{cache}/{bindings}"
+
+    # Create cache folder if we don't have one already.
+    # Otherwise, lookup in the cache.
+    if not os.path.isdir(cache):
+        logging.debug(f"Creating cache dir `{cache}'")
+        os.mkdir(cache)
+    elif os.path.isdir(cached):
+        logging.debug(f"Cache hit for `{cached}'")
+        return cached
+
+    # If we arrive here this is a cache miss: download and extract Linux.
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        t = f"{tmpdirname}/{os.path.basename(linux_url)}"
+        logging.info(f"Downloading {linux_url} to `{t}'")
+        download_file(linux_url, t)
+
+        # Extract Linux tarball.
+        logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
+        cp = run(f"tar -C {cache} -xf {t} {bindings}")
+
+        if cp.returncode:
+            logging.error(f"{red}Bad Linux tarball{normal} `{t}'")
+            sys.exit(1)
+
+    assert os.path.isdir(cached)
+    return cached
 
 
 # Load YAML configuration file.
@@ -452,6 +512,20 @@ def check_devicetree(filename):
     if cp.returncode:
         logging.error(
             f"dtc {red}failed{normal} on `{filename}' (see {log})")
+        stats.inc_error()
+        return stats
+
+    # Verify with dt-validate.
+    bindings = get_bindings()
+
+    cp = run(
+        f"{dt_validate} -m "
+        f"-s {bindings} {filename} "
+        f">>{log} 2>&1")
+
+    if cp.returncode:
+        logging.error(
+            f"dt-validate {red}failed{normal} on `{filename}' (see {log})")
         stats.inc_error()
         return stats
 
@@ -896,6 +970,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--dt-parser', help='Specify dt-parser.py path',
         default=f'{here}/dt-parser.py')
+    parser.add_argument(
+        '--dt-validate', help='Specify dt-validate path',
+        default='dt-validate')
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
         '--guid-tool', help='Specify guid-tool.py path',
@@ -903,6 +980,10 @@ if __name__ == '__main__':
     parser.add_argument(
         '--identify', help='Specify identify.py path',
         default=f'{here}/identify.py')
+    parser.add_argument(
+        '--linux-url', help='Specify Linux tarball URL',
+        default='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
+                'linux-5.19.8.tar.xz')
     parser.add_argument(
         '--parser', help='Specify (SCT) parser.py path',
         default='parser.py')
@@ -923,6 +1004,8 @@ if __name__ == '__main__':
     dtc = args.dtc
     dt_parser = args.dt_parser + (' --debug' if args.debug else '')
     parser = args.parser + (' --debug' if args.debug else '')
+    dt_validate = args.dt_validate
+    linux_url = args.linux_url
 
     check_prerequisites()
 

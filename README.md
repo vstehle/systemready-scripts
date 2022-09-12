@@ -8,9 +8,11 @@ For IR 1.1 certification, git branch `ir1` of this repository should be used.
 
 ## Dependencies
 
-The `check-sr-results.py` SystemReady results checker needs the [chardet]
-python3 module. On some Linux distros it is available as `python3-chardet`.
-The `tar` and `dtc` programs must be installed.
+The `check-sr-results.py` SystemReady results checker needs the [chardet] and
+[requests] python3 modules. On some Linux distros they are available as
+`python3-chardet` and `python3-requests`.
+The results checker also needs the external programs `tar`, `dtc` and
+`dt-validate` (from [dt-schema]) to be installed.
 
 The `capsule-tool.py` script needs the [construct] python3 module, which might
 be available on your Linux distro as `python3-construct`.
@@ -24,6 +26,8 @@ To run the [Sanity checks] you will also need: `yamllint`, `flake8`,
 [chardet]: https://github.com/chardet/chardet
 [construct]: https://construct.readthedocs.io/en/latest/
 [pandoc]: https://pandoc.org
+[requests]: https://requests.readthedocs.io/en/latest/
+[dt-schema]: https://github.com/devicetree-org/dt-schema
 
 ## SystemReady results checker
 
