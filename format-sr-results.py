@@ -47,8 +47,8 @@ def load_config(filename):
     with open(filename, 'r') as yamlfile:
         conf = yaml.load(yamlfile, **yaml_load_args)
 
-    assert('format-sr-results-configuration' in conf)
-    assert('subs' in conf)
+    assert 'format-sr-results-configuration' in conf
+    assert 'subs' in conf
     return conf
 
 

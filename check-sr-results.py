@@ -207,7 +207,7 @@ def load_config(filename):
             'tree': []
         }
 
-    assert('check-sr-results-configuration' in conf)
+    assert 'check-sr-results-configuration' in conf
     return conf
 
 
@@ -258,14 +258,14 @@ def cleanup_line(line):
 # We return a Stats object.
 def check_file_contains(must_contain, filename):
     logging.debug(f"Check that file `{filename}' contains {must_contain}")
-    assert(len(must_contain))
+    assert len(must_contain)
 
     enc = detect_file_encoding(filename)
 
     q = list(must_contain)
     pat = q.pop(0)
     logging.debug(f"Looking for `{pat}'")
-    assert(isinstance(pat, str))
+    assert isinstance(pat, str)
     stats = Stats()
 
     # Open the file with the proper encoding and look for patterns
@@ -779,7 +779,7 @@ def run_identify(dirname, identify):
 # of glob vs. non-glob explicitly, as a glob pattern may return an empty list.
 def check_tree(conftree, dirname):
     logging.debug(f"Check `{dirname}/'")
-    assert(isinstance(conftree, list))
+    assert isinstance(conftree, list)
     stats = Stats()
 
     for e in conftree:
