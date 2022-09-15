@@ -1,6 +1,6 @@
 ---
-$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
-    schemas/identify-schema.yaml'
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/identify-schema.yaml"
 $schema: https://json-schema.org/draft/2020-12/schema
 title: SystemReady identify database schema
 description: |

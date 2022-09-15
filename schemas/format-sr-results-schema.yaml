@@ -1,6 +1,6 @@
 ---
-$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
-    schemas/format-sr-results-schema.yaml'
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/format-sr-results-schema.yaml"
 $schema: https://json-schema.org/draft/2020-12/schema
 title: SystemReady IR results formatting rules schema
 description: |

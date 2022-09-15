@@ -1,6 +1,6 @@
 ---
-$id: 'https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
-    schemas/dt-parser-yaml-schema.yaml'
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/dt-parser-yaml-schema.yaml"
 $schema: https://json-schema.org/draft/2020-12/schema
 title: SystemReady IR dt parser schema for yaml output
 description: |
