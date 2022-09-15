@@ -30,7 +30,7 @@ $defs:
                 type: object
                 properties:
                     filename:
-                        type: string
+                        '$ref': './common-schema.yaml#/$defs/filename'
                     find:
                         type: string
                     first-line:

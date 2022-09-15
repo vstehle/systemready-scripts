@@ -11,9 +11,6 @@ description: |
     by the valid.py script.
 
     See the README for details.
-$defs:
-    filename:
-        type: string
 type: array
 minItems: 1
 uniqueItems: true
@@ -32,7 +29,7 @@ items:
                     items:
                         type: string
                 dt_validate_schema:
-                    '$ref': '#/$defs/filename'
+                    '$ref': './common-schema.yaml#/$defs/filename'
                 dtc_warning_name:
                     enum:
                         - addr_size_cells
@@ -85,7 +82,7 @@ items:
                         - unit_address_format
                         - unit_address_vs_reg
                 file:
-                    '$ref': '#/$defs/filename'
+                    '$ref': './common-schema.yaml#/$defs/filename'
                 line:
                     type: string
                 linenum:

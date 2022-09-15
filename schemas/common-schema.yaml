@@ -1,0 +1,12 @@
+---
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/common-schema.yaml"
+$schema: https://json-schema.org/draft/2020-12/schema
+title: SystemReady IR common schema
+description: |
+    This schema describes requirements on the configuration file. It can be used
+    by the valid.py script.
+$defs:
+    filename:
+        type: string
+        # TODO! constraint more
