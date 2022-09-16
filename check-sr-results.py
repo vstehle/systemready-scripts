@@ -183,7 +183,7 @@ def get_bindings():
 
         # Extract Linux tarball.
         logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
-        cp = run(f"tar -C {cache} -xf {t} {bindings}")
+        cp = run(f"tar -C '{cache}' -xf '{t}' '{bindings}'")
 
         if cp.returncode:
             logging.error(f"{red}Bad Linux tarball{normal} `{t}'")
@@ -363,7 +363,7 @@ def maybe_check_archive(filename):
 
     if re.match(r'.*\.(tar|tar\.gz|tgz)$', filename):
         logging.debug(f"Checking archive `{filename}'")
-        cp = run(f"tar tf {filename} >/dev/null")
+        cp = run(f"tar tf '{filename}' >/dev/null")
 
         if cp.returncode:
             logging.error(f"{red}Bad archive{normal} `{filename}'")
@@ -437,7 +437,7 @@ def check_capsuleapp_esrt(filename):
 def check_uefi_capsule(filename):
     logging.debug(f"Check UEFI Capsule `{filename}'")
     stats = Stats()
-    cp = run(f"{capsule_tool} --print-guid {filename}")
+    cp = run(f"{capsule_tool} --print-guid '{filename}'")
 
     if cp.returncode:
         logging.error(f"Capsule tool {red}failed{normal} on `{filename}'")
@@ -507,7 +507,9 @@ def check_devicetree(filename):
 
     # Verify with dtc.
     log = f"{filename}.log"
-    cp = run(f"{dtc} -o /dev/null -O dts -I dtb -s -f {filename} >{log} 2>&1")
+
+    cp = run(
+        f"{dtc} -o /dev/null -O dts -I dtb -s -f '{filename}' >'{log}' 2>&1")
 
     if cp.returncode:
         logging.error(
@@ -520,8 +522,8 @@ def check_devicetree(filename):
 
     cp = run(
         f"{dt_validate} -m "
-        f"-s {bindings} {filename} "
-        f">>{log} 2>&1")
+        f"-s '{bindings}' '{filename}' "
+        f">>'{log}' 2>&1")
 
     if cp.returncode:
         logging.error(
@@ -530,7 +532,7 @@ def check_devicetree(filename):
         return stats
 
     # Verify the log with dt-parser.
-    cp = run(f"{dt_parser} {log}")
+    cp = run(f"{dt_parser} '{log}'")
 
     if cp.returncode:
         logging.error(f"dt-parser {red}failed{normal} on `{log}'!")
@@ -581,7 +583,7 @@ def sct_parser(conffile, filename):
     logging.debug(f"SCT parser `{filename}'")
     seq = conffile['seq-file']
     d = os.path.dirname(filename)
-    cp = run(f"cd {d} && {parser} sct_results/Overall/Summary.ekl {seq}")
+    cp = run(f"cd '{d}' && {parser} sct_results/Overall/Summary.ekl '{seq}'")
 
     if cp.returncode:
         logging.warning(f"SCT parser {yellow}failed{normal} `{filename}'")
@@ -750,7 +752,7 @@ def is_glob(x):
 def run_identify(dirname, identify):
     logging.debug(f"Identify {dirname}")
 
-    cp = run(f"{identify} --dir {dirname} --known-files")
+    cp = run(f"{identify} --dir '{dirname}' --known-files")
 
     if cp.returncode:
         logging.error(f"{red}Bad identify{normal} `{identify}'")
