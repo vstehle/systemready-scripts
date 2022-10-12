@@ -324,15 +324,15 @@ def sanity_check_capsule(capsule, force=False):
 
     for x in checks:
         try:
-            s = x['check'](capsule)
-        except Exception:
-            s = False
+            if not x['check'](capsule):
+                logging.error(x['error'](capsule))
+                r = False
+            elif 'debug' in x:
+                logging.debug(x['debug'](capsule))
 
-        if not s:
-            logging.error(x['error'](capsule))
+        except Exception as e:
+            logging.debug(f"(Exception `{e}')")
             r = False
-        elif 'debug' in x:
-            logging.debug(x['debug'](capsule))
 
         if not r and not force:
             break
