@@ -18,8 +18,14 @@ known-files:
   - sha256: d66485b5e436409ef8c0667baf5250e784cbf292f2b9ef1b3893d474a0585fae
     name: EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
     path: acs_results/sct_results/Sequence/EBBR.seq
+  - sha256: a1682187e16336c71f82b73c7e4e475e56561e44b2b3fd4c9b4ca653c76d29b7
+    name: EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1
+    path: acs_results/sct_results/Sequence/EBBR.seq
+  - sha256: 261d63381bf8a8849a895e277b7d7b566950ba72a4eb9dbab725718ae2d8c18c
+    name: EBBR.seq from ACS-IR v22.10_IR_32b_0.7_BETA-0
+    path: acs_results/sct_results/Sequence/EBBR.seq
   - sha256: 7cb231d17fa9f580e75fee01c0295c9bd800fa6ba27501c7a1b941cbbdeaebfb
-    name: BBSR.seq from SIE ACS v21.10_SIE_REL1.0
+    name: BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
     path: acs_results/sct_results/Sequence/BBSR.seq
 
   # We recognize the following files by searching for matches into their
@@ -110,5 +116,14 @@ versions:
       - FWTSResults.log from ACS-IR v21.09_1.0
     version: IR v1.1
 
-  - files: [BBSR.seq from SIE ACS v21.10_SIE_REL1.0]
+  - files:
+      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1
+    version: IR v2.0
+
+  - files:
+      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
     version: SIE v1.0
+
+  - files:
+      - EBBR.seq from ACS-IR v22.10_IR_32b_0.7_BETA-0
+    version: IR 32b v1.2

@@ -25,7 +25,9 @@ def load_identify_db(filename):
         db = []
 
     validate_identify_db(db)
-    logging.debug('{} entries'.format(len(db)))
+    logging.debug(
+        f"{len(db['known-files'])} known-files, "
+        f"{len(db['versions'])} versions")
     return db
 
 
