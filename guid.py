@@ -4,6 +4,7 @@ import logging
 import re
 from dataclasses import dataclass
 import uuid
+import datetime
 
 
 @dataclass(frozen=True)
@@ -126,6 +127,17 @@ class Guid(object):
         UUID('12345678-1234-5678-1234-56789abcdef0')
         """
         return uuid.UUID(fields=self.fields())
+
+    def get_datetime(self):
+        """Get the time in our GUID as a naive datetime object.
+
+        >>> Guid('fb4e8912-6732-11ed-91ec-525400123456').get_datetime()
+        datetime.datetime(2022, 11, 18, 11, 20, 18, 60724)
+        """
+        ns100 = self.as_uuid().time
+
+        return (datetime.datetime(1582, 10, 15)
+                + datetime.timedelta(microseconds=(ns100 / 10)))
 
 
 if __name__ == '__main__':
