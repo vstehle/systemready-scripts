@@ -22,13 +22,13 @@ class Guid(object):
         When given a string, we convert it to our internal bytes format,
         which is taking care of endianness.
 
-        >>> Guid('12345678-1234-5678-1234-56789abcdef0')
-        Guid(b=b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0')
+        >>> Guid('12345678-1234-4678-9234-56789abcdef0')
+        Guid(b=b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
 
         When passed bytes we just copy them.
 
-        >>> Guid(b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0')
-        Guid(b=b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0')
+        >>> Guid(b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
+        Guid(b=b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
 
         We raise an Exception if given an invalid GUID.
 
@@ -45,7 +45,7 @@ class Guid(object):
         Guids are frozen, which means assigning to the member `b' directly will
         raise an exception:
 
-        >>> Guid('12345678-1234-5678-1234-56789abcdef0').b = 1234
+        >>> Guid('12345678-1234-4678-9234-56789abcdef0').b = 1234
         Traceback (most recent call last):
             ...
         dataclasses.FrozenInstanceError: cannot assign to field 'b'
@@ -53,7 +53,7 @@ class Guid(object):
         This has the benefit to make Guids hashable and allow to add them to a
         set for example:
 
-        >>> set().add((Guid('12345678-1234-5678-1234-56789abcdef0')))
+        >>> set().add((Guid('12345678-1234-4678-9234-56789abcdef0')))
         """
 
         if isinstance(x, bytes):
@@ -88,16 +88,16 @@ class Guid(object):
     def __bytes__(self):
         """Return the GUID bytes, which we keep internally.
 
-        >>> bytes(Guid('12345678-1234-5678-1234-56789abcdef0'))
-        b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0'
+        >>> bytes(Guid('12345678-1234-4678-9234-56789abcdef0'))
+        b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0'
         """
         return self.b
 
     def fields(self):
         """Convert our GUID bytes to integer fields.
 
-        >>> print(Guid('12345678-1234-5678-1234-56789abcdef0').fields())
-        (305419896, 4660, 22136, 18, 52, 95075992133360)
+        >>> print(Guid('12345678-1234-4678-9234-56789abcdef0').fields())
+        (305419896, 4660, 18040, 146, 52, 95075992133360)
         """
         return (
             int.from_bytes(self.b[0:4], byteorder='little'),
@@ -111,8 +111,8 @@ class Guid(object):
     def __str__(self):
         """Convert our GUID bytes to string.
 
-        >>> print(Guid('12345678-1234-5678-1234-56789abcdef0'))
-        12345678-1234-5678-1234-56789abcdef0
+        >>> print(Guid('12345678-1234-4678-9234-56789abcdef0'))
+        12345678-1234-4678-9234-56789abcdef0
         """
         f = self.fields()
 
@@ -123,8 +123,8 @@ class Guid(object):
     def as_uuid(self):
         """Convert to UUID object.
 
-        >>> print(repr(Guid('12345678-1234-5678-1234-56789abcdef0').as_uuid()))
-        UUID('12345678-1234-5678-1234-56789abcdef0')
+        >>> print(repr(Guid('12345678-1234-4678-9234-56789abcdef0').as_uuid()))
+        UUID('12345678-1234-4678-9234-56789abcdef0')
         """
         return uuid.UUID(fields=self.fields())
 

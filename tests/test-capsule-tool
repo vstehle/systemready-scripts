@@ -123,7 +123,7 @@ capsule-tool.py --expected-guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 grep -q 'expected one' "$out"
 echo -n 'guid expected, ' >&3
 
-if capsule-tool.py --expected-guid 12345678-1234-1234-1234-123456789abc \
+if capsule-tool.py --expected-guid 12345678-1234-4234-8234-123456789abc \
 	"$auth" |& tee "$out"; then
 	false
 fi
@@ -165,7 +165,7 @@ mkeficapsule \
 	--private-key "$tmp/CRT.key" \
 	--certificate "$tmp/CRT.crt" \
 	--index 1 \
-	--guid 12345678-9abc-def0-1234-56789abcdef0 \
+	--guid 12345678-9abc-4ef0-8234-56789abcdef0 \
 	"$img" "$unk"
 
 capsule-tool.py "$unk" |& tee "$out"

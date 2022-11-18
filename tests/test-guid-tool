@@ -29,7 +29,7 @@ else
 fi
 
 out="$tmp/out"
-guid-tool.py 12345678-1234-1234-1234-56789abcdef0 |& tee "$out"
+guid-tool.py 12345678-1234-4234-9234-56789abcdef0 |& tee "$out"
 grep -q Unknown "$out"
 echo -n 'unknown guid not recognized, ' >&3
 
