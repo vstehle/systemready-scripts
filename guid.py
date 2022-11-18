@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
 import re
 from dataclasses import dataclass
 import uuid
@@ -30,17 +29,22 @@ class Guid(object):
         >>> Guid(b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
         Guid(b=b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
 
-        We raise an Exception if given an invalid GUID.
+        We raise an Exception if given an invalid GUID or an invalid type.
 
         >>> Guid('Hello')
         Traceback (most recent call last):
             ...
-        Exception
+        ValueError: Invalid GUID string Hello
 
-        >>> Guid(bytes(123))
+        >>> Guid(b'42')
         Traceback (most recent call last):
             ...
-        Exception
+        ValueError: Invalid GUID bytes b'42'
+
+        >>> Guid([1, 2, 3])
+        Traceback (most recent call last):
+            ...
+        TypeError: Invalid [1, 2, 3] of type <class 'list'> for GUID
 
         Guids are frozen, which means assigning to the member `b' directly will
         raise an exception:
@@ -55,11 +59,9 @@ class Guid(object):
 
         >>> set().add((Guid('12345678-1234-4678-9234-56789abcdef0')))
         """
-
         if isinstance(x, bytes):
             if len(x) != 16:
-                logging.debug(f"Invalid GUID bytes {x}")
-                raise Exception
+                raise ValueError(f"Invalid GUID bytes {x}")
 
             object.__setattr__(self, 'b', x)
 
@@ -70,8 +72,7 @@ class Guid(object):
                 x, re.IGNORECASE)
 
             if not m:
-                logging.debug(f"Invalid GUID string {x}")
-                raise Exception
+                raise ValueError(f"Invalid GUID string {x}")
 
             r = bytearray()
             r += int(m[1], base=16).to_bytes(4, byteorder='little')
@@ -82,8 +83,7 @@ class Guid(object):
             object.__setattr__(self, 'b', bytes(r))
 
         else:
-            logging.debug(f"Invalid GUID type {x}")
-            raise Exception
+            raise TypeError(f"Invalid {x} of type {type(x)} for GUID")
 
     def __bytes__(self):
         """Return the GUID bytes, which we keep internally.
@@ -133,8 +133,23 @@ class Guid(object):
 
         >>> Guid('fb4e8912-6732-11ed-91ec-525400123456').get_datetime()
         datetime.datetime(2022, 11, 18, 11, 20, 18, 60724)
+
+        Retrieving the time of our GUID works only with a time-based
+        (i.e. version 1) GUID. For all other versions this raises an
+        exception:
+
+        >>> Guid('12345678-1234-4678-8234-56789abcdef0').get_datetime()
+        Traceback (most recent call last):
+            ...
+        ValueError: Invalid get_datetime on version 4 GUID
         """
-        ns100 = self.as_uuid().time
+        u = self.as_uuid()
+        ver = u.version
+
+        if ver != 1:
+            raise ValueError(f"Invalid get_datetime on version {ver} GUID")
+
+        ns100 = u.time
 
         return (datetime.datetime(1582, 10, 15)
                 + datetime.timedelta(microseconds=(ns100 / 10)))
