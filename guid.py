@@ -46,6 +46,21 @@ class Guid(object):
             ...
         TypeError: Invalid [1, 2, 3] of type <class 'list'> for GUID
 
+        >>> Guid('12345678-1234-5678-1234-56789abcdef0')
+        Traceback (most recent call last):
+            ...
+        ValueError: Bad variant reserved for NCS compatibility
+
+        >>> Guid('00000000-0000-1000-91ec-525400123456')
+        Traceback (most recent call last):
+            ...
+        ValueError: Time 1582-10-15 00:00:00 is too old
+
+        >>> Guid('ffffffff-ffff-1fff-91ec-525400123456')
+        Traceback (most recent call last):
+            ...
+        ValueError: Time 5236-03-31 21:21:00.684704 is in the future
+
         Guids are frozen, which means assigning to the member `b' directly will
         raise an exception:
 
@@ -84,6 +99,31 @@ class Guid(object):
 
         else:
             raise TypeError(f"Invalid {x} of type {type(x)} for GUID")
+
+        u = self.as_uuid()
+
+        # Verify variant.
+        var = u.variant
+
+        if var != uuid.RFC_4122:
+            raise ValueError(f"Bad variant {var}")
+
+        # Verify version.
+        ver = u.version
+
+        if ver not in [1, 3, 4, 5]:
+            raise ValueError(f"Bad version {ver}")
+
+        # For version 1, verify that time is valid.
+        if u.version == 1:
+            dt = self.get_datetime()
+
+            if dt < datetime.datetime(1998, 1, 1):
+                raise ValueError(f"Time {dt} is too old")
+
+            # We add a day of margin to account for timezones.
+            if dt > datetime.datetime.now() + datetime.timedelta(days=1):
+                raise ValueError(f"Time {dt} is in the future")
 
     def __bytes__(self):
         """Return the GUID bytes, which we keep internally.
