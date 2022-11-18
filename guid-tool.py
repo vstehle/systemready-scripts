@@ -86,7 +86,8 @@ if __name__ == '__main__':
 
     try:
         g = guid.Guid(args.guid)
-    except Exception:
+    except Exception as e:
+        logging.debug(f"(Exception `{e}')")
         logging.error(f"Invalid GUID `{args.guid}'!")
         sys.exit(1)
 

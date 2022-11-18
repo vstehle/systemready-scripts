@@ -591,6 +591,7 @@ if __name__ == '__main__':
     try:
         capsule = efi_capsule.parse_file(args.capsule)
     except Exception as e:
+        logging.debug(f"(Exception `{e}')")
         logging.error('Could not parse capsule; exiting')
 
         if args.debug:
