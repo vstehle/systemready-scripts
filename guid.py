@@ -139,6 +139,46 @@ class Guid(object):
         return (datetime.datetime(1582, 10, 15)
                 + datetime.timedelta(microseconds=(ns100 / 10)))
 
+    def details(self):
+        """Get details about our GUID as a string.
+        """
+        f = self.fields()
+        u = self.as_uuid()
+        ver = u.version
+
+        vnames = {
+            1: 'time-based',
+            2: 'DCE security',
+            3: 'name-based MD5',
+            4: 'randomly generated',
+            5: 'name-based SHA-1'
+        }
+
+        vname = vnames[ver] if ver in vnames else 'Unknow'
+
+        r = (
+            f"GUID: {self}\n"
+            f"  TimeLow: {f[0]:x}\n"
+            f"  TimeMid: {f[1]:x}\n"
+            f"  TimeHighAndVersion: {f[2]:x}\n"
+            f"    timestamp: {u.time}\n"
+            f"    version: {ver} ({vname})\n")
+
+        if u.version == 1:
+            r += f"    datetime: {self.get_datetime()}\n"
+
+        r += (
+            f"  ClockSeqHighAndReserved: {f[3]:x}\n"
+            f"  ClockSeqLow: {f[4]:x}\n"
+            f"    clock sequence: {u.clock_seq}\n"
+            f"    variant: {u.variant}\n"
+            f"  Node: {f[5]:x}\n")
+
+        if u.version == 1:
+            r += f"    multicast/global: {self.b[10] & 1}\n"
+
+        return r
+
 
 if __name__ == '__main__':
     import doctest
