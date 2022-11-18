@@ -75,6 +75,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
+        '--details', action='store_true', help='Dump GUID details and exit')
+    parser.add_argument(
         '--guids-db', help='GUIDs database YAML file',
         default=f'{here}/guid-tool.yaml')
     parser.add_argument('guid', help='Input GUID')
@@ -90,6 +92,10 @@ if __name__ == '__main__':
         logging.debug(f"(Exception `{e}')")
         logging.error(f"Invalid GUID `{args.guid}'!")
         sys.exit(1)
+
+    if args.details:
+        print(g.details())
+        sys.exit(0)
 
     db = load_guids_db(args.guids_db)
     lookup_guid(g, db)

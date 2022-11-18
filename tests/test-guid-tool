@@ -44,4 +44,14 @@ fi
 grep -q Invalid "$out"
 echo -n 'invalid guid rejected, ' >&3
 
+guid-tool.py --details $(uuidgen -t) |& tee "$out"
+grep -q 'version: 1 (time-based)' "$out"
+grep -q 'datetime:' "$out"
+grep -q 'multicast/global:' "$out"
+echo -n 'time-based details, ' >&3
+
+guid-tool.py --details $(uuidgen -r) |& tee "$out"
+grep -q 'version: 4 (randomly generated)' "$out"
+echo -n 'random details, ' >&3
+
 echo 'ok.' >&3
