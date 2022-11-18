@@ -3,6 +3,7 @@
 import logging
 import re
 from dataclasses import dataclass
+import uuid
 
 
 @dataclass(frozen=True)
@@ -28,7 +29,7 @@ class Guid(object):
         >>> Guid(b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0')
         Guid(b=b'xV4\\x124\\x12xV\\x124Vx\\x9a\\xbc\\xde\\xf0')
 
-        We raise an Exception if when passed an invalid GUID.
+        We raise an Exception if given an invalid GUID.
 
         >>> Guid('Hello')
         Traceback (most recent call last):
@@ -91,23 +92,40 @@ class Guid(object):
         """
         return self.b
 
+    def fields(self):
+        """Convert our GUID bytes to integer fields.
+
+        >>> print(Guid('12345678-1234-5678-1234-56789abcdef0').fields())
+        (305419896, 4660, 22136, 18, 52, 95075992133360)
+        """
+        return (
+            int.from_bytes(self.b[0:4], byteorder='little'),
+            int.from_bytes(self.b[4:6], byteorder='little'),
+            int.from_bytes(self.b[6:8], byteorder='little'),
+            self.b[8],
+            self.b[9],
+            int.from_bytes(self.b[10:16], byteorder='big')
+        )
+
     def __str__(self):
         """Convert our GUID bytes to string.
 
         >>> print(Guid('12345678-1234-5678-1234-56789abcdef0'))
         12345678-1234-5678-1234-56789abcdef0
         """
-
-        TimeLow = int.from_bytes(self.b[0:4], byteorder='little')
-        TimeMid = int.from_bytes(self.b[4:6], byteorder='little')
-        TimeHighAndVersion = int.from_bytes(self.b[6:8], byteorder='little')
-        ClockSeqHighAndReserved = self.b[8:9]
-        ClockSeqLow = self.b[9:10]
-        Node = self.b[10:16]
+        f = self.fields()
 
         return (
-            f'{TimeLow:08x}-{TimeMid:04x}-{TimeHighAndVersion:04x}-'
-            f'{ClockSeqHighAndReserved.hex()}{ClockSeqLow.hex()}-{Node.hex()}')
+            f'{f[0]:08x}-{f[1]:04x}-{f[2]:04x}-'
+            f'{f[3]:02x}{f[4]:02x}-{f[5]:12x}')
+
+    def as_uuid(self):
+        """Convert to UUID object.
+
+        >>> print(repr(Guid('12345678-1234-5678-1234-56789abcdef0').as_uuid()))
+        UUID('12345678-1234-5678-1234-56789abcdef0')
+        """
+        return uuid.UUID(fields=self.fields())
 
 
 if __name__ == '__main__':
