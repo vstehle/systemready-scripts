@@ -984,8 +984,8 @@ if __name__ == '__main__':
         default=f'{here}/identify.py')
     parser.add_argument(
         '--linux-url', help='Specify Linux tarball URL',
-        default='https://cdn.kernel.org/pub/linux/kernel/v5.x/'
-                'linux-5.19.8.tar.xz')
+        default='https://cdn.kernel.org/pub/linux/kernel/v6.x/'
+                'linux-6.0.9.tar.xz')
     parser.add_argument(
         '--parser', help='Specify (SCT) parser.py path',
         default='parser.py')
