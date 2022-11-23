@@ -152,6 +152,17 @@
   update:
     type: ignored
 
+- rule: Ignore dt-validate warnings about U-Boot capsule signature.
+    The signature/capsule-key property is specific to U-Boot.
+  criteria:
+    devicetree_node: signature
+    dt_validate_schema: dt-core.yaml
+    type: dt-validate warning
+    line: 'capsule-key: '
+    warning_message: 'is not of type ''object'', ''array'', ''boolean'', ''null'''
+  update:
+    type: ignored
+
 # We force the following dt-validate warning entries corresponding to a Linux
 # kernel default DTC_FLAGS as `ignored'.
 
