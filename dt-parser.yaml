@@ -159,7 +159,8 @@
     dt_validate_schema: dt-core.yaml
     type: dt-validate warning
     line: 'capsule-key: '
-    warning_message: 'is not of type ''object'', ''array'', ''boolean'', ''null'''
+    warning_message: 'is not of type ''object'', ''array'', ''boolean'',
+      ''null'''
   update:
     type: ignored
 
