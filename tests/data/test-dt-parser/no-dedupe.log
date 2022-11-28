@@ -1,0 +1,4 @@
+/home/vinste01/systemreadyir/dt/dump.dtb: platform@c000000: $nodename:0: 'platform@c000000' does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+	From schema: /home/vinste01/systemreadyir/dt/dt-schema/dtschema/schemas/simple-bus.yaml
+/home/vinste01/systemreadyir/dt/dump.dtb: platform@d000000: $nodename:0: 'platform@d000000' does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
+	From schema: /home/vinste01/systemreadyir/dt/dt-schema/dtschema/schemas/simple-bus.yaml
