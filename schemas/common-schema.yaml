@@ -10,3 +10,13 @@ $defs:
     filename:
         type: string
         # TODO! constraint more
+
+    # dt-parser allowed updates to "type".
+    update-type:
+        enum:
+            - dt-validate warning missing property
+            - dt-validate warning naming
+            - dt-validate warning no schema
+            - dt-validate warning not an array
+            - dt-validate warning spurious property
+            - ignored

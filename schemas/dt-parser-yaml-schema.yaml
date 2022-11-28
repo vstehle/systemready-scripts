@@ -83,15 +83,11 @@ items:
             type: integer
             minimum: 1
         type:
-            enum:
-                - dt-validate warning
-                - dt-validate warning missing property
-                - dt-validate warning naming
-                - dt-validate warning no schema
-                - dt-validate warning not an array
-                - dt-validate warning spurious property
-                - dtc warning
-                - ignored
+            oneOf:
+                - enum:
+                      - dt-validate warning
+                      - dtc warning
+                - '$ref': './common-schema.yaml#/$defs/update-type'
         updated_by_rule:
             type: string
         warning_message:
