@@ -20,7 +20,7 @@ def load_config(filename):
     if conf is None:
         conf = []
 
-    logging.debug('{} rule(s)'.format(len(conf)))
+    logging.debug('{} rules'.format(len(conf)))
 
     # Verify that rules names are unique.
     s = set()
@@ -170,7 +170,7 @@ def parse(filename):
     if dt_val is not None:
         flush_dt_val()
 
-    logging.debug(f"{len(r)} entries")
+    logging.info(f"{len(r)} entries")
     return r
 
 
@@ -194,6 +194,7 @@ def matches_crit(entry, crit):
 # We modify parsed in-place
 def apply_rules(parsed, conf):
     logging.debug('Apply rules')
+    n = 0
 
     for i, x in enumerate(parsed):
         for j, r in enumerate(conf):
@@ -211,7 +212,10 @@ def apply_rules(parsed, conf):
                 'updated_by_rule': rule,
             })
 
+            n += 1
             break
+
+    logging.info(f"Updated {n} entries with rules")
 
 
 # Filter entries
@@ -276,6 +280,7 @@ def print_summary(parsed):
     for k in sorted(h.keys()):
         t.append((h[k], k))
 
+    print('')
     print_table(t, 'Summary')
 
 
