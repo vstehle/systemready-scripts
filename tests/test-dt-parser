@@ -63,4 +63,8 @@ dt-parser.py --config /dev/null \
 grep -q '1  dtc warning' "$out"
 echo -n 'filter, ' >&3
 
+dt-parser.py "$data/no-schema.log" |& tee "$out"
+grep -q '1  error no schema' "$out"
+echo -n 'no schema, ' >&3
+
 echo 'ok.' >&3
