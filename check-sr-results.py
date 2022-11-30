@@ -547,14 +547,25 @@ def check_devicetree(filename):
     t = cp.stdout.decode().splitlines()
     logging.debug(t)
 
-    if t[0] != 'Summary' or not re.match(r'-+$', t[1]):
+    # Look for Summary line.
+    for i, line in enumerate(t):
+        if line == 'Summary':
+            break
+    else:
+        logging.error(f"{red}No dt-parser Summary{normal} with `{log}'!")
+        stats.inc_error()
+        return stats
+
+    # Verify underline.
+    if not re.match(r'-+$', t[i + 1]):
         logging.error(
-            f"{red}bad dt-parser header{normal} `{t[0]}, {t[1]}' "
+            f"{red}bad dt-parser header{normal} `{t[i + 1]}' "
             f"with `{log}'!")
         stats.inc_error()
         return stats
 
-    for line in t[2:]:
+    # Parse Summary statistics.
+    for line in t[i + 2:]:
         logging.debug(line)
         m = re.match(r'\s*(\d+)\s+(.+)', line)
 
@@ -566,12 +577,24 @@ def check_devicetree(filename):
 
         num, typ = m[1], m[2]
 
-        if typ != 'ignored':
+        if re.search(r'error', typ):
             logging.error(f"{red}{num} dt-parser {typ}{normal} with `{log}'!")
             stats.inc_error()
-        else:
+
+        elif re.search(r'warning', typ):
+            logging.warning(
+                f"{yellow}{num} dt-parser {typ}{normal} with `{log}'!")
+            stats.inc_warning()
+
+        elif typ == 'ignored':
             logging.debug(f"{green}{num} dt-parser {typ}{normal} with `{log}'")
             stats.inc_pass()
+
+        else:
+            logging.error(
+                f"{red}{num} unknown dt-parser type `{typ}'{normal} "
+                f"with `{log}'!")
+            stats.inc_error()
 
     return stats
 
