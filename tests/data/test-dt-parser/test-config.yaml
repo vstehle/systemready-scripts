@@ -1,7 +1,7 @@
 ---
-- rule: Force one entry as ignored for testing
+- rule: Force two entries as ignored for testing
   criteria:
-    devicetree_node: /pl011@9040000:clocks
+    devicetree_node: /pl011@x:clocks
     dtc_warning_name: clocks_property
     file: dump.dts
     type: dtc warning

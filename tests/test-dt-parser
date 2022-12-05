@@ -52,15 +52,26 @@ validate.py --schema schemas/dt-parser-yaml-schema.yaml "$yaml"
 echo -n 'valid, ' >&3
 
 dt-parser.py --config "$data/test-config.yaml" "$data/qemu.log" |& tee "$out"
-grep -q '14  dt-validate warning' "$out"
-grep -q '14  dtc warning' "$out"
-grep -q ' 1  ignored' "$out"
+grep -q '12  dt-validate warning' "$out"
+grep -q '13  dtc warning' "$out"
+grep -q ' 2  ignored' "$out"
 echo -n 'rule, ' >&3
 
 dt-parser.py --config /dev/null \
-	--filter "x['devicetree_node'] == '/pl031@9010000:clocks'" \
+	--filter "x['devicetree_node'] == '/pl031@x:clocks'" \
 	"$data/qemu.log" |& tee "$out"
 grep -q '1  dtc warning' "$out"
 echo -n 'filter, ' >&3
+
+dt-parser.py "$data/no-schema.log" |& tee "$out"
+grep -q '1  error no schema' "$out"
+echo -n 'no schema, ' >&3
+
+dt-parser.py "$data/no-dedupe.log" |& tee "$out"
+grep -q '1  dt-validate warning' "$out"
+
+dt-parser.py --no-dedupe "$data/no-dedupe.log" |& tee "$out"
+grep -q '2  dt-validate warning' "$out"
+echo -n 'no dedupe, ' >&3
 
 echo 'ok.' >&3

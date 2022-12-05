@@ -174,6 +174,79 @@ def parse(filename):
     return r
 
 
+# Cleanup entries
+# We remove all mmio addresses: name@12345678 -> name@x
+# We modify parsed in-place
+def cleanup_entries(parsed):
+    logging.debug('Cleanup')
+    n = 0
+
+    for i, x in enumerate(parsed):
+        m = n
+
+        for k in x.keys():
+            b = x[k]
+
+            # Consider strings only
+            if not isinstance(b, str):
+                continue
+
+            a = re.sub(r'@[0-9A-Fa-f]+', '@x', x[k])
+
+            if a != b:
+                x[k] = a
+                n += 1
+
+        if n > m:
+            logging.debug(
+                f"Cleaned up {n - m} field(s) of entry {i}, "
+                f"`{x['devicetree_node']}'")
+
+    if n:
+        logging.debug(f"Cleaned up {n} entries")
+
+
+# Compare entries for de-duplication
+# We do not compare non-string keys, such as linenum or dt_validate_lines as
+# they do not get cleaned-up anyway
+# We return True if entries should be de-duplicated
+def dupes(a, b):
+    for k in a.keys():
+        if not isinstance(a[k], str):
+            continue
+
+        if a[k] != b[k]:
+            return False
+
+    return True
+
+
+# De-duplicate entries
+def dedupe_entries(parsed):
+    logging.debug('De-dupe')
+    r = []
+    n = 0
+
+    for i, x in enumerate(parsed):
+        d = False
+
+        # TODO! Better way than comparing each entry.
+        for y in r:
+            if dupes(x, y):
+                d = True
+                break
+
+        if d:
+            logging.debug(f"De-duplicated entry {i}, `{x['devicetree_node']}'")
+            n += 1
+            continue
+
+        r.append(x)
+
+    logging.info(f"De-duplicated {n} entries")
+    return r
+
+
 # Evaluate if an entry matches a criteria
 # The criteria is a dict of Key-value pairs.
 # I.E. crit = {"type": "dt-validate warning", "xxx": "yyy", ...}
@@ -347,6 +420,8 @@ if __name__ == '__main__':
         '--max-message-len', type=int, help='Maximum message width to print',
         default=128)
     parser.add_argument(
+        '--no-dedupe', action='store_true', help='Turn off de-duplication')
+    parser.add_argument(
         '--print', action='store_true', help='Print non-ignored entries')
     parser.add_argument('--yaml', help='YAML output filename')
     parser.add_argument('log', help='Input log filename')
@@ -360,6 +435,10 @@ if __name__ == '__main__':
     p = parse(args.log)
 
     # Modify.
+
+    if not args.no_dedupe:
+        cleanup_entries(p)
+        p = dedupe_entries(p)
 
     apply_rules(p, conf)
 
