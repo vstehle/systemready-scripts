@@ -502,37 +502,64 @@ def check_uefi_capsule(filename):
     return stats
 
 
+# Determine if we need to re-generate a file.
+# We return True if:
+# - The file is missing
+# - Or the file is older than one of its dependencies
+# Dependencies can be files or dirs names.
+# We return False otherwise
+def need_regen(filename, deps):
+    logging.debug(f"Need regen `{filename}' <- {deps}")
+
+    if not os.path.isfile(filename):
+        logging.debug(f"`{filename}' does not exist")
+        return True
+
+    s = os.stat(filename)
+
+    # Any dependency more recent?
+    for f in deps:
+        if os.stat(f).st_mtime > s.st_mtime:
+            logging.debug(
+                f"`{f}' is more recent than `{filename}': re-generate")
+            return True
+
+    logging.debug(f"No need to re-generate `{filename}'")
+    return False
+
+
 # Check Devicetree blob.
+# We run dtc and dt-validate to produce the log when needed.
 # We return a Stats object.
 def check_devicetree(filename):
     logging.debug(f"Check Devicetree `{filename}'")
     stats = Stats()
-
-    # Verify with dtc.
     log = f"{filename}.log"
-
-    cp = run(
-        f"{dtc} -o /dev/null -O dts -I dtb -s -f '{filename}' >'{log}' 2>&1")
-
-    if cp.returncode:
-        logging.error(
-            f"dtc {red}failed{normal} on `{filename}' (see {log})")
-        stats.inc_error()
-        return stats
-
-    # Verify with dt-validate.
     bindings = get_bindings()
 
-    cp = run(
-        f"{dt_validate} -m "
-        f"-s '{bindings}' '{filename}' "
-        f">>'{log}' 2>&1")
+    if need_regen(log, [filename, bindings]):
+        # Run dtc.
+        cp = run(
+            f"{dtc} -o /dev/null -O dts -I dtb -s -f '{filename}' "
+            f">'{log}' 2>&1")
 
-    if cp.returncode:
-        logging.error(
-            f"dt-validate {red}failed{normal} on `{filename}' (see {log})")
-        stats.inc_error()
-        return stats
+        if cp.returncode:
+            logging.error(
+                f"dtc {red}failed{normal} on `{filename}' (see {log})")
+            stats.inc_error()
+            return stats
+
+        # Run dt-validate.
+        cp = run(
+            f"{dt_validate} -m "
+            f"-s '{bindings}' '{filename}' "
+            f">>'{log}' 2>&1")
+
+        if cp.returncode:
+            logging.error(
+                f"dt-validate {red}failed{normal} on `{filename}' (see {log})")
+            stats.inc_error()
+            return stats
 
     # Verify the log with dt-parser.
     cp = run(f"{dt_parser} '{log}'")
@@ -608,8 +635,13 @@ def check_devicetree(filename):
 def sct_parser(conffile, filename):
     logging.debug(f"SCT parser `{filename}'")
     seq = conffile['seq-file']
+    ekl = 'sct_results/Overall/Summary.ekl'
     d = os.path.dirname(filename)
-    cp = run(f"cd '{d}' && {parser} sct_results/Overall/Summary.ekl '{seq}'")
+
+    if not need_regen(filename, [f"{d}/{seq}", f"{d}/{ekl}"]):
+        return
+
+    cp = run(f"cd '{d}' && {parser} {ekl} '{seq}'")
 
     if cp.returncode:
         logging.warning(f"SCT parser {yellow}failed{normal} `{filename}'")
@@ -641,15 +673,15 @@ def warn_if_not_named(name, pattern):
 # If the file has a 'must-contain' property, we look for all signatures in its
 # contents in order.
 # We perform some more checks on archives.
-# We try to re-create missing SCT parser result.md files.
+# We try to re-create SCT parser result.md files.
 # We return a Stats object.
 def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
     stats = Stats()
 
-    # Special case for SCT parser result.md: if the file is missing, try to
-    # re-create it with the parser before complaining.
-    if 'sct-parser-result-md' in conffile and not os.path.isfile(filename):
+    # Special case for SCT parser result.md: try to re-create it with the
+    # parser before complaining.
+    if 'sct-parser-result-md' in conffile:
         sct_parser(conffile['sct-parser-result-md'], filename)
 
     if os.path.isfile(filename):
