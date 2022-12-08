@@ -81,6 +81,10 @@ linux_url = None
 # This will be set after command line argument parsing.
 cache_dir = None
 
+# Force re-generating all we can.
+# This will be set after command line argument parsing.
+force_regen = None
+
 # ESRT GUIDs.
 # This is populated when checking the ESRT, and is used later on to check
 # capsules.
@@ -504,12 +508,17 @@ def check_uefi_capsule(filename):
 
 # Determine if we need to re-generate a file.
 # We return True if:
+# - Re-generation is forced
 # - The file is missing
 # - Or the file is older than one of its dependencies
 # Dependencies can be files or dirs names.
 # We return False otherwise
 def need_regen(filename, deps):
     logging.debug(f"Need regen `{filename}' <- {deps}")
+
+    if force_regen:
+        logging.debug(f"Forcing re-generation of `{filename}'")
+        return True
 
     if not os.path.isfile(filename):
         logging.debug(f"`{filename}' does not exist")
@@ -1038,6 +1047,9 @@ if __name__ == '__main__':
         default='dt-validate')
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
+        '--force-regen', action='store_true',
+        help='Force re-generating all we can')
+    parser.add_argument(
         '--guid-tool', help='Specify guid-tool.py path',
         default=f'{here}/guid-tool.py')
     parser.add_argument(
@@ -1070,6 +1082,7 @@ if __name__ == '__main__':
     dt_validate = args.dt_validate
     linux_url = args.linux_url
     cache_dir = args.cache_dir
+    force_regen = args.force_regen
 
     check_prerequisites()
 
