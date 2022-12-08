@@ -153,6 +153,11 @@ tree:
         tree:
           - file: BsaDevTree.dtb
             devicetree:
+          - file: BsaDevTree.dtb.log  # This will be generated
+            must-contain:
+              - + DTC
+              - + DT-VALIDATE
+              - + END
           - file: BsaResults.log
             must-contain:
               - BSA Architecture Compliance Suite

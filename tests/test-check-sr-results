@@ -163,6 +163,7 @@ dd if=/dev/zero of="$dtb" bs=1k count=1
 check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 
 grep -q 'dtc failed on ' "$out"
+grep -q 'Could not find .* DT-VALIDATE' "$out"
 grep -q 'FATAL ERROR: Blob has incorrect magic number' "$dtb.log"
 
 # We continue using the mockup folder from previous steps.

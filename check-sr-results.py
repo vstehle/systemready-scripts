@@ -539,6 +539,7 @@ def need_regen(filename, deps):
 
 # Check Devicetree blob.
 # We run dtc and dt-validate to produce the log when needed.
+# We add markers to the log, which will be ignored by dt-parser.py.
 # We return a Stats object.
 def check_devicetree(filename):
     logging.debug(f"Check Devicetree `{filename}'")
@@ -548,9 +549,12 @@ def check_devicetree(filename):
 
     if need_regen(log, [filename, bindings]):
         # Run dtc.
+        with open(log, 'w') as f:
+            print('+ DTC', file=f)
+
         cp = run(
             f"{dtc} -o /dev/null -O dts -I dtb -s -f '{filename}' "
-            f">'{log}' 2>&1")
+            f">>'{log}' 2>&1")
 
         if cp.returncode:
             logging.error(
@@ -559,9 +563,11 @@ def check_devicetree(filename):
             return stats
 
         # Run dt-validate.
+        with open(log, 'a') as f:
+            print('+ DT-VALIDATE', file=f)
+
         cp = run(
-            f"{dt_validate} -m "
-            f"-s '{bindings}' '{filename}' "
+            f"{dt_validate} -m -s '{bindings}' '{filename}' "
             f">>'{log}' 2>&1")
 
         if cp.returncode:
@@ -569,6 +575,11 @@ def check_devicetree(filename):
                 f"dt-validate {red}failed{normal} on `{filename}' (see {log})")
             stats.inc_error()
             return stats
+
+        with open(log, 'a') as f:
+            print('+ END', file=f)
+
+        logging.info(f"{green}Created{normal} `{log}'")
 
     # Verify the log with dt-parser.
     cp = run(f"{dt_parser} '{log}'")
