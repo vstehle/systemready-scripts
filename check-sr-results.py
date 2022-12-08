@@ -77,6 +77,10 @@ parser = None
 # This will be set after command line argument parsing.
 linux_url = None
 
+# Cache dir.
+# This will be set after command line argument parsing.
+cache_dir = None
+
 # ESRT GUIDs.
 # This is populated when checking the ESRT, and is used later on to check
 # capsules.
@@ -158,19 +162,18 @@ def download_file(url, filename):
 # Get (cached) bindings folder.
 # If necessary, we download the Linux tarball from a URL and extract it.
 # We raise an exception or exit in case of issue.
-# We cache the bindings in the user's home.
+# We cache the bindings under cache_dir.
 # We return the dir name.
 def get_bindings():
-    cache = f"{os.path.expanduser('~')}/.check-sr-results"
     linux_ver = re.sub(r'\.tar\..*', '', os.path.basename(linux_url))
     bindings = f"{linux_ver}/Documentation/devicetree/bindings"
-    cached = f"{cache}/{bindings}"
+    cached = f"{cache_dir}/{bindings}"
 
     # Create cache folder if we don't have one already.
     # Otherwise, lookup in the cache.
-    if not os.path.isdir(cache):
-        logging.debug(f"Creating cache dir `{cache}'")
-        os.mkdir(cache)
+    if not os.path.isdir(cache_dir):
+        logging.debug(f"Creating cache dir `{cache_dir}'")
+        os.mkdir(cache_dir)
     elif os.path.isdir(cached):
         logging.debug(f"Cache hit for `{cached}'")
         return cached
@@ -183,7 +186,7 @@ def get_bindings():
 
         # Extract Linux tarball.
         logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
-        cp = run(f"tar -C '{cache}' -xf '{t}' '{bindings}'")
+        cp = run(f"tar -C '{cache_dir}' -xf '{t}' '{bindings}'")
 
         if cp.returncode:
             logging.error(f"{red}Bad Linux tarball{normal} `{t}'")
@@ -981,6 +984,9 @@ if __name__ == '__main__':
                '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
+        '--cache-dir', help='Specify cache directory',
+        default=f"{os.path.expanduser('~')}/.check-sr-results"),
+    parser.add_argument(
         '--capsule-tool', help='Specify capsule-tool.py path',
         default=f'{here}/capsule-tool.py')
     parser.add_argument('--config', help='Specify YAML configuration file')
@@ -1031,6 +1037,7 @@ if __name__ == '__main__':
     parser = args.parser + (' --debug' if args.debug else '')
     dt_validate = args.dt_validate
     linux_url = args.linux_url
+    cache_dir = args.cache_dir
 
     check_prerequisites()
 
