@@ -89,6 +89,10 @@ for d in b ab; do
 	grep -q ' 1 warning' "$out"
 done
 
+echo -n 'dt error, ' >&3
+check-sr-results.py --dir "$data/dt-error" |& tee "$out"
+grep -q 'dt-parser error no schema' "$out"
+
 echo -n 'image, ' >&3
 img="$tmp/image.bin"
 dd if=/dev/urandom of="$img" bs=123 count=1

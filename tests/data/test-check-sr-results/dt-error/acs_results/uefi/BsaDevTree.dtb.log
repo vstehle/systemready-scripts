@@ -1,0 +1,4 @@
++ DTC
++ DT-VALIDATE
+./acs_results/uefi/BsaDevTree.dtb:0:0: /a/b: failed to match any schema with compatible: ['x,y']
++ END
