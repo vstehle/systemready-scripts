@@ -56,6 +56,7 @@ $defs:
                     seq-file:
                         enum:
                             - sct_results/Sequence/EBBR.seq
+                            - sct_results/Sequence/BBSR.seq
                 required:
                     - seq-file
                 additionalProperties: false
