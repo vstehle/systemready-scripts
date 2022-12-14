@@ -64,11 +64,12 @@ properties:
                 version:
                     type: string
                     enum:
+                        - IR 32b v1.2
                         - IR v1.0
                         - IR v1.1
                         - IR v2.0
+                        - IR v2.0 with SIE
                         - SIE v1.0
-                        - IR 32b v1.2
             required:
                 - files
                 - version
