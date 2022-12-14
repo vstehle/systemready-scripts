@@ -290,6 +290,7 @@ def check_file_contains(must_contain, filename):
                     break
 
                 pat = q.pop(0)
+                logging.debug(f"Looking for `{pat}'")
 
     if pat is not None:
         logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
