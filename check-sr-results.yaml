@@ -110,9 +110,9 @@ tree:
             can-be-empty:
       - dir: linux_tools
         min-entries: 1
-        max-entries: 1
+        max-entries: 2  # Allow dt-validate.log.old
         tree:
-          - file: dt-validate.log
+          - file: dt-validate.log*
             must-contain:
               - 'DeviceTree bindings of Linux kernel version: 5.19.10'
               - 'dtschema version: 2022.9'
