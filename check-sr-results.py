@@ -1024,6 +1024,7 @@ def dump_config(conf, filename):
 
     with open(filename, 'w') as yamlfile:
         yaml.dump(conf, yamlfile, Dumper=yaml.CDumper)
+        logging.info(f"Dumped `{filename}'")
 
 
 if __name__ == '__main__':
