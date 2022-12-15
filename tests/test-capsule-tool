@@ -50,7 +50,7 @@ if capsule-tool.py "$img" |& tee "$out"; then
 	false
 fi
 
-grep -q 'Could not parse capsule' "$out"
+grep 'Could not parse capsule' "$out"
 
 echo -n 'zero, ' >&3
 
@@ -58,7 +58,7 @@ if capsule-tool.py /dev/zero |& tee "$out"; then
 	false
 fi
 
-grep -q 'Could not parse capsule' "$out"
+grep 'Could not parse capsule' "$out"
 
 echo -n 'unauthenticated capsule, ' >&3
 unauth="$tmp/unauthenticated.bin"
@@ -71,12 +71,12 @@ if capsule-tool.py "$unauth" |& tee "$out"; then
 	false
 fi
 
-grep -q 'Missing authentication flag' "$out"
-grep -q 'Invalid capsule' "$out"
+grep 'Missing authentication flag' "$out"
+grep 'Invalid capsule' "$out"
 echo -n 'does not validate, ' >&3
 
 capsule-tool.py --force "$unauth" |& tee "$out"
-grep -q 'continue anyway' "$out"
+grep 'continue anyway' "$out"
 echo -n 'does with force, ' >&3
 
 echo -n 'copy, ' >&3
@@ -113,14 +113,17 @@ hexdump "$auth" >"$auth.hex"
 
 echo -n 'validate, ' >&3
 capsule-tool.py "$auth" |& tee "$out"
-grep -q 'Valid authenticated capsule in FMP format' "$out"
-grep -q 'QEMU_ARM64_UBOOT_IMAGE_GUID' "$out"
-grep -qv 'Image type id GUID: ' "$out"
+grep 'Valid authenticated capsule in FMP format' "$out"
+grep 'QEMU_ARM64_UBOOT_IMAGE_GUID' "$out"
+
+if grep 'Image type id GUID: ' "$out"; then
+	false
+fi
 
 capsule-tool.py --expected-guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$auth" |& tee "$out"
 
-grep -q 'expected one' "$out"
+grep 'expected one' "$out"
 echo -n 'guid expected, ' >&3
 
 if capsule-tool.py --expected-guid 12345678-1234-4234-8234-123456789abc \
@@ -128,7 +131,7 @@ if capsule-tool.py --expected-guid 12345678-1234-4234-8234-123456789abc \
 	false
 fi
 
-grep -q 'Bad capsule GUID' "$out"
+grep 'Bad capsule GUID' "$out"
 echo -n 'unexpected guid caught, ' >&3
 
 echo -n 'tamper, ' >&3
@@ -169,12 +172,12 @@ mkeficapsule \
 	"$img" "$unk"
 
 capsule-tool.py "$unk" |& tee "$out"
-grep -q 'Valid authenticated capsule in FMP format' "$out"
-grep -q 'Capsule update image type id .* is unknown' "$out"
+grep 'Valid authenticated capsule in FMP format' "$out"
+grep 'Capsule update image type id .* is unknown' "$out"
 
 
 echo -n 'print guid, ' >&3
 capsule-tool.py --print-guid "$auth" |& tee "$out"
-grep -q 'Image type id GUID: 058b7d83-50d5-4c47-a195-60d86ad341c4' "$out"
+grep 'Image type id GUID: 058b7d83-50d5-4c47-a195-60d86ad341c4' "$out"
 
 echo 'ok.' >&3

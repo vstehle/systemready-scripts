@@ -44,30 +44,30 @@ for d in a b; do
 	check-sr-results.py --dir "$data/$d" --config "$data/when-any.yaml" \
 		--identify "$identify" |& tee "$out"
 
-	grep -q 'Identified as SystemReady IR v1.0' "$out"
-	grep -q '0 warning, 0 error' "$out"
+	grep 'Identified as SystemReady IR v1.0' "$out"
+	grep '0 warning, 0 error' "$out"
 done
 
 check-sr-results.py --dir "$data/ab" --config "$data/when-any.yaml" \
 	--identify "$identify" |& tee "$out"
 
-grep -q 'Identified as SystemReady IR v1.1' "$out"
-grep -q '0 warning, 0 error' "$out"
+grep 'Identified as SystemReady IR v1.1' "$out"
+grep '0 warning, 0 error' "$out"
 
 echo -n 'when all, ' >&3
 for d in a b; do
 	check-sr-results.py --dir "$data/$d" --config "$data/when-all.yaml" \
 		--identify "$identify" |& tee "$out"
 
-	grep -q 'Identified as SystemReady IR v1.0' "$out"
-	grep -q '0 warning, 2 error' "$out"
+	grep 'Identified as SystemReady IR v1.0' "$out"
+	grep '0 warning, 2 error' "$out"
 done
 
 check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
 	--identify "$identify" |& tee "$out"
 
-grep -q 'Identified as SystemReady IR v1.1' "$out"
-grep -q '0 warning, 0 error' "$out"
+grep 'Identified as SystemReady IR v1.1' "$out"
+grep '0 warning, 0 error' "$out"
 
 echo -n 'warn if not named, ' >&3
 check-sr-results.py --dir "$data/a" --config "$data/warn-if-not-named.yaml" \
@@ -75,23 +75,23 @@ check-sr-results.py --dir "$data/a" --config "$data/warn-if-not-named.yaml" \
 
 re='WARNING .*not named in .*a'
 
-if grep -q "$re" "$out"; then
+if grep "$re" "$out"; then
 	false
 fi
 
-grep -q ' 0 warning' "$out"
+grep ' 0 warning' "$out"
 
 for d in b ab; do
 	check-sr-results.py --dir "$data/$d" \
 		--config "$data/warn-if-not-named.yaml" |& tee "$out"
 
-	grep -q "$re" "$out"
-	grep -q ' 1 warning' "$out"
+	grep "$re" "$out"
+	grep ' 1 warning' "$out"
 done
 
 echo -n 'dt error, ' >&3
 check-sr-results.py --dir "$data/dt-error" |& tee "$out"
-grep -q 'dt-parser error no schema' "$out"
+grep 'dt-parser error no schema' "$out"
 
 echo -n 'image, ' >&3
 img="$tmp/image.bin"
@@ -119,19 +119,23 @@ mkdir -v "$tmp/mockup/fw"
 cp -v "$cap" "$tmp/mockup/fw/"
 check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 
-grep -q 'Identified as SystemReady IR v2.0' "$out"
-grep -qv ', 0 error' "$out"
-grep -q 'FwResourceCount' "$out"
-grep -q 'FwResourceCountMax' "$out"
-grep -q ': GUID .* is known' "$out"
-grep -q ': Capsule GUID .* is known' "$out"
+grep 'Identified as SystemReady IR v2.0' "$out"
+
+if grep ', 0 error' "$out"; then
+	false
+fi
+
+grep 'FwResourceCount' "$out"
+grep 'FwResourceCountMax' "$out"
+grep ': GUID .* is known' "$out"
+grep ': Capsule GUID .* is known' "$out"
 dtb="$tmp/mockup/acs_results/uefi/BsaDevTree.dtb"
-grep -q '/dev/null: Warning' "$dtb.log"
+grep '/dev/null: Warning' "$dtb.log"
 md="$tmp/mockup/acs_results/result.md"
 
 if which parser.py; then
 	echo -n '(parser), ' >&3
-	grep -q '# SCT Summary' "$md"
+	grep '# SCT Summary' "$md"
 else
 	echo -n '(no parser), ' >&3
 	test '!' -e "$md"
@@ -166,9 +170,9 @@ echo -n 'zero dt, ' >&3
 dd if=/dev/zero of="$dtb" bs=1k count=1
 check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
 
-grep -q 'dtc failed on ' "$out"
-grep -q 'Could not find .* DT-VALIDATE' "$out"
-grep -q 'FATAL ERROR: Blob has incorrect magic number' "$dtb.log"
+grep 'dtc failed on ' "$out"
+grep 'Could not find .* DT-VALIDATE' "$out"
+grep 'FATAL ERROR: Blob has incorrect magic number' "$dtb.log"
 
 # We continue using the mockup folder from previous steps.
 echo -n 'unmatched guids, ' >&3
@@ -176,6 +180,6 @@ esrt="$tmp/mockup/acs_results/app_output/CapsuleApp_ESRT_table_info.log"
 iconv -f UTF-16 "$esrt" |sed 's/60D86AD341C4/60D86AD341C5/' >"$tmp/bad-esrt"
 iconv -t UTF-16 "$tmp/bad-esrt" >"$esrt"
 check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
-grep -q 'GUID.* not in ESRT' "$out"
+grep 'GUID.* not in ESRT' "$out"
 
 echo 'ok.' >&3

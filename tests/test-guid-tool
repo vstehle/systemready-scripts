@@ -30,28 +30,28 @@ fi
 
 out="$tmp/out"
 guid-tool.py 12345678-1234-4234-9234-56789abcdef0 |& tee "$out"
-grep -q Unknown "$out"
+grep Unknown "$out"
 echo -n 'unknown guid not recognized, ' >&3
 
 guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 |& tee "$out"
-grep -q 'EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID' "$out"
+grep 'EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID' "$out"
 echo -n 'known guid recognized, ' >&3
 
 if guid-tool.py ABC |& tee "$out"; then
 	false
 fi
 
-grep -q Invalid "$out"
+grep Invalid "$out"
 echo -n 'invalid guid rejected, ' >&3
 
 guid-tool.py --details $(uuidgen -t) |& tee "$out"
-grep -q 'version: 1 (time-based)' "$out"
-grep -q 'datetime:' "$out"
-grep -q 'multicast/global:' "$out"
+grep 'version: 1 (time-based)' "$out"
+grep 'datetime:' "$out"
+grep 'multicast/global:' "$out"
 echo -n 'time-based details, ' >&3
 
 guid-tool.py --details $(uuidgen -r) |& tee "$out"
-grep -q 'version: 4 (randomly generated)' "$out"
+grep 'version: 4 (randomly generated)' "$out"
 echo -n 'random details, ' >&3
 
 echo 'ok.' >&3
