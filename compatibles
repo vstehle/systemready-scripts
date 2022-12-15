@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Usage: compatibles <Linux bindings folder>
+# Extract the list of (potential) compatibles strings mentioned in Linux
+# bindings.
+
+set -eu -o pipefail
+
+find "$1" -type f -print0 \
+	|xargs -0 grep -l compatible \
+	|xargs sed 's/\s\+/\n/g' \
+	|sed 's/^["-]//' \
+	|grep -i '^[a-z][a-z0-9_.-]\+,[a-z0-9_.-]\+' \
+	|grep -vF -e '*' -e '{' -e '<' -e '[' \
+	|sed 's/^\([a-zA-Z0-9_.-]\+,[a-zA-Z0-9_.-]\+\).*/\1/' \
+	|sed 's/\.$//' \
+	|grep -v -e '\<foo\>' -e '-$' \
+	|sort -u

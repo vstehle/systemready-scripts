@@ -1,0 +1,2 @@
+- compatible = "dummy,a"
+  or compatible : "dummy,b", "dummy,c"

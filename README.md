@@ -17,6 +17,9 @@ The results checker also needs the external programs `tar`, `dtc` and
 The `capsule-tool.py` script needs the [construct] python3 module, which might
 be available on your Linux distro as `python3-construct`.
 
+The `compatibles` script needs `bash`, `find`, `grep`, `xargs`, `sed` and
+`sort`.
+
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
@@ -430,6 +433,17 @@ number of specific files are all found.
 The `schemas/identify.yaml` file describes this configuration file format and
 can be used with the `validate.py` script to validate the configuration. This is
 run during [Sanity checks].
+
+## Compatibles
+
+The `compatibles` script allows to extract the list of (potential) compatibles
+strings mentioned in Linux bindings.
+
+See the `tests/test-compatible` unit test for examples.
+
+At this point it is not perfect; some compatible strings can be missed and some
+others can be reported spuriously, but this is a reasonable approximation
+already.
 
 ## Miscellaneous
 
