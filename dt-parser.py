@@ -37,6 +37,20 @@ def load_config(filename):
     return conf
 
 
+# Load compatibles list file
+# We return a set of compatibles.
+def load_compatibles(filename):
+    logging.debug(f"Load `{filename}'")
+    r = set()
+
+    with open(filename, 'r') as f:
+        for line in f:
+            r.add(line.rstrip())
+
+    logging.debug(f"{len(r)} unique compatibles")
+    return r
+
+
 # Cleanup line a bit before adding it to the warning message.
 # We remove \t for now.
 def clean_line(line):
@@ -247,6 +261,46 @@ def dedupe_entries(parsed):
     return r
 
 
+# Add compatibles informations to the 'no schema' entries, for which we have
+# the compatible in a list.
+# For all the 'no schema' dt-validate warnings we create an `in_compatibles'
+# key with the list of all the compatibles present in the set as a string,
+# or '<none>'.
+# We run before rules, we modify parsed in-place.
+def add_compatibles(parsed, compatibles):
+    logging.debug('Add compatibles')
+    n = 0
+
+    for i, x in enumerate(parsed):
+        if x['type'] != 'dt-validate warning':
+            continue
+
+        m = re.match(
+            r'failed to match any schema with compatible: \[(.*)\]',
+            x['warning_message'])
+
+        if not m:
+            continue
+
+        t = []
+
+        for y in re.finditer(r"'([^']*)'", m[1]):
+            c = y[1]
+
+            if c in compatibles:
+                logging.debug(f"entry {i} 'no schema', {c} in compatibles")
+                t.append(c)
+
+        if len(t):
+            x['in_compatibles'] = ', '.join(t)
+            n += 1
+        else:
+            x['in_compatibles'] = '<none>'
+
+    if n:
+        logging.info(f"Added {n} compatibles")
+
+
 # Evaluate if an entry matches a criteria
 # The criteria is a dict of Key-value pairs.
 # I.E. crit = {"type": "dt-validate warning", "xxx": "yyy", ...}
@@ -410,6 +464,8 @@ if __name__ == '__main__':
         '--config', help='Configuration filename',
         default=f"{here}/dt-parser.yaml")
     parser.add_argument(
+        '--compatibles', help='Specify compatibles list')
+    parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dump', action='store_true',
@@ -432,9 +488,16 @@ if __name__ == '__main__':
         level=logging.DEBUG if args.debug else logging.INFO)
 
     conf = load_config(args.config)
+    compatibles = set()
+
+    if args.compatibles:
+        compatibles = load_compatibles(args.compatibles)
+
     p = parse(args.log)
 
     # Modify.
+
+    add_compatibles(p, compatibles)
 
     if not args.no_dedupe:
         cleanup_entries(p)

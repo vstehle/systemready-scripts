@@ -1,0 +1,2 @@
+./acs_results/uefi/BsaDevTree.dtb:0:0: /dummy1: failed to match any schema with compatible: ['legit,error']
+./acs_results/uefi/BsaDevTree.dtb:0:0: /dummy2: failed to match any schema with compatible: ['known,compatible']

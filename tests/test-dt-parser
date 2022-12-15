@@ -74,4 +74,11 @@ dt-parser.py --no-dedupe "$data/no-dedupe.log" |& tee "$out"
 grep '2  dt-validate warning' "$out"
 echo -n 'no dedupe, ' >&3
 
+dt-parser.py --compatibles "$data/compat.txt" --print "$data/compat.log" |& tee "$out"
+grep '^1  dt-validate warning no yaml schema' "$out"
+grep '^1  error no schema' "$out"
+grep 'error no schema .*legit,error' "$out"
+grep 'dt-validate warning no yaml schema .*known,compatible' "$out"
+echo -n 'compat, ' >&3
+
 echo 'ok.' >&3

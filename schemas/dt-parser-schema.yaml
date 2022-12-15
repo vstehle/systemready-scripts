@@ -83,6 +83,8 @@ items:
                         - unit_address_vs_reg
                 file:
                     '$ref': './common-schema.yaml#/$defs/filename'
+                in_compatibles:
+                    type: string
                 line:
                     type: string
                 linenum:

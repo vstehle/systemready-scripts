@@ -77,6 +77,8 @@ items:
                 - unit_address_vs_reg
         file:
             '$ref': './common-schema.yaml#/$defs/filename'
+        in_compatibles:
+            type: string
         line:
             type: string
         linenum:
@@ -98,6 +100,7 @@ items:
         # dt_validate_schema is optional
         # dtc_warning_name is optional
         - file
+        # in_compatibles is optional
         - line
         - linenum
         - type
