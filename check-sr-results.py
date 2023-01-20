@@ -165,6 +165,7 @@ def download_file(url, filename):
 
 # Get (cached) bindings folder.
 # If necessary, we download the Linux tarball from a URL and extract it.
+# We handle file:// URLs, too.
 # We raise an exception or exit in case of issue.
 # We cache the bindings under cache_dir.
 # We return the dir name.
@@ -184,9 +185,12 @@ def get_bindings():
 
     # If we arrive here this is a cache miss: download and extract Linux.
     with tempfile.TemporaryDirectory() as tmpdirname:
-        t = f"{tmpdirname}/{os.path.basename(linux_url)}"
-        logging.info(f"Downloading {linux_url} to `{t}'")
-        download_file(linux_url, t)
+        if re.match(r'file://', linux_url):
+            t = re.sub(r'file://', '', linux_url)
+        else:
+            t = f"{tmpdirname}/{os.path.basename(linux_url)}"
+            logging.info(f"Downloading {linux_url} to `{t}'")
+            download_file(linux_url, t)
 
         # Extract Linux tarball.
         logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
