@@ -37,4 +37,8 @@ grep 'dummy,a' "$out"
 grep 'dummy,b' "$out"
 grep 'dummy,c' "$out"
 
+echo -n 'help, ' >&3
+compatibles -h |& tee "$out"
+grep 'Usage:' "$out"
+
 echo 'ok.' >&3
