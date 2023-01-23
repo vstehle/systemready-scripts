@@ -74,6 +74,10 @@ dt_validate = None
 # This will be set after command line argument parsing.
 parser = None
 
+# compatibles command.
+# This will be set after command line argument parsing.
+compatibles = None
+
 # Linux tarball URL.
 # This will be set after command line argument parsing.
 linux_url = None
@@ -93,6 +97,9 @@ esrt_guids = set()
 
 # Linux bindings folder relative path under the cache folder.
 bindings_rel_path = 'bindings'
+
+# Compatible strings file relative path under the cache folder.
+compat_rel_path = 'compatible-strings.txt'
 
 
 # Compute the plural of a word.
@@ -212,8 +219,9 @@ def get_linux_cache():
             logging.info(f"Downloading {linux_url} to `{t}'")
             download_file(linux_url, t)
 
-        # Extract Linux tarball.
-        logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
+        # Extract Linux bindings from tarball.
+        bindings = f"{cached}/{bindings_rel_path}"
+        logging.info(f"Extracting Linux bindings from `{t}' to `{bindings}'")
 
         cp = run(
             f"tar -C '{cached}' --strip-components=3 -xf '{t}' "
@@ -223,7 +231,16 @@ def get_linux_cache():
             logging.error(f"{red}Bad Linux tarball{normal} `{t}'")
             sys.exit(1)
 
-    assert os.path.isdir(f"{cached}/{bindings_rel_path}")
+    assert os.path.isdir(bindings)
+
+    # Extract compatible strings.
+    compat = f"{cached}/{compat_rel_path}"
+    logging.info(f"Extracting Linux compatible strings to `{compat}'")
+    cp = run(f"{compatibles} '{bindings}' >'{compat}'")
+
+    if cp.returncode:
+        logging.error(f"{red}compatibles failed{normal}")
+        sys.exit(1)
 
     # Create stamp.
     logging.debug(f"Creating `{stamp}'")
@@ -238,6 +255,12 @@ def get_linux_cache():
 # We return the dir name.
 def get_bindings():
     return get_linux_cache() + f"/{bindings_rel_path}"
+
+
+# Get (cached) compatible strings file.
+# We return the file name.
+def get_compat():
+    return get_linux_cache() + f"/{compat_rel_path}"
 
 
 # Load YAML configuration file.
@@ -626,7 +649,10 @@ def check_devicetree(filename):
         logging.info(f"{green}Created{normal} `{log}'")
 
     # Verify the log with dt-parser.
-    cp = run(f"{dt_parser} '{log}'")
+    # We use the compatible strings extracted from Linux bindings to filter out
+    # more false positive.
+    compat = get_compat()
+    cp = run(f"{dt_parser} --compatibles '{compat}' '{log}'")
 
     if cp.returncode:
         logging.error(f"dt-parser {red}failed{normal} on `{log}'!")
@@ -1009,6 +1035,13 @@ def check_prerequisites():
         logging.error(f"{red}dt-parser not found{normal}")
         sys.exit(1)
 
+    # Check that we have compatibles.
+    cp = run(f"{compatibles} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}compatibles not found{normal}")
+        sys.exit(1)
+
 
 # Overlay the src file over the dst file, in-place.
 def overlay_file(src, dst):
@@ -1124,6 +1157,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--capsule-tool', help='Specify capsule-tool.py path',
         default=f'{here}/capsule-tool.py')
+    parser.add_argument(
+        '--compatibles', help='Specify compatibles path',
+        default=f"{here}/compatibles")
     parser.add_argument('--config', help='Specify YAML configuration file')
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
@@ -1174,6 +1210,7 @@ if __name__ == '__main__':
     dt_parser = args.dt_parser + (' --debug' if args.debug else '')
     parser = args.parser + (' --debug' if args.debug else '')
     dt_validate = args.dt_validate
+    compatibles = args.compatibles
     linux_url = args.linux_url
     cache_dir = args.cache_dir
     force_regen = args.force_regen
