@@ -14,6 +14,7 @@ import guid
 import fnmatch
 import requests
 import tempfile
+import shutil
 
 try:
     from packaging import version
@@ -90,6 +91,9 @@ force_regen = None
 # capsules.
 esrt_guids = set()
 
+# Linux bindings folder relative path under the cache folder.
+bindings_rel_path = 'bindings'
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -163,27 +167,29 @@ def download_file(url, filename):
                 f.write(chunk)
 
 
-# Get (cached) bindings folder.
+# Get cached linux folder.
 # If necessary, we download the Linux tarball from a URL and extract it.
 # We handle file:// URLs, too.
 # We raise an exception or exit in case of issue.
 # We cache the bindings under cache_dir.
 # We return the dir name.
-def get_bindings():
+def get_linux_cache():
     linux_ver = re.sub(r'\.tar\..*', '', os.path.basename(linux_url))
-    bindings = f"{linux_ver}/Documentation/devicetree/bindings"
-    cached = f"{cache_dir}/{bindings}"
+    cached = f"{cache_dir}/{linux_ver}"
+    stamp = f"{cached}/.stamp"
 
-    # Create cache folder if we don't have one already.
-    # Otherwise, lookup in the cache.
-    if not os.path.isdir(cache_dir):
-        logging.debug(f"Creating cache dir `{cache_dir}'")
-        os.mkdir(cache_dir)
-    elif os.path.isdir(cached):
-        logging.debug(f"Cache hit for `{cached}'")
+    # Is this a cache hit?
+    if os.path.isfile(stamp):
+        logging.debug(f"{stamp} exists: cache hit for `{cached}'")
         return cached
 
-    # If we arrive here this is a cache miss: download and extract Linux.
+    # If we arrive here this is a cache miss: re-create cache folder for
+    # robustness.
+    logging.debug(f"Cache miss: (re-)creating cache dir `{cached}'")
+    shutil.rmtree(cached, ignore_errors=True)
+    os.makedirs(cached)
+
+    # Download and extract Linux.
     with tempfile.TemporaryDirectory() as tmpdirname:
         if re.match(r'file://', linux_url):
             t = re.sub(r'file://', '', linux_url)
@@ -194,14 +200,30 @@ def get_bindings():
 
         # Extract Linux tarball.
         logging.info(f"Extracting Linux tarball `{t}' to `{cached}'")
-        cp = run(f"tar -C '{cache_dir}' -xf '{t}' '{bindings}'")
+
+        cp = run(
+            f"tar -C '{cached}' --strip-components=3 -xf '{t}' "
+            f"'{linux_ver}/Documentation/devicetree/bindings'")
 
         if cp.returncode:
             logging.error(f"{red}Bad Linux tarball{normal} `{t}'")
             sys.exit(1)
 
-    assert os.path.isdir(cached)
+    assert os.path.isdir(f"{cached}/{bindings_rel_path}")
+
+    # Create stamp.
+    logging.debug(f"Creating `{stamp}'")
+
+    with open(stamp, 'w'):
+        pass
+
     return cached
+
+
+# Get (cached) bindings folder.
+# We return the dir name.
+def get_bindings():
+    return get_linux_cache() + f"/{bindings_rel_path}"
 
 
 # Load YAML configuration file.
