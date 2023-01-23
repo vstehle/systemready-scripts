@@ -591,7 +591,7 @@ def check_devicetree(filename):
     log = f"{filename}.log"
     bindings = get_bindings()
 
-    if need_regen(log, [filename, bindings]):
+    if need_regen(log, [filename, bindings, which(dtc), which(dt_validate)]):
         # Run dtc.
         with open(log, 'w') as f:
             print('+ DTC', file=f)
@@ -694,15 +694,21 @@ def check_devicetree(filename):
 
 
 # Try to re-create result.md with the SCT parser.
-# This can fail if we do not have parser.py at hand. We do not treat that as an
-# error here but rather rely on subsequent checks.
+# If we do not have parser.py at hand or if parsing fails, we do not treat that
+# as an error here but rather rely on subsequent checks.
 def sct_parser(conffile, filename):
     logging.debug(f"SCT parser `{filename}'")
+    which_parser = which(parser)
+
+    if which_parser is None:
+        logging.debug('No parser')
+        return
+
     seq = conffile['seq-file']
     ekl = 'sct_results/Overall/Summary.ekl'
     d = os.path.dirname(filename)
 
-    if not need_regen(filename, [f"{d}/{seq}", f"{d}/{ekl}"]):
+    if not need_regen(filename, [f"{d}/{seq}", f"{d}/{ekl}", which_parser]):
         return
 
     cp = run(f"cd '{d}' && {parser} {ekl} '{seq}'")
