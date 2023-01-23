@@ -947,6 +947,13 @@ def check_prerequisites():
         logging.error(f"{red}dtc not found{normal}")
         sys.exit(1)
 
+    # Check that we have dt-validate.
+    cp = run(f"{dt_validate} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}dt-validate not found{normal}")
+        sys.exit(1)
+
     # Check that we have dt-parser.
     cp = run(f"{dt_parser} -h")
 
