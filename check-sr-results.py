@@ -182,15 +182,19 @@ def which(command):
 # We handle file:// URLs, too.
 # We raise an exception or exit in case of issue.
 # We cache the bindings under cache_dir.
+# We re-generate the cache if it more than one hour older than the script. This
+# is to make sure cache format is somewhat in sync with the script version,
+# while allowing convenient development.
 # We return the dir name.
 def get_linux_cache():
     linux_ver = re.sub(r'\.tar\..*', '', os.path.basename(linux_url))
     cached = f"{cache_dir}/{linux_ver}"
     stamp = f"{cached}/.stamp"
+    one_hour = 60 * 60
 
     # Is this a cache hit?
-    if os.path.isfile(stamp):
-        logging.debug(f"{stamp} exists: cache hit for `{cached}'")
+    if not need_regen(stamp, [os.path.realpath(__file__)], margin=one_hour):
+        logging.debug(f"Cache hit for `{cached}' (according to `{stamp}')")
         return cached
 
     # If we arrive here this is a cache miss: re-create cache folder for
