@@ -244,8 +244,6 @@ tree:
         must-contain:
           # We check only that all non-hw-related commands are there for now.
           # RTC is a special case as we have an emulation in U-Boot.
-          # We omit the bootefi hello and selftest as not everybody keeps them
-          # in production.
           - help
           - version
           - printenv
@@ -257,7 +255,11 @@ tree:
           - efidebug dh
           - efidebug memmap
           - efidebug tables
+          - efidebug query
           - efidebug boot dump
+          - efidebug capsule esrt
+          # We omit the bootefi hello and selftest as not everybody keeps them
+          # in production.
         warn-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
@@ -274,8 +276,6 @@ tree:
           - dh -d -v
           - memmap
           - smbiosview
-          - CapsuleApp.efi -P
-          - CapsuleApp.efi -E
         warn-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
