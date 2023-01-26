@@ -167,6 +167,16 @@ def download_file(url, filename):
                 f.write(chunk)
 
 
+# Determine the path of a command.
+# We ignore the command arguments.
+# Return the path or None.
+def which(command):
+    logging.debug(f"Which `{command}'")
+    r = shutil.which(re.sub(r' .*', '', command))
+    logging.debug(f"`{r}'")
+    return r
+
+
 # Get cached linux folder.
 # If necessary, we download the Linux tarball from a URL and extract it.
 # We handle file:// URLs, too.
@@ -915,6 +925,35 @@ def check_tree(conftree, dirname):
     return stats
 
 
+# Check that we have dt-validate.
+# If we do not have it, we try to install it with pip.
+# We exit in case of failure.
+def check_dt_validate():
+    logging.debug('Checking dt-validate')
+
+    # Check that we have dt-validate.
+    w = which(dt_validate)
+
+    if w is None:
+        # Install dt-schema (for dt-validate).
+        logging.info('Installing dt-schema')
+        cp = run(f"{sys.executable} -m pip install dtschema")
+
+        if cp.returncode:
+            logging.error(f"{red}Installing dt-schema failed{normal}")
+            sys.exit(1)
+
+    else:
+        logging.debug(f"Have dt-validate (`{w}')")
+
+    # Check that dt-validate runs.
+    cp = run(f"{dt_validate} -h")
+
+    if cp.returncode:
+        logging.error(f"{red}Bad {dt_validate}{normal}")
+        sys.exit(1)
+
+
 # Check that we have all we need.
 def check_prerequisites():
     logging.debug('Checking prerequisites')
@@ -948,11 +987,7 @@ def check_prerequisites():
         sys.exit(1)
 
     # Check that we have dt-validate.
-    cp = run(f"{dt_validate} -h")
-
-    if cp.returncode:
-        logging.error(f"{red}dt-validate not found{normal}")
-        sys.exit(1)
+    check_dt_validate()
 
     # Check that we have dt-parser.
     cp = run(f"{dt_parser} -h")

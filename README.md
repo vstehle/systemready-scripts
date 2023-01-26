@@ -12,7 +12,8 @@ The `check-sr-results.py` SystemReady results checker needs the [chardet] and
 [requests] python3 modules. On some Linux distros they are available as
 `python3-chardet` and `python3-requests`.
 The results checker also needs the external programs `tar`, `dtc` and
-`dt-validate` (from [dt-schema]) to be installed.
+`dt-validate` (from [dt-schema]) to be installed. It will try to install
+`dt-schema` automatically with `pip` when `dt-validate` is not found.
 
 The `capsule-tool.py` script needs the [construct] python3 module, which might
 be available on your Linux distro as `python3-construct`.
