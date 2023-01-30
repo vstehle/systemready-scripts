@@ -440,8 +440,9 @@ def identify_guid(guid, message=''):
             logging.debug(f"GUID `{guid}' {green}unknown{normal}{message}")
             stats.inc_pass()
         else:
-            logging.error(f"GUID `{guid}' {red}is known{normal}: {o}{message}")
-            stats.inc_error()
+            logging.warning(
+                f"GUID `{guid}' {yellow}is known{normal}: {o}{message}")
+            stats.inc_warning()
 
     return stats
 
