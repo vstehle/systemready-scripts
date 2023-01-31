@@ -550,9 +550,11 @@ def check_uefi_capsule(filename):
 # - The file is missing
 # - Or the file is older than one of its dependencies
 # Dependencies can be files or dirs names.
+# A margin (in seconds, zero by default) can be specified to avoid
+# re-generating files to often.
 # We return False otherwise
-def need_regen(filename, deps):
-    logging.debug(f"Need regen `{filename}' <- {deps}")
+def need_regen(filename, deps, margin=0):
+    logging.debug(f"Need regen `{filename}' <- {deps} (margin: {margin})")
 
     if force_regen:
         logging.debug(f"Forcing re-generation of `{filename}'")
@@ -564,9 +566,9 @@ def need_regen(filename, deps):
 
     s = os.stat(filename)
 
-    # Any dependency more recent?
+    # Any dependency more recent? (We take margin into account.)
     for f in deps:
-        if os.stat(f).st_mtime > s.st_mtime:
+        if os.stat(f).st_mtime - margin > s.st_mtime:
             logging.debug(
                 f"`{f}' is more recent than `{filename}': re-generate")
             return True
