@@ -458,7 +458,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Parse Devicetree tools logs.',
         epilog="Entries with type `ignored' (after rule processing) "
-               "are not printed by option `--print'.",
+               "are not printed by option `--print'. "
+               "To keep only errors filter with --filter \"'error' in "
+               "x['type']\".",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '--config', help='Configuration filename',
