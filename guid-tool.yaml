@@ -79,3 +79,7 @@ known-guids:
     description: edk2-platforms Intel Microcode
   - guid: 4096267b-da0a-42eb-b5eb-fef31d207cb4
     description: edk2-platforms Intel Vlv2TbltDevicePkg
+  - guid: 4864d599-2d86-4370-8b08-6374b4608907
+    description: Arm reserved GUID 1
+  - guid: 4962fd6f-7971-4dce-851e-9cb22a89b832
+    description: Arm reserved GUID 2
