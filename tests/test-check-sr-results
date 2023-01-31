@@ -125,10 +125,11 @@ if grep ', 0 error' "$out"; then
 	false
 fi
 
-grep 'FwResourceCount' "$out"
+grep 'WARNING .* GUID .* is known: "Arm reserved GUID 2", in .*ESRT_table' "$out"
+grep 'FwResourceCount ' "$out"
 grep 'FwResourceCountMax' "$out"
-grep ': GUID .* is known' "$out"
-grep ': Capsule GUID .* is known' "$out"
+grep 'ERROR .*GUID .* not in ESRT' "$out"
+grep 'WARNING .* Capsule GUID .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID", in .*capsule1.bin' "$out"
 dtb="$tmp/mockup/acs_results/uefi/BsaDevTree.dtb"
 grep '/dev/null: Warning' "$dtb.log"
 md="$tmp/mockup/acs_results/result.md"

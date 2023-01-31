@@ -460,15 +460,14 @@ def identify_guid(guid, message=''):
         stats.inc_error()
 
     else:
-        o = cp.stdout.decode().split()
-        o = o[-1]
+        o = cp.stdout.decode().rstrip()
 
         if o == 'Unknown':
             logging.debug(f"GUID `{guid}' {green}unknown{normal}{message}")
             stats.inc_pass()
         else:
             logging.warning(
-                f"GUID `{guid}' {yellow}is known{normal}: {o}{message}")
+                f"GUID `{guid}' {yellow}is known{normal}: \"{o}\"{message}")
             stats.inc_warning()
 
     return stats
@@ -548,15 +547,16 @@ def check_uefi_capsule(filename):
         stats.inc_error()
 
     m = re.search(
-        r"Capsule update image type id `([0-9a-f-]+)' is known: ([^\n]+)\n", e)
+        r"Capsule update image type id `([0-9a-f-]+)' is known: "
+        r"\"([^\n]+)\"\n", e)
     n = re.search(
         r"Capsule update image type id `([0-9a-f-]+)' is unknown", o[-1])
 
     if m and not n:
-        logging.error(
-            f"Capsule GUID `{m[1]}' {red}is known{normal}: {m[2]}, "
+        logging.warning(
+            f"Capsule GUID `{m[1]}' {yellow}is known{normal}: \"{m[2]}\", "
             f"in `{filename}'")
-        stats.inc_error()
+        stats.inc_warning()
 
     elif n and not m:
         logging.debug(
