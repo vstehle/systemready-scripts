@@ -266,7 +266,6 @@ tree:
           - 'FIRMWARE BUG:'
           - No EFI system partition
       - file: uefi-sniff.log
-        optional:
         must-contain:
           - dmem
           - pci
