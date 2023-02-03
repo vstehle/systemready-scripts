@@ -114,7 +114,7 @@ hexdump "$auth" >"$auth.hex"
 echo -n 'validate, ' >&3
 capsule-tool.py "$auth" |& tee "$out"
 grep 'Valid authenticated capsule in FMP format' "$out"
-grep 'QEMU_ARM64_UBOOT_IMAGE_GUID' "$out"
+grep 'WARNING .*Capsule update image type id .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID"' "$out"
 
 if grep 'Image type id GUID: ' "$out"; then
 	false

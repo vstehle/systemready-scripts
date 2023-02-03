@@ -472,13 +472,13 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False,
         logging.error(f"Bad guid tool `{guid_tool}'")
         sys.exit(1)
 
-    o = cp.stdout.decode().split()
-    o = o[-1]
+    o = cp.stdout.decode().rstrip()
 
     if o == 'Unknown':
         print(f"Capsule update image type id `{g}' is unknown")
     else:
-        logging.warning(f"Capsule update image type id `{g}' is known: {o}")
+        logging.warning(
+            f"Capsule update image type id `{g}' is known: \"{o}\"")
 
     # Verify
     r = True
