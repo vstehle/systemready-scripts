@@ -141,7 +141,11 @@ def parse(filename):
             # single-line dt-validate match failure warning
             # qemu.dtb:0:0: /platform@c000000: failed to match any schema with
             # compatible: ['qemu,platform', 'simple-bus']
-            m = re.match(r'([^:]+):\d+:\d+: ([^:]+): (.*)', line)
+            # also only beginning with qemu.dtb: (without 0:0:)
+            m = re.match(
+                r'([^:]+)(?::\d+:\d+)?: ([^:]+): '
+                r'(failed to match any schema.*)',
+                line)
 
             if m:
                 logging.debug(

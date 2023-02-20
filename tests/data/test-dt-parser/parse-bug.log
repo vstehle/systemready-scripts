@@ -1,0 +1,1 @@
+BsaDevTree.dtb: /soc@0/bus@1234/xyz@1234: failed to match any schema with compatible: ['vendor,module', 'vendor,module2']

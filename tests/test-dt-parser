@@ -44,6 +44,14 @@ dt-parser.py --print "$data/qemu.log" |& tee "$out"
 grep 'is not one of' "$out"
 echo -n 'print, ' >&3
 
+dt-parser.py "$data/parse-bug.log" |& tee "$out"
+
+if grep 'WARNING .*: Unparsed line ' "$out"; then
+	false
+fi
+
+echo -n 'parse bug, ' >&3
+
 yaml="$tmp/dt.yaml"
 dt-parser.py --yaml "$yaml" "$data/qemu.log"
 echo -n 'yaml, ' >&3
