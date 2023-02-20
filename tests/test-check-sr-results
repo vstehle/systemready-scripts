@@ -30,25 +30,26 @@ fi
 
 data="$here/data/$(basename "$0")"
 out="$tmp/out"
+csr=(check-sr-results.py --cache-dir "$tmp/cache")
 
 echo -n 'none, ' >&3
-check-sr-results.py
+"${csr[@]}"
 
 echo -n 'empty config, ' >&3
-check-sr-results.py --config /dev/null
+"${csr[@]}" --config /dev/null
 
 echo -n 'when any, ' >&3
 identify="$here/../identify.py --identify-db $data/identify.yaml"
 
 for d in a b; do
-	check-sr-results.py --dir "$data/$d" --config "$data/when-any.yaml" \
+	"${csr[@]}" --dir "$data/$d" --config "$data/when-any.yaml" \
 		--identify "$identify" |& tee "$out"
 
 	grep 'Identified as SystemReady IR v1.0' "$out"
 	grep '0 warning, 0 error' "$out"
 done
 
-check-sr-results.py --dir "$data/ab" --config "$data/when-any.yaml" \
+"${csr[@]}" --dir "$data/ab" --config "$data/when-any.yaml" \
 	--identify "$identify" |& tee "$out"
 
 grep 'Identified as SystemReady IR v1.1' "$out"
@@ -56,21 +57,21 @@ grep '0 warning, 0 error' "$out"
 
 echo -n 'when all, ' >&3
 for d in a b; do
-	check-sr-results.py --dir "$data/$d" --config "$data/when-all.yaml" \
+	"${csr[@]}" --dir "$data/$d" --config "$data/when-all.yaml" \
 		--identify "$identify" |& tee "$out"
 
 	grep 'Identified as SystemReady IR v1.0' "$out"
 	grep '0 warning, 2 error' "$out"
 done
 
-check-sr-results.py --dir "$data/ab" --config "$data/when-all.yaml" \
+"${csr[@]}" --dir "$data/ab" --config "$data/when-all.yaml" \
 	--identify "$identify" |& tee "$out"
 
 grep 'Identified as SystemReady IR v1.1' "$out"
 grep '0 warning, 0 error' "$out"
 
 echo -n 'warn if not named, ' >&3
-check-sr-results.py --dir "$data/a" --config "$data/warn-if-not-named.yaml" \
+"${csr[@]}" --dir "$data/a" --config "$data/warn-if-not-named.yaml" \
 	|& tee "$out"
 
 re='WARNING .*not named in .*a'
@@ -82,7 +83,7 @@ fi
 grep ' 0 warning' "$out"
 
 for d in b ab; do
-	check-sr-results.py --dir "$data/$d" \
+	"${csr[@]}" --dir "$data/$d" \
 		--config "$data/warn-if-not-named.yaml" |& tee "$out"
 
 	grep "$re" "$out"
@@ -90,7 +91,7 @@ for d in b ab; do
 done
 
 echo -n 'dt error, ' >&3
-check-sr-results.py --dir "$data/dt-error" |& tee "$out"
+"${csr[@]}" --dir "$data/dt-error" |& tee "$out"
 grep 'dt-parser error no schema' "$out"
 
 echo -n 'image, ' >&3
@@ -117,7 +118,7 @@ echo -n 'mockup, ' >&3
 cp -r "$data/mockup" "$tmp/mockup"
 mkdir -v "$tmp/mockup/fw"
 cp -v "$cap" "$tmp/mockup/fw/"
-check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
+"${csr[@]}" --dir "$tmp/mockup" |& tee "$out"
 
 grep 'Identified as SystemReady IR v2.0' "$out"
 
@@ -159,7 +160,7 @@ if which parser.py; then
 	[ "$md" -ot "$ekl" ]
 fi
 
-check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
+"${csr[@]}" --dir "$tmp/mockup" |& tee "$out"
 [ "$dtb.log" -nt "$dtb" ]
 
 if which parser.py; then
@@ -169,7 +170,7 @@ fi
 # We continue using the mockup folder from previous step.
 echo -n 'zero dt, ' >&3
 dd if=/dev/zero of="$dtb" bs=1k count=1
-check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
+"${csr[@]}" --dir "$tmp/mockup" |& tee "$out"
 
 grep 'dtc failed on ' "$out"
 grep 'Could not find .* DT-VALIDATE' "$out"
@@ -180,7 +181,7 @@ echo -n 'unmatched guids, ' >&3
 esrt="$tmp/mockup/acs_results/app_output/CapsuleApp_ESRT_table_info.log"
 iconv -f UTF-16 "$esrt" |sed 's/60D86AD341C4/60D86AD341C5/' >"$tmp/bad-esrt"
 iconv -t UTF-16 "$tmp/bad-esrt" >"$esrt"
-check-sr-results.py --dir "$tmp/mockup" |& tee "$out"
+"${csr[@]}" --dir "$tmp/mockup" |& tee "$out"
 grep 'GUID.* not in ESRT' "$out"
 
 echo 'ok.' >&3
