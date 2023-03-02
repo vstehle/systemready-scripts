@@ -16,8 +16,8 @@ $defs:
         enum:
             - dt-validate warning missing property
             - dt-validate warning naming
-            - dt-validate warning no yaml schema
             - dt-validate warning not an array
             - dt-validate warning spurious property
             - error no schema
+            - error no yaml schema
             - ignored

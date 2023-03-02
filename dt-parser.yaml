@@ -207,19 +207,18 @@
   update:
     type: error no schema
 
-# We categorize the following common dt-validate warning entries.
-# This is only to ease analysis; those issues still need to be dealt with.
-
 - rule: Categorize all dt-validate warnings about missing schema but with a
-    matching compatible as `no yaml schema' for easier analysis.
-    This is only to ease analysis; those issues still need to be dealt with.
+    matching compatible as `no yaml schema' errors, which will block
+    certification.
   criteria:
     type: dt-validate warning
     warning_message: 'failed to match any schema with compatible: '
-    # Entries with in_compatibles == '<none>' are matched by the rule above and
-    # transformed into errors.
+    # Entries with in_compatibles == '<none>' are matched by the rule above
   update:
-    type: dt-validate warning no yaml schema
+    type: error no yaml schema
+
+# We categorize the following common dt-validate warning entries.
+# This is only to ease analysis; those issues still need to be dealt with.
 
 - rule: Categorize all dt-validate warnings about non-matching names as
     `naming' for easier analysis.
