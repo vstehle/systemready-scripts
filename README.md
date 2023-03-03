@@ -1,4 +1,4 @@
-# SystemReady scripts
+# The SystemReady scripts
 
 A collection of scripts to help with SystemReady compliance.
 
@@ -33,7 +33,7 @@ To run the [Sanity checks] you will also need: `yamllint`, `flake8`,
 [requests]: https://requests.readthedocs.io/en/latest/
 [dt-schema]: https://github.com/devicetree-org/dt-schema
 
-## SystemReady results checker
+# SystemReady results checker
 
 The `check-sr-results.py` script performs a number of verifications in a
 SystemReady certification results tree, layout as described in the [SystemReady
@@ -45,7 +45,7 @@ capsule and on `dt-parser.py` to check the Devicetree blob.
 
 [SystemReady IR template]: https://gitlab.arm.com/systemready/systemready-ir-template
 
-### Configuration file
+## Configuration file
 
 The `check-sr-results.yaml` configuration describes the verifications to
 perform. It also contains some data to identify the ACS-IR that was used and to
@@ -154,21 +154,21 @@ The conditions are strings. A condition is true when its string matches
 All keys are overwritten violently except `tree`, which is overlayed
 recursively.
 
-#### SCT parser result.md
+### SCT parser result.md
 
 A file marked with the `sct-parser-result-md` property is treated specially:
 
 * If the file is missing we try to re-create it with the SCT parser, using the
   specified sequence file and the `sct_result/Overall/Summary.ekl` file.
 
-#### Automatic checks
+### Automatic checks
 
 A number of checks are performed automatically, without being described in the
 configuration file:
 
 * Integrity of tar/gzip archives
 
-### Checking IR 1.x results
+## Checking IR 1.x results
 
 By default the `check-sr-results.py` script targets the latest IR version (at
 the time of writing: IR 2.0).
@@ -180,7 +180,7 @@ Nevertheless, a `check-sr-results-ir1.yaml` configuration file is kept here for
 convenience. It allows to check IR v1.x results with the latest version of the
 script.
 
-## SystemReady results formatter
+# SystemReady results formatter
 
 The `format-sr-results.py` script produces a report from a SystemReady
 certification results tree, layout as described in the [SystemReady IR template].
@@ -191,7 +191,7 @@ is then possible to convert the report to pdf or HTML format with [pandoc].
 When specifying the `--jira` option, a text file suitable for copy-and-paste into a
 Jira ticket is produced.
 
-### Configuration file
+## Configuration file
 
 The `format-sr-results.yaml` configuration describes the report to produce.
 
@@ -199,7 +199,7 @@ YAML file format:
 
 ```{.yaml}
 ---
-format-sr-results-configuration: # Mandatory
+format-sr-results-configuration:      # Mandatory
 subs:
   - heading: <heading name>           # Paragraph's title
     extract:                          # Optional extraction info
@@ -241,7 +241,7 @@ The `schemas/format-sr-results-schema.yaml` file describes this configuration
 file format and can be used with the `validate.py` script to validate the
 configuration. This is run during [Sanity checks].
 
-### Internal data format
+## Internal data format
 
 The internal python data format corresponds closely to a flattened view of the
 results obtained as per the YAML configuration file:
@@ -257,7 +257,7 @@ results obtained as per the YAML configuration file:
 
 The internal data can be dumped to file with the `--dump` option.
 
-## Capsule tool
+# Capsule tool
 
 The `capsule-tool.py` script allows to perform various operations on UEFI
 Capsules:
@@ -274,7 +274,7 @@ capsule GUID. Also, see the [Dependencies].
 
 It is used by `check-sr-results.py`.
 
-### Validating capsules
+## Validating capsules
 
 Validation is done by default on the input capsule:
 
@@ -292,7 +292,7 @@ case of validation error:
 $ ./capsule-tool.py --force capsule.bin ...
 ```
 
-### De-authenticating capsules
+## De-authenticating capsules
 
 Capsules can be "de-authenticated" using the `--de-authenticate` command line
 option. This will turn off the authentication flag and remove the authentication
@@ -302,7 +302,7 @@ information. The modified capsule can be saved using the `--output` option:
 $ ./capsule-tool.py --de-authenticate --output output.bin capsule.bin
 ```
 
-### Tampering with capsules
+## Tampering with capsules
 
 Capsules can be "tampered with" using the `--tamper` command line option. This
 will invert one bit at random in the firmware image part. The modified capsule
@@ -312,7 +312,7 @@ can be saved using the `--output` option:
 $ ./capsule-tool.py --tamper --output output.bin capsule.bin
 ```
 
-## GUID tool
+# GUID tool
 
 The `guid-tool.py` script allows to verify if a UEFI GUID is in the database of
 known GUIDs.
@@ -322,12 +322,7 @@ for examples.
 
 It is used by `check-sr-results.py` and `capsule-tool.py`.
 
-## Guid class
-
-The `guid.py` script contains the `Guid` class definition. It is used by the
-`guid-tool.py` and `capsule-tool.py` scripts.
-
-## Devicetree parser
+# Devicetree parser
 
 The `dt-parser.py` script allows to parse the logs of Devicetree related tools.
 
@@ -342,7 +337,7 @@ $ ./dt-parser.py input.log
 See the online help for all options and see the `tests/test-dt-parser` unit test
 for more examples.
 
-### Configuration file format
+## Configuration file format
 
 The `dt-parser.yaml` configuration is used by default (this can be changed with
 the `--config` option). The configuration file is in [YAML] format. It contains
@@ -367,7 +362,7 @@ format.
 
 [YAML]: https://yaml.org
 
-### Rule processing
+## Rule processing
 
 The rules from the configuration will be applied to each entry one by one in the
 following manner:
@@ -388,7 +383,7 @@ For example, the entry value "abcde" matches the criteria value "cd".
 You can use `--debug` to see more details about which rules are applied to the
 entries.
 
-### Filtering data
+## Filtering data
 
 The `--filter` option allows to specify a python3 expression, which is used as a
 filter. The expression is evaluated for each entry; if it evaluates to True the
@@ -410,7 +405,7 @@ file for example:
 $ ./dt-parser.py --filter "x['type'] != 'ignored'" --yaml out.yaml ...
 ```
 
-## Identify
+# Identify
 
 The `identify.py` script allows to identify IR results when layout as described
 in the [SystemReady IR template].
@@ -420,7 +415,7 @@ This script is used by the `check-sr-results.py` script.
 See the online help for all options and the `tests/test-identify` unit test for
 examples.
 
-### Configuration file
+## Configuration file
 
 The `identify.yaml` configuration describes how to identify SystemReady versions
 from ACS results.
@@ -441,7 +436,7 @@ The `schemas/identify.yaml` file describes this configuration file format and
 can be used with the `validate.py` script to validate the configuration. This is
 run during [Sanity checks].
 
-## Compatibles
+# Compatibles
 
 The `compatibles` script allows to extract the list of (potential) compatibles
 strings mentioned in Linux bindings.
@@ -452,9 +447,9 @@ At this point it is not perfect; some compatible strings can be missed and some
 others can be reported spuriously, but this is a reasonable approximation
 already.
 
-## Miscellaneous
+# Miscellaneous
 
-### Documentation
+## Documentation
 
 It is possible to convert this `README.md` into `README.pdf` with [pandoc]
 using:
@@ -465,7 +460,7 @@ $ make doc
 
 See `make help`.
 
-### Sanity checks
+## Sanity checks
 
 To perform some sanity checks in this repository, run:
 
@@ -479,7 +474,12 @@ results formatter] using the `validate.py` script.
 
 See `make help` and [Dependencies].
 
-## License
+## Guid class
+
+The `guid.py` script contains the `Guid` class definition. It is used by the
+`guid-tool.py` and `capsule-tool.py` scripts.
+
+# License
 
 This work is licensed under the New BSD License (BSD-3-Clause). See the LICENSE
 file.

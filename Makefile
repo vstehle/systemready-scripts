@@ -32,8 +32,8 @@ help:
 
 doc: README.pdf
 
-%.pdf: %.md pandoc.yaml
-	pandoc -o$@ $< pandoc.yaml
+%.pdf: %.md pandoc.yaml titlesec.tex
+	pandoc -o$@ --include-in-header titlesec.tex $< pandoc.yaml
 
 %.run-test:
 	./$(basename $@)
