@@ -125,20 +125,31 @@ def identify_files(db, dirname):
     return r
 
 
+# Search for a (sub-)string in a list of strings
+# Return True if found or False when not found.
+def find_substr(s, strings):
+    logging.debug(f"Search for `{s}' in {strings}")
+
+    for x in strings:
+        if x.find(s) >= 0:
+            logging.debug(f"Found in `{x}'")
+            return True
+
+    logging.debug('Not found...')
+    return False
+
+
 # Try to identify the SystemReady version from the list of known files.
 # Return None when unknown.
 def identify_ver(db, files):
     logging.debug(f"Identify ver from {files}")
-    found_names = set()
-
-    for f in files:
-        found_names.add(f['name'])
+    found_names = list(map(lambda f: f['name'], files))
 
     for x in db['versions']:
         found = True
 
         for file_name in x['files']:
-            if file_name not in found_names:
+            if not find_substr(file_name, found_names):
                 found = False
                 break
 

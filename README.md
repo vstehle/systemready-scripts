@@ -430,6 +430,9 @@ sha256 sum or by searching for specific strings in their contents.
 
 The `versions` section describes how to deduce the SystemReady version when a
 number of specific files are all found.
+Each `versions' entry is considered in order.
+When all the filenames listed in `files' match with a (substring of) known
+files found, the SystemReady version is identified as `version'.
 
 The `schemas/identify.yaml` file describes this configuration file format and
 can be used with the `validate.py` script to validate the configuration. This is
