@@ -433,6 +433,9 @@ number of specific files are all found.
 Each `versions' entry is considered in order.
 When all the filenames listed in `files' match with a (substring of) known
 files found, the SystemReady version is identified as `version'.
+A file name starting with '!' or '~' means that it is an inverted match and it
+must not match with any (substring) of the known files found for the version to
+be selected.
 
 The `schemas/identify.yaml` file describes this configuration file format and
 can be used with the `validate.py` script to validate the configuration. This is

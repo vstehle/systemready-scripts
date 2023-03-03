@@ -149,7 +149,18 @@ def identify_ver(db, files):
         found = True
 
         for file_name in x['files']:
-            if not find_substr(file_name, found_names):
+            # A file name starting with '!' or '~' means that it is an inverted
+            # match and we do not want to find the file name anywhere.
+            if file_name[0] in ['!', '~']:
+                logging.debug(f"`{file_name}' is an inverted match")
+                file_name = file_name[1:]
+                inv = True
+            else:
+                inv = False
+
+            fs = find_substr(file_name, found_names)
+
+            if inv and fs or not inv and not fs:
                 found = False
                 break
 

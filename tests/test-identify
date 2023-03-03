@@ -77,7 +77,7 @@ grep 'SystemReady IR v2.0' "$out"
 identify.py --dir "$data/v22.10_2.0.0_BETA-1" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v22.10_2.0.0_BETA-1' "$out"
 
-echo -n 'ir2.0 bet-1 + SIE, ' >&3
+echo -n 'ir2.0 bet-1 + sie, ' >&3
 identify.py --dir "$data/v22.10_2.0.0_BETA-1_with_SIE" |& tee "$out"
 grep 'SystemReady IR v2.0 with SIE' "$out"
 
@@ -90,5 +90,10 @@ grep 'SystemReady IR 32b v1.2' "$out"
 
 identify.py --dir "$data/v22.10_IR_32b_0.7_BETA-0" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v22.10_IR_32b_0.7_BETA-0' "$out"
+
+echo -n 'no sie, ' >&3
+identify.py --dir "$data/no-SIE" --known-files |& tee "$out"
+grep 'BBSR.seq' "$out"
+grep 'Unknown' "$out"
 
 echo 'ok.' >&3

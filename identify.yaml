@@ -136,32 +136,39 @@ versions:
   - files:
       - EBBR.seq from ACS-IR v21.05_0.8_BETA-0
       - FWTSResults.log from ACS-IR v21.05_0.8_BETA-0
+      - ~BBSR.seq
     version: IR v1.0
 
   - files:
       - EBBR.seq from ACS-IR v21.07_0.9_BETA
       - FWTSResults.log from ACS-IR v21.07_0.9_BETA
+      - ~BBSR.seq
     version: IR v1.0
 
   - files:
       - EBBR.seq from ACS-IR v21.07_0.9_BETA
       - FWTSResults.log from ACS-IR EAC 230821
+      - ~BBSR.seq
     version: IR v1.0
 
   - files:
       - EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
       - FWTSResults.log from ACS-IR v21.09_1.0-Linux-v5.15
+      - ~BBSR.seq
     version: IR v1.1
 
   - files:
       - EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
       - FWTSResults.log from ACS-IR v21.09_1.0
+      - ~BBSR.seq
     version: IR v1.1
 
   - files:
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
+      - ~EBBR.seq
     version: SIE v1.0
 
   - files:
       - EBBR.seq from ACS-IR v22.10_IR_32b_0.7_BETA-0
+      - ~BBSR.seq
     version: IR 32b v1.2
