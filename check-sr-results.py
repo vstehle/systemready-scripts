@@ -15,6 +15,7 @@ import fnmatch
 import requests
 import tempfile
 import shutil
+import collections.abc
 
 try:
     from packaging import version
@@ -323,6 +324,24 @@ def cleanup_line(line):
     return line
 
 
+# An iterator class to easily read from a log in a loop.
+# We detect file encoding and cleanup the lines (which includes
+# right-stripping).
+class LogReader(collections.abc.Iterator):
+    def __init__(self, filename):
+        logging.debug(f"LogReader `{filename}'")
+        enc = detect_file_encoding(filename)
+
+        # Open the file with the proper encoding
+        f = open(filename, encoding=enc, errors='replace')
+
+        self.i = iter(f)
+
+    def __next__(self):
+        # Cleanup each line
+        return cleanup_line(self.i.__next__())
+
+
 # Check that a file contains what it must.
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
@@ -331,8 +350,6 @@ def check_file_contains(must_contain, filename):
     logging.debug(f"Check that file `{filename}' contains {must_contain}")
     assert len(must_contain)
 
-    enc = detect_file_encoding(filename)
-
     q = list(must_contain)
     pat = q.pop(0)
     logging.debug(f"Looking for `{pat}'")
@@ -340,21 +357,18 @@ def check_file_contains(must_contain, filename):
     stats = Stats()
 
     # Open the file with the proper encoding and look for patterns
-    with open(filename, encoding=enc, errors='replace') as f:
-        for i, line in enumerate(f):
-            line = cleanup_line(line)
+    for i, line in enumerate(LogReader(filename)):
+        if line.find(pat) >= 0:
+            logging.debug(
+                f"`{pat}' {green}found{normal} at line {i + 1}: `{line}'")
+            stats.inc_pass()
 
-            if line.find(pat) >= 0:
-                logging.debug(
-                    f"`{pat}' {green}found{normal} at line {i + 1}: `{line}'")
-                stats.inc_pass()
+            if not len(q):
+                pat = None
+                break
 
-                if not len(q):
-                    pat = None
-                    break
-
-                pat = q.pop(0)
-                logging.debug(f"Looking for `{pat}'")
+            pat = q.pop(0)
+            logging.debug(f"Looking for `{pat}'")
 
     if pat is not None:
         logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
@@ -374,32 +388,28 @@ def check_file_contains(must_contain, filename):
 def if_contains(strings, filename, error_not_warn):
     action = 'Error' if error_not_warn else 'Warn'
     logging.debug(f"{action} if file `{filename}' contains {strings}")
-    enc = detect_file_encoding(filename)
     stats = Stats()
     pats = set(strings)
 
     # Open the file with the proper encoding and look for patterns
-    with open(filename, encoding=enc, errors='replace') as f:
-        for i, line in enumerate(f):
-            line = cleanup_line(line)
+    for i, line in enumerate(LogReader(filename)):
+        if len(pats) == 0:
+            break
 
-            if len(pats) == 0:
-                break
+        for p in list(pats):
+            if p in line:
+                if error_not_warn:
+                    logging.error(
+                        f"`{p}' {red}found{normal} in `{filename}' "
+                        f"at line {i + 1}: `{line}'")
+                    stats.inc_error()
+                else:
+                    logging.warning(
+                        f"`{p}' {yellow}found{normal} in `{filename}' "
+                        f"at line {i + 1}: `{line}'")
+                    stats.inc_warning()
 
-            for p in list(pats):
-                if p in line:
-                    if error_not_warn:
-                        logging.error(
-                            f"`{p}' {red}found{normal} in `{filename}' "
-                            f"at line {i + 1}: `{line}'")
-                        stats.inc_error()
-                    else:
-                        logging.warning(
-                            f"`{p}' {yellow}found{normal} in `{filename}' "
-                            f"at line {i + 1}: `{line}'")
-                        stats.inc_warning()
-
-                    pats.remove(p)
+                pats.remove(p)
 
     if len(strings) > 0 and len(strings) == len(pats):
         logging.debug(f"{green}No pattern{normal} in `{filename}'")
