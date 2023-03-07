@@ -153,6 +153,7 @@ tree:
           - -dirty
       - file: uefi-sniff.log
         optional:
+        uefi-sniff:
         must-contain:
           - pci
           - drivers

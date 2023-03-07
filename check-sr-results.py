@@ -730,6 +730,36 @@ def check_devicetree(filename):
     return stats
 
 
+# Check UEFI Shell sniff test log.
+# We check if we have at least one ESP.
+# We return a Stats object.
+def check_uefi_sniff(filename):
+    logging.debug(f"Check UEFI Shell sniff test log `{filename}'")
+    stats = Stats()
+    n = 0
+
+    # Open the file with the proper encoding and look for ESPs
+    for i, line in enumerate(LogReader(filename)):
+        m = re.match(
+            r'\d+: DevicePath\([^\)]+\) +(/\S+) BlockIO\([^\)]+\).* '
+            r'EFISystemPartition\([^\)]+\)', line)
+
+        if m:
+            logging.debug(f"ESP match `{m[0]}'")
+            esp = re.sub(r'.*/', '', m[1])
+            logging.info(f"{green}Found ESP{normal} `{esp}'")
+            n += 1
+
+    if n:
+        logging.debug(f"{green}Found{normal} {n} ESP(s)")
+        stats.inc_pass()
+    else:
+        logging.error(f"{red}Could not find{normal} an ESP in `{filename}'")
+        stats.inc_error()
+
+    return stats
+
+
 # Try to re-create result.md with the SCT parser.
 # If we do not have parser.py at hand or if parsing fails, we do not treat that
 # as an error here but rather rely on subsequent checks.
@@ -827,6 +857,9 @@ def check_file(conffile, filename):
 
             if 'devicetree' in conffile:
                 stats.add(check_devicetree(filename))
+
+            if 'uefi-sniff' in conffile:
+                stats.add(check_uefi_sniff(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")

@@ -62,6 +62,8 @@ $defs:
                 additionalProperties: false
             warn-if-not-named:
                 type: string
+            uefi-sniff:
+                const: null
         required:
             - file
             # must-contain is optional
@@ -74,6 +76,7 @@ $defs:
             # devicetree is optional
             # sct-parser-result-md is optional
             # warn-if-not-named is optional
+            # uefi-sniff is optional
         additionalProperties: false
     dir:
         type: object

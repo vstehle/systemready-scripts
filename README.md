@@ -102,6 +102,9 @@ tree:
                                 # (see below)
     warn-if-not-named: <pat>    # If present we issue warnings when the file
                                 # name does not match the pattern
+    uefi-sniff:                 # If present, the file is a UEFI Shell sniff
+                                # test log and we check that we have at least
+                                # one ESP
 
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
