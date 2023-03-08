@@ -64,6 +64,8 @@ $defs:
                 type: string
             uefi-sniff:
                 const: null
+            must-have-esp:
+                const: null
         required:
             - file
             # must-contain is optional
@@ -77,6 +79,7 @@ $defs:
             # sct-parser-result-md is optional
             # warn-if-not-named is optional
             # uefi-sniff is optional
+            # must-have-esp is optional
         additionalProperties: false
     dir:
         type: object

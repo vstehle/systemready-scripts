@@ -105,6 +105,10 @@ tree:
     uefi-sniff:                 # If present, the file is a UEFI Shell sniff
                                 # test log and we check that we have at least
                                 # one ESP
+    must-have-esp:              # If present, the file is a log of UEFI commands
+                                # and we check that we have at least one ESP.
+                                # We must have a file with a uefi-sniff property
+				# for this to work
 
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing

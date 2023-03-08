@@ -102,6 +102,17 @@ esrt_guids = set()
 # Entries are dicts with keys 'guid' and 'filename'.
 capsule_guids = []
 
+# Partitions device paths.
+# This is populated when checking UEFI logs, and is used during deferred checks
+# to verify against ESPs.
+# Entries are dicts with keys 'dev-path' and 'filename'.
+dev_paths = []
+
+# ESPs device paths.
+# This is populated when checking the UEFI sniff test log, and is used later on
+# to check some UEFI logs.
+esp_dev_paths = set()
+
 # Linux bindings folder relative path under the cache folder.
 bindings_rel_path = 'bindings'
 
@@ -743,6 +754,7 @@ def check_devicetree(filename):
 
 # Check UEFI Shell sniff test log.
 # We check if we have at least one ESP.
+# We record the ESPs we found for later verification of must-have-esp files.
 # We return a Stats object.
 def check_uefi_sniff(filename):
     logging.debug(f"Check UEFI Shell sniff test log `{filename}'")
@@ -757,6 +769,7 @@ def check_uefi_sniff(filename):
 
         if m:
             logging.debug(f"ESP match line {i + 1}, `{line}'")
+            esp_dev_paths.add(m[1])
             esp = re.sub(r'.*/', '', m[1])
             logging.info(f"{green}Found ESP{normal} `{esp}'")
             n += 1
@@ -766,6 +779,86 @@ def check_uefi_sniff(filename):
         stats.inc_pass()
     else:
         logging.error(f"{red}Could not find{normal} an ESP in `{filename}'")
+        stats.inc_error()
+
+    return stats
+
+
+# Check UEFI logs for ESP.
+# We record the device paths found for deferred verification against the ESPs.
+# We return a Stats object.
+def check_must_have_esp(filename):
+    logging.debug(f"Check must have ESP `{filename}'")
+    stats = Stats()
+    state = 'await shell'
+    dp = set()
+
+    # Open the file with the proper encoding and look for partitions.
+    for i, line in enumerate(LogReader(filename)):
+        if state == 'await shell':
+            # UEFI Interactive Shell v2.2
+            if line.find('UEFI Interactive Shell v') == 0:
+                logging.debug(f"Matched shell line {i + 1}, `{line}'")
+                state = 'await edk2'
+
+        elif state == 'await edk2':
+            # EDK II
+            if line.find('EDK II') == 0:
+                logging.debug(f"Matched edk2 line {i + 1}, `{line}'")
+                state = 'await uefi'
+            else:
+                state = 'await shell'
+
+        elif state == 'await uefi':
+            # UEFI v2.80 (Das U-Boot, 0x20211000)
+            if line.find('UEFI v') == 0:
+                logging.debug(f"Matched uefi line {i + 1}, `{line}'")
+                state = 'await map'
+            else:
+                state = 'await shell'
+
+        elif state == 'await map':
+            # Mapping table
+            if line.find('Mapping table') == 0:
+                logging.debug(f"Matched map line {i + 1}, `{line}'")
+                state = 'await alias'
+            else:
+                state = 'await shell'
+
+        elif state == 'await alias':
+            # FS2: Alias(s):HD0b:;BLK5:
+            if line.find('Alias(s):') >= 0:
+                logging.debug(f"Matched alias line {i + 1}, `{line}'")
+                state = 'await path'
+            else:
+                logging.debug(f"No alias line {i + 1} -> done")
+                state = 'await shell'
+
+        elif state == 'await path':
+            # /VenHw(e61d73b9-a384-4acc-aeab-82e828f3628b)/SD(1)/SD(0)/HD(...
+            m = re.match(r'\s+(\S+)$', line)
+
+            if m:
+                logging.debug(f"Matched path line {i + 1}, `{line}'")
+                dp.add(m[1])
+                state = 'await alias'
+            else:
+                state = 'await shell'
+
+        else:
+            raise
+
+    if len(dp):
+        logging.debug(f"{green}Found{normal} device path(s): `{dp}'")
+        stats.inc_pass()
+
+        # Record the device path(s) for deferred check against the ESPs.
+        for x in dp:
+            dev_paths.append({'dev-path': x, 'filename': filename})
+
+    else:
+        logging.error(
+            f"{red}Could not find{normal} a device path in `{filename}'")
         stats.inc_error()
 
     return stats
@@ -871,6 +964,9 @@ def check_file(conffile, filename):
 
             if 'uefi-sniff' in conffile:
                 stats.add(check_uefi_sniff(filename))
+
+            if 'must-have-esp' in conffile:
+                stats.add(check_must_have_esp(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")
@@ -1045,16 +1141,54 @@ def deferred_check_capsule_guids_in_esrt():
     return stats
 
 
+# Deferred check that some UEFI log files have (a device path corresponding to)
+# an ESP.
+# Those checks are run after checking all files and dirs.
+# This allows to decouple checks from the configuration file order.
+# We return a Stats object.
+def deferred_check_uefi_logs_esp():
+    logging.debug('Deferred check UEFI logs ESP')
+    stats = Stats()
+    logging.debug(f"ESP device path(s): {esp_dev_paths}")
+    logging.debug(f"Device path(s): {dev_paths}")
+    filenames = {}
+
+    for x in dev_paths:
+        filename = x['filename']
+        dev_path = x['dev-path']
+
+        if filename not in filenames:
+            logging.debug(f"`{filename}' must have an ESP")
+            filenames[filename] = False
+
+        if dev_path in esp_dev_paths:
+            logging.debug(
+                f"`{filename}' {green}had an ESP{normal} at `{dev_path}'")
+            filenames[filename] = True
+            stats.inc_pass()
+
+    # Second path to verify that each log which needed to contain an ESP
+    # actually did.
+    for k, v in filenames.items():
+        if not v:
+            logging.error(f"`{filename}' {red}did not have an ESP{normal}")
+            stats.inc_error()
+
+    return stats
+
+
 # Deferred checks
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
 # Deferred checks:
 # - Capsule GUIDs and ESRT.
+# - UEFI logs and ESP.
 # We return a Stats object.
 def deferred_checks():
     logging.debug('Deferred checks')
     stats = Stats()
     stats.add(deferred_check_capsule_guids_in_esrt())
+    stats.add(deferred_check_uefi_logs_esp())
     return stats
 
 

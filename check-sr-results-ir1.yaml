@@ -10,6 +10,7 @@ check-sr-results-configuration:
 # The following tree applies to all ACS-IR v1.x versions.
 tree:
   - file: acs-console.log
+    must-have-esp:
     must-contain:
       - Booting `bbr/bsa'
       - Test preparing...

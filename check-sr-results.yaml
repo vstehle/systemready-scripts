@@ -10,6 +10,7 @@ check-sr-results-configuration:
 # The following tree applies to all ACS-IR 2.0 versions.
 tree:
   - file: acs-console.log
+    must-have-esp:
     must-contain:
       - Booting `bbr/bsa'
       - Test preparing...
@@ -216,6 +217,7 @@ tree:
             must-contain:
               - Handle dump
               - DevicePath
+              - EFISystemPartition
               - FirmwareManagement
               - SimpleTextOut
           - file: dmpstore.log
@@ -253,6 +255,8 @@ tree:
           - efidebug devices
           - efidebug drivers
           - efidebug dh
+          - Device Path
+          - System Partition
           - efidebug memmap
           - efidebug tables
           - efidebug query
@@ -275,6 +279,8 @@ tree:
           - devtree
           - dmpstore
           - dh -d -v
+          - DevicePath
+          - EFISystemPartition
           - memmap
           - smbiosview
         warn-if-contains:
@@ -283,6 +289,7 @@ tree:
           - 'FIRMWARE BUG:'
           - No EFI system partition
       - file: capsule-update.log
+        must-have-esp:
         must-contain:
           - CapsuleApp.efi -D
           - CapsuleApp.efi
@@ -292,6 +299,7 @@ tree:
           - 'FIRMWARE BUG:'
           - No EFI system partition
       - file: capsule-on-disk.log
+        must-have-esp:
         must-contain:
           - CapsuleApp.efi -D
           - -OD
