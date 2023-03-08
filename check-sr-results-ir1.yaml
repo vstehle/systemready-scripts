@@ -24,8 +24,9 @@ tree:
       - '/ #'
     warn-if-contains:
       - -dirty
-      - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
-        boundary'
+      - 'EFI stub: ERROR:'
+      - 'FIRMWARE BUG:'
+      - No EFI system partition
   - dir: acs_results
     tree:
       - file: result.md
@@ -43,6 +44,10 @@ tree:
           - file: CapsuleApp_ESRT_table_info.log
             must-contain:
               - ESRT TABLE
+            warn-if-contains:
+              - FwResourceCount    - 0x0
+              - FwResourceCountMax - 0x0
+              - ESRT - Not Found
           - file: CapsuleApp_FMP_protocol_info.log
             must-contain:
               - FMP DATA
@@ -58,16 +63,36 @@ tree:
               - 'Low failures: NONE'
               - 'Other failures: NONE'
               - 'Total:'
+            warn-if-contains:
+              - 'WARNING:'
+              - Aborted test
+              - FAILED
+              - This is an invalid entry.
+              - 'esrt: Cannot find any entries on directory
+                /sys/firmware/efi/esrt/entries'
+              - 'esrt: The FwResourceCount value should not be 0.'
+              - 'esrt: The FwResourceCountMax value should not be 0.'
+              - 'uefirtmisc: Failed to get high monotonic count with UEFI
+                runtime service.'
+              - 'uefirttime: Failed to set time with UEFI runtime service.'
       - dir: linux_dump
+        min-entries: 1
+        max-entries: 1
         tree:
           - file: lspci.log
             can-be-empty:
       - dir: sct_results
+        min-entries: 3
+        max-entries: 3
         tree:
           - dir: EfiCompliantBBTest
+            min-entries: 1
+            max-entries: 1
             tree:
               - file: EfiCompliant.ini
           - dir: Overall
+            min-entries: 2
+            max-entries: 2
             tree:
               - file: Summary.ekl
                 must-contain:
@@ -130,6 +155,7 @@ tree:
   - dir: docs
     optional:
   - dir: fw
+    min-entries: 2
     tree:
       - file: u-boot-sniff.log
         must-contain:
@@ -151,6 +177,9 @@ tree:
           - efidebug boot dump
         warn-if-contains:
           - -dirty
+          - 'EFI stub: ERROR:'
+          - 'FIRMWARE BUG:'
+          - No EFI system partition
       - file: uefi-sniff.log
         optional:
         uefi-sniff:
@@ -165,9 +194,19 @@ tree:
           - smbiosview
           - CapsuleApp.efi -P
           - CapsuleApp.efi -E
+        warn-if-contains:
+          - -dirty
+          - 'EFI stub: ERROR:'
+          - 'FIRMWARE BUG:'
+          - No EFI system partition
       - file: capsule-update.log
         must-contain:
           - CapsuleApp.efi
+        warn-if-contains:
+          - -dirty
+          - 'EFI stub: ERROR:'
+          - 'FIRMWARE BUG:'
+          - No EFI system partition
   - dir: manual-results
     tree:
       - dir: bsa-linux
@@ -187,6 +226,7 @@ tree:
       - dir: '*-*'
         tree:
           - file: '*console.log'
+            warn-if-not-named: console.log
             must-contain:
               - dmesg
               - Linux version
@@ -198,9 +238,12 @@ tree:
               - efibootmgr
               - tar
             warn-if-contains:
-              - 'EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k
-                boundary'
+              - -dirty
+              - 'EFI stub: ERROR:'
+              - 'FIRMWARE BUG:'
+              - No EFI system partition
           - file: '*sys-firmware.tar.gz'
+            warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt
     must-contain:
       - General information
