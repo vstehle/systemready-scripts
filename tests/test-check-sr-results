@@ -126,6 +126,20 @@ mkeficapsule \
 	--guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$img" "$cap"
 
+echo -n 'in esrt, ' >&3
+cp -r "$data/in-esrt" "$tmp/in-esrt"
+mkdir -v "$tmp/in-esrt/fw"
+cp -v "$cap" "$tmp/in-esrt/fw/"
+"${csr[@]}" --dir "$tmp/in-esrt" |& tee "$out"
+grep 'Could not identify' "$out"
+grep 'WARNING .* GUID .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID", in .*ESRT_table' "$out"
+
+if grep 'ERROR .*GUID .* not in ESRT' "$out"; then
+	false
+fi
+
+grep 'WARNING .* Capsule GUID .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID", in .*capsule1.bin' "$out"
+
 echo -n 'mockup, ' >&3
 cp -r "$data/mockup" "$tmp/mockup"
 mkdir -v "$tmp/mockup/fw"
