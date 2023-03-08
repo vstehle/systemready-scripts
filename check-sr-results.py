@@ -494,7 +494,7 @@ def check_capsuleapp_esrt(filename):
 
     # Open the file with the proper encoding and look for patterns
     with open(filename, encoding='UTF-16', errors='replace') as f:
-        for i, line in enumerate(f):
+        for line in f:
             m = re.match(r'\s+FwClass\s+- ([0-9A-F-]+)', line)
             if m:
                 g = guid.Guid(m[1])
@@ -745,7 +745,7 @@ def check_uefi_sniff(filename):
             r'EFISystemPartition\([^\)]+\)', line)
 
         if m:
-            logging.debug(f"ESP match `{m[0]}'")
+            logging.debug(f"ESP match line {i + 1}, `{line}'")
             esp = re.sub(r'.*/', '', m[1])
             logging.info(f"{green}Found ESP{normal} `{esp}'")
             n += 1
@@ -1149,7 +1149,7 @@ def evaluate_when_condition(conditions, context, any_not_all=True):
     found_all = True
     found_some = False
 
-    for i, c in enumerate(conditions):
+    for c in conditions:
         for d in context:
             if c in d:
                 logging.debug(f"`{c}' found in `{d}'")
@@ -1168,7 +1168,6 @@ def evaluate_when_condition(conditions, context, any_not_all=True):
 # Apply all the overlays conditionaly to the main tree.
 def apply_overlays(conf, context):
     for i, o in enumerate(conf['overlays']):
-
         if ('when-any' in o
            and evaluate_when_condition(o['when-any'], context, True)
            or 'when-all' in o
