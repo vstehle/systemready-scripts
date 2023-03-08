@@ -283,3 +283,9 @@ overlays:
                 optional:
               - file: smbiosview.log
                 optional:
+
+  # (Ab)use the overlay mechanism to emit an error about ir1 branch.
+  - when-any: ['']
+    tree:
+      - file: '!!! This is not the right branch to use for IR v1.x
+        certification; use branch ir1 instead !!!'
