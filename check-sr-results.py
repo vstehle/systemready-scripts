@@ -96,6 +96,12 @@ force_regen = None
 # capsules.
 esrt_guids = set()
 
+# Capsule GUIDs.
+# This is populated when checking capsules, and is used during deferred checks
+# to verify against ESRT GUIDs.
+# Entries are dicts with keys 'guid' and 'filename'.
+capsule_guids = []
+
 # Linux bindings folder relative path under the cache folder.
 bindings_rel_path = 'bindings'
 
@@ -554,13 +560,8 @@ def check_uefi_capsule(filename):
         g = guid.Guid(m[1])
         logging.debug(f"Capsule image type GUID is `{g}'")
 
-        # Check that we the GUID in the ESRT.
-        if g in esrt_guids:
-            logging.debug(f"GUID `{g}' {green}in ESRT{normal}")
-            stats.inc_pass()
-        else:
-            logging.error(f"GUID `{g}' {red}not in ESRT{normal}")
-            stats.inc_error()
+        # Record the GUID for deferred check against the ESRT.
+        capsule_guids.append({'guid': g, 'filename': filename})
 
     else:
         logging.error(
@@ -1018,6 +1019,45 @@ def check_tree(conftree, dirname):
     return stats
 
 
+# Deferred check that all capsule GUIDs are in the ESRT.
+# Those checks are run after checking all files and dirs.
+# This allows to decouple checks from the configuration file order.
+# We return a Stats object.
+def deferred_check_capsule_guids_in_esrt():
+    logging.debug('Deferred check capsule GUIDs in ESRT')
+    stats = Stats()
+    logging.debug(f"Capsule GUIDs: {capsule_guids}")
+    logging.debug(f"ESRT GUIDs: {esrt_guids}")
+
+    for x in capsule_guids:
+        guid = x['guid']
+        filename = x['filename']
+
+        if guid in esrt_guids:
+            logging.debug(
+                f"GUID `{guid}' from `{filename}' {green}in ESRT{normal}")
+            stats.inc_pass()
+        else:
+            logging.error(
+                f"GUID `{guid}' from `{filename}' {red}not in ESRT{normal}")
+            stats.inc_error()
+
+    return stats
+
+
+# Deferred checks
+# Those checks are run after checking all files and dirs.
+# This allows to decouple checks from the configuration file order.
+# Deferred checks:
+# - Capsule GUIDs and ESRT.
+# We return a Stats object.
+def deferred_checks():
+    logging.debug('Deferred checks')
+    stats = Stats()
+    stats.add(deferred_check_capsule_guids_in_esrt())
+    return stats
+
+
 # Check that we have dt-validate.
 # If we do not have it, we try to install it with pip.
 # We exit in case of failure.
@@ -1300,4 +1340,5 @@ if __name__ == '__main__':
         dump_config(conf, args.dump_config)
 
     stats = check_tree(conf['tree'], args.dir)
+    stats.add(deferred_checks())
     logging.info(stats)

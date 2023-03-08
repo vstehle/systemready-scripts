@@ -171,6 +171,15 @@ configuration file:
 
 * Integrity of tar/gzip archives
 
+### Deferred checks
+
+Some checks are postponed until after all files and directories have been
+analyzed.
+
+This makes sure that all the necessary data to perform the checks have been
+collected and allows to decouple the checks from the order in which files appear
+in the configuration file.
+
 ## Checking IR 1.x results
 
 By default the `check-sr-results.py` script targets the latest IR version (at
