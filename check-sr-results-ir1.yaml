@@ -193,8 +193,6 @@ tree:
           - dh -d -v
           - memmap
           - smbiosview
-          - CapsuleApp.efi -P
-          - CapsuleApp.efi -E
         warn-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
@@ -202,7 +200,8 @@ tree:
           - No EFI system partition
       - file: capsule-update.log
         must-contain:
-          - CapsuleApp.efi
+          - CapsuleApp.efi -P
+          - CapsuleApp.efi -E
         warn-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
