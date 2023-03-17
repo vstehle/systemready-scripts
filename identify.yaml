@@ -98,7 +98,7 @@ known-files:
       - BSA v1.0.1
       - Version 1.0.1
 
-  - name: BSALinuxResults.log from v22.10_2.0.0_BETA-1
+  - name: BSALinuxResults.log from ACS-IR v22.10_2.0.0_BETA-1
     path: acs_results/linux_acs/bsa_acs_app/BSALinuxResults.log
     search:
       - SystemReady IR ACS v2.0.0 Beta-1
@@ -113,7 +113,7 @@ versions:
   - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 with SIE
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
-      - BSALinuxResults.log from v22.10_2.0.0_BETA-1
+      - BSALinuxResults.log from ACS-IR v22.10_2.0.0_BETA-1
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 with SIE
       - FWTSResults.log from ACS-IR v22.10_2.0.0_BETA-1
@@ -122,7 +122,7 @@ versions:
 
   - files:
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
-      - BSALinuxResults.log from v22.10_2.0.0_BETA-1
+      - BSALinuxResults.log from ACS-IR v22.10_2.0.0_BETA-1
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1
       - FWTSResults.log from ACS-IR v22.10_2.0.0_BETA-1
     version: IR v2.0
