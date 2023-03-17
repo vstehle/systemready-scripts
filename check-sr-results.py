@@ -119,6 +119,10 @@ bindings_rel_path = 'bindings'
 # Compatible strings file relative path under the cache folder.
 compat_rel_path = 'compatible-strings.txt'
 
+# The set of files and dirs, which were not checked.
+# This is printed in debug mode, to help create the configuration file.
+not_checked = set()
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -918,6 +922,7 @@ def warn_if_not_named(name, pattern):
 # We return a Stats object.
 def check_file(conffile, filename):
     logging.debug(f"Check `{filename}'")
+    not_checked.discard(filename)
     stats = Stats()
 
     # Special case for SCT parser result.md: try to re-create it with the
@@ -993,6 +998,7 @@ def check_file(conffile, filename):
 # We return a Stats object.
 def check_dir(confdir, dirname):
     logging.debug(f"Check `{dirname}/'")
+    not_checked.discard(dirname)
     stats = Stats()
 
     if os.path.isdir(dirname):
@@ -1003,8 +1009,13 @@ def check_dir(confdir, dirname):
             stats.add(warn_if_not_named(
                 dirname, confdir['warn-if-not-named']))
 
-        ent = len(os.listdir(dirname))
+        entries = os.listdir(dirname)
+        ent = len(entries)
         logging.debug(f"`{dirname}/' has {ent} entrie(s)")
+
+        for e in entries:
+            not_checked.add(f"{dirname}/{e}")
+
         min_ent = confdir['min-entries'] if 'min-entries' in confdir else 1
 
         if ent >= min_ent:
@@ -1368,6 +1379,16 @@ def dump_config(conf, filename):
         logging.info(f"Dumped `{filename}'")
 
 
+# Print the list of files and dirs, which were not checked.
+# We print through logging.debug() as this is meant to be called in debug mode
+# only, to help create the configuration file.
+def print_not_checked():
+    logging.debug('Not checked:')
+
+    for x in sorted(not_checked):
+        logging.debug(x)
+
+
 if __name__ == '__main__':
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
@@ -1476,3 +1497,6 @@ if __name__ == '__main__':
     stats = check_tree(conf['tree'], args.dir)
     stats.add(deferred_checks())
     logging.info(stats)
+
+    if args.debug:
+        print_not_checked()
