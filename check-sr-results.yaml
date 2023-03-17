@@ -256,7 +256,8 @@ tree:
           - efidebug drivers
           - efidebug dh
           - Device Path
-          - System Partition
+          # Depending on U-Boot version, the ESP is marked either `System
+          # Partition' or `system'; we can thus not search for it.
           - efidebug memmap
           - efidebug tables
           - efidebug query
