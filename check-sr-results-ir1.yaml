@@ -28,6 +28,7 @@ tree:
       - 'EFI stub: ERROR:'
       - 'FIRMWARE BUG:'
       - No EFI system partition
+      - Failed to persist EFI variables
   - dir: acs_results
     tree:
       - file: result.md
@@ -181,6 +182,7 @@ tree:
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: uefi-sniff.log
         optional:
         uefi-sniff:
@@ -198,6 +200,7 @@ tree:
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: capsule-update.log
         must-contain:
           - CapsuleApp.efi -P
@@ -207,6 +210,7 @@ tree:
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
           - No EFI system partition
+          - Failed to persist EFI variables
   - dir: manual-results
     tree:
       - dir: bsa-linux
@@ -242,6 +246,7 @@ tree:
               - 'EFI stub: ERROR:'
               - 'FIRMWARE BUG:'
               - No EFI system partition
+              - Failed to persist EFI variables
           - file: '*sys-firmware.tar.gz'
             warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt

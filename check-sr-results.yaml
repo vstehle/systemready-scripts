@@ -30,7 +30,9 @@ tree:
       - -dirty
       - 'EFI stub: ERROR:'
       - 'FIRMWARE BUG:'
+    error-if-contains:
       - No EFI system partition
+      - Failed to persist EFI variables
   - dir: acs_results
     min-entries: 8  # Allow missing result.md
     max-entries: 9
@@ -269,7 +271,9 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+        error-if-contains:
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: uefi-sniff.log
         uefi-sniff:
         must-contain:
@@ -288,7 +292,9 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+        error-if-contains:
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: capsule-update.log
         must-have-esp:
         must-contain:
@@ -298,7 +304,9 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+        error-if-contains:
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: capsule-on-disk.log
         must-have-esp:
         must-contain:
@@ -308,7 +316,9 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+        error-if-contains:
           - No EFI system partition
+          - Failed to persist EFI variables
       - file: 'capsule*.bin'
         uefi-capsule:
   - dir: manual-results
@@ -338,7 +348,9 @@ tree:
               - -dirty
               - 'EFI stub: ERROR:'
               - 'FIRMWARE BUG:'
+            error-if-contains:
               - No EFI system partition
+              - Failed to persist EFI variables
           - file: '*sys-firmware.tar.gz'
             warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt
