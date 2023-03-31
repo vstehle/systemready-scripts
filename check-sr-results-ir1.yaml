@@ -23,7 +23,7 @@ tree:
       - Linux version
       - 'Test: UEFI'
       - '/ #'
-    warn-if-contains:
+    warn-once-if-contains:
       - -dirty
       - 'EFI stub: ERROR:'
       - 'FIRMWARE BUG:'
@@ -177,7 +177,7 @@ tree:
           - efidebug memmap
           - efidebug tables
           - efidebug boot dump
-        warn-if-contains:
+        warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
@@ -195,7 +195,7 @@ tree:
           - dh -d -v
           - memmap
           - smbiosview
-        warn-if-contains:
+        warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
@@ -205,7 +205,7 @@ tree:
         must-contain:
           - CapsuleApp.efi -P
           - CapsuleApp.efi -E
-        warn-if-contains:
+        warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
@@ -241,7 +241,7 @@ tree:
               - uname -a
               - efibootmgr
               - tar
-            warn-if-contains:
+            warn-once-if-contains:
               - -dirty
               - 'EFI stub: ERROR:'
               - 'FIRMWARE BUG:'

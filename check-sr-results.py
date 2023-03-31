@@ -123,6 +123,9 @@ compat_rel_path = 'compatible-strings.txt'
 # This is printed in debug mode, to help create the configuration file.
 not_checked = set()
 
+# The set of already reported warnings, which we report only once.
+warn_once = set()
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -416,7 +419,11 @@ def check_file_contains(must_contain, filename):
 # We report only the first match of each pattern.
 # When a match is found, if error_not_warn is True we issue an error, otherwise
 # we issue a warning.
-def if_contains(strings, filename, error_not_warn):
+# once is an optional set of already reported matches. When this is not None,
+# we use it to remember which match was already reported and report matches
+# only once. A match is the combination of the pattern plus the full matching
+# line.
+def if_contains(strings, filename, error_not_warn, once):
     action = 'Error' if error_not_warn else 'Warn'
     logging.debug(f"{action} if file `{filename}' contains {strings}")
     stats = Stats()
@@ -429,15 +436,22 @@ def if_contains(strings, filename, error_not_warn):
 
         for p in list(pats):
             if p in line:
+                match = f"{p}%{line}"
+
                 if error_not_warn:
                     logging.error(
                         f"`{p}' {red}found{normal} in `{filename}' "
                         f"at line {i + 1}: `{line}'")
                     stats.inc_error()
-                else:
-                    logging.warning(
-                        f"`{p}' {yellow}found{normal} in `{filename}' "
-                        f"at line {i + 1}: `{line}'")
+                elif once is None or match not in once:
+                    msg = (f"`{p}' {yellow}found{normal} in `{filename}' "
+                           f"at line {i + 1}: `{line}'")
+
+                    if once is not None:
+                        msg += ' (warning once)'
+                        once.add(match)
+
+                    logging.warning(msg)
                     stats.inc_warning()
 
                 pats.remove(p)
@@ -451,12 +465,17 @@ def if_contains(strings, filename, error_not_warn):
 
 # Warn if a file contains specific patterns.
 def warn_if_contains(strings, filename):
-    return if_contains(strings, filename, False)
+    return if_contains(strings, filename, False, None)
+
+
+# Warn once if a file contains specific patterns.
+def warn_once_if_contains(strings, filename):
+    return if_contains(strings, filename, False, warn_once)
 
 
 # Issue an error if a file contains specific patterns.
 def error_if_contains(strings, filename):
-    return if_contains(strings, filename, True)
+    return if_contains(strings, filename, True, None)
 
 
 # subprocess.run() wrapper
@@ -949,6 +968,11 @@ def check_file(conffile, filename):
             if 'warn-if-contains' in conffile:
                 stats.add(
                     warn_if_contains(conffile['warn-if-contains'], filename))
+
+            if 'warn-once-if-contains' in conffile:
+                stats.add(
+                    warn_once_if_contains(
+                        conffile['warn-once-if-contains'], filename))
 
             if 'error-if-contains' in conffile:
                 stats.add(

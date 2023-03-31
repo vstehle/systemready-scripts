@@ -87,6 +87,9 @@ tree:
     warn-if-contains:           # If present, the file contents is checked
       - <string>                # We warn if this string is present in the file
       - ...
+    warn-once-if-contains:      # Similar to warn-if-contains but a warning
+      - <string>                # is issued only once
+      - ...
     error-if-contains:          # If present, the file contents is checked
       - <string>                # We issue an error if this string is present
       - ...                     # in the file
@@ -127,7 +130,8 @@ all entries are present in the file, in order. Files encoded in UTF-16 are
 handled correctly automatically.
 
 When a `warn-if-contains` property exists, the first appearance of any of the
-strings listed will result in a warning. For an `error-if-contains', this
+strings listed will result in a warning. The `warn-once-if-contains` property
+is similar but outputs a warning only once. For an `error-if-contains', this
 results in an error.
 
 Filenames and dirnames can be UNIX shell glob patterns, in which case their
