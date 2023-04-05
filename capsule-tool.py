@@ -72,13 +72,19 @@ efi_capsule = construct.Struct(
                 "reserved_bytes" / construct.Hex(construct.Int8ul)[3],
                 "UpdateImageSize" / construct.Int32ul,
                 "UpdateVendorCodeSize" / construct.Int32ul,
-                "UpdateHardwareInstance" / construct.Int64ul,
-                "ImageCapsuleSupport" / construct.Hex(construct.Int64ul)
+                "UpdateHardwareInstance" / construct.If(
+                    lambda this: this.Version >= 2,
+                    construct.Int64ul),
+                "ImageCapsuleSupport" / construct.If(
+                    lambda this: this.Version >= 3,
+                    construct.Hex(construct.Int64ul))
             ),
             "BinaryUpdateImage" / construct.IfThenElse(
-                # If the authentication flag is set...
-                construct.this.FirmwareManagementCapsuleImageHeader
-                .ImageCapsuleSupport & CAPSULE_SUPPORT_AUTHENTICATION,
+                # If authenticated...
+                lambda this:
+                    this.FirmwareManagementCapsuleImageHeader.Version < 3 or
+                    this.FirmwareManagementCapsuleImageHeader
+                    .ImageCapsuleSupport & CAPSULE_SUPPORT_AUTHENTICATION,
 
                 # Then: Authenticated firmware image
                 construct.Struct(
@@ -237,7 +243,7 @@ def sanity_check_capsule(capsule, force=False):
                     .Version == 3,
             'error':
                 lambda c:
-                    'Unknown Version {}, not 3!'.format(
+                    'Bad Version {}, not 3!'.format(
                         c.CapsuleBody.Payload1
                         .FirmwareManagementCapsuleImageHeader.Version),
             'debug': lambda c: 'Found Version 3'
@@ -296,6 +302,8 @@ def sanity_check_capsule(capsule, force=False):
         {
             'check':
                 lambda c:
+                    c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
+                    .Version < 3 or
                     not (
                         c.CapsuleBody.Payload1
                         .FirmwareManagementCapsuleImageHeader
@@ -310,6 +318,8 @@ def sanity_check_capsule(capsule, force=False):
                         .ImageCapsuleSupport),
             'debug':
                 lambda c:
+                    'No ImageCapsuleSupport' if c.CapsuleBody.Payload1
+                    .FirmwareManagementCapsuleImageHeader.Version < 3 else
                     'ImageCapsuleSupport: {}'.format(
                         c.CapsuleBody.Payload1
                         .FirmwareManagementCapsuleImageHeader
@@ -317,6 +327,8 @@ def sanity_check_capsule(capsule, force=False):
         }, {
             'check':
                 lambda c:
+                    c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
+                    .Version < 3 or
                     not (
                         c.CapsuleBody.Payload1
                         .FirmwareManagementCapsuleImageHeader
@@ -333,6 +345,8 @@ def sanity_check_capsule(capsule, force=False):
         }, {
             'check':
                 lambda c:
+                    c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
+                    .Version < 3 or
                     c.CapsuleBody.Payload1
                     .FirmwareManagementCapsuleImageHeader.ImageCapsuleSupport
                     & CAPSULE_SUPPORT_AUTHENTICATION,
@@ -507,6 +521,13 @@ def de_authenticate(capsule):
     # Clear flag.
     p1 = capsule.CapsuleBody.Payload1
     fmcih = p1.FirmwareManagementCapsuleImageHeader
+
+    if fmcih.Version < 3:
+        logging.error(
+            f"De-authenticating capsule with obsolete version {fmcih.Version} "
+            f"not supported!")
+        sys.exit(1)
+
     ics = fmcih.ImageCapsuleSupport
     ics &= ~CAPSULE_SUPPORT_AUTHENTICATION
     fmcih.ImageCapsuleSupport = ics
