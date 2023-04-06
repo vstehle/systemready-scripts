@@ -9,25 +9,33 @@ import guid
 
 
 # Validate YAML GUIDs database
-# We check our magic marker and also for duplicate descriptions.
+# We check our magic marker and also for duplicate guids or descriptions.
 def validate_guids_db(db):
     logging.debug("Validate db")
 
     assert 'guid-tool-database' in db
 
-    h = {}
+    descrs = {}
+    guids = {}
 
     for x in db['known-guids']:
         d = x['description']
         g = x['guid']
 
-        if d in h:
+        if d in descrs:
             logging.error(
                 f"Duplicate description `{d}' for guid `{g}', "
-                f"already used for guid `{h[d]}'")
+                f"already used for guid `{descrs[d]}'")
             raise Exception
 
-        h[d] = g
+        if g in guids:
+            logging.error(
+                f"Duplicate guid `{g}' for description `{d}', "
+                f"already used for description `{guids[g]}'")
+            raise Exception
+
+        descrs[d] = g
+        guids[g] = d
 
 
 # Load YAML GUIDs database
