@@ -6,6 +6,7 @@
 
 guid-tool-database:
 known-guids:
+  # U-Boot GUIDs
   - guid: ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147
     description: U-Boot legacy (< v2022.07)
         EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID
@@ -52,8 +53,8 @@ known-guids:
     description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID Zynq common
   - guid: 1a5178f0-87d3-4f36-ac63-3b31a23be305
     description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID Zynq common
-  - guid: 62af20c0-7016-424a-9bf8-9ccc86584090
-    description: Tianocore wiki PcdSystemFmpCapsuleImageTypeIdGuid
+
+  # Tianocore/edk2 GUIDs
   - guid: e698490d-c1fa-47fd-8603-69cd678c5c39
     description: Tianocore wiki Capsule Based System Firmware Update
         Implementation example
@@ -70,15 +71,23 @@ known-guids:
   - guid: 62af20c0-7016-424a-9bf8-9ccc86584090
     description: edk2-platforms Intel QuarkPlatformPkg
   - guid: 50b94ce5-8b63-4849-8af4-ea479356f0e3
-    description: edk2-platforms Socionext DeveloperBox
-  - guid: 50b94ce5-8b63-4849-8af4-ea479356f0e3
-    description: edk2-platforms Socionext SynQuacerEvalBoard
+    description: edk2-platforms Socionext DeveloperBox or SynQuacerEvalBoard
   - guid: 757fc475-6b22-4482-868e-ded286f30940
     description: edk2-platforms Marvell Armada7k8k
   - guid: 96d4fdcd-1502-424d-9d4c-9b12d2dcae5c
     description: edk2-platforms Intel Microcode
   - guid: 4096267b-da0a-42eb-b5eb-fef31d207cb4
     description: edk2-platforms Intel Vlv2TbltDevicePkg
+  - guid: 79179BFD-704D-4C90-9E02-0AB8D968C18A
+    description: Tianocore wiki sample device A
+  - guid: 149DA854-7D19-4FAA-A91E-862EA1324BE6
+    description: Tianocore wiki sample device B
+  - guid: c020af62-1670-4a42-9bf8-9ccc86584090
+    description: Tianocore wiki example GUID 1
+  - guid: 553B20F9-9154-46CE-8142-80E2AD96CD92
+    description: Tianocore wiki example GUID 2
+
+  # Other GUIDs
   - guid: 4864d599-2d86-4370-8b08-6374b4608907
     description: Arm reserved GUID 1
   - guid: 4962fd6f-7971-4dce-851e-9cb22a89b832
