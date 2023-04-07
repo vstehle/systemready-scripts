@@ -73,6 +73,25 @@ class Guid(object):
         set for example:
 
         >>> set().add((Guid('12345678-1234-4678-9234-56789abcdef0')))
+
+        Guids can be compared:
+
+        >>> a = Guid('12345678-1234-4678-9234-56789abcdef0')
+        >>> b = Guid('22345678-1234-4678-9234-56789abcdef0')
+        >>> a == b
+        False
+
+        The internal field 'b' cannot be assigned or deleted:
+
+        >>> g = Guid('12345678-1234-4678-9234-56789abcdef0')
+        >>> g.b = bytes()
+        Traceback (most recent call last):
+            ...
+        dataclasses.FrozenInstanceError: cannot assign to field 'b'
+        >>> del g.b
+        Traceback (most recent call last):
+            ...
+        dataclasses.FrozenInstanceError: cannot delete field 'b'
         """
         if isinstance(x, bytes):
             if len(x) != 16:
@@ -196,6 +215,20 @@ class Guid(object):
 
     def details(self):
         """Get details about our GUID as a string.
+
+        >>> print(Guid('12345678-1234-4678-9234-56789abcdef0').details())
+        GUID: 12345678-1234-4678-9234-56789abcdef0
+          TimeLow: 12345678
+          TimeMid: 1234
+          TimeHighAndVersion: 4678
+            timestamp: 466142576285865592
+            version: 4 (randomly generated)
+          ClockSeqHighAndReserved: 92
+          ClockSeqLow: 34
+            clock sequence: 4660
+            variant: specified in RFC 4122
+          Node: 56789abcdef0
+        <BLANKLINE>
         """
         f = self.fields()
         u = self.as_uuid()
