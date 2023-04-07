@@ -524,7 +524,7 @@ def identify_guid(guid, message=''):
         o = cp.stdout.decode().rstrip()
 
         if o == 'Unknown':
-            logging.debug(f"GUID `{guid}' {green}unknown{normal}{message}")
+            logging.info(f"GUID `{guid}' {green}unknown{normal}{message}")
             stats.inc_pass()
         else:
             logging.warning(
@@ -615,7 +615,7 @@ def check_uefi_capsule(filename):
         stats.inc_warning()
 
     elif n and not m:
-        logging.debug(
+        logging.info(
             f"Capsule GUID `{n[1]}' {green}is unknown{normal}, "
             f"in `{filename}'")
         stats.inc_pass()
