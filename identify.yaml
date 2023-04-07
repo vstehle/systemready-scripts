@@ -6,6 +6,11 @@
 
 identify-database:
 known-files:
+  # Naming convention in pseudo-grammar:
+  #   name: basename "from" versions ["with SIE"]
+  #   versions: acs-versions ["/" acs-versions...]
+  #   acs-versions: acs-name acs-version [".." acs-version...]
+  #   acs-name: "SIE ACS" | "ACS-IR"
 
   # We recognize the following files with their sha256 sums.
 
@@ -16,7 +21,7 @@ known-files:
     name: EBBR.seq from ACS-IR v21.07_0.9_BETA
     path: acs_results/sct_results/Sequence/EBBR.seq
   - sha256: d66485b5e436409ef8c0667baf5250e784cbf292f2b9ef1b3893d474a0585fae
-    name: EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
+    name: EBBR.seq from ACS-IR v21.09_1.0 .. v22.06_2.0.0_BETA-0
     path: acs_results/sct_results/Sequence/EBBR.seq
   - sha256: a1682187e16336c71f82b73c7e4e475e56561e44b2b3fd4c9b4ca653c76d29b7
     name: EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1
@@ -129,7 +134,7 @@ versions:
 
   - files:
       - BSALinuxResults.log from ACS-IR v22.06_2.0.0_BETA-0
-      - EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
+      - EBBR.seq from ACS-IR v21.09_1.0 .. v22.06_2.0.0_BETA-0
       - FWTSResults.log from ACS-IR v22.06_2.0.0_BETA-0
     version: IR v2.0
 
@@ -152,13 +157,13 @@ versions:
     version: IR v1.0
 
   - files:
-      - EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
+      - EBBR.seq from ACS-IR v21.09_1.0 .. v22.06_2.0.0_BETA-0
       - FWTSResults.log from ACS-IR v21.09_1.0-Linux-v5.15
       - ~BBSR.seq
     version: IR v1.1
 
   - files:
-      - EBBR.seq from ACS-IR v21.09_1.0 / v22.06_2.0.0_BETA-0
+      - EBBR.seq from ACS-IR v21.09_1.0 .. v22.06_2.0.0_BETA-0
       - FWTSResults.log from ACS-IR v21.09_1.0
       - ~BBSR.seq
     version: IR v1.1
