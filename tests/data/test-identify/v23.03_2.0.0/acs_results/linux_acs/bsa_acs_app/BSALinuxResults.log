@@ -1,0 +1,18 @@
+SystemReady IR ACS v2.0.0 
+BSA v1.0.4
+
+ ************ BSA Architecture Compliance Suite ********* 
+                        Version 1.0.4  
+
+ Starting tests (Print level is  3)
+
+ Gathering system information.... 
+
+      *** Starting Memory Map tests ***  
+
+      *** Starting Peripherals tests ***  
+
+      *** Starting PCIe tests ***  
+
+                    *** BSA tests complete *** 
+
