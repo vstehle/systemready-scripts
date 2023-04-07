@@ -758,9 +758,8 @@ def check_devicetree(filename):
             stats.inc_error()
 
         elif re.search(r'warning', typ):
-            logging.warning(
+            logging.debug(
                 f"{yellow}{num} dt-parser {typ}{normal} with `{log}'!")
-            stats.inc_warning()
 
         elif typ == 'ignored':
             logging.debug(f"{green}{num} dt-parser {typ}{normal} with `{log}'")

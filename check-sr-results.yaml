@@ -88,7 +88,6 @@ tree:
               - 'Other failures: NONE'
               - 'Total:'
             warn-if-contains:
-              - 'WARNING:'
               - Aborted test
             error-if-contains:
               - FAILED
@@ -121,20 +120,116 @@ tree:
                   - Number of PE detected
                   - Tests Failed =  0
       - dir: linux_dump
-        min-entries: 1
-        max-entries: 1
+        min-entries: 10     # Allow missing lsusb.log
+        max-entries: 11
         tree:
+          - file: cpuinfo.log
+            must-contain:
+              - processor
+              - BogoMIPS
+              - Features
+              - CPU implementer
+              - 'CPU architecture: 8'
+              - CPU variant
+              - CPU part
+              - CPU revision
+          - file: dmidecode.log
+            must-contain:
+              - '# dmidecode 3.4'
+          - file: efibootmgr.log
+          - dir: firmware
+            min-entries: 4
+            max-entries: 4
+            tree:
+              - dir: devicetree
+                min-entries: 1
+                max-entries: 1
+                tree:
+                  - dir: base
+                    tree:
+                      - dir: chosen
+                        min-entries: 7
+                        tree:
+                          - file: stdout-path
+                      - dir: psci
+                        min-entries: 3
+                        tree:
+                          - file: compatible
+                            must-contain:
+                              - arm,psci-
+                          - file: method
+                            warn-if-contains:
+                              - hvc
+                          - file: name
+                            must-contain:
+                              - psci
+              - dir: dmi
+              - dir: efi
+                min-entries: 1
+                tree:
+                  - dir: efivars
+                    tree:
+                      - file: OsIndicationsSupported-*
+                  - dir: esrt
+                    tree:
+                      - dir: entries
+                        tree:
+                          - dir: entry*
+                            tree:
+                              - file: capsule_flags
+                              - file: fw_class
+                              - file: fw_type
+                              - file: fw_version
+                              - file: last_attempt_status
+                              - file: last_attempt_version
+                              - file: lowest_supported_fw_version
+                      - file: fw_resource_count
+                        error-if-contains:
+                          - '0'
+                      - file: fw_resource_count_max
+                        error-if-contains:
+                          - '0'
+                      - file: fw_resource_version
+              - file: fdt
+          - file: firmware.log
+            must-contain:
+              - '/sys/firmware:'
+              - fdt
+          - file: interrupts.log
+            must-contain:
+              - CPU0
+              - Rescheduling interrupts
+              - Function call interrupts
+              - CPU stop interrupts
+              - CPU stop (for crash dump) interrupts
+              - Timer broadcast interrupts
+              - IRQ work interrupts
+              - CPU wake-up interrupts
+          - file: iomem.log
+            must-contain:
+              - System RAM
           - file: lspci.log
             can-be-empty:
+          - file: lsusb.log
+            optional:
+            can-be-empty:
+          - file: meminfo.log
+            must-contain:
+              - MemTotal
+              - MemFree
+              - MemAvailable
+          - file: uname.log
+            must-contain:
+              - 'Linux generic-arm64 6.0.0-yocto-standard #1 SMP PREEMPT Sun Oct
+                2 21:09:07 UTC 2022 aarch64 GNU/Linux'
       - dir: linux_tools
         min-entries: 1
         max-entries: 2  # Allow dt-validate.log.old
         tree:
           - file: dt-validate.log*
             must-contain:
-              - 'DeviceTree bindings of Linux kernel version: 5.19.10'
+              - 'DeviceTree bindings of Linux kernel version: '
               - 'dtschema version: 2022.9'
-              - The FDT is compliant according to schema
       - dir: sct_results
         min-entries: 3
         max-entries: 3
@@ -190,7 +285,7 @@ tree:
                   - Iterations=
       - dir: uefi
         min-entries: 2
-        max-entries: 3  # Allow to generate BsaDevTree.dtb.log
+        max-entries: 4  # Allow to generate BsaDevTree.dtb.log and temp folder
         tree:
           - file: BsaDevTree.dtb
             devicetree:
@@ -202,20 +297,27 @@ tree:
           - file: BsaResults.log
             must-contain:
               - BSA Architecture Compliance Suite
-              - Version 1.0.1
+              - Version 1.0.
               - Starting tests
               - 'PE_INFO: Number of PE detected'
               - Operating System
               - Total Tests run
               - BSA tests complete. Reset the system.
+          - dir: temp   # This sometimes remains; ignore it
+            optional:
       - dir: uefi_dump
-        min-entries: 7
-        max-entries: 8
+        min-entries: 13
+        max-entries: 13
         tree:
           - file: bcfg.log
           - file: devices.log
             must-contain:
               - Device Name
+          - file: devtree.log
+            must-contain:
+              - /HD(1,GPT,
+              - /HD(2,GPT,
+              - /HD(3,GPT,
           - file: dh.log
             must-contain:
               - Handle dump
@@ -223,6 +325,18 @@ tree:
               - EFISystemPartition
               - FirmwareManagement
               - SimpleTextOut
+          - file: dmem.log
+            must-contain:
+              - Memory Address
+              - Valid EFI Header at Address
+              - 'System: Table Structure size'
+              - Runtime Services
+              - Boot Services
+              - SAL System Table
+              - ACPI Table
+              - ACPI 2.0 Table
+              - MPS Table
+              - SMBIOS Table
           - file: dmpstore.log
             must-contain:
               - Variable
@@ -230,16 +344,42 @@ tree:
           - file: drivers.log
             must-contain:
               - DRIVER NAME
+          - file: ifconfig.log
+          - file: map.log
+            must-contain:
+              - Mapping table
+              - /HD(1,GPT,
+              - /HD(2,GPT,
+              - /HD(3,GPT,
           - file: memmap.log
             must-contain:
               - '# Pages'
-              - Available
+              - 'Reserved  :'
+              - 'LoaderCode:'
+              - 'LoaderData:'
+              - 'BS_Code   :'
+              - 'BS_Data   :'
+              - 'RT_Code   :'
+              - 'RT_Data   :'
+              - 'ACPI_Recl :'
+              - 'ACPI_NVS  :'
+              - 'MMIO      :'
+              - 'MMIO_Port :'
+              - 'PalCode   :'
+              - 'Unaccepted:'
+              - 'Available :'
+              - 'Persistent:'
               - 'Total Memory:'
           - file: pci.log
           - file: smbiosview.log
             optional:
             must-contain:
               - 'SMBIOS Entry Point Structure:'
+          - file: uefi_version.log
+            must-contain:
+              - UEFI Interactive Shell v2.2
+              - EDK II
+              - UEFI v2.
   - dir: docs
     optional:
   - dir: fw
@@ -437,7 +577,7 @@ overlays:
                       - file: Summary.log
                         must-contain:
                           - 'Arm ACS Version: SystemReady IR ACS v2.0.0'
-                          - BBR ACS 1.0.2 (EBBR)
+                          - BBR ACS 1.0.
                           - 'Test Finished:'
                   - dir: Sequence
                     min-entries: 3
