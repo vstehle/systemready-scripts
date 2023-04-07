@@ -30,6 +30,7 @@ tree:
       - -dirty
       - 'EFI stub: ERROR:'
       - 'FIRMWARE BUG:'
+      - OVERLAP DETECTED
     error-if-contains:
       - No EFI system partition
       - Failed to persist EFI variables
@@ -271,6 +272,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
         error-if-contains:
           - No EFI system partition
           - Failed to persist EFI variables
@@ -292,6 +294,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
         error-if-contains:
           - No EFI system partition
           - Failed to persist EFI variables
@@ -304,6 +307,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
         error-if-contains:
           - No EFI system partition
           - Failed to persist EFI variables
@@ -316,6 +320,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
         error-if-contains:
           - No EFI system partition
           - Failed to persist EFI variables
@@ -348,6 +353,7 @@ tree:
               - -dirty
               - 'EFI stub: ERROR:'
               - 'FIRMWARE BUG:'
+              - OVERLAP DETECTED
             error-if-contains:
               - No EFI system partition
               - Failed to persist EFI variables
