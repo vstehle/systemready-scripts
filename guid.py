@@ -46,20 +46,20 @@ class Guid(object):
             ...
         TypeError: Invalid [1, 2, 3] of type <class 'list'> for GUID
 
-        >>> Guid('12345678-1234-5678-1234-56789abcdef0')
+        >>> Guid('12345678-1234-5678-1234-56789abcdef0') # doctest: +ELLIPSIS
         Traceback (most recent call last):
             ...
-        ValueError: Bad variant reserved for NCS compatibility
+        ValueError: GUID 1...0: Bad variant reserved for NCS compatibility
 
-        >>> Guid('00000000-0000-1000-91ec-525400123456')
+        >>> Guid('00000000-0000-1000-91ec-525400123456') # doctest: +ELLIPSIS
         Traceback (most recent call last):
             ...
-        ValueError: Time 1582-10-15 00:00:00 is too old
+        ValueError: GUID 0...6: Time 1582-10-15 00:00:00 is too old
 
-        >>> Guid('ffffffff-ffff-1fff-91ec-525400123456')
+        >>> Guid('ffffffff-ffff-1fff-91ec-525400123456') # doctest: +ELLIPSIS
         Traceback (most recent call last):
             ...
-        ValueError: Time 5236-03-31 21:21:00.684704 is in the future
+        ValueError: GUID ...: Time 5236-03-31 21:21:00.684704 is in the future
 
         Guids are frozen, which means assigning to the member `b' directly will
         raise an exception:
@@ -125,24 +125,24 @@ class Guid(object):
         var = u.variant
 
         if var != uuid.RFC_4122:
-            raise ValueError(f"Bad variant {var}")
+            raise ValueError(f"GUID {self}: Bad variant {var}")
 
         # Verify version.
         ver = u.version
 
         if ver not in [1, 3, 4, 5]:
-            raise ValueError(f"Bad version {ver}")
+            raise ValueError(f"GUID {self}: Bad version {ver}")
 
         # For version 1, verify that time is valid.
         if u.version == 1:
             dt = self.get_datetime()
 
             if dt < datetime.datetime(1998, 1, 1):
-                raise ValueError(f"Time {dt} is too old")
+                raise ValueError(f"GUID {self}: Time {dt} is too old")
 
             # We add a day of margin to account for timezones.
             if dt > datetime.datetime.now() + datetime.timedelta(days=1):
-                raise ValueError(f"Time {dt} is in the future")
+                raise ValueError(f"GUID {self}: Time {dt} is in the future")
 
     def __bytes__(self):
         """Return the GUID bytes, which we keep internally.
@@ -197,16 +197,18 @@ class Guid(object):
         (i.e. version 1) GUID. For all other versions this raises an
         exception:
 
-        >>> Guid('12345678-1234-4678-8234-56789abcdef0').get_datetime()
+        >>> g=Guid('12345678-1234-4678-8234-56789abcdef0')
+        >>> g.get_datetime() # doctest: +ELLIPSIS
         Traceback (most recent call last):
             ...
-        ValueError: Invalid get_datetime on version 4 GUID
+        ValueError: GUID 1...0: Invalid get_datetime with version 4
         """
         u = self.as_uuid()
         ver = u.version
 
         if ver != 1:
-            raise ValueError(f"Invalid get_datetime on version {ver} GUID")
+            raise ValueError(
+                f"GUID {self}: Invalid get_datetime with version {ver}")
 
         ns100 = u.time
 
