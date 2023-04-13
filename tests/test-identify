@@ -81,6 +81,9 @@ echo -n 'ir2.0 bet-1 + sie, ' >&3
 identify.py --dir "$data/v22.10_2.0.0_BETA-1_with_SIE" |& tee "$out"
 grep 'SystemReady IR v2.0 with SIE' "$out"
 
+identify.py --dir "$data/v22.10_2.0.0_BETA-1_with_SIE" --ebbr-seq |& tee "$out"
+grep 'ACS-IR v22.10_2.0.0_BETA-1 .. v23.03_2.0.0 with SIE' "$out"
+
 echo -n 'ir2.0, ' >&3
 identify.py --dir "$data/v23.03_2.0.0" |& tee "$out"
 grep 'SystemReady IR v2.0' "$out"
@@ -88,8 +91,12 @@ grep 'SystemReady IR v2.0' "$out"
 identify.py --dir "$data/v23.03_2.0.0" --ebbr-seq |& tee "$out"
 grep 'v23.03_2.0.0' "$out"
 
-identify.py --dir "$data/v22.10_2.0.0_BETA-1_with_SIE" --ebbr-seq |& tee "$out"
-grep 'ACS-IR v22.10_2.0.0_BETA-1 with SIE' "$out"
+echo -n 'ir2.0 + sie, ' >&3
+identify.py --dir "$data/v23.03_2.0.0_with_SIE" |& tee "$out"
+grep 'SystemReady IR v2.0 with SIE' "$out"
+
+identify.py --dir "$data/v23.03_2.0.0_with_SIE" --ebbr-seq |& tee "$out"
+grep 'ACS-IR v22.10_2.0.0_BETA-1 .. v23.03_2.0.0 with SIE' "$out"
 
 echo -n 'ir 32b 1.2, ' >&3
 identify.py --dir "$data/v22.10_IR_32b_0.7_BETA-0" |& tee "$out"
