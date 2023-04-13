@@ -13,17 +13,26 @@ tree:
     must-have-esp:
     must-contain:
       - Booting `bbr/bsa'
+      - Press any key to stop the EFI SCT running
       - Test preparing...
       - Done!
+      - Starting UEFI Debug dump
       - BSA Architecture Compliance Suite
       - Starting tests
       - Total Tests run
       - BSA tests complete. Reset the system.
       - 'EFI stub: Booting Linux Kernel...'
+      - 'EFI stub: Using DTB from configuration table'
       - Linux version
+      - 'efi: ESRT=0x'
+      - 'esrt: Reserving ESRT space from 0x'
+      - systemd
+      - Executing FWTS for EBBR
       - 'Test: UEFI'
       - Loading BSA ACS Linux Driver
       - Executing BSA ACS Application
+      - copying fdt
+      - Running dt-validate tool
       - ACS run is completed
       - Please press <Enter> to continue ...
     warn-once-if-contains:
