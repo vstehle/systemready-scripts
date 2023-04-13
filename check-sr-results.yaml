@@ -517,6 +517,35 @@ overlays:
 
   - when-any: [IR v2.0 with SIE]
     tree:
+      - file: sie-console.log
+        must-have-esp:
+        must-contain:
+          - Press any key to stop the SIE SCT running
+          - Test preparing...
+          - Done!
+          - SIE SCT test suite execution is complete. Resetting the system
+          - 'EFI stub: Booting Linux Kernel...'
+          - 'EFI stub: UEFI Secure Boot is enabled.'
+          - 'EFI stub: Using DTB from configuration table'
+          - Linux version
+          - 'efi: ESRT=0x'
+          - 'esrt: Reserving ESRT space from 0x'
+          - secureboot
+          - systemd
+          - Call SIE ACS in Linux
+          - SecureBoot enabled
+          - The system is in SecureBoot mode
+          - 'Test: Authenticated variable'
+          - SIE ACS run is completed
+          - Please press <Enter> to continue ...
+        warn-once-if-contains:
+          - -dirty
+          - 'EFI stub: ERROR:'
+          - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
+        error-if-contains:
+          - No EFI system partition
+          - Failed to persist EFI variables
       - dir: acs_results
         min-entries: 9   # Allow missing result.md
         max-entries: 10  # Allow SIE folder
