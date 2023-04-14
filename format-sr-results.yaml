@@ -16,8 +16,6 @@ subs:
         paragraph: TBD
       - heading: UEFI sniff test
         paragraph: TBD
-      - heading: Capsule update
-        paragraph: TBD
   - heading: EBBR Compliance
     paragraph: TBD
     subs:
@@ -28,13 +26,41 @@ subs:
           first-line: 4
           last-line:
         paragraph: TBD
-      - heading: Manual SCT tests
-        paragraph: TBD
       - heading: FWTS
         extract:
           filename: acs_results/fwts/FWTSResults.log
           find: Test Failure Summary
-          first-line: -2
+        paragraph: TBD
+      - heading: Capsule update
+        paragraph: TBD
+      - heading: ESRT
+        extract:
+          filename: acs_results/app_output/CapsuleApp_ESRT_table_info.log
+          find: '# ESRT TABLE #'
+          first-line: 2
+          last-line: LastAttemptStatus
+        paragraph: TBD
+      - heading: Devicetree
+        paragraph: TBD
+      - heading: PSCI
+        paragraph: TBD
+        extract:
+          filename: "acs_results/linux_dump/firmware/devicetree/base/psci/\
+            compatible"
+  - heading: BBSR Compliance
+    paragraph: TBD
+    subs:
+      - heading: SIE SCT
+        extract:
+          filename: acs_results/SIE/result.md
+          find: '# SCT Summary'
+          first-line: 4
+          last-line:
+        paragraph: TBD
+      - heading: SIE FWTS
+        extract:
+          filename: acs_results/SIE/fwts/FWTSResults.log
+          find: Test Failure Summary
         paragraph: TBD
   - heading: BSA Compliance (informative)
     paragraph: TBD
@@ -43,8 +69,13 @@ subs:
         extract:
           filename: acs_results/uefi/BsaResults.log
           find: ------------
+          last-line: 2
         paragraph: TBD
       - heading: Linux bsa (informative)
+        extract:
+          filename: acs_results/linux_acs/bsa_acs_app/BsaResultsKernel.log
+          find: ------------
+          last-line: 2
         paragraph: TBD
   - heading: OS Installs
     paragraph: TBD
