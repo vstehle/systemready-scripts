@@ -7,6 +7,7 @@ import yaml
 import os
 import curses
 import pprint
+import logreader
 
 try:
     from packaging import version
@@ -68,16 +69,14 @@ def extract(x, dirname):
     found = 0
     pat = x['find']
 
-    with open(filename) as f:
-        for i, line in enumerate(f):
-            sline = line.rstrip()
-            ln = i + 1
+    for i, line in enumerate(logreader.LogReader(filename)):
+        ln = i + 1
 
-            if line.find(pat) >= 0:
-                logging.debug(
-                    f"{green}Found{normal} `{pat}' at line {ln}, `{sline}'")
-                found = ln
-                break
+        if line.find(pat) >= 0:
+            logging.debug(
+                f"{green}Found{normal} `{pat}' at line {ln}, `{line}'")
+            found = ln
+            break
 
     if not found:
         logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
@@ -88,32 +87,29 @@ def extract(x, dirname):
     ex = False
     first_line = found + int(x['first-line']) if 'first-line' in x else found
 
-    with open(filename) as f:
-        for i, line in enumerate(f):
-            sline = line.rstrip()
-            ln = i + 1
+    for i, line in enumerate(logreader.LogReader(filename)):
+        ln = i + 1
 
-            if 'last-line' in x and ex:
-                ll = x['last-line']
+        if 'last-line' in x and ex:
+            ll = x['last-line']
 
-                if isinstance(ll, int) and ln > found + int(ll):
-                    break
-                elif isinstance(ll, str) and line.find(ll) >= 0:
-                    logging.debug(
-                        f"{green}Found{normal} `{ll}' at line {ln}, `{sline}'")
-                    break
-                elif ll is None and sline == '':
-                    logging.debug(
-                        f"{green}Found{normal} empty line {ln}")
-                    break
+            if isinstance(ll, int) and ln > found + int(ll):
+                break
+            elif isinstance(ll, str) and line.find(ll) >= 0:
+                logging.debug(
+                    f"{green}Found{normal} `{ll}' at line {ln}, `{line}'")
+                break
+            elif ll is None and line == '':
+                logging.debug(f"{green}Found{normal} empty line {ln}")
+                break
 
-            if ln < first_line:
-                continue
+        if ln < first_line:
+            continue
 
-            # Extract this line.
-            ex = True
-            logging.debug(f"Extracting line {ln}, `{sline}'")
-            res += line
+        # Extract this line.
+        ex = True
+        logging.debug(f"Extracting line {ln}, `{line}'")
+        res += f"{line}\n"
 
     return {'extract': res}
 
@@ -213,6 +209,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--dir', help='Specify directory to analyze', default='.')
     parser.add_argument(
+        '--detect-file-encoding-limit', type=int, default=999,
+        help='Specify file encoding detection limit, in number of lines')
+    parser.add_argument(
         '--md', help='Specify markdown output filename')
     parser.add_argument(
         '--jira', help='Specify Jira-suitable text output filename')
@@ -229,6 +228,7 @@ if __name__ == '__main__':
     ln = logging.getLevelName(logging.ERROR)
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
+    logreader.detect_file_encoding_limit = args.detect_file_encoding_limit
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
     conf = load_config(f'{here}/format-sr-results.yaml')
