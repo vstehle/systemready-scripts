@@ -452,6 +452,8 @@ tree:
         must-contain:
           - CapsuleApp.efi -D
           - CapsuleApp.efi
+          - CapsuleApp.efi -E
+          - ESRT TABLE
         warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
@@ -465,6 +467,8 @@ tree:
         must-contain:
           - CapsuleApp.efi -D
           - -OD
+          - CapsuleApp.efi -E
+          - ESRT TABLE
         warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
