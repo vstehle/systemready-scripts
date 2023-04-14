@@ -15,6 +15,7 @@ import requests
 import tempfile
 import shutil
 import logreader
+import time
 
 try:
     from packaging import version
@@ -121,6 +122,9 @@ not_checked = set()
 # The set of already reported warnings, which we report only once.
 warn_once = set()
 
+# Meta data about this run.
+meta_data = {}
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -218,6 +222,7 @@ def get_linux_cache():
     cached = f"{cache_dir}/{linux_ver}"
     stamp = f"{cached}/.stamp"
     one_hour = 60 * 60
+    meta_data['linux-version'] = linux_ver
 
     # Is this a cache hit?
     if not need_regen(stamp, [os.path.realpath(__file__)], margin=one_hour):
@@ -263,10 +268,11 @@ def get_linux_cache():
         sys.exit(1)
 
     # Create stamp.
+    # While at it, save our meta-data there.
     logging.debug(f"Creating `{stamp}'")
 
-    with open(stamp, 'w'):
-        pass
+    with open(stamp, 'w') as f:
+        print_meta(f)
 
     return cached
 
@@ -624,8 +630,10 @@ def check_devicetree(filename):
             stats.inc_error()
             return stats
 
+        # End marker; while at it, append our meta-data there.
         with open(log, 'a') as f:
             print('+ END', file=f)
+            print_meta(f, pre='+ ')
 
         logging.info(f"{green}Created{normal} `{log}'")
 
@@ -821,6 +829,12 @@ def sct_parser(conffile, filename):
     if which_parser is None:
         logging.debug('No parser')
         return
+
+    # Try to get parser version.
+    commit = git_commit(os.path.dirname(which_parser))
+
+    if commit is not None:
+        meta_data['sct-parser-commit'] = commit
 
     seq = conffile['seq-file']
     ekl = 'sct_results/Overall/Summary.ekl'
@@ -1173,11 +1187,13 @@ def check_dt_validate():
         logging.debug(f"Have dt-validate (`{w}')")
 
     # Check that dt-validate runs.
-    cp = run(f"{dt_validate} -h")
+    cp = run(f"{dt_validate} --version")
 
     if cp.returncode:
         logging.error(f"{red}Bad {dt_validate}{normal}")
         sys.exit(1)
+
+    meta_data['dt-validate-version'] = cp.stdout.decode().rstrip()
 
 
 # Check that we have all we need.
@@ -1190,6 +1206,8 @@ def check_prerequisites():
     if cp.returncode:
         logging.error(f"{red}tar not found{normal}")
         sys.exit(1)
+
+    meta_data['tar-version'] = cp.stdout.decode().splitlines()[0]
 
     # Check that we have guid-tool.
     cp = run(f"{guid_tool} -h")
@@ -1206,11 +1224,15 @@ def check_prerequisites():
         sys.exit(1)
 
     # Check that we have dtc.
-    cp = run(f"{dtc} -h")
+    cp = run(f"{dtc} --version")
 
     if cp.returncode:
         logging.error(f"{red}dtc not found{normal}")
         sys.exit(1)
+
+    dtc_ver = cp.stdout.decode().rstrip()
+    dtc_ver = re.sub(r'Version: ', '', dtc_ver)
+    meta_data['dtc-version'] = dtc_ver
 
     # Check that we have dt-validate.
     check_dt_validate()
@@ -1319,11 +1341,13 @@ def apply_overlays(conf, context):
             overlay_tree(o['tree'], conf['tree'])
 
 
+# While at it, put our meta-data there as comments.
 def dump_config(conf, filename):
     logging.debug(f'Dump {filename}')
 
     with open(filename, 'w') as yamlfile:
         yaml.dump(conf, yamlfile, Dumper=yaml.CDumper)
+        print_meta(f=yamlfile, pre='# ')
         logging.info(f"Dumped `{filename}'")
 
 
@@ -1335,6 +1359,44 @@ def print_not_checked():
 
     for x in sorted(not_checked):
         logging.debug(x)
+
+
+# Get git commit.
+# Return None in case of error.
+def git_commit(dirname):
+    cp = subprocess.run(
+        f"git -C '{dirname}' describe --always --abbrev=12 --dirty",
+        shell=True, capture_output=True)
+    logging.debug(cp)
+
+    if cp.returncode:
+        logging.debug(f"No git or {dirname} not versioned")
+        return None
+    else:
+        return cp.stdout.decode().rstrip()
+
+
+# Capture initial meta-data.
+def init_meta(argv, here):
+    meta_data['command-line'] = ' '.join(argv)
+    meta_data['date'] = f"{time.asctime(time.gmtime())} UTC"
+    meta_data['python-version'] = sys.version
+
+    commit = git_commit(here)
+
+    if commit is not None:
+        meta_data['git-commit'] = commit
+
+    logging.debug(f"meta-data: {meta_data}")
+
+
+# Print meta-data
+def print_meta(f=sys.stdout, pre=''):
+    print(f"{pre}meta-data", file=f)
+    print(f"{pre}---------", file=f)
+
+    for k in sorted(meta_data.keys()):
+        print(f"{pre}{k}: {meta_data[k]}", file=f)
 
 
 if __name__ == '__main__':
@@ -1388,6 +1450,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--parser', help='Specify (SCT) parser.py path',
         default='parser.py')
+    parser.add_argument(
+        '--print-meta', action='store_true', help='Print meta-data to stdout')
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -1410,6 +1474,9 @@ if __name__ == '__main__':
     linux_url = args.linux_url
     cache_dir = args.cache_dir
     force_regen = args.force_regen
+
+    # Prepare initial meta-data.
+    init_meta(sys.argv, here)
 
     check_prerequisites()
 
@@ -1448,3 +1515,7 @@ if __name__ == '__main__':
 
     if args.debug:
         print_not_checked()
+
+    if args.print_meta:
+        print()
+        print_meta()
