@@ -58,6 +58,7 @@ def logreader_cleanup_line(line):
         else:
             raise
 
+    line = re.sub(r'\x00', ' ', line)
     return line
 
 
