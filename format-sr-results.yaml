@@ -16,6 +16,13 @@ subs:
         paragraph: TBD
       - heading: UEFI sniff test
         paragraph: TBD
+        subs:
+          - heading: EFI System Partition (ESP)
+            extract:
+              filename: fw/uefi-sniff.log
+              find: 'EFISystemPartition'
+              last-line: 0
+            paragraph: TBD
   - heading: EBBR Compliance
     paragraph: TBD
     subs:
@@ -32,23 +39,29 @@ subs:
           find: Test Failure Summary
         paragraph: TBD
       - heading: Capsule update
+        extract:
+          filename: fw/capsule-on-disk.log
+          find: FmpCapsule
+          last-line: '> '
         paragraph: TBD
       - heading: ESRT
         extract:
           filename: acs_results/app_output/CapsuleApp_ESRT_table_info.log
           find: '# ESRT TABLE #'
           first-line: 2
-          last-line: LastAttemptStatus
+          last-line:
         paragraph: TBD
       - heading: Devicetree
         paragraph: TBD
       - heading: PSCI
-        paragraph: TBD
         extract:
           filename: "acs_results/linux_dump/firmware/devicetree/base/psci/\
             compatible"
+        paragraph: TBD
   - heading: BBSR Compliance
-    paragraph: TBD
+    paragraph: |
+      Security Interface Extension (SIE).
+      TBD
     subs:
       - heading: SIE SCT
         extract:
