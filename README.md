@@ -224,7 +224,7 @@ subs:
   - heading: <heading name>           # Paragraph's title
     extract:                          # Optional extraction info
       filename: <filename>            # File to extract from
-      find: <text>                    # Look for this text in file
+      find: <text>                    # Optional; look for this text in file
       first-line: <n>                 # Extract from this relative line
       last-line: <n or text or None>  # Optional; when to stop extract
     paragraph: <paragraph text>       # Paragraph's contents
@@ -238,7 +238,9 @@ subs:
 An `extract` block allows to specify that part of a file needs to be extracted
 and output to the report.
 
-The file with `filename` is scanned to find the `find` pattern first.
+When `find` is specified, the file with `filename` is scanned to find the
+`find` pattern first. Otherwise the first line of the file is considered as
+matching.
 
 The contents of `filename` is then extracted, started from `first-line`. The
 `first-line` line number is relative to the matching line (line 0) and can be

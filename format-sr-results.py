@@ -55,32 +55,44 @@ def load_config(filename):
 
 # Handle `extract' directive.
 # Return: {'extract': <extracted text>}
+# 'find' is optional.
+# When it is not present we extract the whole file.
 # 'last-line' is optional
 # When it is not present, we extract until the end of the file
 # When it is an integer, we extract until this number of line after the found
 # line
 # When it is a string, we extract until we reach a line matching it
 # When it is None, we extract until an emtpy line
+# We deal somewhat gracefully with non-existing files.
 def extract(x, dirname):
     filename = f"{dirname}/{x['filename']}"
+
+    if not os.path.isfile(filename):
+        logging.error(f"`{filename}' {red}not found{normal}.")
+        return {'extract': f"`{filename}' not found."}
+
     logging.debug(f"Extract from `{filename}'")
 
     # First pass: find pattern.
-    found = 0
-    pat = x['find']
+    if 'find' in x:
+        found = 0
+        pat = x['find']
 
-    for i, line in enumerate(logreader.LogReader(filename)):
-        ln = i + 1
+        for i, line in enumerate(logreader.LogReader(filename)):
+            ln = i + 1
 
-        if line.find(pat) >= 0:
-            logging.debug(
-                f"{green}Found{normal} `{pat}' at line {ln}, `{line}'")
-            found = ln
-            break
+            if line.find(pat) >= 0:
+                logging.debug(
+                    f"{green}Found{normal} `{pat}' at line {ln}, `{line}'")
+                found = ln
+                break
 
-    if not found:
-        logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
-        return {'extract': f"Could not find `{pat}' in `{filename}'"}
+        if not found:
+            logging.error(
+                f"{red}Could not find{normal} `{pat}' in `{filename}'")
+            return {'extract': f"Could not find `{pat}' in `{filename}'"}
+    else:
+        found = 1
 
     # Second pass: extract.
     res = ''
