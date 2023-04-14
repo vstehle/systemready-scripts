@@ -6,7 +6,6 @@ import sys
 import yaml
 import os
 import curses
-from chardet.universaldetector import UniversalDetector
 import glob
 import re
 import subprocess
@@ -15,7 +14,7 @@ import fnmatch
 import requests
 import tempfile
 import shutil
-import collections.abc
+import logreader
 
 try:
     from packaging import version
@@ -46,10 +45,6 @@ if os.isatty(sys.stdout.fileno()):
         green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
     except Exception:
         pass
-
-# Maximum number of lines to examine for file encoding detection.
-# This will be set after command line argument parsing.
-detect_file_encoding_limit = None
 
 # guid-tool.py command.
 # This will be set after command line argument parsing.
@@ -306,76 +301,6 @@ def load_config(filename):
     return conf
 
 
-# Detect file encoding
-# We return the encoding or None
-def detect_file_encoding(filename):
-    logging.debug(f"Detect encoding of `{filename}'")
-
-    detector = UniversalDetector()
-    enc = None
-
-    with open(filename, 'rb') as f:
-        for i, line in enumerate(f):
-            detector.feed(line)
-
-            if detector.done:
-                detector.close()
-                enc = detector.result['encoding']
-                break
-
-            if i > detect_file_encoding_limit:
-                logging.debug('Giving up')
-                break
-
-    logging.debug(f"Encoding {enc}")
-    return enc
-
-
-# Cleanup a line
-# - Right-strip the line
-# - Remove the most annoying escape sequences
-# Returns the cleaned-up line.
-def cleanup_line(line):
-    line = line.rstrip()
-    line = re.sub(r'\x1B\[K', '', line)
-    line = re.sub(r'\x1B\(B', '', line)
-    line = re.sub(r'\x07', '', line)
-    line = re.sub(r'\x1B\[[\x30-\x3F]*[\x20-\x2F]*[\x40-\x7E]', '', line)
-
-    while True:
-        m = re.search(r'\x08|\r', line)
-
-        if not m:
-            break
-
-        if m[0] == '\r':
-            line = line[m.start() + 1:]
-        elif m[0] == '\x08':
-            line = re.sub(r'.?\x08', '', line, count=1)
-        else:
-            raise
-
-    return line
-
-
-# An iterator class to easily read from a log in a loop.
-# We detect file encoding and cleanup the lines (which includes
-# right-stripping).
-class LogReader(collections.abc.Iterator):
-    def __init__(self, filename):
-        logging.debug(f"LogReader `{filename}'")
-        enc = detect_file_encoding(filename)
-
-        # Open the file with the proper encoding
-        f = open(filename, encoding=enc, errors='replace', newline='\n')
-
-        self.i = iter(f)
-
-    def __next__(self):
-        # Cleanup each line
-        return cleanup_line(self.i.__next__())
-
-
 # Check that a file contains what it must.
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
@@ -391,7 +316,7 @@ def check_file_contains(must_contain, filename):
     stats = Stats()
 
     # Open the file with the proper encoding and look for patterns
-    for i, line in enumerate(LogReader(filename)):
+    for i, line in enumerate(logreader.LogReader(filename)):
         if line.find(pat) >= 0:
             logging.debug(
                 f"`{pat}' {green}found{normal} at line {i + 1}: `{line}'")
@@ -430,7 +355,7 @@ def if_contains(strings, filename, error_not_warn, once):
     pats = set(strings)
 
     # Open the file with the proper encoding and look for patterns
-    for i, line in enumerate(LogReader(filename)):
+    for i, line in enumerate(logreader.LogReader(filename)):
         if len(pats) == 0:
             break
 
@@ -784,7 +709,7 @@ def check_uefi_sniff(filename):
     n = 0
 
     # Open the file with the proper encoding and look for ESPs
-    for i, line in enumerate(LogReader(filename)):
+    for i, line in enumerate(logreader.LogReader(filename)):
         m = re.match(
             r'\d+: DevicePath\([^\)]+\) +(/\S+) BlockIO\([^\)]+\).* '
             r'EFISystemPartition\([^\)]+\)', line)
@@ -816,7 +741,7 @@ def check_must_have_esp(filename):
     dp = set()
 
     # Open the file with the proper encoding and look for partitions.
-    for i, line in enumerate(LogReader(filename)):
+    for i, line in enumerate(logreader.LogReader(filename)):
         if state == 'await shell':
             # UEFI Interactive Shell v2.2
             if line.find('UEFI Interactive Shell v') == 0:
@@ -1474,7 +1399,7 @@ if __name__ == '__main__':
     ln = logging.getLevelName(logging.ERROR)
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
-    detect_file_encoding_limit = args.detect_file_encoding_limit
+    logreader.detect_file_encoding_limit = args.detect_file_encoding_limit
     guid_tool = args.guid_tool + (' --debug' if args.debug else '')
     capsule_tool = args.capsule_tool + (' --debug' if args.debug else '')
     dtc = args.dtc
