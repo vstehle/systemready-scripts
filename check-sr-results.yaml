@@ -450,8 +450,21 @@ tree:
       - file: capsule-update.log
         must-have-esp:
         must-contain:
+          - Welcome to GRUB!
+          - UEFI Interactive Shell v2.2
           - CapsuleApp.efi -D
+          - FmpCapsule
           - CapsuleApp.efi
+          - 'CapsuleApp: failed to update capsule - Security Violation'
+          - CapsuleApp.efi -D
+          - FmpCapsule
+          - CapsuleApp.efi
+          - 'CapsuleApp: failed to update capsule - Security Violation'
+          - CapsuleApp.efi -D
+          - FmpCapsule
+          - CapsuleApp.efi
+          - Welcome to GRUB!
+          - UEFI Interactive Shell v2.2
           - CapsuleApp.efi -E
           - ESRT TABLE
         warn-once-if-contains:
@@ -465,8 +478,13 @@ tree:
       - file: capsule-on-disk.log
         must-have-esp:
         must-contain:
+          - Welcome to GRUB!
+          - UEFI Interactive Shell v2.2
           - CapsuleApp.efi -D
+          - FmpCapsule
           - -OD
+          - Welcome to GRUB!
+          - UEFI Interactive Shell v2.2
           - CapsuleApp.efi -E
           - ESRT TABLE
         warn-once-if-contains:
