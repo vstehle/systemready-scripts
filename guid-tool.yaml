@@ -92,3 +92,7 @@ known-guids:
     description: Arm reserved GUID 1
   - guid: 4962fd6f-7971-4dce-851e-9cb22a89b832
     description: Arm reserved GUID 2
+  - guid: 6dcbd5ed-e82d-4c44-bda1-7194199ad92a
+    description: EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID (NOT an ImageTypeId)
+  - guid: 4aafd29d-68df-49ee-8aa9-347d375665a7
+    description: EFI_CERT_TYPE_PKCS7_GUID (NOT an ImageTypeId)
