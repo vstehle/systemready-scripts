@@ -533,7 +533,7 @@ tree:
   - file: report.txt
     must-contain:
       - General information
-      - Test Logs collected
+      - Test logs and results collected
 
 overlays:
 
