@@ -4,6 +4,7 @@ import logging
 from chardet.universaldetector import UniversalDetector
 import re
 import collections.abc
+import sys
 
 # Maximum number of lines to examine for file encoding detection.
 detect_file_encoding_limit = 999
@@ -78,3 +79,12 @@ class LogReader(collections.abc.Iterator):
     def __next__(self):
         # Cleanup each line
         return logreader_cleanup_line(self.i.__next__())
+
+
+if __name__ == '__main__':
+    # This script can be run from command line for testing purposes. It will
+    # dump the file contents as seen when going through the LogReader.
+    # Usage: logreader.py <logfile>
+    if len(sys.argv) == 2:
+        for line in LogReader(sys.argv[1]):
+            print(line)
