@@ -1,0 +1,9 @@
+Welcome to GRUB!
+
+error: no such device: ((hd1,gpt1)/efi/boot)/EFI/BOOT/grub.cfg.
+GNU GRUB  version 2.06
+UEFI Interactive Shell v2.2
+EDK II
+UEFI v2.90 (Das U-Boot, 0x20220400)
+FS1:\> EFI/BOOT/app/CapsuleApp.efi -D unauth.bin
+FS1:\> EFI/BOOT/app/CapsuleApp.efi -E

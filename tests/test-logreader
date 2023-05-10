@@ -1,0 +1,41 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for logreader.py.
+# Usage: test-logreader [keep]
+# We keep our temporary folder when `keep' is specified.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing LogReader... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure logreader.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+out="$tmp/out"
+
+echo -n 'none, ' >&3
+logreader.py |& tee "$out"
+
+echo -n 'tests, ' >&3
+logreader.py "$data/tests/log" |& tee "$out"
+diff -u "$out" "$data/tests/ref"
+
+echo 'ok.' >&3
