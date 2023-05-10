@@ -42,7 +42,7 @@ $defs:
                             - type: string
                 required:
                     - filename
-                    - find
+                    # find is optional
                     # first-line is optional
                     # last-line is optional
                 additionalProperties: false
