@@ -1,0 +1,14 @@
+ 606 : 16550 compatible UART                 
+       Checkpoint --  2                           : Result:  SKIPPED 
+
+      *** One or more tests have Failed/Skipped.*** 
+
+       No Watchdog Found, Skipping Watchdog tests...
+
+      *** No ECAM region found, Skipping PCIE tests *** 
+
+       USER Override - Skipping all Exerciser tests 
+
+     ------------------------------------------------------- 
+     Total Tests run  =   41  Tests Passed  =   23  Tests Failed =   10
+     ------------------------------------------------------- 

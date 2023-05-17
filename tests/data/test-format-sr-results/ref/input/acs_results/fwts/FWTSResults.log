@@ -1,0 +1,38 @@
+Test 9 of 9: Test UEFI RT variable services unsupported status.
+PASSED: Test 9, UEFI SetVariable runtime service unsupported status test passed.
+SKIPPED: Test 9, GetVariable runtime service supported, skip test.
+SKIPPED: Test 9, GetNextVarName runtime service supported, skip test.
+PASSED: Test 9, UEFI QueryVarInfo runtime service unsupported status test
+passed.
+
+================================================================================
+2 passed, 0 failed, 0 warning, 0 aborted, 10 skipped, 0 info only.
+================================================================================
+
+
+8 passed, 0 failed, 0 warning, 0 aborted, 55 skipped, 0 info only.
+
+Test Failure Summary
+================================================================================
+
+Critical failures: NONE
+
+High failures: NONE
+
+Medium failures: NONE
+
+Low failures: NONE
+
+Other failures: NONE
+
+Test           |Pass |Fail |Abort|Warn |Skip |Info |
+---------------+-----+-----+-----+-----+-----+-----+
+esrt           |    1|     |     |     |     |     |
+uefibootpath   |     |     |     |     |    1|     |
+uefirtmisc     |    1|     |     |     |    8|     |
+uefirttime     |    4|     |     |     |   35|     |
+uefirtvariable |    2|     |     |     |   10|     |
+uefivarinfo    |     |     |     |     |    1|     |
+---------------+-----+-----+-----+-----+-----+-----+
+Total:         |    8|    0|    0|    0|   55|    0|
+---------------+-----+-----+-----+-----+-----+-----+

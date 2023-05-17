@@ -1,0 +1,54 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for format-sr-results.py.
+# Usage: test-format-sr-results [keep]
+# We keep our temporary folder when `keep' is specified.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing format-sr-results... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure format-sr-results.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+
+echo -n 'null, ' >&3
+format-sr-results.py --dir /dev/null
+
+echo -n 'ref, ' >&3
+
+format-sr-results.py --dir "$data/ref/input" --jira "$tmp/jira.txt" \
+	--md "$tmp/out.md" --dump "$tmp/dump.txt"
+
+p=$(pwd)
+files=(jira.txt out.md)
+
+# Cleanup paths as a first path (this should not stop).
+for f in "${files[@]}"; do
+	sed -i "s,$p,xxx,g" "$tmp/$f"
+done
+
+# Then compare as a second path (this stops at first error).
+for f in "${files[@]}"; do
+	diff -u "$data/ref/output/$f" "$tmp/$f"
+done
+
+echo 'ok.' >&3
