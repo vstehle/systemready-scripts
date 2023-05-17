@@ -391,6 +391,7 @@ tree:
               - UEFI v2.
   - dir: docs
     optional:
+    min-entries: 0
   - dir: fw
     min-entries: 3
     tree:
