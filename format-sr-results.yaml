@@ -53,6 +53,13 @@ subs:
         paragraph: TBD
       - heading: Devicetree
         paragraph: TBD
+        subs:
+          - heading: Linux bindings
+            extract:
+              filename: acs_results/uefi/BsaDevTree.dtb.log
+              find: '+ linux-version: linux-'
+              last-line: 0
+            paragraph: TBD
       - heading: PSCI
         extract:
           filename: "acs_results/linux_dump/firmware/devicetree/base/psci/\
