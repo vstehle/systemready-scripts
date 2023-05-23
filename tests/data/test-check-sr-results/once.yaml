@@ -1,0 +1,9 @@
+---
+check-sr-results-configuration:
+tree:
+  - file: a
+    warn-once-if-contains:
+      - A
+  - file: b
+    warn-once-if-contains:
+      - A

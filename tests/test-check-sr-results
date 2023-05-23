@@ -90,6 +90,18 @@ for d in b ab; do
 	grep ' 1 warning' "$out"
 done
 
+echo -n 'once, ' >&3
+"${csr[@]}" --config "$data/once.yaml" --dir "$data/once" |& tee "$out"
+grep 'WARNING .* found in .*warning once' "$out"
+n=$(grep -c 'WARNING .* found in .*warning once' "$out")
+((n == 1))
+
+echo -n 'all, ' >&3
+"${csr[@]}" --config "$data/once.yaml" --dir "$data/once" --all |& tee "$out"
+grep 'WARNING .* found in ' "$out"
+n=$(grep -c 'WARNING .* found in ' "$out")
+((n == 2))
+
 echo -n 'no esp, ' >&3
 "${csr[@]}" --dir "$data/no-esp" |& tee "$out"
 grep 'ERROR .* Could not find an ESP in .*fw/uefi-sniff.log' "$out"

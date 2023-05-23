@@ -87,6 +87,11 @@ cache_dir = None
 # This will be set after command line argument parsing.
 force_regen = None
 
+# Output all warnings, including all the ones, which are normally output only
+# once.
+# This will be set after command line argument parsing.
+_all = None
+
 # ESRT GUIDs.
 # This is populated when checking the ESRT, and is used later on to check
 # capsules.
@@ -352,8 +357,9 @@ def check_file_contains(must_contain, filename):
 # we issue a warning.
 # once is an optional set of already reported matches. When this is not None,
 # we use it to remember which match was already reported and report matches
-# only once. A match is the combination of the pattern plus the full matching
-# line.
+# only once (except when using `--all', in which case all the warnings are
+# reported).
+# A match is the combination of the pattern plus the full matching line.
 def if_contains(strings, filename, error_not_warn, once):
     action = 'Error' if error_not_warn else 'Warn'
     logging.debug(f"{action} if file `{filename}' contains {strings}")
@@ -374,7 +380,7 @@ def if_contains(strings, filename, error_not_warn, once):
                         f"`{p}' {red}found{normal} in `{filename}' "
                         f"at line {i + 1}: `{line}'")
                     stats.inc_error()
-                elif once is None or match not in once:
+                elif _all or once is None or match not in once:
                     msg = (f"`{p}' {yellow}found{normal} in `{filename}' "
                            f"at line {i + 1}: `{line}'")
 
@@ -1410,6 +1416,9 @@ if __name__ == '__main__':
                '(https://gitlab.arm.com/systemready/systemready-ir-template).',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
+        '--all', action='store_true',
+        help='Output all warnings, even the "once" ones.')
+    parser.add_argument(
         '--cache-dir', help='Specify cache directory',
         default=f"{os.path.expanduser('~')}/.check-sr-results"),
     parser.add_argument(
@@ -1474,6 +1483,7 @@ if __name__ == '__main__':
     linux_url = args.linux_url
     cache_dir = args.cache_dir
     force_regen = args.force_regen
+    _all = args.all
 
     # Prepare initial meta-data.
     init_meta(sys.argv, here)

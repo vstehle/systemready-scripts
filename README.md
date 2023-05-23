@@ -131,8 +131,8 @@ handled correctly automatically.
 
 When a `warn-if-contains` property exists, the first appearance of any of the
 strings listed will result in a warning. The `warn-once-if-contains` property
-is similar but outputs a warning only once. For an `error-if-contains', this
-results in an error.
+is similar but outputs a warning only once (except when the option `--all` is
+used). For an `error-if-contains', this results in an error.
 
 Filenames and dirnames can be UNIX shell glob patterns, in which case their
 parent directory is scanned and all matching entries are considered. If the
