@@ -63,10 +63,9 @@ def hash_file_cached(filename, cache):
 
 
 # Search for strings in a file.
-# Return the sets of strings found and not found.
+# Return the set of strings not found.
 def search_file(filename, strings):
     logging.debug(f"Search for {strings} in `{filename}'")
-    found = set()
     remain = set(strings)
 
     with open(filename, 'r') as f:
@@ -76,7 +75,6 @@ def search_file(filename, strings):
             for s in list(remain):
                 if s in line:
                     logging.debug(f"""Found "{s}" at line {i + 1}: `{line}'""")
-                    found.add(s)
                     remain.remove(s)
 
             if not len(remain):
@@ -85,7 +83,7 @@ def search_file(filename, strings):
     if len(remain):
         logging.debug(f"Did not find {remain}")
 
-    return found, remain
+    return remain
 
 
 # Identify all known files, using their paths and details from the db.
@@ -113,7 +111,7 @@ def identify_files(db, dirname):
         if 'search' in x:
             search = x['search']
             # This does not benefit from caching.
-            found, remain = search_file(filename, search)
+            remain = search_file(filename, search)
 
             if not len(remain):
                 logging.debug(f"""Identified `{filename}' as "{x['name']}".""")
