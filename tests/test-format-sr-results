@@ -51,4 +51,15 @@ for f in "${files[@]}"; do
 	diff -u "$data/ref/output/$f" "$tmp/$f"
 done
 
+echo -n 'stable debug, ' >&3
+a="$tmp/a.log"
+b="$tmp/b.log"
+
+args=(--dir "$data/ref/input" --jira /dev/null --md /dev/null \
+	--dump /dev/null)
+
+format-sr-results.py "${args[@]}" --debug |& tee "$a"
+format-sr-results.py "${args[@]}" --debug |& tee "$b"
+diff -u "$a" "$b"
+
 echo 'ok.' >&3

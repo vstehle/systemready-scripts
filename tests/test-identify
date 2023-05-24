@@ -39,6 +39,13 @@ echo -n 'ir1.0 bet-0, ' >&3
 identify.py --dir "$data/v21.05_0.8_BETA-0" |& tee "$out"
 grep 'SystemReady IR v1.0' "$out"
 
+echo -n 'stable debug, ' >&3
+a="$tmp/a.log"
+b="$tmp/b.log"
+identify.py --dir "$data/v21.05_0.8_BETA-0" --debug |& tee "$a"
+identify.py --dir "$data/v21.05_0.8_BETA-0" --debug |& tee "$b"
+diff -u "$a" "$b"
+
 identify.py --dir "$data/v21.05_0.8_BETA-0" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v21.05_0.8_BETA-0' "$out"
 

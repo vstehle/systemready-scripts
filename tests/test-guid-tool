@@ -37,6 +37,13 @@ guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 |& tee "$out"
 grep 'EFI_FIRMWARE_IMAGE_TYPE_UBOOT_FIT_GUID' "$out"
 echo -n 'known guid recognized, ' >&3
 
+echo -n 'stable debug, ' >&3
+a="$tmp/a.log"
+b="$tmp/b.log"
+guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 --debug |& tee "$a"
+guid-tool.py ae13ff2d-9ad4-4e25-9ac8-6d80b3b22147 --debug |& tee "$b"
+diff -u "$a" "$b"
+
 if guid-tool.py ABC |& tee "$out"; then
 	false
 fi
