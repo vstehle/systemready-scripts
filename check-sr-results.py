@@ -1262,13 +1262,18 @@ def check_prerequisites():
         sys.exit(1)
 
 
+# Overlay one property.
+def overlay_property(dst, k, v):
+    logging.debug(f"{k} <- {v}")
+    dst[k] = v
+
+
 # Overlay the src file over the dst file, in-place.
 def overlay_file(src, dst):
     logging.debug(f"Overlay file {src['file']}")
 
     for k, v in src.items():
-        logging.debug(f"Overlay {k}")
-        dst[k] = v
+        overlay_property(dst, k, v)
 
 
 # Overlay the src dir over the dst dir, in-place.
@@ -1276,14 +1281,12 @@ def overlay_dir(src, dst):
     logging.debug(f"Overlay dir {src['dir']}")
 
     for k, v in src.items():
-        logging.debug(f"Overlay {k}")
-
         # We have a special case when "merging" tree.
         if k == 'tree' and 'tree' in dst:
             overlay_tree(src['tree'], dst['tree'])
             continue
 
-        dst[k] = v
+        overlay_property(dst, k, v)
 
 
 # Overlay the src tree over the dst tree, in-place.
