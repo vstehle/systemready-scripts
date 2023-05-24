@@ -52,6 +52,10 @@ fi
 
 grep 'Could not parse capsule' "$out"
 
+if grep 'Traceback' "$out"; then
+	false
+fi
+
 echo -n 'zero, ' >&3
 
 if capsule-tool.py /dev/zero |& tee "$out"; then
@@ -59,6 +63,34 @@ if capsule-tool.py /dev/zero |& tee "$out"; then
 fi
 
 grep 'Could not parse capsule' "$out"
+
+if grep 'Traceback' "$out"; then
+	false
+fi
+
+echo -n 'null, ' >&3
+
+if capsule-tool.py /dev/null |& tee "$out"; then
+	false
+fi
+
+grep 'Could not parse capsule' "$out"
+
+if grep 'Traceback' "$out"; then
+	false
+fi
+
+echo -n 'null debug, ' >&3
+
+if capsule-tool.py --debug /dev/null |& tee "$out"; then
+	false
+fi
+
+grep 'Could not parse capsule' "$out"
+
+if grep 'Traceback' "$out"; then
+	false
+fi
 
 echo -n 'unauthenticated capsule, ' >&3
 unauth="$tmp/unauthenticated.bin"

@@ -614,11 +614,7 @@ if __name__ == '__main__':
     except Exception as e:
         logging.debug(f"(Exception `{e}')")
         logging.error('Could not parse capsule; exiting')
-
-        if args.debug:
-            raise e
-        else:
-            sys.exit(1)
+        sys.exit(1)
 
     if not sanity_check_capsule(capsule, args.force):
         logging.error('Invalid capsule; exiting')
