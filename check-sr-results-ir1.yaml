@@ -289,6 +289,36 @@ overlays:
               - file: smbiosview.log
                 optional:
 
+  # BSA is not applicable to 32b systems; make the related files optional for
+  # the 32b ACS-IR versions.
+  - when-any: [ACS-IR v22.10_IR_32b_0.7_BETA-0]
+    tree:
+      - file: acs-console.log
+        must-contain:
+          - Test preparing...
+          - Done!
+          - 'EFI stub: Booting Linux Kernel...'
+          - Linux version
+          - 'Test: UEFI'
+          - '/ #'
+      - dir: acs_results
+        tree:
+          - dir: uefi
+            optional:
+            min-entries: 0
+      - dir: manual-results
+        optional:
+        min-entries: 0
+        tree:
+          - dir: bsa-linux
+            optional:
+            min-entries: 0
+            tree:
+              - file: console.log
+                optional:
+                can-be-empty:
+                must-contain: DELETE
+
   # (Ab)use the overlay mechanism to emit an error about ir1 branch.
   - when-any: ['']
     tree:

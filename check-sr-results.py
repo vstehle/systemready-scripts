@@ -1515,7 +1515,7 @@ if __name__ == '__main__':
     # Command line takes precedence in all cases.
     config = f'{here}/check-sr-results.yaml'
 
-    if ver is not None and 'IR v1.' in ver:
+    if ver is not None and ('IR v1.' in ver or 'IR 32b v1.' in ver):
         config = f'{here}/check-sr-results-ir1.yaml'
 
     if args.config:
