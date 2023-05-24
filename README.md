@@ -163,7 +163,8 @@ The conditions are strings. A condition is true when its string matches
 * The files recognized by `identify.py --known-files`
 
 All keys are overwritten violently except `tree`, which is overlayed
-recursively.
+recursively. Also, when a key has the special value `DELETE` the property is
+deleted.
 
 ### SCT parser result.md
 

@@ -1263,9 +1263,14 @@ def check_prerequisites():
 
 
 # Overlay one property.
+# When a property has the special value 'DELETE', we delete it.
 def overlay_property(dst, k, v):
-    logging.debug(f"{k} <- {v}")
-    dst[k] = v
+    if v == 'DELETE':
+        logging.debug(f"Deleting {k}")
+        del dst[k]
+    else:
+        logging.debug(f"{k} <- {v}")
+        dst[k] = v
 
 
 # Overlay the src file over the dst file, in-place.

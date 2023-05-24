@@ -35,7 +35,9 @@ $defs:
             file:
                 type: string
             must-contain:
-                '$ref': '#/$defs/array-of-strings'
+                oneOf:
+                    - '$ref': '#/$defs/array-of-strings'
+                    - const: 'DELETE'  # For overlays.
             warn-if-contains:
                 '$ref': '#/$defs/array-of-strings'
             warn-once-if-contains:
