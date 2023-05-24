@@ -364,14 +364,16 @@ def if_contains(strings, filename, error_not_warn, once):
     action = 'Error' if error_not_warn else 'Warn'
     logging.debug(f"{action} if file `{filename}' contains {strings}")
     stats = Stats()
-    pats = set(strings)
+    # We use a dict for the patterns to preserve the order and be able
+    # to remove them like with a set().
+    pats = dict.fromkeys(strings)
 
     # Open the file with the proper encoding and look for patterns
     for i, line in enumerate(logreader.LogReader(filename)):
         if len(pats) == 0:
             break
 
-        for p in list(pats):
+        for p in list(pats.keys()):
             if p in line:
                 match = f"{p}%{line}"
 
@@ -391,7 +393,7 @@ def if_contains(strings, filename, error_not_warn, once):
                     logging.warning(msg)
                     stats.inc_warning()
 
-                pats.remove(p)
+                del pats[p]
 
     if len(strings) > 0 and len(strings) == len(pats):
         logging.debug(f"{green}No pattern{normal} in `{filename}'")
