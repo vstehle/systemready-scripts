@@ -754,7 +754,9 @@ def check_must_have_esp(filename):
     logging.debug(f"Check must have ESP `{filename}'")
     stats = Stats()
     state = 'await shell'
-    dp = set()
+    # We use a dict for the device paths to preserve the order
+    # in which they are added and ensure uniqueness like with a set().
+    dp = {}
 
     # Open the file with the proper encoding and look for partitions.
     for i, line in enumerate(logreader.LogReader(filename)):
@@ -803,7 +805,7 @@ def check_must_have_esp(filename):
 
             if m:
                 logging.debug(f"Matched path line {i + 1}, `{line}'")
-                dp.add(m[1])
+                dp[m[1]] = None
                 state = 'await alias'
             else:
                 state = 'await shell'
@@ -812,11 +814,11 @@ def check_must_have_esp(filename):
             raise
 
     if len(dp):
-        logging.debug(f"{green}Found{normal} device path(s): `{dp}'")
+        logging.debug(f"{green}Found{normal} device path(s): `{dp.keys()}'")
         stats.inc_pass()
 
         # Record the device path(s) for deferred check against the ESPs.
-        for x in dp:
+        for x in dp.keys():
             dev_paths.append({'dev-path': x, 'filename': filename})
 
     else:
