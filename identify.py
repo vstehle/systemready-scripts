@@ -63,10 +63,12 @@ def hash_file_cached(filename, cache):
 
 
 # Search for strings in a file.
-# Return the set of strings not found.
+# Return the list of strings not found.
 def search_file(filename, strings):
     logging.debug(f"Search for {strings} in `{filename}'")
-    remain = set(strings)
+    # We use a dict for the strings to preserve the order and be able
+    # to remove them like with a set().
+    remain = dict.fromkeys(strings)
 
     with open(filename, 'r') as f:
         for i, line in enumerate(f):
@@ -75,10 +77,12 @@ def search_file(filename, strings):
             for s in list(remain):
                 if s in line:
                     logging.debug(f"""Found "{s}" at line {i + 1}: `{line}'""")
-                    remain.remove(s)
+                    del remain[s]
 
             if not len(remain):
                 break
+
+    remain = list(remain.keys())
 
     if len(remain):
         logging.debug(f"Did not find {remain}")
