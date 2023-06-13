@@ -1467,7 +1467,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--linux-url', help='Specify Linux tarball URL',
         default='https://cdn.kernel.org/pub/linux/kernel/v6.x/'
-                'linux-6.2.9.tar.xz')
+                'linux-6.3.7.tar.xz')
     parser.add_argument(
         '--parser', help='Specify (SCT) parser.py path',
         default='parser.py')
