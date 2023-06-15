@@ -112,7 +112,9 @@ dev_paths = []
 # ESPs device paths.
 # This is populated when checking the UEFI sniff test log, and is used later on
 # to check some UEFI logs.
-esp_dev_paths = set()
+# We use a dict for the ESPs device paths to preserve the order in which they
+# are added and ensure uniqueness like with a set().
+esp_dev_paths = {}
 
 # Linux bindings folder relative path under the cache folder.
 bindings_rel_path = 'bindings'
@@ -732,7 +734,7 @@ def check_uefi_sniff(filename):
 
         if m:
             logging.debug(f"ESP match line {i + 1}, `{line}'")
-            esp_dev_paths.add(m[1])
+            esp_dev_paths[m[1]] = None
             esp = re.sub(r'.*/', '', m[1])
             logging.info(f"{green}Found ESP{normal} `{esp}'")
             n += 1
@@ -1132,7 +1134,7 @@ def deferred_check_capsule_guids_in_esrt():
 def deferred_check_uefi_logs_esp():
     logging.debug('Deferred check UEFI logs ESP')
     stats = Stats()
-    logging.debug(f"ESP device path(s): {esp_dev_paths}")
+    logging.debug(f"ESP device path(s): {esp_dev_paths.keys()}")
     logging.debug(f"Device path(s): {dev_paths}")
     filenames = {}
 
