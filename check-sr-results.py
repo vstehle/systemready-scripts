@@ -1400,7 +1400,7 @@ def git_commit(dirname):
 def init_meta(argv, here):
     meta_data['command-line'] = ' '.join(argv)
     meta_data['date'] = f"{time.asctime(time.gmtime())} UTC"
-    meta_data['python-version'] = sys.version
+    meta_data['python-version'] = re.sub(r'\n', ' ', sys.version)
 
     commit = git_commit(here)
 
