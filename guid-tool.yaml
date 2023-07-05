@@ -55,6 +55,8 @@ known-guids:
     description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID Zynq common
   - guid: EAD2005E-7780-400B-9348-A282EB858B6B
     description: NXP i.MX8M Mini EVK
+  - guid: 296119CF-DD70-43DE-8AC8-A7051F312577
+    description: NXP i.MX8M Quad EVK (MCIMX8M-EVKB)
 
   # Tianocore/edk2 GUIDs
   - guid: e698490d-c1fa-47fd-8603-69cd678c5c39
