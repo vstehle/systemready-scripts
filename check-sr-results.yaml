@@ -671,6 +671,7 @@ overlays:
                           - Iterations=
               - dir: tpm2
                 min-entries: 0
+                optional:
 
   # (Ab)use the overlay mechanism to emit an error with IR v1.x.
   - when-any: [IR v1.]
