@@ -132,6 +132,9 @@ warn_once = set()
 # Meta data about this run.
 meta_data = {}
 
+# Keep track of (min-)occurences.
+occurrences = {}
+
 
 # Compute the plural of a word.
 def maybe_plural(n, word):
@@ -907,6 +910,9 @@ def check_file(conffile, confpath, filename):
             stats.add(warn_if_not_named(
                 filename, conffile['warn-if-not-named']))
 
+        if 'min-occurrences' in conffile:
+            add_occurrence(filename, confpath)
+
         if os.path.getsize(filename) > 0:
             logging.debug(f"`{filename}' {green}not empty{normal}")
             stats.inc_pass()
@@ -961,6 +967,16 @@ def check_file(conffile, confpath, filename):
     return stats
 
 
+# Record an occurrence of a file or a dir.
+def add_occurrence(pathname, confpath):
+    logging.debug(f"Add occurrence `{pathname}/' ({confpath})")
+
+    if confpath not in occurrences:
+        occurrences[confpath] = []
+
+    occurrences[confpath].append(pathname)
+
+
 # Check a dir
 # We check if a dir exists and is not empty (min-entries can override the
 # later).
@@ -982,6 +998,9 @@ def check_dir(confdir, confpath, dirname):
         if 'warn-if-not-named' in confdir:
             stats.add(warn_if_not_named(
                 dirname, confdir['warn-if-not-named']))
+
+        if 'min-occurrences' in confdir:
+            add_occurrence(dirname, confpath)
 
         entries = os.listdir(dirname)
         ent = len(entries)
@@ -1164,6 +1183,66 @@ def deferred_check_uefi_logs_esp():
     return stats
 
 
+# Check for min-occurrences.
+# We return a Stats object.
+def check_min_occurences(m, confpath):
+    logging.debug(f"Check >= {m} occurrences for {confpath}")
+    stats = Stats()
+
+    if confpath in occurrences:
+        o = occurrences[confpath]
+    else:
+        o = []
+
+    logging.debug(f"Occurences {o}")
+    n = len(o)
+
+    if n < m:
+        logging.error(
+            f"{red}Not enough occurrences{normal} of {confpath} ({n} < {m})")
+
+        stats.inc_error()
+
+    return stats
+
+
+# Deferred check for min-occurrences recurse helper.
+# We return a Stats object.
+def deferred_check_min_occurrences_recurse(conf, confpath):
+    logging.debug(f"Recurse {confpath}")
+    stats = Stats()
+
+    for e in conf:
+        if 'file' in e:
+            p = f"{confpath}/e{['file']}"
+
+            if 'min-occurrences' in e:
+                stats.add(check_min_occurences(e['min-occurrences'], p))
+
+        elif 'dir' in e:
+            p = f"{confpath}/{e['dir']}"
+
+            if 'min-occurrences' in e:
+                stats.add(check_min_occurences(e['min-occurrences'], p))
+
+            if 'tree' in e:
+                stats.add(deferred_check_min_occurrences_recurse(e['tree'], p))
+
+        else:
+            raise Exception
+
+    return stats
+
+
+# Deferred check for min-occurrences.
+# Those checks are run after checking all files and dirs.
+# This allows to decouple checks from the configuration file order.
+# We return a Stats object.
+def deferred_check_min_occurrences(conftree):
+    logging.debug(f"Deferred check min occurrences {occurrences}")
+    return deferred_check_min_occurrences_recurse(conftree, '')
+
+
 # Deferred checks
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
@@ -1171,11 +1250,12 @@ def deferred_check_uefi_logs_esp():
 # - Capsule GUIDs and ESRT.
 # - UEFI logs and ESP.
 # We return a Stats object.
-def deferred_checks():
+def deferred_checks(conftree):
     logging.debug('Deferred checks')
     stats = Stats()
     stats.add(deferred_check_capsule_guids_in_esrt())
     stats.add(deferred_check_uefi_logs_esp())
+    stats.add(deferred_check_min_occurrences(conftree))
     return stats
 
 
@@ -1536,7 +1616,7 @@ if __name__ == '__main__':
         dump_config(conf, args.dump_config)
 
     stats = check_tree(conf['tree'], '', args.dir)
-    stats.add(deferred_checks())
+    stats.add(deferred_checks(conf['tree']))
     logging.info(stats)
 
     if args.debug:

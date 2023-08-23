@@ -70,6 +70,8 @@ $defs:
                 const: null
             must-have-esp:
                 const: null
+            min-occurrences:
+                type: integer
         required:
             - file
             # must-contain is optional
@@ -85,6 +87,7 @@ $defs:
             # warn-if-not-named is optional
             # uefi-sniff is optional
             # must-have-esp is optional
+            # min-occurrences is optional
         additionalProperties: false
     dir:
         type: object
@@ -101,6 +104,8 @@ $defs:
                 type: integer
             warn-if-not-named:
                 type: string
+            min-occurrences:
+                type: integer
         required:
             - dir
             # tree is optional
@@ -108,6 +113,7 @@ $defs:
             # min-entries is optional
             # max-entries is optional
             # warn-if-not-named is optional
+            # min-occurrences is optional
         additionalProperties: false
     when-condition:
         type: array

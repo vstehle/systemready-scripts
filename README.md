@@ -112,12 +112,14 @@ tree:
                                 # and we check that we have at least one ESP.
                                 # We must have a file with a uefi-sniff property
 				# for this to work
+    min-occurrences: <integer>  # Optional
 
   - dir: <dirname or pattern>
     optional:                   # If present, the directory can be missing
     min-entries: <integer>      # Optional
     max-entries: <integer>      # Optional
     warn-if-not-named: <pat>    # Same as for files
+    min-occurrences: <integer>  # Optional
     tree:                       # If present, verification will recurse
       ...
 ```
@@ -138,6 +140,10 @@ Filenames and dirnames can be UNIX shell glob patterns, in which case their
 parent directory is scanned and all matching entries are considered. If the
 file or dir entry with the pattern is not marked `optional', there must be at
 least one match.
+
+When a file or directory has a `min-occurrences` property, we keep track of all
+occurrences encountered and a deferred check of the total number is performed
+in the end.
 
 When a file is detected as a tar archive (according to its filename), its
 integrity is automatically checked using `tar`.

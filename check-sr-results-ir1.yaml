@@ -228,6 +228,7 @@ tree:
   - dir: os-logs
     tree:
       - dir: '*-*'
+        min-occurrences: 2
         tree:
           - file: '*console.log'
             warn-if-not-named: console.log

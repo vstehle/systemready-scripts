@@ -509,6 +509,7 @@ tree:
         must-contain:
           - For SystemReady IR
       - dir: 'linux-*'
+        min-occurrences: 2
         tree:
           - file: '*console.log'
             warn-if-not-named: console.log
