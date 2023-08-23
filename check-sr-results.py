@@ -889,8 +889,8 @@ def warn_if_not_named(name, pattern):
 # We perform some more checks on archives.
 # We try to re-create SCT parser result.md files.
 # We return a Stats object.
-def check_file(conffile, filename):
-    logging.debug(f"Check `{filename}'")
+def check_file(conffile, confpath, filename):
+    logging.debug(f"Check `{filename}' ({confpath})")
     not_checked.discard(filename)
     stats = Stats()
 
@@ -970,8 +970,8 @@ def check_file(conffile, filename):
 # - max-entries
 # If the dir has a tree, we recurse with check_tree().
 # We return a Stats object.
-def check_dir(confdir, dirname):
-    logging.debug(f"Check `{dirname}/'")
+def check_dir(confdir, confpath, dirname):
+    logging.debug(f"Check `{dirname}/' ({confpath})")
     not_checked.discard(dirname)
     stats = Stats()
 
@@ -1018,7 +1018,7 @@ def check_dir(confdir, dirname):
                 stats.inc_error()
 
         if ent and 'tree' in confdir:
-            stats.add(check_tree(confdir['tree'], dirname))
+            stats.add(check_tree(confdir['tree'], confpath, dirname))
 
     elif 'optional' in confdir:
         logging.debug(f"`{dirname}/' {yellow}missing (optional){normal}")
@@ -1069,16 +1069,18 @@ def run_identify(dirname, identify):
 # We return a Stats object.
 # Files and directories names may be glob patterns. We need to handle the case
 # of glob vs. non-glob explicitly, as a glob pattern may return an empty list.
-def check_tree(conftree, dirname):
-    logging.debug(f"Check `{dirname}/'")
+def check_tree(conftree, confpath, dirname):
+    logging.debug(f"Check `{dirname}/' ({confpath})")
     assert isinstance(conftree, list)
     stats = Stats()
 
     for e in conftree:
         if 'file' in e:
+            p = f"{confpath}/{e['file']}"
             pathname = f"{dirname}/{e['file']}"
             check = check_file
         elif 'dir' in e:
+            p = f"{confpath}/{e['dir']}"
             pathname = f"{dirname}/{e['dir']}"
             check = check_dir
         else:
@@ -1095,7 +1097,7 @@ def check_tree(conftree, dirname):
             t = [pathname]
 
         for x in t:
-            stats.add(check(e, x))
+            stats.add(check(e, p, x))
 
     return stats
 
@@ -1533,7 +1535,7 @@ if __name__ == '__main__':
     if args.dump_config is not None:
         dump_config(conf, args.dump_config)
 
-    stats = check_tree(conf['tree'], args.dir)
+    stats = check_tree(conf['tree'], '', args.dir)
     stats.add(deferred_checks())
     logging.info(stats)
 
