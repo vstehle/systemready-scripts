@@ -115,6 +115,8 @@ if grep 'ERROR .* Could not find an ESP in .*fw/uefi-sniff.log' "$out"; then
 fi
 
 echo -n 'dt error, ' >&3
+# Make sure that we do not re-generate the .dtb.log.
+touch "$data/dt-error/acs_results/uefi/BsaDevTree.dtb.log"
 "${csr[@]}" --dir "$data/dt-error" |& tee "$out"
 grep 'dt-parser error no schema' "$out"
 
