@@ -172,6 +172,9 @@ All keys are overwritten violently except `tree`, which is overlayed
 recursively. Also, when a key has the special value `DELETE` the property is
 deleted.
 
+See also [Forcing identification], which can be useful for debugging this
+mechanism.
+
 ### SCT parser result.md
 
 A file marked with the `sct-parser-result-md` property is treated specially:
@@ -206,6 +209,18 @@ repository.
 Nevertheless, a `check-sr-results-ir1.yaml` configuration file is kept here for
 convenience. It allows to check IR v1.x results with the latest version of the
 script.
+
+## Forcing identification
+
+By default, results are identified by `check-sr-results.py` using the
+`identify.py` script.
+
+For debugging purposes, it is possible to force the identification by specifying
+the identification command used by `check-sr-results.py`:
+
+```{.sh}
+$ ./check-sr-results.py --identify "sh -c 'echo Forced ID'" ...
+```
 
 # SystemReady results formatter
 
