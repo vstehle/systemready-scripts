@@ -2,6 +2,10 @@
 
 A collection of scripts to help with SystemReady compliance.
 
+The latest version is available at:
+
+https://gitlab.arm.com/systemready/systemready-scripts
+
 ## Branches
 
 For IR 1.1 certification, git branch `ir1` of this repository should be used.
