@@ -107,6 +107,18 @@ mkdir -v "$tmp/empty"
 "${csr[@]}" --dir "$tmp/empty" --identify "sh -c 'echo Forced ID'" |& tee "$out"
 grep 'Identified as Forced ID' "$out"
 
+# We continue using the empty folder from previous step.
+echo -n 'meta, ' >&3
+"${csr[@]}" --dir "$data/empty" --print-meta |& tee "$out"
+grep 'meta-data' "$out"
+grep 'command-line:' "$out"
+grep 'date:' "$out"
+grep 'dt-validate-version:' "$out"
+grep 'dtc-version:' "$out"
+grep 'git-commit:' "$out"
+grep 'python-version:' "$out"
+grep 'tar-version:' "$out"
+
 echo -n 'no esp, ' >&3
 "${csr[@]}" --dir "$data/no-esp" |& tee "$out"
 grep 'ERROR .* Could not find an ESP in .*fw/uefi-sniff.log' "$out"
