@@ -47,7 +47,7 @@ check:	$(TEST_TARGETS) $(VALID_TARGETS)
 	yamllint .
 	flake8
 	mypy --strict guid.py
-	mypy dt-parser.py guid-tool.py identify.py logreader.py validate.py
+	mypy .
 	python3 -m doctest guid.py
 
 clean:

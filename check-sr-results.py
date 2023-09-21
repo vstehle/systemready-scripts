@@ -40,7 +40,8 @@ if os.isatty(sys.stdout.fileno()):
         curses.setupterm()
         setafb = curses.tigetstr('setaf') or bytes()
         setaf = setafb.decode()
-        normal = curses.tigetstr('sgr0').decode() or ''
+        tmp = curses.tigetstr('sgr0')
+        normal = tmp.decode() if tmp is not None else ''
         red = curses.tparm(setafb, curses.COLOR_RED).decode() or ''
         yellow = curses.tparm(setafb, curses.COLOR_YELLOW).decode() or ''
         green = curses.tparm(setafb, curses.COLOR_GREEN).decode() or ''
@@ -127,7 +128,7 @@ compat_rel_path = 'compatible-strings.txt'
 not_checked = set()
 
 # The set of already reported warnings, which we report only once.
-warn_once = set()
+warn_once: set[str] = set()
 
 # Meta data about this run.
 meta_data = {}
