@@ -28,7 +28,7 @@ The `compatibles` script needs `bash`, `find`, `grep`, `xargs`, `sed` and
 If you want to generate the pdf version of this documentation, you need to
 install [pandoc].
 
-To run the [Sanity checks] you will also need: `yamllint`, `flake8`,
+To run the [Sanity checks] you will also need: `yamllint`, `flake8`, `mypy`,
 `mkeficapsule`, `openssl` and `hexdump`. See also `.gitlab-ci.yml`.
 
 [chardet]: https://github.com/chardet/chardet

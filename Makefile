@@ -46,6 +46,7 @@ doc: README.pdf
 check:	$(TEST_TARGETS) $(VALID_TARGETS)
 	yamllint .
 	flake8
+	mypy --strict guid.py
 	python3 -m doctest guid.py
 
 clean:

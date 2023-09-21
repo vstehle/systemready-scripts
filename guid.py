@@ -15,7 +15,7 @@ class Guid(object):
     """
     b: bytes
 
-    def __init__(self, x):
+    def __init__(self, x: str | bytes) -> None:
         """Init GUID from string or bytes.
 
         When given a string, we convert it to our internal bytes format,
@@ -95,7 +95,7 @@ class Guid(object):
         """
         if isinstance(x, bytes):
             if len(x) != 16:
-                raise ValueError(f"Invalid GUID bytes {x}")
+                raise ValueError(f"Invalid GUID bytes {x!r}")
 
             object.__setattr__(self, 'b', x)
 
@@ -144,7 +144,7 @@ class Guid(object):
             if dt > datetime.datetime.now() + datetime.timedelta(days=1):
                 raise ValueError(f"GUID {self}: Time {dt} is in the future")
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         """Return the GUID bytes, which we keep internally.
 
         >>> bytes(Guid('12345678-1234-4678-9234-56789abcdef0'))
@@ -152,7 +152,7 @@ class Guid(object):
         """
         return self.b
 
-    def fields(self):
+    def fields(self) -> tuple[int, int, int, int, int, int]:
         """Convert our GUID bytes to integer fields.
 
         >>> print(Guid('12345678-1234-4678-9234-56789abcdef0').fields())
@@ -167,7 +167,7 @@ class Guid(object):
             int.from_bytes(self.b[10:16], byteorder='big')
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Convert our GUID bytes to string.
 
         >>> print(Guid('12345678-1234-4678-9234-56789abcdef0'))
@@ -179,7 +179,7 @@ class Guid(object):
             f'{f[0]:08x}-{f[1]:04x}-{f[2]:04x}-'
             f'{f[3]:02x}{f[4]:02x}-{f[5]:12x}')
 
-    def as_uuid(self):
+    def as_uuid(self) -> uuid.UUID:
         """Convert to UUID object.
 
         >>> print(repr(Guid('12345678-1234-4678-9234-56789abcdef0').as_uuid()))
@@ -187,7 +187,7 @@ class Guid(object):
         """
         return uuid.UUID(fields=self.fields())
 
-    def get_datetime(self):
+    def get_datetime(self) -> datetime.datetime:
         """Get the time in our GUID as a naive datetime object.
 
         >>> Guid('fb4e8912-6732-11ed-91ec-525400123456').get_datetime()
@@ -215,7 +215,7 @@ class Guid(object):
         return (datetime.datetime(1582, 10, 15)
                 + datetime.timedelta(microseconds=(ns100 / 10)))
 
-    def details(self):
+    def details(self) -> str:
         """Get details about our GUID as a string.
 
         >>> print(Guid('12345678-1234-4678-9234-56789abcdef0').details())
