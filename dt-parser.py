@@ -17,7 +17,19 @@ class ConfigEntry(TypedDict):
     update: dict[str, str]
 
 
-EntryType = dict[str, Any]  # TODO!
+class EntryType(TypedDict, total=False):
+    devicetree_node: str
+    dt_validate_lines: list[str]
+    dt_validate_schema: str
+    dtc_warning_name: str
+    file: str
+    line: str
+    linenum: int
+    type: str
+    warning_message: str
+    in_compatibles: str
+
+
 ConfigType = list[ConfigEntry]
 
 
@@ -217,24 +229,25 @@ def cleanup_entries(parsed: list[EntryType]) -> None:
 
     for i, x in enumerate(parsed):
         m = n
+        y = cast(dict[str, Any], x)
 
-        for k in x.keys():
-            b = x[k]
+        for k in y.keys():
+            b = y[k]
 
             # Consider strings only
             if not isinstance(b, str):
                 continue
 
-            a = re.sub(r'@[0-9A-Fa-f]+', '@x', x[k])
+            a = re.sub(r'@[0-9A-Fa-f]+', '@x', y[k])
 
             if a != b:
-                x[k] = a
+                y[k] = a
                 n += 1
 
         if n > m:
             logging.debug(
                 f"Cleaned up {n - m} field(s) of entry {i}, "
-                f"`{x['devicetree_node']}'")
+                f"`{y['devicetree_node']}'")
 
     if n:
         logging.debug(f"Cleaned up {n} entries")
@@ -245,11 +258,14 @@ def cleanup_entries(parsed: list[EntryType]) -> None:
 # they do not get cleaned-up anyway
 # We return True if entries should be de-duplicated
 def dupes(a: EntryType, b: EntryType) -> bool:
-    for k in a.keys():
-        if not isinstance(a[k], str):
+    x = cast(dict[str, Any], a)
+    y = cast(dict[str, Any], b)
+
+    for k in x.keys():
+        if not isinstance(x[k], str):
             continue
 
-        if a[k] != b[k]:
+        if x[k] != y[k]:
             return False
 
     return True
@@ -330,8 +346,10 @@ def add_compatibles(parsed: list[EntryType], compatibles: set[str]) -> None:
 # For example, the test value "abcde" matches the criteria value "cd".
 # This allows for more "relaxed" criteria than strict comparison.
 def matches_crit(entry: EntryType, crit: dict[str, str]) -> bool:
+    e = cast(dict[str, str], entry)
+
     for key, value in crit.items():
-        if key not in entry or entry[key].find(value) < 0:
+        if key not in entry or e[key].find(value) < 0:
             return False
 
     return True
@@ -344,6 +362,8 @@ def apply_rules(parsed: list[EntryType], conf: ConfigType) -> None:
     n = 0
 
     for i, x in enumerate(parsed):
+        y = cast(dict[str, str], x)
+
         for j, r in enumerate(conf):
             if not matches_crit(x, r['criteria']):
                 continue
@@ -354,7 +374,7 @@ def apply_rules(parsed: list[EntryType], conf: ConfigType) -> None:
                 f"Applying rule {j} `{rule}' to entry {i} "
                 f"`{x['devicetree_node']}'")
 
-            x.update({
+            y.update({
                 **r['update'],
                 'updated_by_rule': rule,
             })
@@ -374,7 +394,7 @@ def filter_entries(parsed: list[EntryType], Filter: str) -> list[EntryType]:
     before = len(parsed)
 
     # This function "wraps" the filter and is called for each test
-    def function(x: dict[str, Any]) -> bool:
+    def function(x: EntryType) -> bool:
         return bool(eval(Filter))
 
     r = list(filter(function, parsed))
@@ -415,12 +435,12 @@ def print_summary(parsed: list[EntryType]) -> None:
     h = {}
 
     for x in parsed:
-        t = x['type']
+        typ = x['type']
 
-        if t not in h:
-            h[t] = 0
+        if typ not in h:
+            h[typ] = 0
 
-        h[t] += 1
+        h[typ] += 1
 
     t = []
 
