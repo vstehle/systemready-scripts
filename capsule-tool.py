@@ -8,6 +8,7 @@ import random
 import os
 import guid
 import subprocess
+from typing import TypedDict, Callable
 
 
 # Define the GUID structure so that it is visually similar to the definitions
@@ -138,7 +139,9 @@ efi_capsule = construct.Struct(
 # We expect an authenticated capsule in FMP format
 # Return False at the first error, True otherwise.
 # When force, we run all checks to the end and return True in all cases.
-def sanity_check_capsule(capsule, force=False):
+def sanity_check_capsule(
+        capsule: construct.Struct, force: bool = False) -> bool:
+
     r = True
 
     # Each entry in checks defines functions, which take the capsule as input.
@@ -146,7 +149,12 @@ def sanity_check_capsule(capsule, force=False):
     # error:    Returns an error message to print in case of error.
     # debug:    Returns a debug message to print when there is not error and
     #           debug is enabled.
-    checks = [
+    class Entry(TypedDict):
+        check: Callable[[construct.Struct], bool]
+        error: Callable[[construct.Struct], str]
+        debug: Callable[[construct.Struct], str]
+
+    checks: list[Entry] = [
         # Capsule header
         # Capsule Guid
         {
@@ -465,8 +473,10 @@ def sanity_check_capsule(capsule, force=False):
 # Return True if GUID matches the expected GUID (if not None), False otherwise.
 # When force, we return True in all cases.
 # We print the image type id GUID to stdout when told to.
-def check_capsule_guid(capsule, guid_tool, exp_guid, force=False,
-                       print_guid=False):
+def check_capsule_guid(
+        capsule: construct.Struct, guid_tool: str, exp_guid: str,
+        force: bool = False, print_guid: bool = False) -> bool:
+
     logging.debug(f"Check capsule GUID, expected: `{exp_guid}'")
 
     fmcih = capsule.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
@@ -515,7 +525,7 @@ def check_capsule_guid(capsule, guid_tool, exp_guid, force=False,
 # Remove capsule authentication.
 # We clear the authentication flag and modify the update image size.
 # No need to remove the firmware image authentication.
-def de_authenticate(capsule):
+def de_authenticate(capsule: construct.Struct) -> None:
     logging.info('De-authenticating capsule')
 
     # Clear flag.
@@ -548,7 +558,7 @@ def de_authenticate(capsule):
 
 # Tamper with capsule
 # We invert one bit in the firmware image.
-def tamper(capsule):
+def tamper(capsule: construct.Struct) -> None:
     logging.info('Tampering with capsule firmware image')
     fi = capsule.CapsuleBody.Payload1.BinaryUpdateImage.FirmwareImage
     s = len(fi)
@@ -560,7 +570,7 @@ def tamper(capsule):
 
 
 # Extract the firmware image from a capsule and save it to a file.
-def extract_image(capsule, filename):
+def extract_image(capsule: construct.Struct, filename: str) -> None:
     logging.info(f"Extracting image to `{filename}'")
 
     with open(filename, 'wb') as f:
