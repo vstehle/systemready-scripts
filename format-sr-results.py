@@ -8,6 +8,7 @@ import os
 import curses
 import pprint
 import logreader
+from typing import Any, cast, TypedDict, Optional
 
 try:
     from packaging import version
@@ -41,13 +42,38 @@ if os.isatty(sys.stdout.fileno()):
         pass
 
 
+class ElementType(TypedDict, total=False):
+    heading: str
+    level: int
+    extract: str
+    paragraph: str
+
+
+ExtractType = TypedDict('ExtractType', {
+    'filename': str,
+    'find': str,
+    'first-line': int,
+    'last-line': Optional[int]})
+
+
+class SubType(TypedDict, total=False):
+    heading: str
+    paragraph: str
+    extract: ExtractType
+    subs: 'list[SubType]'
+
+
+ConfigType = dict[str, Any]
+
+
 # Load YAML configuration file.
 # See the README.md for details on the file format.
-def load_config(filename):
+def load_config(filename: str) -> ConfigType:
     logging.debug(f'Load {filename}')
 
     with open(filename, 'r') as yamlfile:
-        conf = yaml.load(yamlfile, **yaml_load_args)
+        y = yaml.load(yamlfile, **yaml_load_args)
+        conf = cast(ConfigType, y)
 
     assert 'format-sr-results-configuration' in conf
     assert 'subs' in conf
@@ -65,7 +91,7 @@ def load_config(filename):
 # When it is a string, we extract until we reach a line matching it
 # When it is None, we extract until an emtpy line
 # We deal somewhat gracefully with non-existing files.
-def extract(x, dirname):
+def extract(x: ExtractType, dirname: str) -> ElementType:
     filename = f"{dirname}/{x['filename']}"
 
     if not os.path.isfile(filename):
@@ -134,9 +160,9 @@ def extract(x, dirname):
 # {'heading': <title>, 'level': <n>},
 # {'extract': <text>},
 # {'paragraph': <text>},
-def analyze_one_sub(e, dirname, level):
+def analyze_one_sub(e: SubType, dirname: str, level: int) -> list[ElementType]:
     logging.debug(f"{level} {e['heading']}")
-    t = [{'heading': e['heading'], 'level': level}]
+    t: list[ElementType] = [{'heading': e['heading'], 'level': level}]
 
     if 'extract' in e:
         t.append(extract(e['extract'], dirname))
@@ -152,7 +178,10 @@ def analyze_one_sub(e, dirname, level):
 
 
 # Recurse analysis in all the "subs" we have.
-def analyze_subs(subs, dirname, level=1):
+def analyze_subs(
+        subs: list[SubType], dirname: str, level: int = 1
+        ) -> list[ElementType]:
+
     logging.debug(f'{len(subs)} sub(s)')
     t = []
 
@@ -163,7 +192,7 @@ def analyze_subs(subs, dirname, level=1):
 
 
 # Output results to markdown report.
-def output_markdown(results, filename):
+def output_markdown(results: list[ElementType], filename: str) -> None:
     logging.debug(f"Output markdown `{filename}'")
 
     with open(filename, 'w') as f:
@@ -184,7 +213,7 @@ def output_markdown(results, filename):
 
 
 # Output results for Jira.
-def output_jira(results, filename):
+def output_jira(results: list[ElementType], filename: str) -> None:
     logging.debug(f"Output Jira-suitable text `{filename}'")
 
     with open(filename, 'w') as f:
@@ -203,7 +232,7 @@ def output_jira(results, filename):
 
 
 # Dump results.
-def output_dump(results, filename):
+def output_dump(results: list[ElementType], filename: str) -> None:
     logging.debug(f"Dump to `{filename}'")
 
     with open(filename, 'w') as f:
