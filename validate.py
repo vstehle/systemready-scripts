@@ -6,6 +6,7 @@ import yaml
 import jsonschema
 import os
 import logging
+from typing import Any
 
 try:
     from packaging import version
@@ -23,13 +24,13 @@ else:
 schema_folder = None
 
 
-def load_yaml(filename):
+def load_yaml(filename: str) -> Any:
     logging.debug(f"Loading `{filename}'")
     with open(filename, 'r') as f:
         return yaml.load(f, **yaml_load_args)
 
 
-def handler(uri):
+def handler(uri: str) -> Any:
     f = f"{schema_folder}/{os.path.basename(uri)}"
     logging.debug(f"Resolving URI `{uri}' as `{f}'")
     return load_yaml(f)
