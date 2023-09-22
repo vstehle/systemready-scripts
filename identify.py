@@ -5,24 +5,30 @@ import logging
 import os
 import yaml
 import hashlib
+from typing import Any, Optional, cast
+
+DbType = dict[str, Any]
+CacheType = dict[str, str]
+FilesType = list[dict[str, str]]
 
 
 # Validate YAML identify database
 # We check our magic marker.
-def validate_identify_db(db):
+def validate_identify_db(db: DbType) -> None:
     logging.debug("Validate identify db")
     assert 'identify-database' in db
 
 
 # Load YAML identify database
-def load_identify_db(filename):
+def load_identify_db(filename: str) -> DbType:
     logging.debug(f"Load `{filename}'")
 
     with open(filename, 'r') as yamlfile:
-        db = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        y = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        db = cast(Optional[DbType], y)
 
     if db is None:
-        db = []
+        db = {}
 
     validate_identify_db(db)
     logging.debug(
@@ -32,8 +38,8 @@ def load_identify_db(filename):
 
 
 # Compute the sha256 of a file.
-# Return the hash or None.
-def hash_file(filename):
+# Return the hash.
+def hash_file(filename: str) -> str:
     logging.debug(f"Hash `{filename}'")
     hm = 'sha256'
     hl = hashlib.new(hm)
@@ -48,7 +54,7 @@ def hash_file(filename):
 
 # Compute the sha256 of a file, with caching.
 # cache must be initialized as an empty dict.
-def hash_file_cached(filename, cache):
+def hash_file_cached(filename: str, cache: CacheType) -> str:
     logging.debug(f"Hash/cache `{filename}'")
 
     if filename in cache:
@@ -64,7 +70,7 @@ def hash_file_cached(filename, cache):
 
 # Search for strings in a file.
 # Return the list of strings not found.
-def search_file(filename, strings):
+def search_file(filename: str, strings: list[str]) -> list[str]:
     logging.debug(f"Search for {strings} in `{filename}'")
     # We use a dict for the strings to preserve the order and be able
     # to remove them like with a set().
@@ -82,12 +88,12 @@ def search_file(filename, strings):
             if not len(remain):
                 break
 
-    remain = list(remain.keys())
+    ret = list(remain.keys())
 
-    if len(remain):
-        logging.debug(f"Did not find {remain}")
+    if len(ret):
+        logging.debug(f"Did not find {ret}")
 
-    return remain
+    return ret
 
 
 # Identify all known files, using their paths and details from the db.
@@ -96,9 +102,9 @@ def search_file(filename, strings):
 # Return a list of identified files dictionaries:
 #   'path': The file path, including dirname.
 #   'name': The file identifier.
-def identify_files(db, dirname):
+def identify_files(db: DbType, dirname: str) -> FilesType:
     logging.debug(f"Identify files in `{dirname}/'")
-    h_cache = {}
+    h_cache: CacheType = {}
     r = []
 
     for x in db['known-files']:
@@ -129,7 +135,7 @@ def identify_files(db, dirname):
 
 # Search for a (sub-)string in a list of strings
 # Return True if found or False when not found.
-def find_substr(s, strings):
+def find_substr(s: str, strings: list[str]) -> bool:
     logging.debug(f"Search for `{s}' in {strings}")
 
     for x in strings:
@@ -143,7 +149,7 @@ def find_substr(s, strings):
 
 # Try to identify the SystemReady version from the list of known files.
 # Return None when unknown.
-def identify_ver(db, files):
+def identify_ver(db: DbType, files: FilesType) -> Optional[str]:
     logging.debug(f"Identify ver from {files}")
     found_names = list(map(lambda f: f['name'], files))
 
@@ -168,7 +174,7 @@ def identify_ver(db, files):
 
         if found:
             logging.debug(f"""Identified as "{x['version']}".""")
-            return x['version']
+            return str(x['version'])
 
     logging.debug('Could not identify version...')
     return None
