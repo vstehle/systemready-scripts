@@ -159,9 +159,9 @@ def sanity_check_capsule(
         # Capsule Guid
         {
             'check':
-                lambda c:
-                    efi_guid.build(c.CapsuleHeader.CapsuleGuid)
-                    == EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID,
+                lambda c: bool(
+                    efi_guid.build(c.CapsuleHeader.CapsuleGuid) ==
+                    EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID),
             'error':
                 lambda c:
                     f"Missing EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID! "
@@ -170,7 +170,7 @@ def sanity_check_capsule(
         },
         # Header Size
         {
-            'check': lambda c: c.CapsuleHeader.HeaderSize >= 28,
+            'check': lambda c: bool(c.CapsuleHeader.HeaderSize >= 28),
             'error':
                 lambda c:
                     f"HeaderSize {c.CapsuleHeader.HeaderSize} < 28, "
@@ -190,7 +190,7 @@ def sanity_check_capsule(
         },
         # Capsule Image Size
         {
-            'check': lambda c: c.CapsuleHeader.CapsuleImageSize >= 28,
+            'check': lambda c: bool(c.CapsuleHeader.CapsuleImageSize >= 28),
             'error':
                 lambda c:
                     f"CapsuleImageSize {c.CapsuleHeader.CapsuleImageSize} "
@@ -205,8 +205,9 @@ def sanity_check_capsule(
         # Version
         {
             'check':
-                lambda c:
-                    c.CapsuleBody.FirmwareManagementCapsuleHeader.Version == 1,
+                lambda c: bool(
+                    c.CapsuleBody.FirmwareManagementCapsuleHeader.Version
+                    == 1),
             'error':
                 lambda c:
                     'Unknown Version {}, not 1!'.format(
@@ -229,9 +230,9 @@ def sanity_check_capsule(
         # Payload Item Count
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.FirmwareManagementCapsuleHeader
-                    .PayloadItemCount == 1,
+                    .PayloadItemCount == 1),
             'error':
                 lambda c:
                     '{} payload item(s), not exactly one; not implemented!'
@@ -246,9 +247,9 @@ def sanity_check_capsule(
         # Version
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
-                    .Version == 3,
+                    .Version == 3),
             'error':
                 lambda c:
                     'Bad Version {}, not 3!'.format(
@@ -276,9 +277,9 @@ def sanity_check_capsule(
         # UpdateImageSize
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
-                    .UpdateImageSize > 32,
+                    .UpdateImageSize > 32),
             'error':
                 lambda c:
                     'Invalid UpdateImageSize {}!'.format(
@@ -352,12 +353,12 @@ def sanity_check_capsule(
             'debug': lambda c: 'No dependency'
         }, {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.FirmwareManagementCapsuleImageHeader
                     .Version < 3 or
                     c.CapsuleBody.Payload1
                     .FirmwareManagementCapsuleImageHeader.ImageCapsuleSupport
-                    & CAPSULE_SUPPORT_AUTHENTICATION,
+                    & CAPSULE_SUPPORT_AUTHENTICATION),
             'error':
                 lambda c:
                     'Missing authentication flag! (ImageCapsuleSupport: {})'
@@ -375,10 +376,10 @@ def sanity_check_capsule(
         # dwLength
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.BinaryUpdateImage
                     .FirmwareImageAuthentication.AuthInfo.Hdr
-                    .dwLength >= 9,
+                    .dwLength >= 9),
             'error':
                 lambda c:
                     'dwLength {} < 9, too small!'.format(
@@ -393,10 +394,10 @@ def sanity_check_capsule(
         # wRevision
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.BinaryUpdateImage
                     .FirmwareImageAuthentication.AuthInfo.Hdr
-                    .wRevision == 0x200,
+                    .wRevision == 0x200),
             'error':
                 lambda c:
                     'Unknown wRevision {} not 0x200!'.format(
@@ -407,10 +408,10 @@ def sanity_check_capsule(
         # wCertificateType
         {
             'check':
-                lambda c:
+                lambda c: bool(
                     c.CapsuleBody.Payload1.BinaryUpdateImage
                     .FirmwareImageAuthentication.AuthInfo.Hdr
-                    .wCertificateType == WIN_CERT_TYPE_EFI_GUID,
+                    .wCertificateType == WIN_CERT_TYPE_EFI_GUID),
             'error':
                 lambda c:
                     'Missing WIN_CERT_TYPE_EFI_GUID! (wCertificateType: {})'
@@ -423,10 +424,10 @@ def sanity_check_capsule(
         # CertType
         {
             'check':
-                lambda c: efi_guid.build(
+                lambda c: bool(efi_guid.build(
                     c.CapsuleBody.Payload1.BinaryUpdateImage
                     .FirmwareImageAuthentication.AuthInfo
-                    .CertType) == EFI_CERT_TYPE_PKCS7_GUID,
+                    .CertType) == EFI_CERT_TYPE_PKCS7_GUID),
             'error':
                 lambda c:
                     'Missing EFI_CERT_TYPE_PKCS7_GUID! (CertType: {})'.format(
