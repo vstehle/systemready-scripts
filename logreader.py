@@ -5,6 +5,7 @@ from chardet.universaldetector import UniversalDetector
 import re
 import collections.abc
 import sys
+from typing import Optional
 
 # Maximum number of lines to examine for file encoding detection.
 detect_file_encoding_limit = 999
@@ -12,7 +13,7 @@ detect_file_encoding_limit = 999
 
 # Detect file encoding
 # We return the encoding or None
-def logreader_detect_file_encoding(filename):
+def logreader_detect_file_encoding(filename: str) -> Optional[str]:
     logging.debug(f"Detect encoding of `{filename}'")
 
     detector = UniversalDetector()
@@ -39,7 +40,7 @@ def logreader_detect_file_encoding(filename):
 # - Right-strip the line
 # - Remove the most annoying escape sequences
 # Returns the cleaned-up line.
-def logreader_cleanup_line(line):
+def logreader_cleanup_line(line: str) -> str:
     line = line.rstrip()
     line = re.sub(r'\x1B\[K', '', line)
     line = re.sub(r'\x1B\(B', '', line)
@@ -66,8 +67,8 @@ def logreader_cleanup_line(line):
 # An iterator class to easily read from a log in a loop.
 # We detect file encoding and cleanup the lines (which includes
 # right-stripping).
-class LogReader(collections.abc.Iterator):
-    def __init__(self, filename):
+class LogReader(collections.abc.Iterator[str]):
+    def __init__(self, filename: str) -> None:
         logging.debug(f"LogReader `{filename}'")
         enc = logreader_detect_file_encoding(filename)
 
@@ -76,7 +77,7 @@ class LogReader(collections.abc.Iterator):
 
         self.i = iter(f)
 
-    def __next__(self):
+    def __next__(self) -> str:
         # Cleanup each line
         return logreader_cleanup_line(self.i.__next__())
 
