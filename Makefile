@@ -46,7 +46,7 @@ doc: README.pdf
 check:	$(TEST_TARGETS) $(VALID_TARGETS)
 	yamllint .
 	flake8
-	mypy --strict guid.py validate.py logreader.py
+	mypy --strict guid.py validate.py logreader.py guid-tool.py
 	mypy .
 	python3 -m doctest guid.py
 

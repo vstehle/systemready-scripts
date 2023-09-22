@@ -6,17 +6,20 @@ import os
 import yaml
 import sys
 import guid
+from typing import Any, cast, Optional
+
+DbType = dict[str, Any]
 
 
 # Validate YAML GUIDs database
 # We check our magic marker and also for duplicate guids or descriptions.
-def validate_guids_db(db):
+def validate_guids_db(db: DbType) -> None:
     logging.debug("Validate db")
 
     assert 'guid-tool-database' in db
 
-    descrs = {}
-    guids = {}
+    descrs: dict[str, str] = {}
+    guids: dict[str, str] = {}
 
     for x in db['known-guids']:
         d = x['description']
@@ -40,14 +43,15 @@ def validate_guids_db(db):
 
 # Load YAML GUIDs database
 # We create _Guid entries holding Guid objects.
-def load_guids_db(filename):
+def load_guids_db(filename: str) -> DbType:
     logging.debug(f"Load `{filename}'")
 
     with open(filename, 'r') as yamlfile:
-        db = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        y = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        db = cast(Optional[DbType], y)
 
     if db is None:
-        db = []
+        db = {}
 
     validate_guids_db(db)
     logging.debug('{} entries'.format(len(db)))
@@ -62,7 +66,7 @@ def load_guids_db(filename):
 # Find and print the description corresponding to a Guid object
 # in our database.
 # Print 'Unknown' if not found.
-def lookup_guid(g, db):
+def lookup_guid(g: guid.Guid, db: DbType) -> None:
     logging.debug(f"Lookup {g}")
     r = 'Unknown'
 
