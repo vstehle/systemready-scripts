@@ -537,6 +537,8 @@ tree:
     must-contain:
       - General information
       - Test logs and results collected
+    warn-if-contains:
+      - '[ ]'
 
 overlays:
 
