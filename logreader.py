@@ -5,7 +5,7 @@ from chardet.universaldetector import UniversalDetector
 import re
 import collections.abc
 import sys
-from typing import Optional
+from typing import Optional, Iterator
 
 # Maximum number of lines to examine for file encoding detection.
 detect_file_encoding_limit = 999
@@ -68,6 +68,8 @@ def logreader_cleanup_line(line: str) -> str:
 # We detect file encoding and cleanup the lines (which includes
 # right-stripping).
 class LogReader(collections.abc.Iterator[str]):
+    i: Iterator[str]
+
     def __init__(self, filename: str) -> None:
         logging.debug(f"LogReader `{filename}'")
         enc = logreader_detect_file_encoding(filename)

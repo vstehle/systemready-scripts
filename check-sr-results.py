@@ -16,6 +16,7 @@ import tempfile
 import shutil
 import logreader
 import time
+from typing import Final
 
 try:
     from packaging import version
@@ -118,10 +119,10 @@ dev_paths = []
 esp_dev_paths = {}
 
 # Linux bindings folder relative path under the cache folder.
-bindings_rel_path = 'bindings'
+BINDINGS_REL_PATH: Final = 'bindings'
 
 # Compatible strings file relative path under the cache folder.
-compat_rel_path = 'compatible-strings.txt'
+COMPAT_REL_PATH: Final = 'compatible-strings.txt'
 
 # The set of files and dirs, which were not checked.
 # This is printed in debug mode, to help create the configuration file.
@@ -152,9 +153,9 @@ def maybe_plural(n, word):
 
 # A class to account for statistics
 class Stats:
-    counters = ['check', 'pass', 'warning', 'error']
+    COUNTERS: Final = ['check', 'pass', 'warning', 'error']
 
-    colors = {
+    COLORS: Final = {
         'pass': green,
         'warning': yellow,
         'error': red,
@@ -163,21 +164,21 @@ class Stats:
     def __init__(self):
         self.data = {}
 
-        for c in Stats.counters:
+        for c in Stats.COUNTERS:
             self.data[c] = 0
 
     def _counter_str(self, x):
         n = self.data[x]
-        color = Stats.colors[x] if n and x in Stats.colors else ''
+        color = Stats.COLORS[x] if n and x in Stats.COLORS else ''
         return f'{color}{n} {maybe_plural(n, x)}{normal}'
 
     def __str__(self):
         return ', '.join(
-            map(lambda x: self._counter_str(x), Stats.counters))
+            map(lambda x: self._counter_str(x), Stats.COUNTERS))
 
     # Add the counters of a Stats objects to self.
     def add(self, x):
-        for c in Stats.counters:
+        for c in Stats.COUNTERS:
             self.data[c] += x.data[c]
 
     def _inc(self, x):
@@ -256,7 +257,7 @@ def get_linux_cache():
             download_file(linux_url, t)
 
         # Extract Linux bindings from tarball.
-        bindings = f"{cached}/{bindings_rel_path}"
+        bindings = f"{cached}/{BINDINGS_REL_PATH}"
         logging.info(f"Extracting Linux bindings from `{t}' to `{bindings}'")
 
         cp = run(
@@ -270,7 +271,7 @@ def get_linux_cache():
     assert os.path.isdir(bindings)
 
     # Extract compatible strings.
-    compat = f"{cached}/{compat_rel_path}"
+    compat = f"{cached}/{COMPAT_REL_PATH}"
     logging.info(f"Extracting Linux compatible strings to `{compat}'")
     cp = run(f"{compatibles} '{bindings}' >'{compat}'")
 
@@ -291,13 +292,13 @@ def get_linux_cache():
 # Get (cached) bindings folder.
 # We return the dir name.
 def get_bindings():
-    return get_linux_cache() + f"/{bindings_rel_path}"
+    return get_linux_cache() + f"/{BINDINGS_REL_PATH}"
 
 
 # Get (cached) compatible strings file.
 # We return the file name.
 def get_compat():
-    return get_linux_cache() + f"/{compat_rel_path}"
+    return get_linux_cache() + f"/{COMPAT_REL_PATH}"
 
 
 # Load YAML configuration file.

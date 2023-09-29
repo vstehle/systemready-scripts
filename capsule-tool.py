@@ -8,12 +8,12 @@ import random
 import os
 import guid
 import subprocess
-from typing import TypedDict, Callable
+from typing import TypedDict, Callable, Final
 
 
 # Define the GUID structure so that it is visually similar to the definitions
 # in the UEFI specification.
-efi_guid = construct.Struct(
+efi_guid: Final = construct.Struct(
     "TimeLow" / construct.Hex(construct.Int32ul),
     "TimeMid" / construct.Hex(construct.Int16ul),
     "TimeHighAndVersion" / construct.Hex(construct.Int16ul),
@@ -22,26 +22,26 @@ efi_guid = construct.Struct(
     "Node" / construct.Hex(construct.Int8ul)[6]
 )
 
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID = efi_guid.build(dict(
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID: Final = efi_guid.build(dict(
     TimeLow=0x6dcbd5ed, TimeMid=0xe82d, TimeHighAndVersion=0x4c44,
     ClockSeqHighAndReserved=0xbd, ClockSeqLow=0xa1,
     Node=[0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a]))
 
-CAPSULE_FLAGS_PERSIST_ACROSS_RESET = 0x10000
-CAPSULE_FLAGS_POPULATE_SYSTEM_TABLE = 0x20000
-CAPSULE_FLAGS_INITIATE_RESET = 0x40000
+CAPSULE_FLAGS_PERSIST_ACROSS_RESET: Final = 0x10000
+CAPSULE_FLAGS_POPULATE_SYSTEM_TABLE: Final = 0x20000
+CAPSULE_FLAGS_INITIATE_RESET: Final = 0x40000
 
-CAPSULE_SUPPORT_AUTHENTICATION = 1
-CAPSULE_SUPPORT_DEPENDENCY = 2
+CAPSULE_SUPPORT_AUTHENTICATION: Final = 1
+CAPSULE_SUPPORT_DEPENDENCY: Final = 2
 
-WIN_CERT_TYPE_EFI_GUID = 0xEF1
+WIN_CERT_TYPE_EFI_GUID: Final = 0xEF1
 
-EFI_CERT_TYPE_PKCS7_GUID = efi_guid.build(dict(
+EFI_CERT_TYPE_PKCS7_GUID: Final = efi_guid.build(dict(
     TimeLow=0x4aafd29d, TimeMid=0x68df, TimeHighAndVersion=0x49ee,
     ClockSeqHighAndReserved=0x8a, ClockSeqLow=0xa9,
     Node=[0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7]))
 
-efi_capsule = construct.Struct(
+efi_capsule: Final = construct.Struct(
     "CapsuleHeader" / construct.Struct(
         "CapsuleGuid" / efi_guid,
         "HeaderSize" / construct.Int32ul,
@@ -154,7 +154,7 @@ def sanity_check_capsule(
         error: Callable[[construct.Struct], str]
         debug: Callable[[construct.Struct], str]
 
-    checks: list[Entry] = [
+    checks: Final[list[Entry]] = [
         # Capsule header
         # Capsule Guid
         {
