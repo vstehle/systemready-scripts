@@ -173,8 +173,6 @@ versions:
       - FWTSResults.log from ACS-IR v23.09_2.1.0 with SIE
     version: IR v2.1 with SIE
 
-
-
   - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
