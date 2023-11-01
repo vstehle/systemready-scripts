@@ -1,5 +1,5 @@
 ###############################################################################
-#                          ethernet-parser.py database                               #
+#                          ethernet-parser.py database                        #
 ###############################################################################
 
 ---
@@ -25,16 +25,13 @@ criterias:
       - ping: PASS
     criteria: PASS
     quality: POOR
-    recomendation: 'Suitable for certification at risk, notify vendor ethtool failed and discuss options'
+    recomendation: 'Suitable for certification at risk,
+                    notify vendor ethtool failed and discuss options'
 
   - results:
       - ethtool: FAIL
       - ping: FAIL
     criteria: FAIL
     quality: BAD
-    recomendation: 'not suitable for certification, notify vendor ethtool and ping failed and discuss options'
-
-
-
-
-
+    recomendation: 'not suitable for certification,
+                    notify vendor ethtool and ping failed and discuss options'
