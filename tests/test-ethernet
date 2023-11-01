@@ -1,0 +1,42 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for ethernet-parser.py.
+# Usage: test-ethernet [keep]
+# We keep our temporary folder when `keep' is specified.
+
+# Redirect all output to a log in current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing ethernet-parser... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Make sure ethernet-parser.py is in the path.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Temporary folder.
+if [ "${1:-unset}" == keep ]; then
+	tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+	tmp=$(mktemp -d)
+	trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+out="$tmp/out"
+
+echo -n 'none, ' >&3
+ethernet-parser.py |& tee "$out"
+grep Unknown "$out"
+
+echo -n 'all good test ' >&3
+python3 ethernet-parser.py "$data/test-ethernet/ethtool-test-fail.log" 2 0 |& tee "&out"
+grep 'SystemReady IR v1.0' "$out"
+
+echo 'ok.' >&3
