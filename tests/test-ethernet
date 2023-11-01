@@ -30,13 +30,18 @@ fi
 
 data="$here/data/$(basename "$0")"
 out="$tmp/out"
+echo "outfile is",$out >&3
 
-echo -n 'none, ' >&3
-ethernet-parser.py |& tee "$out"
-grep Unknown "$out"
+echo -n 'test 1: 1 of them fail ' >&3
+ethernet-parser.py "$data/ethtool-test-fail.log" 2 0 |& tee "$out"
+grep 'Ethernet parser tests result is: FAIL' "$out"
 
-echo -n 'all good test ' >&3
-python3 ethernet-parser.py "$data/test-ethernet/ethtool-test-fail.log" 2 0 |& tee "&out"
-grep 'SystemReady IR v1.0' "$out"
+echo -n 'test 2: both of them fail ' >&3
+ethernet-parser.py "$data/ethtool-test-fail2.log" 2 0 |& tee "$out"
+grep 'Ethernet parser tests result is: FAIL' "$out"
+
+echo -n 'test 3: both pass ' >&3
+ethernet-parser.py "$data/ethtool-test.log" 2 0 |& tee "$out"
+grep 'Ethernet parser tests result is: PASS' "$out"
 
 echo 'ok.' >&3
