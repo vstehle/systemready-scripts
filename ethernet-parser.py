@@ -6,7 +6,7 @@ import sys
 import logging
 import os
 import yaml
-from typing import Any, Optional, cast
+from typing import List, Any, Optional, cast
 
 
 # Colors
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     log_path = sys.argv[1]
     num_devices = int(sys.argv[2])
     debug = int(sys.argv[3])
-    device_results = [[] for _ in range(num_devices)]
+    device_results: List[List[List]] = [[] for _ in range(num_devices)]
 
     logging.basicConfig(
         format='%(levelname)s %(funcName)s: %(message)s',
