@@ -81,7 +81,7 @@ def parse_eth_log(db: DbType, log_path, num_devices, debug):
 
 
 def apply_criteria(db: DbType):
-    logging.debug(f'apply criterias from the database')
+    logging.debug('apply criterias from the database')
     result = 'PASS'
     # look for the different combinations PASS/FAIL
     # and update the device register with the criteria
