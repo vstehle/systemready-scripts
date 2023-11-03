@@ -35,9 +35,10 @@ def load_ethernet_db(filename: str) -> DbType:
     return db
 
 
-def parse_eth_log(db: DbType, log_path, num_devices, debug):
+def parse_eth_log(db: DbType, log_path, num_devices, debug) -> None:
     ethtool_pattern = re.compile(r'The test result is (PASS|FAIL)')
-    ping_pattern = re.compile(r'Ping to www.arm.com is (successful|failed)')
+    ping_pattern = re.compile(r'Ping to www.arm.com is (successful|.*)')
+    link_pattern = re.compile(r'INFO: Link not detected')
 
     device_count = 0
     ethtool_pattern_count = 0
@@ -47,11 +48,13 @@ def parse_eth_log(db: DbType, log_path, num_devices, debug):
 
     with open(log_path, 'r') as log_file:
         for line in log_file:
+            match_ethtool = ethtool_pattern.search(line)
+            match_ping = ping_pattern.search(line)
+            match_no_link = link_pattern.search(line)
             if lookforping is False:
-                match = ethtool_pattern.search(line)
-                if match:
+                if match_ethtool:
                     device_count += 1
-                    result = match.group(1)
+                    result = match_ethtool.group(1)
                     device_results[device_count-1].append({'ethtool': result})
                     if result == 'PASS':
                         logging.debug(f" Ethtool: device {device_count},"
@@ -63,24 +66,24 @@ def parse_eth_log(db: DbType, log_path, num_devices, debug):
                                       f" FAILED")
                         lookforping = False | expectping
 
-            # if ethtool fails there won't be a ping ?????
             if lookforping is True:
-                match = ping_pattern.search(line)
-                if match:
-                    result = match.group(1)
+                if match_no_link:
+                    logging.debug(f" Ping: device {device_count}, FAILED")
+                    device_results[device_count-1].append({'ping': 'FAIL'})
+                    lookforping = False
+                elif match_ping:
+                    result = match_ping.group(1)
                     lookforping = False
                     if result == 'successful':
                         logging.debug(f" Ping: device {device_count}, PASSED")
                         device_results[device_count-1].append({'ping': 'PASS'})
                         ping_pattern_count += 1
-                    elif result == 'failed':
+                    elif result != 'successful':
                         logging.debug(f" Ping: device {device_count}, FAILED")
                         device_results[device_count-1].append({'ping': 'FAIL'})
-            else:
-                match = ethtool_pattern.search(line)
 
 
-def apply_criteria(db: DbType):
+def apply_criteria(db: DbType) -> str:
     logging.debug('apply criterias from the database')
     result = 'PASS'
     # look for the different combinations PASS/FAIL

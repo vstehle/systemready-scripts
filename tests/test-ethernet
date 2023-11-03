@@ -43,4 +43,8 @@ echo -n 'test 3: both pass ' >&3
 ethernet-parser.py "$data/ethtool-test.log" 2 0 |& tee "$out"
 grep 'Ethernet parser tests result is: PASS' "$out"
 
+echo -n 'test 4: no link connection ' >&3
+ethernet-parser.py "$data/compulab-test.log" 2 1 |& tee "$out"
+grep 'Ethernet parser tests result is: FAIL' "$out"
+
 echo 'ok.' >&3
