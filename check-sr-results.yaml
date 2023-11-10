@@ -232,13 +232,20 @@ tree:
               - 'Linux generic-arm64 6.0.0-yocto-standard #1 SMP PREEMPT Sun Oct
                 2 21:09:07 UTC 2022 aarch64 GNU/Linux'
       - dir: linux_tools
-        min-entries: 1
-        max-entries: 2  # Allow dt-validate.log.old
+        min-entries: 4
+        max-entries: 5  # Allow dt-validate.log.old
         tree:
           - file: dt-validate.log*
             must-contain:
               - 'DeviceTree bindings of Linux kernel version: '
               - 'dtschema version: 2022.9'
+          - file: device_driver_info.log
+            optional:
+          - file: ethtool-test.log
+            ethernet:
+            must-contain:
+               - 'Running ethtool'
+          - file: read_blk_devices.log
       - dir: sct_results
         min-entries: 3
         max-entries: 3

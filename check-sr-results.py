@@ -65,6 +65,11 @@ dtc = None
 # This will be set after command line argument parsing.
 dt_parser = None
 
+# ethernet-parser.py command.
+# This will be set after command line argument parsing.
+ethernet_parser = None
+num_eth_devices = None
+
 # dt-validate command.
 # This will be set after command line argument parsing.
 dt_validate = None
@@ -606,6 +611,38 @@ def need_regen(filename, deps, margin=0):
     return False
 
 
+# Check ethernet results
+# Verify the log with ethernet.
+# wer return a Stats object
+def check_ethernet(filename):
+    logging.debug(f"Check Ethernet `{filename}'")
+    stats = Stats()
+
+    if (num_eth_devices == 0) and ('IR v2.1' in ver):
+        logging.error(
+            f"{yellow}Number of ethernet devices is set to 0 but IR v2.1.",
+            " Double check this is correct {normal}' ")
+        stats.inc_error()
+        return stats
+    elif (num_eth_devices == 0):
+        logging.warning("Not checking ethernets as not required ",
+                        "and not specified,",
+                        "but it is likely there are ethernets present")
+        return stats
+    else:
+        cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
+
+        if cp.returncode:
+            logging.error(
+                f'ethernet-parser {red}failed{normal} on {filename}')
+            stats.inc_error()
+            return stats
+
+        logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
+        stats.inc_pass()
+        return stats
+
+
 # Check Devicetree blob.
 # We run dtc and dt-validate to produce the log when needed.
 # We add markers to the log, which will be ignored by dt-parser.py.
@@ -948,6 +985,9 @@ def check_file(conffile, confpath, filename):
 
             if 'devicetree' in conffile:
                 stats.add(check_devicetree(filename))
+
+            if 'ethernet' in conffile:
+                stats.add(check_ethernet(filename))
 
             if 'uefi-sniff' in conffile:
                 stats.add(check_uefi_sniff(filename))
@@ -1540,6 +1580,14 @@ if __name__ == '__main__':
     parser.add_argument(
         '--dt-validate', help='Specify dt-validate path',
         default='dt-validate')
+    parser.add_argument(
+        '--ethernet-parser',
+        help='Specify ethernet-parser.py path and arguments',
+        default='ethernet-parser.py')
+    parser.add_argument(
+        '--ethernet-devices',
+        help='Specify how many ethernet devies should be checked',
+        default=0)
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
         '--force-regen', action='store_true',
@@ -1577,6 +1625,8 @@ if __name__ == '__main__':
     dt_parser = args.dt_parser + (' --debug' if args.debug else '')
     parser = args.parser + (' --debug' if args.debug else '')
     dt_validate = args.dt_validate
+    ethernet_parser = args.ethernet_parser + (' --debug' if args.debug else '')
+    num_eth_devices = int(args.ethernet_devices)
     compatibles = args.compatibles
     linux_url = args.linux_url
     cache_dir = args.cache_dir
@@ -1595,8 +1645,10 @@ if __name__ == '__main__':
     identify = args.identify + (' --debug' if args.debug else '')
     files, ver = run_identify(args.dir, identify)
 
+    logging.info(f'Detected version is {ver}')
+
     # Choose config.
-    # We default to IR 2.0.
+    # We default to IR 2.x.
     # We use IR 1.x when detected.
     # Command line takes precedence in all cases.
     config = f'{here}/check-sr-results.yaml'

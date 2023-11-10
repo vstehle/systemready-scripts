@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-
+import argparse
 import re
-import sys
 import logging
 import os
 import yaml
+import sys
 from typing import List, Any, Optional, cast
 
 
@@ -35,7 +35,19 @@ def load_ethernet_db(filename: str) -> DbType:
     return db
 
 
-def parse_eth_log(db: DbType, log_path, num_devices, debug) -> None:
+def detect_eth_devices(log_path) -> int:
+    ethtool_pattern = re.compile(r'INFO: Running "ethtool ')
+    device_count = 0
+    with open(log_path, 'r') as log_file:
+        for line in log_file:
+            match_device = ethtool_pattern.search(line)
+            if match_device:
+                device_count += 1
+    logging.debug(f' ethernet devices detected: {device_count}')
+    return device_count
+
+
+def parse_eth_log(db: DbType, log_path, num_devices) -> None:
     ethtool_pattern = re.compile(r'The test result is (PASS|FAIL)')
     ping_pattern = re.compile(r'Ping to www.arm.com is (successful|.*)')
     link_pattern = re.compile(r'INFO: Link not detected')
@@ -86,6 +98,7 @@ def parse_eth_log(db: DbType, log_path, num_devices, debug) -> None:
 def apply_criteria(db: DbType) -> str:
     logging.debug('apply criterias from the database')
     result = 'PASS'
+    num_pass_devices = 0
     # look for the different combinations PASS/FAIL
     # and update the device register with the criteria
     # and recomendations from the database
@@ -108,38 +121,63 @@ def apply_criteria(db: DbType) -> str:
                 elif (ii['quality'] == 'BAD'):
                     result = 'FAIL'
                 elif (result == 'PASS' and (ii['quality'] == 'POOR' or
-                                            ii['quality'] == 'GOOD')):
+                                            ii['quality'] == 'BEST')):
                     result = 'PASS'
+                    num_pass_devices += 1
                 break
 
         if not found_match:
             logging.error(f"not validating match found for: {i}")
 
-    return result
+    if num_pass_devices == int(args.num_devices):
+        logging.info("ethernet-parser passed for",
+                     f"{num_pass_devices} and requested {args.num_devices}")
+        return "PASS"
+    else:
+        logging.error("ethernet-parser passed for",
+                      f"{num_pass_devices} and requested {args.num_devices}")
+        return "FAIL"
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python script.py <log_path> <num_devices> <debug>")
-        sys.exit(1)
 
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
 
-    log_path = sys.argv[1]
-    num_devices = int(sys.argv[2])
-    debug = int(sys.argv[3])
-    device_results: List[List[Any]] = [[] for _ in range(num_devices)]
+    parser = argparse.ArgumentParser(
+        description='Parse Ethernet tools logs.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument(
+        '--config', help='Configuration filename',
+        default=f"{here}/ethernet-parser.yaml")
+    parser.add_argument(
+        '--debug', action='store_true', help='Turn on debug messages')
+    parser.add_argument(
+        'log', help="Input log filename")
+    parser.add_argument(
+        'num_devices', help='Number of Ethernet devices to be parsed')
+    args = parser.parse_args()
 
     logging.basicConfig(
         format='%(levelname)s %(funcName)s: %(message)s',
-        level=logging.DEBUG if debug else logging.INFO)
+        level=logging.DEBUG if args.debug else logging.INFO)
 
-    db = load_ethernet_db(f'{here}/ethernet-parser.yaml')
-    parse_eth_log(db, log_path, num_devices, debug)
-    result = apply_criteria(db)
+    db = load_ethernet_db(args.config)
+    num_actual_devices = detect_eth_devices(args.log)
+    num_expected_devices = int(args.num_devices)
 
-    for i in range(num_devices):
-        logging.info(f"{device_results[i]}")
+    device_results: List[List[Any]] = [[] for _ in
+                                       range(num_actual_devices)]
+    if num_expected_devices > num_actual_devices:
+        logging.error(f'detected {num_actual_devices} ',
+                      'and expected a bigger number of ethernets:',
+                      f'{num_expected_devices}')
+    else:
+        parse_eth_log(db, args.log, num_actual_devices)
+        result = apply_criteria(db)
 
-    print(f'Ethernet parser tests result is: {result}')
+    logging.info(f'Ethernet parser tests result is: {result}')
+    if result == "PASS":
+        sys.exit(0)
+    else:
+        sys.exit(1)
