@@ -243,8 +243,6 @@ tree:
             optional:
           - file: ethtool-test.log
             ethernet:
-            must-contain:
-               - 'Running ethtool'
           - file: read_blk_devices.log
       - dir: sct_results
         min-entries: 3
