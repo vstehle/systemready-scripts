@@ -9,6 +9,7 @@ https://gitlab.arm.com/systemready/systemready-scripts
 ## Branches
 
 For IR 1.1 certification, git branch `ir1` of this repository should be used.
+For IR 2.1 certification, git branch `iri2.1` of this repository should be used.
 
 ## Dependencies
 
