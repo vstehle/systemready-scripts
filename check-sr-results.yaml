@@ -44,8 +44,8 @@ tree:
       - No EFI system partition
       - Failed to persist EFI variables
   - dir: acs_results
-    min-entries: 8  # Allow missing result.md
-    max-entries: 9
+    min-entries: 9  # Allow missing result.md
+    max-entries: 10
     tree:
       - file: result.md
         sct-parser-result-md:
@@ -77,6 +77,18 @@ tree:
           - file: CapsuleApp_FMP_protocol_info.log
             must-contain:
               - FMP DATA
+      - dir: edk2-test-parser
+        min-entries: 1
+        max-entries: 1
+        tree:
+          - file: edk2-test-parser.log
+            must-contain:
+              - SCT Summary
+              - 'Dropped:'
+              - 'Failure:'
+              - 'Ignored:'
+              - 'Pass:'
+              - 'Warning:'
       - dir: fwts
         min-entries: 1
         max-entries: 1
@@ -129,8 +141,8 @@ tree:
                   - Number of PE detected
                   - Tests Failed =  0
       - dir: linux_dump
-        min-entries: 10     # Allow missing lsusb.log
-        max-entries: 11
+        min-entries: 11     # Allow missing lsusb.log
+        max-entries: 12
         tree:
           - file: cpuinfo.log
             must-contain:
@@ -227,23 +239,33 @@ tree:
               - MemTotal
               - MemFree
               - MemAvailable
+          - file: sys_hierarchy.log
+            must-contain:
+              - /sys
+              - block
           - file: uname.log
             must-contain:
               - 'Linux generic-arm64 6.0.0-yocto-standard #1 SMP PREEMPT Sun Oct
                 2 21:09:07 UTC 2022 aarch64 GNU/Linux'
       - dir: linux_tools
         min-entries: 4
-        max-entries: 5  # Allow dt-validate.log.old
+        max-entries: 6  # Allow dt-validate.log.old
         tree:
+          - file: device_tree.dts
+            must-contain:
+              - compatible
           - file: dt-validate.log*
             must-contain:
               - 'DeviceTree bindings of Linux kernel version: '
-              - 'dtschema version: 2022.9'
-          - file: device_driver_info.log
+              - 'dtschema version: 2023.7'
+          - file: device_driver_info.log    #This log may be removed in  future versions
             optional:
           - file: ethtool-test.log
-            ethernet:
+            must-contain:
+              - 'INFO: Detected following ethernet interfaces via ip command :'
           - file: read_blk_devices.log
+            must-contain:
+              - 'INFO: Detected following block devices with lsblk command :'
       - dir: sct_results
         min-entries: 3
         max-entries: 3

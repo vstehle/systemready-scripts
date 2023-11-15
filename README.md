@@ -499,7 +499,7 @@ already.
 
 The `ethtool-test.sh` script tests the ethernet interfaces in the system.
 This script is to be run on Linux distros post boot on the SUT.
-Usage on distro Linux command-line:
+Usage on the Linux command-line of the distro:
 ``` {.sh}
 $ sudo ./ethtool-test.sh | tee ethtool_test.log
 ```
