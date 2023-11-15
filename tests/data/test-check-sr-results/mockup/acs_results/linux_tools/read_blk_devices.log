@@ -1,0 +1,73 @@
+
+********************************************************************************************************************************
+
+                                                    Read block devices tool
+
+********************************************************************************************************************************
+INFO: Detected following block devices with lsblk command :
+0: ram0
+1: ram1
+2: ram2
+3: ram3
+4: ram4
+5: ram5
+6: ram6
+7: ram7
+8: ram8
+9: ram9
+10: ram10
+11: ram11
+12: ram12
+13: ram13
+14: ram14
+15: ram15
+16: sda
+
+********************************************************************************************************************************
+
+INFO: Block device : /dev/ram0
+INFO: Invalid partition table or not found for ram0
+INFO: Block device : /dev/ram1
+INFO: Invalid partition table or not found for ram1
+INFO: Block device : /dev/ram2
+INFO: Invalid partition table or not found for ram2
+INFO: Block device : /dev/ram3
+INFO: Invalid partition table or not found for ram3
+INFO: Block device : /dev/ram4
+INFO: Invalid partition table or not found for ram4
+INFO: Block device : /dev/ram5
+INFO: Invalid partition table or not found for ram5
+INFO: Block device : /dev/ram6
+INFO: Invalid partition table or not found for ram6
+INFO: Block device : /dev/ram7
+INFO: Invalid partition table or not found for ram7
+INFO: Block device : /dev/ram8
+INFO: Invalid partition table or not found for ram8
+INFO: Block device : /dev/ram9
+INFO: Invalid partition table or not found for ram9
+INFO: Block device : /dev/ram10
+INFO: Invalid partition table or not found for ram10
+INFO: Block device : /dev/ram11
+INFO: Invalid partition table or not found for ram11
+INFO: Block device : /dev/ram12
+INFO: Invalid partition table or not found for ram12
+INFO: Block device : /dev/ram13
+INFO: Invalid partition table or not found for ram13
+INFO: Block device : /dev/ram14
+INFO: Invalid partition table or not found for ram14
+INFO: Block device : /dev/ram15
+INFO: Invalid partition table or not found for ram15
+INFO: Block device : /dev/sda
+INFO: Partition table type : GPT
+
+
+INFO: Partition : /dev/sda1 Partition type GUID : EBD0A0A2-B9E5-4433-87C0-68B6B72699C7 "Platform required bit" : 0
+INFO: Performing block read on /dev/sda1 part_guid = EBD0A0A2-B9E5-4433-87C0-68B6B72699C7
+INFO: Block read on /dev/sda1 part_guid = EBD0A0A2-B9E5-4433-87C0-68B6B72699C7 successful
+
+INFO: Partition : /dev/sda2 Partition type GUID : 0FC63DAF-8483-4772-8E79-3D69D8477DE4 "Platform required bit" : 0
+INFO: Performing block read on /dev/sda2 part_guid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+INFO: Block read on /dev/sda2 part_guid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4 successful
+
+********************************************************************************************************************************
+
