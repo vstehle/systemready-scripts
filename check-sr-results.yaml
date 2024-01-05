@@ -258,9 +258,11 @@ tree:
             must-contain:
               - 'DeviceTree bindings of Linux kernel version: '
               - 'dtschema version: 2023.7'
-          - file: device_driver_info.log    #This log may be removed in  future versions
+          - file: device_driver_info.log
+            # This log may be removed in future versions
             optional:
           - file: ethtool-test.log
+            ethernet:
             must-contain:
               - 'INFO: Detected following ethernet interfaces via ip command :'
           - file: read_blk_devices.log
