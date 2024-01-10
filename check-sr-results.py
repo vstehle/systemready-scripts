@@ -613,21 +613,22 @@ def need_regen(filename, deps, margin=0):
 
 # Check ethernet results
 # Verify the log with ethernet.
-# wer return a Stats object
+# We return a Stats object
 def check_ethernet(filename):
     logging.debug(f"Check Ethernet `{filename}'")
     stats = Stats()
 
     if (num_eth_devices == 0) and ('IR v2.1' in ver):
         logging.error(
-            f"{yellow}Number of ethernet devices is set to 0 but IR v2.1.",
-            " Double check this is correct {normal}' ")
+            f"Number of ethernet devices {red}is set to 0{normal} "
+            f"but IR v2.1. Double check this is correct.")
         stats.inc_error()
         return stats
     elif (num_eth_devices == 0):
-        logging.warning("Not checking ethernets as not required ",
-                        "and not specified,",
-                        "but it is likely there are ethernets present")
+        logging.warning(
+            f"{yellow}Not checking ethernets as not required "
+            f"and not specified,{normal}"
+            f"but it is likely there are ethernets present.")
         return stats
     else:
         cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
@@ -1644,8 +1645,6 @@ if __name__ == '__main__':
     # Identify SystemReady version.
     identify = args.identify + (' --debug' if args.debug else '')
     files, ver = run_identify(args.dir, identify)
-
-    logging.info(f'Detected version is {ver}')
 
     # Choose config.
     # We default to IR 2.x.
