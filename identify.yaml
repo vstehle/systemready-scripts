@@ -158,22 +158,6 @@ versions:
   # matches first.
 
   - files:
-      - BSALinuxResults.log from ACS-IR v23.09_2.1.0
-      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
-      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
-      - FWTSResults.log from ACS-IR v23.09_2.1.0
-    version: IR v2.1
-
-  - files:
-      - BSALinuxResults.log from ACS-IR v23.09_2.1.0
-      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
-      - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
-      - FWTSResults.log from ACS-IR v23.09_2.1.0
-      - FWTSResults.log from ACS-IR v23.09_2.1.0 with SIE
-    version: IR v2.1 with SIE
-
-  - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
         v23.09_2.1.0
@@ -194,6 +178,22 @@ versions:
       - FWTSResults.log from ACS-IR v23.03_2.0.0
       - FWTSResults.log from ACS-IR v23.03_2.0.0 with SIE
     version: IR v2.0 with SIE
+
+  - files:
+      - BSALinuxResults.log from ACS-IR v23.09_2.1.0
+      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
+      - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
+      - FWTSResults.log from ACS-IR v23.09_2.1.0
+      - FWTSResults.log from ACS-IR v23.09_2.1.0 with SIE
+    version: IR v2.1 with SIE
+
+  - files:
+      - BSALinuxResults.log from ACS-IR v23.09_2.1.0
+      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
+      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
+        v23.09_2.1.0
+      - FWTSResults.log from ACS-IR v23.09_2.1.0
+    version: IR v2.1
 
   - files:
       - BSALinuxResults.log from ACS-IR v23.03_2.0.0
