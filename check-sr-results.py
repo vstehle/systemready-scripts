@@ -772,8 +772,8 @@ def check_uefi_sniff(filename):
     # Open the file with the proper encoding and look for ESPs
     for i, line in enumerate(logreader.LogReader(filename)):
         m = re.match(
-            r'\d+: DevicePath\([^\)]+\) +(/\S+) BlockIO\([^\)]+\).* '
-            r'EFISystemPartition\([^\)]+\)', line)
+            r'\S[0-9a-fA-F]+: DevicePath\([^\)]+\) +(/\S+) '
+            r'BlockIO\([^\)]+\).* EFISystemPartition\([^\)]+\)', line)
 
         if m:
             logging.debug(f"ESP match line {i + 1}, `{line}'")
@@ -1220,7 +1220,7 @@ def deferred_check_uefi_logs_esp():
     # actually did.
     for k, v in filenames.items():
         if not v:
-            logging.error(f"`{filename}' {red}did not have an ESP{normal}")
+            logging.error(f"`{k}' {red}did not have an ESP{normal}")
             stats.inc_error()
 
     return stats
