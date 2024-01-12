@@ -35,7 +35,7 @@ def load_ethernet_db(filename: str) -> DbType:
     return db
 
 
-def detect_eth_devices(log_path) -> int:
+def detect_eth_devices(log_path: str) -> int:
     ethtool_pattern = re.compile(r'INFO: Running "ethtool ')
     device_count = 0
     with open(log_path, 'r') as log_file:
@@ -47,7 +47,7 @@ def detect_eth_devices(log_path) -> int:
     return device_count
 
 
-def parse_eth_log(db: DbType, log_path, num_devices) -> None:
+def parse_eth_log(db: DbType, log_path: str, num_devices: int) -> None:
     ethtool_pattern = re.compile(r'The test result is (PASS|FAIL)')
     ping_pattern = re.compile(r'Ping to www.arm.com is (successful|.*)')
     link_pattern = re.compile(r'INFO: Link not detected')

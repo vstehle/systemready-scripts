@@ -53,7 +53,8 @@ check:	test valid
 	yamllint .
 	flake8
 	mypy --strict guid.py validate.py logreader.py guid-tool.py \
-		identify.py capsule-tool.py format-sr-results.py
+		identify.py capsule-tool.py format-sr-results.py \
+		ethernet-parser.py
 	mypy .
 	python3 -m doctest guid.py
 
