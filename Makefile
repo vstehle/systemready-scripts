@@ -7,15 +7,15 @@ TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
 TEST_LOGS = $(addsuffix .log,$(notdir $(TESTS)))
 
 VALIDS = \
-	check-sr-results-schema.yaml__check-sr-results.yaml \
 	check-sr-results-schema.yaml__check-sr-results-ir1.yaml \
-	format-sr-results-schema.yaml__format-sr-results.yaml \
-	guid-tool-schema.yaml__guid-tool.yaml \
+	check-sr-results-schema.yaml__check-sr-results.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-all.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-any.yaml \
 	dt-parser-schema.yaml__dt-parser.yaml \
 	dt-parser-schema.yaml__tests/data/test-dt-parser/test-config.yaml \
+	format-sr-results-schema.yaml__format-sr-results.yaml \
+	guid-tool-schema.yaml__guid-tool.yaml \
 	identify-schema.yaml__identify.yaml \
-	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-any.yaml \
-	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-all.yaml \
 	identify-schema.yaml__tests/data/test-check-sr-results/identify.yaml
 
 VALID_TARGETS = $(addsuffix .valid,$(VALIDS))
