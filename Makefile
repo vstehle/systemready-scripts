@@ -9,6 +9,8 @@ TEST_LOGS = $(addsuffix .log,$(notdir $(TESTS)))
 VALIDS = \
 	check-sr-results-schema.yaml__check-sr-results-ir1.yaml \
 	check-sr-results-schema.yaml__check-sr-results.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/once.yaml \
+	check-sr-results-schema.yaml__tests/data/test-check-sr-results/warn-if-not-named.yaml \
 	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-all.yaml \
 	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-any.yaml \
 	dt-parser-schema.yaml__dt-parser.yaml \
