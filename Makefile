@@ -15,6 +15,7 @@ VALIDS = \
 	check-sr-results-schema.yaml__tests/data/test-check-sr-results/when-any.yaml \
 	dt-parser-schema.yaml__dt-parser.yaml \
 	dt-parser-schema.yaml__tests/data/test-dt-parser/test-config.yaml \
+	ethernet-parser-schema.yaml__ethernet-parser.yaml \
 	format-sr-results-schema.yaml__format-sr-results.yaml \
 	guid-tool-schema.yaml__guid-tool.yaml \
 	identify-schema.yaml__identify.yaml \

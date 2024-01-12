@@ -1,0 +1,67 @@
+---
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/identify-schema.yaml"
+$schema: https://json-schema.org/draft/2020-12/schema
+title: SystemReady ethernet parser database schema
+description: |
+    SystemReady IR ethernet test results produced by the ethtool-test.sh script
+    are analyzed by the ethernet-parser.
+
+    The pass/fail criteria for the tests are described in a yaml configuration
+    file.
+
+    This schema describes requirements on the configuration file.
+    It can be used by the valid.py script.
+
+    See the README for details.
+
+$defs:
+    pass-fail:
+        enum:
+            - PASS
+            - FAIL
+
+type: object
+properties:
+    ethernet_parser-database:
+        const: null
+    criterias:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+            type: object
+            properties:
+                results:
+                    # TODO! remove array
+                    type: array
+                    minItems: 2
+                    maxItems: 2
+                    uniqueItems: true
+                    items:
+                        type: object
+                        properties:
+                            ethtool:
+                                '$ref': '#/$defs/pass-fail'
+                            ping:
+                                '$ref': '#/$defs/pass-fail'
+                        additionalProperties: false
+                criteria:
+                    '$ref': '#/$defs/pass-fail'
+                quality:
+                    enum:
+                        - POOR
+                        - BAD
+                        - BEST
+                recommendation:
+                    type: string
+            required:
+                - results
+                - criteria
+                - quality
+                - recommendation
+            additionalProperties: false
+required:
+    - ethernet_parser-database
+    - criterias
+additionalProperties: false
