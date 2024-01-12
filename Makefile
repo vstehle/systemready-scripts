@@ -1,6 +1,6 @@
 # Simple makefile to perform static checks and generate the documentation with
 # pandoc.
-.PHONY: all doc help clean check %.run-test %.valid
+.PHONY: all doc help clean check %.run-test %.valid test valid
 
 TESTS = $(wildcard tests/test-*)
 TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
@@ -40,12 +40,16 @@ doc: README.pdf
 %.run-test:
 	./$(basename $@)
 
+test:	$(TEST_TARGETS)
+
 %.valid:
 	./validate.py --schema schemas/$(word 1,$(subst __, ,$@)) \
 		$(subst .valid,,$(word 2,$(subst __, ,$@)))
 
 
-check:	$(TEST_TARGETS) $(VALID_TARGETS)
+valid:	$(VALID_TARGETS)
+
+check:	test valid
 	yamllint .
 	flake8
 	mypy --strict guid.py validate.py logreader.py guid-tool.py \
