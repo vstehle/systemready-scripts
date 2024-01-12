@@ -11,21 +11,21 @@ criterias:
       - ping: PASS
     criteria: PASS
     quality: BEST
-    recomendation: 'good job!'
+    recommendation: 'good job!'
 
   - results:
       - ethtool: PASS
       - ping: FAIL
     criteria: FAIL
     quality: BAD
-    recomendation: 'not suitable for certification. Debug and fix Ping'
+    recommendation: 'not suitable for certification. Debug and fix Ping'
 
   - results:
       - ethtool: FAIL
       - ping: PASS
     criteria: PASS
     quality: POOR
-    recomendation: 'Suitable for certification at risk,
+    recommendation: 'Suitable for certification at risk,
                     notify vendor ethtool failed and discuss options'
 
   - results:
@@ -33,5 +33,5 @@ criterias:
       - ping: FAIL
     criteria: FAIL
     quality: BAD
-    recomendation: 'not suitable for certification,
+    recommendation: 'not suitable for certification,
                     notify vendor ethtool and ping failed and discuss options'

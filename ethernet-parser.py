@@ -101,7 +101,7 @@ def apply_criteria(db: DbType) -> str:
     num_pass_devices = 0
     # look for the different combinations PASS/FAIL
     # and update the device register with the criteria
-    # and recomendations from the database
+    # and recommendations from the database
     for index, i in enumerate(device_results):
         found_match = False
 
@@ -110,8 +110,8 @@ def apply_criteria(db: DbType) -> str:
                 logging.debug(f"match found: {i}")
                 device_results[index].append({'result': ii['criteria']})
                 device_results[index].append({'quality': ii['quality']})
-                device_results[index].append({'recomendation':
-                                              ii['recomendation']})
+                device_results[index].append({'recommendation':
+                                              ii['recommendation']})
                 found_match = True
                 # don't care what other devices are. the end result is FAIL
                 if result == 'FAIL':
