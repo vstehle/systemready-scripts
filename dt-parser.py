@@ -8,14 +8,26 @@ import pprint
 import yaml
 import json
 import sys
+from typing import Any, Optional, cast, TypedDict
+
+
+class ConfigEntry(TypedDict):
+    rule: str
+    criteria: dict[str, str]
+    update: dict[str, str]
+
+
+EntryType = dict[str, Any]  # TODO!
+ConfigType = list[ConfigEntry]
 
 
 # Load YAML configuration file
-def load_config(filename):
+def load_config(filename: str) -> ConfigType:
     logging.debug(f"Load `{filename}'")
 
     with open(filename, 'r') as yamlfile:
-        conf = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        y = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        conf = cast(Optional[ConfigType], y)
 
     if conf is None:
         conf = []
@@ -39,7 +51,7 @@ def load_config(filename):
 
 # Load compatibles list file
 # We return a set of compatibles.
-def load_compatibles(filename):
+def load_compatibles(filename: str) -> set[str]:
     logging.debug(f"Load `{filename}'")
     r = set()
 
@@ -53,18 +65,22 @@ def load_compatibles(filename):
 
 # Cleanup line a bit before adding it to the warning message.
 # We remove \t for now.
-def clean_line(line):
+def clean_line(line: str) -> str:
     return re.sub(r'\t+', ' ', line)
 
 
 # Parse Devicetree related tools logs.
-def parse(filename):
+def parse(filename: str) -> list[EntryType]:
     logging.debug(f"Parse `{filename}'")
     r = []
-    dt_val = None
+    dt_val: Optional[EntryType] = None
 
-    def flush_dt_val():
+    def flush_dt_val() -> None:
         nonlocal dt_val, r
+
+        if dt_val is None:
+            return
+
         dt_val['line'] = ''.join(dt_val['dt_validate_lines'])
         r.append(dt_val)
         dt_val = None
@@ -195,7 +211,7 @@ def parse(filename):
 # Cleanup entries
 # We remove all mmio addresses: name@12345678 -> name@x
 # We modify parsed in-place
-def cleanup_entries(parsed):
+def cleanup_entries(parsed: list[EntryType]) -> None:
     logging.debug('Cleanup')
     n = 0
 
@@ -228,7 +244,7 @@ def cleanup_entries(parsed):
 # We do not compare non-string keys, such as linenum or dt_validate_lines as
 # they do not get cleaned-up anyway
 # We return True if entries should be de-duplicated
-def dupes(a, b):
+def dupes(a: EntryType, b: EntryType) -> bool:
     for k in a.keys():
         if not isinstance(a[k], str):
             continue
@@ -240,9 +256,9 @@ def dupes(a, b):
 
 
 # De-duplicate entries
-def dedupe_entries(parsed):
+def dedupe_entries(parsed: list[EntryType]) -> list[EntryType]:
     logging.debug('De-dupe')
-    r = []
+    r: list[EntryType] = []
     n = 0
 
     for i, x in enumerate(parsed):
@@ -266,12 +282,12 @@ def dedupe_entries(parsed):
 
 
 # Add compatibles informations to the 'no schema' entries, for which we have
-# the compatible in a list.
+# the compatible in a set.
 # For all the 'no schema' dt-validate warnings we create an `in_compatibles'
 # key with the list of all the compatibles present in the set as a string,
 # or '<none>'.
 # We run before rules, we modify parsed in-place.
-def add_compatibles(parsed, compatibles):
+def add_compatibles(parsed: list[EntryType], compatibles: set[str]) -> None:
     logging.debug('Add compatibles')
     n = 0
 
@@ -313,7 +329,7 @@ def add_compatibles(parsed, compatibles):
 # present anywhere in the test value string.
 # For example, the test value "abcde" matches the criteria value "cd".
 # This allows for more "relaxed" criteria than strict comparison.
-def matches_crit(entry, crit):
+def matches_crit(entry: EntryType, crit: dict[str, str]) -> bool:
     for key, value in crit.items():
         if key not in entry or entry[key].find(value) < 0:
             return False
@@ -323,7 +339,7 @@ def matches_crit(entry, crit):
 
 # Apply all configuration rules to the entries
 # We modify parsed in-place
-def apply_rules(parsed, conf):
+def apply_rules(parsed: list[EntryType], conf: ConfigType) -> None:
     logging.debug('Apply rules')
     n = 0
 
@@ -353,13 +369,13 @@ def apply_rules(parsed, conf):
 # Filter is a python expression, which is evaluated for each entry
 # When the expression evaluates to True, the entry is kept
 # Otherwise it is dropped
-def filter_entries(parsed, Filter):
+def filter_entries(parsed: list[EntryType], Filter: str) -> list[EntryType]:
     logging.debug(f"Filtering with `{Filter}'")
     before = len(parsed)
 
     # This function "wraps" the filter and is called for each test
-    def function(x):
-        return eval(Filter)
+    def function(x: dict[str, Any]) -> bool:
+        return bool(eval(Filter))
 
     r = list(filter(function, parsed))
     after = len(r)
@@ -370,7 +386,7 @@ def filter_entries(parsed, Filter):
 
 # Print a table of lines of >=2 columns, with the first column right-justified
 # and the right spacing.
-def print_table(t, title):
+def print_table(t: list[Any], title: str) -> None:
     n = len(t[0]) if len(t) else 0
 
     # First pass to compute n-1 column sizes.
@@ -394,7 +410,7 @@ def print_table(t, title):
 
 
 # Compute and print statistics as summary
-def print_summary(parsed):
+def print_summary(parsed: list[EntryType]) -> None:
     logging.debug('Summary')
     h = {}
 
@@ -416,7 +432,9 @@ def print_summary(parsed):
 
 
 # Print non-ignored entries
-def print_non_ignored(parsed, max_message_len=128):
+def print_non_ignored(
+        parsed: list[EntryType], max_message_len: int = 128) -> None:
+
     logging.debug('Print')
     t = []
 
@@ -436,20 +454,20 @@ def print_non_ignored(parsed, max_message_len=128):
     print_table(t, 'Non-ignored entries')
 
 
-def dump(parsed):
+def dump(parsed: list[EntryType]) -> None:
     logging.debug('Dump')
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(parsed)
 
 
-def save_json(parsed, filename):
+def save_json(parsed: list[EntryType], filename: str) -> None:
     logging.debug(f"Save `{filename}'")
 
     with open(filename, 'w') as jsonfile:
         json.dump(parsed, jsonfile, sort_keys=True, indent=2)
 
 
-def save_yaml(parsed, filename):
+def save_yaml(parsed: list[EntryType], filename: str) -> None:
     logging.debug(f"Save `{filename}'")
 
     with open(filename, 'w') as yamlfile:
