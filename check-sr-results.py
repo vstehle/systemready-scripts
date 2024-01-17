@@ -16,7 +16,13 @@ import tempfile
 import shutil
 import logreader
 import time
-from typing import Final
+from typing import Final, cast, Any, Optional, Literal, IO, Callable
+
+FileType = dict[str, Any]  # TODO!
+DirType = dict[str, Any]   # TODO!
+TreeType = list[FileType | DirType]
+ConfigType = dict[str, Any]    # TODO!
+ContextType = list[str]
 
 try:
     from packaging import version
@@ -116,7 +122,7 @@ dev_paths = []
 # to check some UEFI logs.
 # We use a dict for the ESPs device paths to preserve the order in which they
 # are added and ensure uniqueness like with a set().
-esp_dev_paths = {}
+esp_dev_paths: dict[str, None] = {}
 
 # Linux bindings folder relative path under the cache folder.
 BINDINGS_REL_PATH: Final = 'bindings'
@@ -135,11 +141,11 @@ warn_once: set[str] = set()
 meta_data = {}
 
 # Keep track of (min-)occurences.
-occurrences = {}
+occurrences: dict[str, list[str]] = {}
 
 
 # Compute the plural of a word.
-def maybe_plural(n, word):
+def maybe_plural(n: int, word: str) -> str:
     if n < 2:
         return word
 
@@ -161,46 +167,46 @@ class Stats:
         'error': red,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.data = {}
 
         for c in Stats.COUNTERS:
             self.data[c] = 0
 
-    def _counter_str(self, x):
+    def _counter_str(self, x: str) -> str:
         n = self.data[x]
         color = Stats.COLORS[x] if n and x in Stats.COLORS else ''
         return f'{color}{n} {maybe_plural(n, x)}{normal}'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return ', '.join(
             map(lambda x: self._counter_str(x), Stats.COUNTERS))
 
     # Add the counters of a Stats objects to self.
-    def add(self, x):
+    def add(self, x: 'Stats') -> None:
         for c in Stats.COUNTERS:
             self.data[c] += x.data[c]
 
-    def _inc(self, x):
+    def _inc(self, x: Literal['pass', 'warning', 'error']) -> None:
         self.data[x] += 1
         self.data['check'] += 1
 
     # Increment 'pass' counter.
-    def inc_pass(self):
+    def inc_pass(self) -> None:
         self._inc('pass')
 
     # Increment 'warning' counter.
-    def inc_warning(self):
+    def inc_warning(self) -> None:
         self._inc('warning')
 
     # Increment 'error' counter.
-    def inc_error(self):
+    def inc_error(self) -> None:
         self._inc('error')
 
 
 # Download (possibly large) file from URL.
 # We raise an exception in case of issue.
-def download_file(url, filename):
+def download_file(url: str, filename: str) -> None:
     logging.debug(f"Download {url} -> `{filename}'")
 
     with requests.get(url, stream=True) as r:
@@ -213,7 +219,7 @@ def download_file(url, filename):
 # Determine the path of a command.
 # We ignore the command arguments.
 # Return the path or None.
-def which(command):
+def which(command: str) -> Optional[str]:
     logging.debug(f"Which `{command}'")
     r = shutil.which(re.sub(r' .*', '', command))
     logging.debug(f"`{r}'")
@@ -229,7 +235,8 @@ def which(command):
 # is to make sure cache format is somewhat in sync with the script version,
 # while allowing convenient development.
 # We return the dir name.
-def get_linux_cache():
+def get_linux_cache() -> str:
+    assert linux_url is not None
     linux_ver = re.sub(r'\.tar\..*', '', os.path.basename(linux_url))
     cached = f"{cache_dir}/{linux_ver}"
     stamp = f"{cached}/.stamp"
@@ -291,23 +298,24 @@ def get_linux_cache():
 
 # Get (cached) bindings folder.
 # We return the dir name.
-def get_bindings():
+def get_bindings() -> str:
     return get_linux_cache() + f"/{BINDINGS_REL_PATH}"
 
 
 # Get (cached) compatible strings file.
 # We return the file name.
-def get_compat():
+def get_compat() -> str:
     return get_linux_cache() + f"/{COMPAT_REL_PATH}"
 
 
 # Load YAML configuration file.
 # See the README.md for details on the file format.
-def load_config(filename):
+def load_config(filename: str) -> ConfigType:
     logging.debug(f'Load {filename}')
 
     with open(filename, 'r') as yamlfile:
-        conf = yaml.load(yamlfile, **yaml_load_args)
+        y = yaml.load(yamlfile, **yaml_load_args)
+        conf = cast(Optional[ConfigType], y)
 
     if conf is None:
         conf = {
@@ -323,12 +331,12 @@ def load_config(filename):
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
 # We return a Stats object.
-def check_file_contains(must_contain, filename):
+def check_file_contains(must_contain: list[str], filename: str) -> Stats:
     logging.debug(f"Check that file `{filename}' contains {must_contain}")
     assert len(must_contain)
 
     q = list(must_contain)
-    pat = q.pop(0)
+    pat: Optional[str] = q.pop(0)
     logging.debug(f"Looking for `{pat}'")
     assert isinstance(pat, str)
     stats = Stats()
@@ -367,7 +375,10 @@ def check_file_contains(must_contain, filename):
 # only once (except when using `--all', in which case all the warnings are
 # reported).
 # A match is the combination of the pattern plus the full matching line.
-def if_contains(strings, filename, error_not_warn, once):
+def if_contains(
+        strings: list[str], filename: str, error_not_warn: bool,
+        once: Optional[set[str]]) -> Stats:
+
     action = 'Error' if error_not_warn else 'Warn'
     logging.debug(f"{action} if file `{filename}' contains {strings}")
     stats = Stats()
@@ -410,24 +421,24 @@ def if_contains(strings, filename, error_not_warn, once):
 
 
 # Warn if a file contains specific patterns.
-def warn_if_contains(strings, filename):
+def warn_if_contains(strings: list[str], filename: str) -> Stats:
     return if_contains(strings, filename, False, None)
 
 
 # Warn once if a file contains specific patterns.
-def warn_once_if_contains(strings, filename):
+def warn_once_if_contains(strings: list[str], filename: str) -> Stats:
     return if_contains(strings, filename, False, warn_once)
 
 
 # Issue an error if a file contains specific patterns.
-def error_if_contains(strings, filename):
+def error_if_contains(strings: list[str], filename: str) -> Stats:
     return if_contains(strings, filename, True, None)
 
 
 # subprocess.run() wrapper
-def run(*args):
+def run(cmd: str) -> subprocess.CompletedProcess[bytes]:
     logging.debug(f"Running {args}")
-    cp = subprocess.run(*args, shell=True, capture_output=True)
+    cp = subprocess.run(cmd, shell=True, capture_output=True)
     logging.debug(cp)
     return cp
 
@@ -436,7 +447,7 @@ def run(*args):
 # We know about tar(-gz) for now.
 # TODO! More archives types.
 # We return a Stats object.
-def maybe_check_archive(filename):
+def maybe_check_archive(filename: str) -> Stats:
     stats = Stats()
 
     if re.match(r'.*\.(tar|tar\.gz|tgz)$', filename):
@@ -454,7 +465,7 @@ def maybe_check_archive(filename):
 
 # Identify a GUID
 # We return a Stats object.
-def identify_guid(guid, message=''):
+def identify_guid(guid: guid.Guid, message: str = '') -> Stats:
     logging.debug(f"Identify GUID {guid}")
     stats = Stats()
     cp = run(f"{guid_tool} {guid}")
@@ -483,7 +494,7 @@ def identify_guid(guid, message=''):
 # Check the GUIDs in CapsuleApp_ESRT_table_info.log.
 # We record the GUIDs for later capsule matching.
 # We return a Stats object.
-def check_capsuleapp_esrt(filename):
+def check_capsuleapp_esrt(filename: str) -> Stats:
     logging.debug(f"Check CapsuleApp ESRT `{filename}'")
     stats = Stats()
     num_guids = 0
@@ -512,7 +523,7 @@ def check_capsuleapp_esrt(filename):
 
 # Check UEFI Capsule binary.
 # We return a Stats object.
-def check_uefi_capsule(filename):
+def check_uefi_capsule(filename: str) -> Stats:
     logging.debug(f"Check UEFI Capsule `{filename}'")
     stats = Stats()
     cp = run(f"{capsule_tool} --print-guid '{filename}'")
@@ -582,7 +593,7 @@ def check_uefi_capsule(filename):
 # A margin (in seconds, zero by default) can be specified to avoid
 # re-generating files to often.
 # We return False otherwise
-def need_regen(filename, deps, margin=0):
+def need_regen(filename: str, deps: list[str], margin: int = 0) -> bool:
     logging.debug(f"Need regen `{filename}' <- {deps} (margin: {margin})")
 
     if force_regen:
@@ -610,11 +621,13 @@ def need_regen(filename, deps, margin=0):
 # We run dtc and dt-validate to produce the log when needed.
 # We add markers to the log, which will be ignored by dt-parser.py.
 # We return a Stats object.
-def check_devicetree(filename):
+def check_devicetree(filename: str) -> Stats:
     logging.debug(f"Check Devicetree `{filename}'")
     stats = Stats()
     log = f"{filename}.log"
     bindings = get_bindings()
+    assert dtc is not None
+    assert dt_validate is not None
 
     if need_regen(log, [filename, bindings, which(dtc), which(dt_validate)]):
         # Run dtc.
@@ -726,7 +739,7 @@ def check_devicetree(filename):
 # We check if we have at least one ESP.
 # We record the ESPs we found for later verification of must-have-esp files.
 # We return a Stats object.
-def check_uefi_sniff(filename):
+def check_uefi_sniff(filename: str) -> Stats:
     logging.debug(f"Check UEFI Shell sniff test log `{filename}'")
     stats = Stats()
     n = 0
@@ -757,13 +770,13 @@ def check_uefi_sniff(filename):
 # Check UEFI logs for ESP.
 # We record the device paths found for deferred verification against the ESPs.
 # We return a Stats object.
-def check_must_have_esp(filename):
+def check_must_have_esp(filename: str) -> Stats:
     logging.debug(f"Check must have ESP `{filename}'")
     stats = Stats()
     state = 'await shell'
     # We use a dict for the device paths to preserve the order
     # in which they are added and ensure uniqueness like with a set().
-    dp = {}
+    dp: dict[str, None] = {}
 
     # Open the file with the proper encoding and look for partitions.
     for i, line in enumerate(logreader.LogReader(filename)):
@@ -839,8 +852,9 @@ def check_must_have_esp(filename):
 # Try to re-create result.md with the SCT parser.
 # If we do not have parser.py at hand or if parsing fails, we do not treat that
 # as an error here but rather rely on subsequent checks.
-def sct_parser(conffile, filename):
+def sct_parser(conffile: str, filename: str) -> None:
     logging.debug(f"SCT parser `{filename}'")
+    assert parser is not None
     which_parser = which(parser)
 
     if which_parser is None:
@@ -870,7 +884,7 @@ def sct_parser(conffile, filename):
 
 # Warn if a file or directory name does not match a pattern.
 # We return a Stats object.
-def warn_if_not_named(name, pattern):
+def warn_if_not_named(name: str, pattern: str) -> Stats:
     stats = Stats()
     bn = os.path.basename(name)
 
@@ -894,7 +908,7 @@ def warn_if_not_named(name, pattern):
 # We perform some more checks on archives.
 # We try to re-create SCT parser result.md files.
 # We return a Stats object.
-def check_file(conffile, confpath, filename):
+def check_file(conffile: FileType, confpath: str, filename: str) -> Stats:
     logging.debug(f"Check `{filename}' ({confpath})")
     not_checked.discard(filename)
     stats = Stats()
@@ -970,7 +984,7 @@ def check_file(conffile, confpath, filename):
 
 
 # Record an occurrence of a file or a dir.
-def add_occurrence(pathname, confpath):
+def add_occurrence(pathname: str, confpath: str) -> None:
     logging.debug(f"Add occurrence `{pathname}/' ({confpath})")
 
     if confpath not in occurrences:
@@ -988,7 +1002,7 @@ def add_occurrence(pathname, confpath):
 # - max-entries
 # If the dir has a tree, we recurse with check_tree().
 # We return a Stats object.
-def check_dir(confdir, confpath, dirname):
+def check_dir(confdir: DirType, confpath: str, dirname: str) -> Stats:
     logging.debug(f"Check `{dirname}/' ({confpath})")
     not_checked.discard(dirname)
     stats = Stats()
@@ -1051,7 +1065,7 @@ def check_dir(confdir, confpath, dirname):
 
 
 # Return True if a string is a glob pattern, False otherwise.
-def is_glob(x):
+def is_glob(x: str) -> bool:
     e = glob.escape(x)
     return x != e
 
@@ -1060,7 +1074,9 @@ def is_glob(x):
 # We call the external script `identify.py'.
 # Return the list of identified files and the SystemReady version
 # or [], None in case of error.
-def run_identify(dirname, identify):
+def run_identify(
+        dirname: str, identify: str) -> tuple[list[str], Optional[str]]:
+
     logging.debug(f"Identify {dirname}")
 
     cp = run(f"{identify} --dir '{dirname}' --known-files")
@@ -1090,12 +1106,14 @@ def run_identify(dirname, identify):
 # We return a Stats object.
 # Files and directories names may be glob patterns. We need to handle the case
 # of glob vs. non-glob explicitly, as a glob pattern may return an empty list.
-def check_tree(conftree, confpath, dirname):
+def check_tree(conftree: TreeType, confpath: str, dirname: str) -> Stats:
     logging.debug(f"Check `{dirname}/' ({confpath})")
     assert isinstance(conftree, list)
     stats = Stats()
 
     for e in conftree:
+        check: Callable[[FileType | DirType, str, str], Stats]
+
         if 'file' in e:
             p = f"{confpath}/{e['file']}"
             pathname = f"{dirname}/{e['file']}"
@@ -1127,7 +1145,7 @@ def check_tree(conftree, confpath, dirname):
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
 # We return a Stats object.
-def deferred_check_capsule_guids_in_esrt():
+def deferred_check_capsule_guids_in_esrt() -> Stats:
     logging.debug('Deferred check capsule GUIDs in ESRT')
     stats = Stats()
     logging.debug(f"Capsule GUIDs: {capsule_guids}")
@@ -1154,7 +1172,7 @@ def deferred_check_capsule_guids_in_esrt():
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
 # We return a Stats object.
-def deferred_check_uefi_logs_esp():
+def deferred_check_uefi_logs_esp() -> Stats:
     logging.debug('Deferred check UEFI logs ESP')
     stats = Stats()
     logging.debug(f"ESP device path(s): {esp_dev_paths.keys()}")
@@ -1187,7 +1205,7 @@ def deferred_check_uefi_logs_esp():
 
 # Check for min-occurrences.
 # We return a Stats object.
-def check_min_occurences(m, confpath):
+def check_min_occurences(m: int, confpath: str) -> Stats:
     logging.debug(f"Check >= {m} occurrences for {confpath}")
     stats = Stats()
 
@@ -1210,7 +1228,9 @@ def check_min_occurences(m, confpath):
 
 # Deferred check for min-occurrences recurse helper.
 # We return a Stats object.
-def deferred_check_min_occurrences_recurse(conf, confpath):
+def deferred_check_min_occurrences_recurse(
+        conf: TreeType, confpath: str) -> Stats:
+
     logging.debug(f"Recurse {confpath}")
     stats = Stats()
 
@@ -1240,7 +1260,7 @@ def deferred_check_min_occurrences_recurse(conf, confpath):
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
 # We return a Stats object.
-def deferred_check_min_occurrences(conftree):
+def deferred_check_min_occurrences(conftree: TreeType) -> Stats:
     logging.debug(f"Deferred check min occurrences {occurrences}")
     return deferred_check_min_occurrences_recurse(conftree, '')
 
@@ -1252,7 +1272,7 @@ def deferred_check_min_occurrences(conftree):
 # - Capsule GUIDs and ESRT.
 # - UEFI logs and ESP.
 # We return a Stats object.
-def deferred_checks(conftree):
+def deferred_checks(conftree: TreeType) -> Stats:
     logging.debug('Deferred checks')
     stats = Stats()
     stats.add(deferred_check_capsule_guids_in_esrt())
@@ -1264,10 +1284,11 @@ def deferred_checks(conftree):
 # Check that we have dt-validate.
 # If we do not have it, we try to install it with pip.
 # We exit in case of failure.
-def check_dt_validate():
+def check_dt_validate() -> None:
     logging.debug('Checking dt-validate')
 
     # Check that we have dt-validate.
+    assert dt_validate is not None
     w = which(dt_validate)
 
     if w is None:
@@ -1293,7 +1314,7 @@ def check_dt_validate():
 
 
 # Check that we have all we need.
-def check_prerequisites():
+def check_prerequisites() -> None:
     logging.debug('Checking prerequisites')
 
     # Check that we have tar.
@@ -1350,7 +1371,7 @@ def check_prerequisites():
 
 # Overlay one property.
 # When a property has the special value 'DELETE', we delete it.
-def overlay_property(dst, k, v):
+def overlay_property(dst: dict[str, Any], k: str, v: Any) -> None:
     if v == 'DELETE':
         logging.debug(f"Deleting {k}")
         del dst[k]
@@ -1360,7 +1381,7 @@ def overlay_property(dst, k, v):
 
 
 # Overlay the src file over the dst file, in-place.
-def overlay_file(src, dst):
+def overlay_file(src: FileType, dst: FileType) -> None:
     logging.debug(f"Overlay file {src['file']}")
 
     for k, v in src.items():
@@ -1368,7 +1389,7 @@ def overlay_file(src, dst):
 
 
 # Overlay the src dir over the dst dir, in-place.
-def overlay_dir(src, dst):
+def overlay_dir(src: DirType, dst: DirType) -> None:
     logging.debug(f"Overlay dir {src['dir']}")
 
     for k, v in src.items():
@@ -1381,7 +1402,7 @@ def overlay_dir(src, dst):
 
 
 # Overlay the src tree over the dst tree, in-place.
-def overlay_tree(src, dst):
+def overlay_tree(src: TreeType, dst: TreeType) -> None:
     # Prepare two LUTs.
     files = {}
     dirs = {}
@@ -1413,7 +1434,10 @@ def overlay_tree(src, dst):
 
 
 # Evaluate if a when-condition is true.
-def evaluate_when_condition(conditions, context, any_not_all=True):
+def evaluate_when_condition(
+        conditions: list[str], context: ContextType, any_not_all: bool = True
+        ) -> bool:
+
     logging.debug(f"Evaluate {conditions}, any_not_all: {any_not_all}")
     found_all = True
     found_some = False
@@ -1435,7 +1459,7 @@ def evaluate_when_condition(conditions, context, any_not_all=True):
 
 
 # Apply all the overlays conditionaly to the main tree.
-def apply_overlays(conf, context):
+def apply_overlays(conf: ConfigType, context: ContextType) -> None:
     for i, o in enumerate(conf['overlays']):
         if ('when-any' in o
            and evaluate_when_condition(o['when-any'], context, True)
@@ -1446,7 +1470,7 @@ def apply_overlays(conf, context):
 
 
 # While at it, put our meta-data there as comments.
-def dump_config(conf, filename):
+def dump_config(conf: ConfigType, filename: str) -> None:
     logging.debug(f'Dump {filename}')
 
     with open(filename, 'w') as yamlfile:
@@ -1458,7 +1482,7 @@ def dump_config(conf, filename):
 # Print the list of files and dirs, which were not checked.
 # We print through logging.debug() as this is meant to be called in debug mode
 # only, to help create the configuration file.
-def print_not_checked():
+def print_not_checked() -> None:
     logging.debug('Not checked:')
 
     for x in sorted(not_checked):
@@ -1467,11 +1491,8 @@ def print_not_checked():
 
 # Get git commit.
 # Return None in case of error.
-def git_commit(dirname):
-    cp = subprocess.run(
-        f"git -C '{dirname}' describe --always --abbrev=12 --dirty",
-        shell=True, capture_output=True)
-    logging.debug(cp)
+def git_commit(dirname: str) -> Optional[str]:
+    cp = run(f"git -C '{dirname}' describe --always --abbrev=12 --dirty")
 
     if cp.returncode:
         logging.debug(f"No git or {dirname} not versioned")
@@ -1481,7 +1502,7 @@ def git_commit(dirname):
 
 
 # Capture initial meta-data.
-def init_meta(argv, here):
+def init_meta(argv: list[str], here: str) -> None:
     meta_data['command-line'] = ' '.join(argv)
     meta_data['date'] = f"{time.asctime(time.gmtime())} UTC"
     meta_data['python-version'] = re.sub(r'\n', ' ', sys.version)
@@ -1495,7 +1516,7 @@ def init_meta(argv, here):
 
 
 # Print meta-data
-def print_meta(f=sys.stdout, pre=''):
+def print_meta(f: IO[str] = sys.stdout, pre: str = '') -> None:
     print(f"{pre}meta-data", file=f)
     print(f"{pre}---------", file=f)
 
@@ -1610,7 +1631,7 @@ if __name__ == '__main__':
     conf = load_config(config)
 
     if 'overlays' in conf:
-        context = (ver, *files) if ver is not None else ()
+        context: ContextType = [ver, *files] if ver is not None else []
         apply_overlays(conf, context)
         del conf['overlays']
 
