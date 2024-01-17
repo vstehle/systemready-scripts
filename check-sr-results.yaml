@@ -44,8 +44,8 @@ tree:
       - No EFI system partition
       - Failed to persist EFI variables
   - dir: acs_results
-    min-entries: 9  # Allow missing result.md
-    max-entries: 10
+    min-entries: 8  # Allow missing result.md
+    max-entries: 9
     tree:
       - file: result.md
         sct-parser-result-md:
@@ -77,18 +77,6 @@ tree:
           - file: CapsuleApp_FMP_protocol_info.log
             must-contain:
               - FMP DATA
-      - dir: edk2-test-parser
-        min-entries: 1
-        max-entries: 1
-        tree:
-          - file: edk2-test-parser.log
-            must-contain:
-              - SCT Summary
-              - 'Dropped:'
-              - 'Failure:'
-              - 'Ignored:'
-              - 'Pass:'
-              - 'Warning:'
       - dir: fwts
         min-entries: 1
         max-entries: 1
@@ -141,8 +129,8 @@ tree:
                   - Number of PE detected
                   - Tests Failed =  0
       - dir: linux_dump
-        min-entries: 11     # Allow missing lsusb.log
-        max-entries: 12
+        min-entries: 10     # Allow missing lsusb.log
+        max-entries: 11
         tree:
           - file: cpuinfo.log
             must-contain:
@@ -239,35 +227,18 @@ tree:
               - MemTotal
               - MemFree
               - MemAvailable
-          - file: sys_hierarchy.log
-            must-contain:
-              - /sys
-              - block
           - file: uname.log
             must-contain:
               - 'Linux generic-arm64 6.0.0-yocto-standard #1 SMP PREEMPT Sun Oct
                 2 21:09:07 UTC 2022 aarch64 GNU/Linux'
       - dir: linux_tools
-        min-entries: 4
-        max-entries: 6  # Allow dt-validate.log.old
+        min-entries: 1
+        max-entries: 2  # Allow dt-validate.log.old
         tree:
-          - file: device_tree.dts
-            must-contain:
-              - compatible
           - file: dt-validate.log*
             must-contain:
               - 'DeviceTree bindings of Linux kernel version: '
-              - 'dtschema version: 2023.7'
-          - file: device_driver_info.log
-            # This log may be removed in future versions
-            optional:
-          - file: ethtool-test.log
-            ethernet:
-            must-contain:
-              - 'INFO: Detected following ethernet interfaces via ip command :'
-          - file: read_blk_devices.log
-            must-contain:
-              - 'INFO: Detected following block devices with lsblk command :'
+              - 'dtschema version: 2022.9'
       - dir: sct_results
         min-entries: 3
         max-entries: 3
@@ -704,6 +675,57 @@ overlays:
               - dir: tpm2
                 min-entries: 0
                 optional:
+
+  - when-any: [IR v2.1]
+    tree:
+      - dir: acs_results
+        max-entries: 10  # Allow missing result.md
+        min-entries: 9
+        tree:
+          - dir: edk2-test-parser
+            max-entries: 1
+            min-entries: 1
+            tree:
+              - file: edk2-test-parser.log
+                must-contain:
+                  - SCT Summary
+                  - 'Dropped:'
+                  - 'Failure:'
+                  - 'Ignored:'
+                  - 'Pass:'
+                  - 'Warning:'
+
+          - dir: linux_dump
+            max-entries: 12
+            min-entries: 11
+            tree:
+              - file: sys_hierarchy.log
+                must-contain:
+                  - /sys
+                  - block
+
+          - dir: linux_tools
+            max-entries: 6
+            min-entries: 4
+            tree:
+              - file: dt-validate.log*
+                must-contain:
+                  - 'DeviceTree bindings of Linux kernel version: '
+                  - 'dtschema version: 2023.7'
+              - file: device_tree.dts
+                must-contain:
+                  - compatible
+              - file: device_driver_info.log
+                optional: null
+              - ethernet: null
+                file: ethtool-test.log
+                must-contain:
+                  - 'INFO: Detected following ethernet interfaces
+                    via ip command :'
+              - file: read_blk_devices.log
+                must-contain:
+                  - 'INFO: Detected following block devices
+                    with lsblk command :'
 
   # (Ab)use the overlay mechanism to emit an error with IR v1.x.
   - when-any: [IR v1.]

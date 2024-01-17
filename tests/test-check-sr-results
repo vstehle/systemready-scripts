@@ -177,7 +177,7 @@ mkdir -v "$tmp/mockup/fw"
 cp -v "$cap" "$tmp/mockup/fw/"
 "${csr[@]}" --dir "$tmp/mockup" |& tee "$out"
 
-grep 'Identified as SystemReady IR v2.0' "$out"
+grep 'Identified as SystemReady IR v2.1' "$out"
 
 if grep ', 0 error' "$out"; then
 	false
@@ -204,7 +204,7 @@ fi
 echo -n 'ethernet-check, ' >&3
 "${csr[@]}" --dir "$tmp/mockup" --ethernet-devices 2  |& tee "$out"
 
-grep 'Identified as SystemReady IR v2.0' "$out"
+grep 'Identified as SystemReady IR v2.1' "$out"
 grep 'ERROR check_ethernet: ethernet-parser failed on.*ethtool-test.log' "$out"
 
 if grep ', 0 error' "$out"; then
