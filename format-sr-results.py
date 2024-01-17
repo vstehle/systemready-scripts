@@ -8,7 +8,7 @@ import os
 import curses
 import pprint
 import logreader
-from typing import Any, cast, TypedDict, Optional
+from typing import cast, TypedDict, Optional
 
 try:
     from packaging import version
@@ -63,7 +63,9 @@ class SubType(TypedDict, total=False):
     subs: 'list[SubType]'
 
 
-ConfigType = dict[str, Any]
+ConfigType = TypedDict('ConfigType', {
+    'format-sr-results-configuration': None,
+    'subs': list[SubType]})
 
 
 # Load YAML configuration file.

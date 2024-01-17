@@ -16,13 +16,52 @@ import tempfile
 import shutil
 import logreader
 import time
-from typing import Final, cast, Any, Optional, Literal, IO, Callable
+from typing import Final, cast, Any, Optional, Literal, IO, TypedDict
 
-FileType = dict[str, Any]  # TODO!
-DirType = dict[str, Any]   # TODO!
+SctParserResultMdType = TypedDict('SctParserResultMdType', {'seq-file': str})
+
+FileType = TypedDict('FileType', {
+    'file': str,
+    'optional': None,
+    'can-be-empty': None,
+    'must-have-esp': None,
+    'capsuleapp-esrt': None,
+    'uefi-capsule': None,
+    'devicetree': None,
+    'uefi-sniff': None,
+    'min-occurrences': int,
+    'warn-if-not-named': str,
+    'sct-parser-result-md': SctParserResultMdType,
+    'must-contain': list[str],
+    'warn-once-if-contains': list[str],
+    'warn-if-contains': list[str],
+    'error-if-contains': list[str]},
+    total=False)
+
+DirType = TypedDict('DirType', {
+    'dir': str,
+    'optional': None,
+    'min-entries': int,
+    'max-entries': int,
+    'min-occurrences': int,
+    'warn-if-not-named': str,
+    'tree': 'TreeType'},
+    total=False)
+
 TreeType = list[FileType | DirType]
-ConfigType = dict[str, Any]    # TODO!
 ContextType = list[str]
+
+OverlayType = TypedDict('OverlayType', {
+    'when-any': list[str],
+    'when-all': list[str],
+    'tree': TreeType},
+    total=False)
+
+ConfigType = TypedDict('ConfigType', {
+    'check-sr-results-configuration': None,
+    'tree': TreeType,
+    'overlays': list[OverlayType]},
+    total=False)
 
 try:
     from packaging import version
@@ -852,7 +891,7 @@ def check_must_have_esp(filename: str) -> Stats:
 # Try to re-create result.md with the SCT parser.
 # If we do not have parser.py at hand or if parsing fails, we do not treat that
 # as an error here but rather rely on subsequent checks.
-def sct_parser(conffile: str, filename: str) -> None:
+def sct_parser(conffile: SctParserResultMdType, filename: str) -> None:
     logging.debug(f"SCT parser `{filename}'")
     assert parser is not None
     which_parser = which(parser)
@@ -1112,16 +1151,14 @@ def check_tree(conftree: TreeType, confpath: str, dirname: str) -> Stats:
     stats = Stats()
 
     for e in conftree:
-        check: Callable[[FileType | DirType, str, str], Stats]
-
         if 'file' in e:
-            p = f"{confpath}/{e['file']}"
-            pathname = f"{dirname}/{e['file']}"
-            check = check_file
+            f = cast(FileType, e)
+            p = f"{confpath}/{f['file']}"
+            pathname = f"{dirname}/{f['file']}"
         elif 'dir' in e:
-            p = f"{confpath}/{e['dir']}"
-            pathname = f"{dirname}/{e['dir']}"
-            check = check_dir
+            d = cast(DirType, e)
+            p = f"{confpath}/{d['dir']}"
+            pathname = f"{dirname}/{d['dir']}"
         else:
             raise Exception
 
@@ -1136,7 +1173,12 @@ def check_tree(conftree: TreeType, confpath: str, dirname: str) -> Stats:
             t = [pathname]
 
         for x in t:
-            stats.add(check(e, p, x))
+            if 'file' in e:
+                f = cast(FileType, e)
+                stats.add(check_file(f, p, x))
+            elif 'dir' in e:
+                d = cast(DirType, e)
+                stats.add(check_dir(d, p, x))
 
     return stats
 
@@ -1236,19 +1278,21 @@ def deferred_check_min_occurrences_recurse(
 
     for e in conf:
         if 'file' in e:
-            p = f"{confpath}/e{['file']}"
+            f = cast(FileType, e)
+            p = f"{confpath}/f{['file']}"
 
-            if 'min-occurrences' in e:
-                stats.add(check_min_occurences(e['min-occurrences'], p))
+            if 'min-occurrences' in f:
+                stats.add(check_min_occurences(f['min-occurrences'], p))
 
         elif 'dir' in e:
-            p = f"{confpath}/{e['dir']}"
+            d = cast(DirType, e)
+            p = f"{confpath}/{d['dir']}"
 
-            if 'min-occurrences' in e:
-                stats.add(check_min_occurences(e['min-occurrences'], p))
+            if 'min-occurrences' in d:
+                stats.add(check_min_occurences(d['min-occurrences'], p))
 
-            if 'tree' in e:
-                stats.add(deferred_check_min_occurrences_recurse(e['tree'], p))
+            if 'tree' in d:
+                stats.add(deferred_check_min_occurrences_recurse(d['tree'], p))
 
         else:
             raise Exception
@@ -1385,7 +1429,7 @@ def overlay_file(src: FileType, dst: FileType) -> None:
     logging.debug(f"Overlay file {src['file']}")
 
     for k, v in src.items():
-        overlay_property(dst, k, v)
+        overlay_property(cast(dict[str, Any], dst), k, v)
 
 
 # Overlay the src dir over the dst dir, in-place.
@@ -1398,7 +1442,7 @@ def overlay_dir(src: DirType, dst: DirType) -> None:
             overlay_tree(src['tree'], dst['tree'])
             continue
 
-        overlay_property(dst, k, v)
+        overlay_property(cast(dict[str, Any], dst), k, v)
 
 
 # Overlay the src tree over the dst tree, in-place.
@@ -1409,26 +1453,30 @@ def overlay_tree(src: TreeType, dst: TreeType) -> None:
 
     for x in dst:
         if 'file' in x:
-            files[x['file']] = x
+            f = cast(FileType, x)
+            files[f['file']] = f
         elif 'dir' in x:
-            dirs[x['dir']] = x
+            d = cast(DirType, x)
+            dirs[d['dir']] = d
         else:
             raise
 
     # Overlay each entry.
     for x in src:
         if 'file' in x:
-            if x['file'] in files:
-                overlay_file(x, files[x['file']])
+            f = cast(FileType, x)
+            if f['file'] in files:
+                overlay_file(f, files[f['file']])
             else:
-                logging.debug(f"Adding file {x['file']}")
-                dst.append(x)
+                logging.debug(f"Adding file {f['file']}")
+                dst.append(f)
         elif 'dir' in x:
-            if x['dir'] in dirs:
-                overlay_dir(x, dirs[x['dir']])
+            d = cast(DirType, x)
+            if d['dir'] in dirs:
+                overlay_dir(d, dirs[d['dir']])
             else:
-                logging.debug(f"Adding dir {x['dir']}")
-                dst.append(x)
+                logging.debug(f"Adding dir {d['dir']}")
+                dst.append(d)
         else:
             raise
 

@@ -6,9 +6,18 @@ import os
 import yaml
 import sys
 import guid
-from typing import Any, cast, Optional
+from typing import cast, Optional, TypedDict
 
-DbType = dict[str, Any]
+
+class KnownGuidType(TypedDict, total=False):
+    guid: str
+    description: str
+    _Guid: guid.Guid
+
+
+DbType = TypedDict('DbType', {
+    'guid-tool-database': None,
+    'known-guids': list[KnownGuidType]})
 
 
 # Validate YAML GUIDs database
@@ -51,7 +60,9 @@ def load_guids_db(filename: str) -> DbType:
         db = cast(Optional[DbType], y)
 
     if db is None:
-        db = {}
+        db = {
+            'guid-tool-database': None,
+            'known-guids': []}
 
     validate_guids_db(db)
     logging.debug('{} entries'.format(len(db)))

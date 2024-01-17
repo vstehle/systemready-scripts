@@ -5,9 +5,26 @@ import logging
 import os
 import yaml
 import hashlib
-from typing import Any, Optional, cast
+from typing import Optional, cast, TypedDict
 
-DbType = dict[str, Any]
+
+class KnownFileType(TypedDict, total=False):
+    sha256: str
+    name: str
+    path: str
+    search: list[str]
+
+
+class VersionType(TypedDict):
+    files: list[str]
+    version: str
+
+
+DbType = TypedDict('DbType', {
+    'identify-database': None,
+    'known-files': list[KnownFileType],
+    'versions': list[VersionType]})
+
 CacheType = dict[str, str]
 FilesType = list[dict[str, str]]
 
@@ -28,7 +45,10 @@ def load_identify_db(filename: str) -> DbType:
         db = cast(Optional[DbType], y)
 
     if db is None:
-        db = {}
+        db = {
+            'identify-database': None,
+            'known-files': [],
+            'versions': []}
 
     validate_identify_db(db)
     logging.debug(
