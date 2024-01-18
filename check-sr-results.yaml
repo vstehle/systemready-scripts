@@ -542,6 +542,12 @@ tree:
 
 overlays:
 
+  # (Ab)use the overlay mechanism to emit an error with IR v2.0.
+  - when-any: [IR v2.0]
+    tree:
+      - file: '!!! This is not the right branch to use for checking IR v2.0
+        results; use branch ir2.0 instead !!!'
+
   - when-any: [IR v2.0 with SIE]
     tree:
       - file: sie-console.log
