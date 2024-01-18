@@ -614,21 +614,15 @@ def need_regen(filename, deps, margin=0):
 # Check ethernet results
 # Verify the log with ethernet.
 # We return a Stats object
-def check_ethernet(filename):
+def check_ethernet(filename: str) -> Stats:
     logging.debug(f"Check Ethernet `{filename}'")
     stats = Stats()
 
-    if (num_eth_devices == 0) and ('IR v2.1' in ver):
-        logging.error(
-            f"Number of ethernet devices {red}is set to 0{normal} "
-            f"but IR v2.1. Double check this is correct.")
-        stats.inc_error()
-        return stats
-    elif (num_eth_devices == 0):
+    if num_eth_devices == 0:
         logging.warning(
-            f"{yellow}Not checking ethernets as not required "
-            f"and not specified,{normal}"
-            f"but it is likely there are ethernets present.")
+            f"Number of ethernet devices {red}is set to 0{normal}."
+            f"Double check this is correct.")
+        stats.inc_warning()
         return stats
     else:
         cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
@@ -1587,7 +1581,7 @@ if __name__ == '__main__':
         default='ethernet-parser.py')
     parser.add_argument(
         '--ethernet-devices',
-        help='Specify how many ethernet devies should be checked',
+        help='Specify how many ethernet devices should be checked',
         default=0)
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
