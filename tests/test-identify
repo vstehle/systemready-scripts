@@ -56,9 +56,9 @@ grep 'SystemReady IR v1.0' "$out"
 identify.py --dir "$data/v21.07_0.9_BETA" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v21.07_0.9_BETA' "$out"
 
-echo -n 'ir1.1, ' >&3
+echo -n 'ir1.2, ' >&3
 identify.py --dir "$data/v21.09_1.0" |& tee "$out"
-grep 'SystemReady IR v1.1' "$out"
+grep 'SystemReady IR v1.2' "$out"
 
 identify.py --dir "$data/v21.09_1.0" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v21.09_1.0' "$out"

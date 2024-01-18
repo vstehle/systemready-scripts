@@ -67,6 +67,7 @@ properties:
                         - IR 32b v1.2
                         - IR v1.0
                         - IR v1.1
+                        - IR v1.2
                         - IR v2.0
                         - IR v2.1
                         - IR v2.0 with SIE
