@@ -110,6 +110,11 @@ dtc = None
 # This will be set after command line argument parsing.
 dt_parser = None
 
+# ethernet-parser.py command.
+# This will be set after command line argument parsing.
+ethernet_parser = None
+num_eth_devices = None
+
 # dt-validate command.
 # This will be set after command line argument parsing.
 dt_validate = None
@@ -656,6 +661,33 @@ def need_regen(filename: str, deps: list[str], margin: int = 0) -> bool:
     return False
 
 
+# Check ethernet results
+# Verify the log with ethernet.
+# We return a Stats object
+def check_ethernet(filename: str) -> Stats:
+    logging.debug(f"Check Ethernet `{filename}'")
+    stats = Stats()
+
+    if num_eth_devices == 0:
+        logging.warning(
+            f"Number of ethernet devices {red}is set to 0{normal}."
+            f"Double check this is correct.")
+        stats.inc_warning()
+        return stats
+    else:
+        cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
+
+        if cp.returncode:
+            logging.error(
+                f'ethernet-parser {red}failed{normal} on {filename}')
+            stats.inc_error()
+            return stats
+
+        logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
+        stats.inc_pass()
+        return stats
+
+
 # Check Devicetree blob.
 # We run dtc and dt-validate to produce the log when needed.
 # We add markers to the log, which will be ignored by dt-parser.py.
@@ -786,8 +818,8 @@ def check_uefi_sniff(filename: str) -> Stats:
     # Open the file with the proper encoding and look for ESPs
     for i, line in enumerate(logreader.LogReader(filename)):
         m = re.match(
-            r'\d+: DevicePath\([^\)]+\) +(/\S+) BlockIO\([^\)]+\).* '
-            r'EFISystemPartition\([^\)]+\)', line)
+            r'\S[0-9a-fA-F]+: DevicePath\([^\)]+\) +(/\S+) '
+            r'BlockIO\([^\)]+\).* EFISystemPartition\([^\)]+\)', line)
 
         if m:
             logging.debug(f"ESP match line {i + 1}, `{line}'")
@@ -1001,6 +1033,9 @@ def check_file(conffile: FileType, confpath: str, filename: str) -> Stats:
 
             if 'devicetree' in conffile:
                 stats.add(check_devicetree(filename))
+
+            if 'ethernet' in conffile:
+                stats.add(check_ethernet(filename))
 
             if 'uefi-sniff' in conffile:
                 stats.add(check_uefi_sniff(filename))
@@ -1239,7 +1274,7 @@ def deferred_check_uefi_logs_esp() -> Stats:
     # actually did.
     for k, v in filenames.items():
         if not v:
-            logging.error(f"`{filename}' {red}did not have an ESP{normal}")
+            logging.error(f"`{k}' {red}did not have an ESP{normal}")
             stats.inc_error()
 
     return stats
@@ -1609,6 +1644,14 @@ if __name__ == '__main__':
     parser.add_argument(
         '--dt-validate', help='Specify dt-validate path',
         default='dt-validate')
+    parser.add_argument(
+        '--ethernet-parser',
+        help='Specify ethernet-parser.py path and arguments',
+        default='ethernet-parser.py')
+    parser.add_argument(
+        '--ethernet-devices',
+        help='Specify how many ethernet devices should be checked',
+        default=0)
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
         '--force-regen', action='store_true',
@@ -1646,6 +1689,8 @@ if __name__ == '__main__':
     dt_parser = args.dt_parser + (' --debug' if args.debug else '')
     parser = args.parser + (' --debug' if args.debug else '')
     dt_validate = args.dt_validate
+    ethernet_parser = args.ethernet_parser + (' --debug' if args.debug else '')
+    num_eth_devices = int(args.ethernet_devices)
     compatibles = args.compatibles
     linux_url = args.linux_url
     cache_dir = args.cache_dir
@@ -1665,7 +1710,7 @@ if __name__ == '__main__':
     files, ver = run_identify(args.dir, identify)
 
     # Choose config.
-    # We default to IR 2.0.
+    # We default to IR 2.x.
     # We use IR 1.x when detected.
     # Command line takes precedence in all cases.
     config = f'{here}/check-sr-results.yaml'

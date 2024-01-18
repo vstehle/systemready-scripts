@@ -1,0 +1,111 @@
+30200000-3020ffff : 30200000.gpio gpio@30200000
+30210000-3021ffff : 30210000.gpio gpio@30210000
+30220000-3022ffff : 30220000.gpio gpio@30220000
+30230000-3023ffff : 30230000.gpio gpio@30230000
+30240000-3024ffff : 30240000.gpio gpio@30240000
+30330000-3033ffff : 30330000.pinctrl pinctrl@30330000
+30350000-3035ffff : 30350000.efuse efuse@30350000
+30380000-3038ffff : 30380000.clock-controller clock-controller@30380000
+30880000-3088ffff : 30880000.serial serial@30880000
+30a20000-30a2ffff : 30a20000.i2c i2c@30a20000
+30a30000-30a3ffff : 30a30000.i2c i2c@30a30000
+30a50000-30a5ffff : 30a50000.i2c i2c@30a50000
+30aa0000-30aaffff : 30aa0000.mailbox mailbox@30aa0000
+30b50000-30b5ffff : 30b50000.mmc mmc@30b50000
+30b60000-30b6ffff : 30b60000.mmc mmc@30b60000
+30be0000-30beffff : 30be0000.ethernet ethernet@30be0000
+32e40000-32e401ff : usb@32e40000
+  32e40000-32e401ff : ci_hdrc.0 usb@32e40000
+32e40200-32e403ff : 32e40200.usbmisc usbmisc@32e40200
+32e50000-32e501ff : usb@32e50000
+  32e50000-32e501ff : ci_hdrc.1 usb@32e50000
+32e50200-32e503ff : 32e50200.usbmisc usbmisc@32e50200
+38800000-3880ffff : GICD
+38880000-3893ffff : GICR
+40000000-6b72bfff : System RAM
+  47f00000-47f0cfff : reserved
+  621b0000-640fffff : Kernel code
+  64100000-64d4ffff : reserved
+  64d50000-653affff : Kernel data
+  6b4e0000-6b4e9fff : reserved
+6b72c000-6b72cfff : reserved
+6b72d000-6b72dfff : System RAM
+6b72e000-6b72efff : reserved
+6b72f000-6b731fff : System RAM
+6b732000-6b732fff : reserved
+6b733000-6b77bfff : System RAM
+6b77c000-6b77cfff : reserved
+6b77d000-6b77dfff : System RAM
+6b77e000-6b77efff : reserved
+6b77f000-6b781fff : System RAM
+6b782000-6b782fff : reserved
+6b783000-6b881fff : System RAM
+  6b873000-6b874fff : reserved
+  6b877000-6b877fff : reserved
+6b882000-6b882fff : reserved
+6b883000-6b885fff : System RAM
+6b886000-6b887fff : reserved
+6b888000-6b888fff : System RAM
+6b889000-6b889fff : reserved
+6b88a000-6bac1fff : System RAM
+6bac2000-6bac3fff : reserved
+6bac4000-6bac5fff : System RAM
+6bac6000-6bac6fff : reserved
+6bac7000-6bae6fff : System RAM
+6bae7000-6bae8fff : reserved
+6bae9000-6baedfff : System RAM
+6baee000-6baeefff : reserved
+6baef000-6bde9fff : System RAM
+6bdea000-6bdeafff : reserved
+6bdeb000-6bdebfff : System RAM
+6bdec000-6bdecfff : reserved
+6bded000-6bdedfff : System RAM
+6bdee000-6bdeefff : reserved
+6bdef000-6c01bfff : System RAM
+6c01c000-6c01cfff : reserved
+6c01d000-6c01dfff : System RAM
+6c01e000-6c01efff : reserved
+6c01f000-6c020fff : System RAM
+6c021000-6c021fff : reserved
+6c022000-6c023fff : System RAM
+6c024000-6c024fff : reserved
+6c025000-6c026fff : System RAM
+6c027000-6c028fff : reserved
+6c029000-6c02cfff : System RAM
+6c02d000-6c02dfff : reserved
+6c02e000-6c02ffff : System RAM
+6c030000-6c030fff : reserved
+6c031000-6c035fff : System RAM
+6c036000-6c036fff : reserved
+6c037000-6c03cfff : System RAM
+6c03d000-6c03dfff : reserved
+6c03e000-7add0fff : System RAM
+7add1000-7add3fff : reserved
+7add4000-7aeb0fff : System RAM
+7aeb1000-7aeb7fff : reserved
+7aeb8000-7aeb8fff : System RAM
+7aeb9000-7aeb9fff : reserved
+7aeba000-7aebbfff : System RAM
+7aebc000-7aebdfff : reserved
+7aebe000-7aebffff : System RAM
+  7aebf000-7aebffff : reserved
+7aec0000-7aec1fff : reserved
+7aec2000-7aec2fff : System RAM
+7aec3000-7aec7fff : reserved
+7aec8000-7aec8fff : System RAM
+7aec9000-7aec9fff : reserved
+7aeca000-7aecbfff : System RAM
+7aecc000-7aeccfff : reserved
+7aecd000-7aecdfff : System RAM
+7aece000-7aecefff : reserved
+7aecf000-7decffff : System RAM
+7ded0000-7dedffff : reserved
+7dee0000-7dffffff : System RAM
+80000000-bfffffff : System RAM
+  bb600000-bf7fffff : reserved
+  bf84e000-bf9c9fff : reserved
+  bf9cc000-bf9ccfff : reserved
+  bf9cd000-bf9cffff : reserved
+  bf9d0000-bf9d0fff : reserved
+  bf9d1000-bf9e4fff : reserved
+  bf9e5000-bfffffff : reserved

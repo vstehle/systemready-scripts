@@ -1,0 +1,29 @@
+           CPU0       CPU1       CPU2       CPU3       
+  9:          0          0          0          0     GICv3  25 Level     vgic
+ 11:       2417       1552       1899       1431     GICv3  30 Level     arch_timer
+ 12:          0          0          0          0     GICv3  27 Level     kvm guest vtimer
+ 14:          0          0          0          0     GICv3  79 Level     timer@306a0000
+ 15:        303          0          0          0     GICv3  60 Level     30880000.serial
+ 16:        160          0          0          0     GICv3  56 Level     mmc2
+ 18:          0          0          0          0     GICv3  23 Level     arm-pmu
+ 24:          0          0          0          0  gpio-mxc   3 Edge      bd718xx-irq
+189:          0          0          0          0     GICv3  67 Level     30a20000.i2c
+190:        226          0          0          0     GICv3  68 Level     30a30000.i2c
+191:          0          0          0          0  bd718xx-irq   5 Edge      gpio_keys
+192:         14          0          0          0     GICv3  70 Level     30a50000.i2c
+193:          0          0          0          0     GICv3 150 Level     30be0000.ethernet
+194:          0          0          0          0     GICv3 151 Level     30be0000.ethernet
+195:          0          0          0          0     GICv3 152 Level     30be0000.ethernet
+196:          0          0          0          0     GICv3 153 Level     30be0000.ethernet
+197:          0          0          0          0     GICv3  72 Level     32e40000.usb
+198:       5117          0          0          0     GICv3  73 Level     32e50000.usb
+199:         52          0          0          0     GICv3  55 Level     mmc1
+200:          0          0          0          0  smsc95xx   0 Edge    -phy       usb-002:003:01
+IPI0:       153        443        291        229       Rescheduling interrupts
+IPI1:      1200       2947       2312       1351       Function call interrupts
+IPI2:         0          0          0          0       CPU stop interrupts
+IPI3:         0          0          0          0       CPU stop (for crash dump) interrupts
+IPI4:         0          0          0          0       Timer broadcast interrupts
+IPI5:         0          0          0          0       IRQ work interrupts
+IPI6:         0          0          0          0       CPU wake-up interrupts
+Err:          0

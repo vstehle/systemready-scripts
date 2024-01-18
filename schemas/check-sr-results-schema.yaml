@@ -54,6 +54,8 @@ $defs:
                 const: null
             devicetree:
                 const: null
+            ethernet:
+                const: null
             sct-parser-result-md:
                 type: object
                 properties:
@@ -83,6 +85,7 @@ $defs:
             # capsuleapp-esrt is optional
             # uefi-capsule is optional
             # devicetree is optional
+            # ethernet is optional
             # sct-parser-result-md is optional
             # warn-if-not-named is optional
             # uefi-sniff is optional

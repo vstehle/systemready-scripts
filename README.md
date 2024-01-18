@@ -6,7 +6,7 @@ The latest version is available at:
 
 https://gitlab.arm.com/systemready/systemready-scripts
 
-## Branches
+## Branch
 
 This is the `master` branch of this repository. It should not be used for IR
 certification currently but only for development.
@@ -501,6 +501,24 @@ See the `tests/test-compatible` unit test for examples.
 At this point it is not perfect; some compatible strings can be missed and some
 others can be reported spuriously, but this is a reasonable approximation
 already.
+
+# ethtool-test.sh
+
+The `ethtool-test.sh` script tests the ethernet interfaces in the system.
+This script is to be run on Linux distros post boot on the SUT.
+Usage on the Linux command-line of the distro:
+``` {.sh}
+$ sudo ./ethtool-test.sh | tee ethtool_test.log
+```
+
+It lists all the interfaces, and tests them one by one. It runs tests of
+* `ethtool` tool
+* If link is detected, ping to the gateway
+* If link is detected, ping to arm.com
+
+The script is equivalent to the ACS script
+`https://github.com/ARM-software/arm-systemready/blob/main/IR/Yocto/meta-woden/recipes-acs/install-files/files/ethtool-test.py` which is run automatically after ACS Linux boot
+
 
 # Miscellaneous
 

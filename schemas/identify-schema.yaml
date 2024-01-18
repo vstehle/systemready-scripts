@@ -68,7 +68,9 @@ properties:
                         - IR v1.0
                         - IR v1.1
                         - IR v2.0
+                        - IR v2.1
                         - IR v2.0 with SIE
+                        - IR v2.1 with SIE
                         - SIE v1.0
             required:
                 - files

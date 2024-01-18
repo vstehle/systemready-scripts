@@ -1,0 +1,480 @@
+DeviceTree bindings of Linux kernel version: 6.5 
+dtschema version: 2023.7 
+
+/home/root/fdt/fdt: /: soc@0:compatible:0: 'simple-bus' is not one of ['fsl,imx8mm-soc', 'fsl,imx8mn-soc', 'fsl,imx8mp-soc', 'fsl,imx8mq-soc']
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: soc@0:compatible: ['simple-bus'] is too short
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: soc@0: 'nvmem-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: soc@0: 'nvmem-cell-names' is a required property
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: soc@0:u-boot,dm-spl: True is not of type 'object'
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: soc@0:u-boot,dm-pre-reloc: True is not of type 'object'
+	from schema $id: http://devicetree.org/schemas/soc/imx/imx8m-soc.yaml#
+/home/root/fdt/fdt: /: compatible: 'oneOf' conditional failed, one must be fixed:
+	['sb-iotgimx8', 'cpl,ucm-imx8m-mini', 'fsl,imx8mm-evk', 'fsl,imx8mm'] is too long
+	'sb-iotgimx8' is not one of ['armadeus,imx1-apf9328', 'fsl,imx1ads']
+	'sb-iotgimx8' is not one of ['fsl,imx23-evk', 'olimex,imx23-olinuxino']
+	'sb-iotgimx8' is not one of ['fsl,imx25-pdk', 'karo,imx25-tx25']
+	'sb-iotgimx8' is not one of ['eukrea,mbimxsd25-baseboard']
+	'sb-iotgimx8' is not one of ['eukrea,mbimxsd25-baseboard-cmo-qvga', 'eukrea,mbimxsd25-baseboard-dvi-svga', 'eukrea,mbimxsd25-baseboard-dvi-vga']
+	'sb-iotgimx8' is not one of ['armadeus,imx27-apf27', 'fsl,imx27-pdk']
+	'armadeus,imx27-apf27dev' was expected
+	'eukrea,mbimxsd27-baseboard' was expected
+	'phytec,imx27-pca100-rdk' was expected
+	'phytec,imx27-pcm970' was expected
+	'sb-iotgimx8' is not one of ['armadeus,imx28-apf28', 'bluegiga,apx4devkit', 'crystalfontz,cfa10036', 'eukrea,mbmx28lc', 'fsl,imx28-evk', 'i2se,duckbill', 'i2se,duckbill-2', 'karo,tx28', 'lwn,imx28-xea', 'msr,m28cu3', 'schulercontrol,imx28-sps1', 'technologic,imx28-ts4600']
+	'aries,m28' was expected
+	'aries,m28evk' was expected
+	'armadeus,imx28-apf28dev' was expected
+	'sb-iotgimx8' is not one of ['crystalfontz,cfa10037', 'crystalfontz,cfa10049', 'crystalfontz,cfa10057', 'crystalfontz,cfa10058']
+	'sb-iotgimx8' is not one of ['crystalfontz,cfa10055', 'crystalfontz,cfa10056']
+	'sb-iotgimx8' is not one of ['i2se,duckbill-2-485', 'i2se,duckbill-2-enocean', 'i2se,duckbill-2-spi']
+	'eukrea,mbmx283lc' was expected
+	'eukrea,mbmx287lc' was expected
+	'sb-iotgimx8' is not one of ['buglabs,imx31-bug', 'logicpd,imx31-lite']
+	'sb-iotgimx8' is not one of ['fsl,imx35-pdk']
+	'eukrea,mbimxsd35-baseboard' was expected
+	'sb-iotgimx8' is not one of ['fsl,imx50-evk', 'kobo,aura']
+	'sb-iotgimx8' is not one of ['armadeus,imx51-apf51', 'fsl,imx51-babbage', 'technologic,imx51-ts4800', 'zii,imx51-scu3-esb', 'zii,imx51-scu2-mezz', 'zii,imx51-rdu1']
+	'armadeus,imx51-apf51dev' was expected
+	'digi,connectcore-ccxmx51-jsk' was expected
+	'eukrea,mbimxsd51' was expected
+	'sb-iotgimx8' is not one of ['bhf,cx9020', 'fsl,imx53-ard', 'fsl,imx53-evk', 'fsl,imx53-qsb', 'fsl,imx53-qsrb', 'fsl,imx53-smd', 'ge,imx53-cpuvo', 'inversepath,imx53-usbarmory', 'karo,tx53', 'kiebackpeter,imx53-ddc', 'kiebackpeter,imx53-hsc', 'menlo,m53menlo', 'starterkit,sk-imx53', 'voipac,imx53-dmm-668']
+	'aries,imx53-m53evk' was expected
+	'tq,mba53' was expected
+	'sb-iotgimx8' is not one of ['auvidea,h100', 'bosch,imx6q-acc', 'boundary,imx6q-nitrogen6_max', 'boundary,imx6q-nitrogen6_som2', 'boundary,imx6q-nitrogen6x', 'compulab,cm-fx6', 'dmo,imx6q-edmqmx6', 'ds,imx6q-sbc', 'embest,imx6q-marsboard', 'emtrion,emcon-mx6', 'emtrion,emcon-mx6-avari', 'engicam,imx6-icore', 'engicam,imx6-icore-rqs', 'fsl,imx6q-arm2', 'fsl,imx6q-sabreauto', 'fsl,imx6q-sabrelite', 'fsl,imx6q-sabresd', 'karo,imx6q-tx6q', 'kiebackpeter,imx6q-tpc', 'kontron,imx6q-samx6i', 'kosagi,imx6q-novena', 'kvg,vicut1q', 'logicpd,imx6q-logicpd', 'lwn,display5', 'lwn,mccmon6', 'nutsboard,imx6q-pistachio', 'microsys,sbc6x', 'poslab,imx6q-savageboard', 'prt,prti6q', 'prt,prtwd2', 'rex,imx6q-rex-pro', 'skov,imx6q-skov-revc-lt2', 'skov,imx6q-skov-revc-lt6', 'skov,imx6q-skov-reve-mi1010ait-1cp1', 'solidrun,cubox-i/q', 'solidrun,hummingboard/q', 'solidrun,hummingboard2/q', 'solidrun,solidsense/q', 'tbs,imx6q-tbs2910', 'technexion,imx6q-pico-dwarf', 'technexion,imx6q-pico-hobbit', 'technexion,imx6q-pico-nymph', 'technexion,imx6q-pico-pi', 'technologic,imx6q-ts4900', 'technologic,imx6q-ts7970', 'toradex,apalis_imx6q', 'udoo,imx6q-udoo', 'uniwest,imx6q-evi', 'variscite,dt6customboard', 'wand,imx6q-wandboard', 'ysoft,imx6q-yapp4-crux', 'ysoft,imx6q-yapp4-pegasus', 'zealz,imx6q-gk802', 'zii,imx6q-zii-rdu2']
+	'sb-iotgimx8' is not one of ['advantech,imx6q-dms-ba16', 'ge,imx6q-b450v3', 'ge,imx6q-b650v3', 'ge,imx6q-b850v3']
+	'armadeus,imx6q-apf6dev' was expected
+	'compulab,utilite-pro' was expected
+	'dfi,fs700-m60-6qd' was expected
+	'dh,imx6q-dhcom-pdk2' was expected
+	'sb-iotgimx8' is not one of ['gw,imx6q-gw51xx', 'gw,imx6q-gw52xx', 'gw,imx6q-gw53xx', 'gw,imx6q-gw5400-a', 'gw,imx6q-gw54xx', 'gw,imx6q-gw551x', 'gw,imx6q-gw552x', 'gw,imx6q-gw553x', 'gw,imx6q-gw560x', 'gw,imx6q-gw5903', 'gw,imx6q-gw5904', 'gw,imx6q-gw5907', 'gw,imx6q-gw5910', 'gw,imx6q-gw5912', 'gw,imx6q-gw5913']
+	'sb-iotgimx8' is not one of ['phytec,imx6q-pbac06-emmc', 'phytec,imx6q-pbac06-nand']
+	'phytec,imx6q-pbab01' was expected
+	'sb-iotgimx8' is not one of ['toradex,apalis_imx6q-ixora', 'toradex,apalis_imx6q-ixora-v1.1', 'toradex,apalis_imx6q-ixora-v1.2', 'toradex,apalis_imx6q-eval']
+	'tq,imx6q-mba6x-a' was expected
+	'tq,imx6q-mba6x-b' was expected
+	'sb-iotgimx8' is not one of ['boundary,imx6qp-nitrogen6_max', 'boundary,imx6qp-nitrogen6_som2', 'fsl,imx6qp-sabreauto', 'fsl,imx6qp-sabresd', 'karo,imx6qp-tx6qp', 'kvg,vicutp', 'prt,prtwd3', 'wand,imx6qp-wandboard', 'ysoft,imx6qp-yapp4-crux-plus', 'ysoft,imx6qp-yapp4-pegasus-plus', 'zii,imx6qp-zii-rdu2']
+	'phytec,imx6qp-pbac06-nand' was expected
+	'tq,imx6qp-mba6x-b' was expected
+	'sb-iotgimx8' is not one of ['abb,aristainetos-imx6dl-4', 'abb,aristainetos-imx6dl-7', 'abb,aristainetos2-imx6dl-4', 'abb,aristainetos2-imx6dl-7', 'alt,alti6p', 'boundary,imx6dl-nit6xlite', 'boundary,imx6dl-nitrogen6x', 'bticino,imx6dl-mamoj', 'eckelmann,imx6dl-ci4x10', 'emtrion,emcon-mx6', 'emtrion,emcon-mx6-avari', 'engicam,imx6-icore', 'engicam,imx6-icore-rqs', 'fsl,imx6dl-sabreauto', 'fsl,imx6dl-sabrelite', 'fsl,imx6dl-sabresd', 'karo,imx6dl-tx6dl', 'kontron,imx6dl-samx6i', 'kvg,victgo', 'kvg,vicut1', 'ply,plybas', 'ply,plym2m', 'poslab,imx6dl-savageboard', 'prt,prtmvt', 'prt,prtrvt', 'prt,prtvt7', 'rex,imx6dl-rex-basic', 'riot,imx6s-riotboard', 'skov,imx6dl-skov-revc-lt2', 'skov,imx6dl-skov-revc-lt6', 'solidrun,cubox-i/dl', 'solidrun,hummingboard/dl', 'solidrun,hummingboard2/dl', 'solidrun,solidsense/dl', 'technexion,imx6dl-pico-dwarf', 'technexion,imx6dl-pico-hobbit', 'technexion,imx6dl-pico-nymph', 'technexion,imx6dl-pico-pi', 'technologic,imx6dl-ts4900', 'technologic,imx6dl-ts7970', 'toradex,colibri_imx6dl', 'udoo,imx6dl-udoo', 'vdl,lanmcu', 'wand,imx6dl-wandboard', 'ysoft,imx6dl-yapp4-draco', 'ysoft,imx6dl-yapp4-hydra', 'ysoft,imx6dl-yapp4-lynx', 'ysoft,imx6dl-yapp4-orion', 'ysoft,imx6dl-yapp4-phoenix', 'ysoft,imx6dl-yapp4-ursa']
+	'armadeus,imx6dl-apf6dev' was expected
+	'sb-iotgimx8' is not one of ['ge,imx6dl-b105v2', 'ge,imx6dl-b105pv2', 'ge,imx6dl-b125v2', 'ge,imx6dl-b125pv2', 'ge,imx6dl-b155v2']
+	'dfi,fs700-m60-6dl' was expected
+	'dh,imx6dl-dhcom-picoitx' was expected
+	'sb-iotgimx8' is not one of ['gw,imx6dl-gw51xx', 'gw,imx6dl-gw52xx', 'gw,imx6dl-gw53xx', 'gw,imx6dl-gw54xx', 'gw,imx6dl-gw551x', 'gw,imx6dl-gw552x', 'gw,imx6dl-gw553x', 'gw,imx6dl-gw560x', 'gw,imx6dl-gw5903', 'gw,imx6dl-gw5904', 'gw,imx6dl-gw5907', 'gw,imx6dl-gw5910', 'gw,imx6dl-gw5912', 'gw,imx6dl-gw5913']
+	'sb-iotgimx8' is not one of ['phytec,imx6dl-pbac06-emmc', 'phytec,imx6dl-pbac06-nand']
+	'phytec,imx6dl-pbab01' was expected
+	'sb-iotgimx8' is not one of ['toradex,colibri_imx6dl-aster', 'toradex,colibri_imx6dl-eval-v3', 'toradex,colibri_imx6dl-iris', 'toradex,colibri_imx6dl-iris-v2']
+	'dh,imx6s-dhcom-drc02' was expected
+	'tq,imx6dl-mba6x-a' was expected
+	'tq,imx6dl-mba6x-b' was expected
+	'sb-iotgimx8' is not one of ['fsl,imx6sl-evk', 'kobo,aura2', 'kobo,tolino-shine2hd', 'kobo,tolino-shine3', 'kobo,tolino-vision', 'kobo,tolino-vision5', 'revotics,imx6sl-warp']
+	'sb-iotgimx8' is not one of ['fsl,imx6sll-evk', 'kobo,clarahd', 'kobo,librah2o']
+	'sb-iotgimx8' is not one of ['boundary,imx6sx-nitrogen6sx', 'fsl,imx6sx-sabreauto', 'fsl,imx6sx-sdb', 'fsl,imx6sx-sdb-reva', 'samtec,imx6sx-vining-2000', 'udoo,neobasic', 'udoo,neoextended', 'udoo,neofull']
+	'sb-iotgimx8' is not one of ['engicam,imx6ul-geam', 'engicam,imx6ul-isiot', 'fsl,imx6ul-14x14-evk', 'karo,imx6ul-tx6ul', 'kontron,sl-imx6ul', 'prt,prti6g', 'technexion,imx6ul-pico-dwarf', 'technexion,imx6ul-pico-hobbit', 'technexion,imx6ul-pico-pi']
+	'armadeus,imx6ul-opos6uldev' was expected
+	'sb-iotgimx8' is not one of ['digi,ccimx6ulsbcexpress', 'digi,ccimx6ulsbcpro']
+	'grinn,imx6ul-liteboard' was expected
+	'sb-iotgimx8' is not one of ['phytec,imx6ul-pbacd10-emmc', 'phytec,imx6ul-pbacd10-nand']
+	'kontron,bl-imx6ul' was expected
+	'kontron,bl-imx6ul-43' was expected
+	'sb-iotgimx8' is not one of ['tq,imx6ul-tqma6ul1-mba6ulx']
+	'sb-iotgimx8' is not one of ['tq,imx6ul-tqma6ul2-mba6ulx']
+	'sb-iotgimx8' is not one of ['tq,imx6ul-tqma6ul2l-mba6ulx', 'tq,imx6ul-tqma6ul2l-mba6ulxl']
+	'sb-iotgimx8' is not one of ['fsl,imx6ull-14x14-evk', 'joz,jozacp', 'kontron,sl-imx6ull', 'myir,imx6ull-mys-6ulx-eval', 'toradex,colibri-imx6ull', 'toradex,colibri-imx6ull-emmc', 'toradex,colibri-imx6ull-wifi']
+	'armadeus,imx6ull-opos6uldev' was expected
+	'sb-iotgimx8' is not one of ['chargebyte,imx6ull-tarragon-master', 'chargebyte,imx6ull-tarragon-micro', 'chargebyte,imx6ull-tarragon-slave', 'chargebyte,imx6ull-tarragon-slavext']
+	'sb-iotgimx8' is not one of ['dh,imx6ull-dhcom-drc02', 'dh,imx6ull-dhcom-pdk2', 'dh,imx6ull-dhcom-picoitx']
+	'marantec,imx6ull-dhcor-maveo-box' was expected
+	'sb-iotgimx8' is not one of ['phytec,imx6ull-pbacd10-emmc', 'phytec,imx6ull-pbacd10-nand']
+	'sb-iotgimx8' is not one of ['phytec,imx6ull-phygate-tauri-emmc', 'phytec,imx6ull-phygate-tauri-nand']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx6ull-aster', 'toradex,colibri-imx6ull-eval', 'toradex,colibri-imx6ull-iris', 'toradex,colibri-imx6ull-iris-v2']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx6ull-emmc-aster', 'toradex,colibri-imx6ull-emmc-eval', 'toradex,colibri-imx6ull-emmc-iris', 'toradex,colibri-imx6ull-emmc-iris-v2']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx6ull-wifi-eval', 'toradex,colibri-imx6ull-wifi-aster', 'toradex,colibri-imx6ull-wifi-iris', 'toradex,colibri-imx6ull-wifi-iris-v2']
+	'kontron,bl-imx6ull' was expected
+	'sb-iotgimx8' is not one of ['tq,imx6ull-tqma6ull2-mba6ulx']
+	'sb-iotgimx8' is not one of ['tq,imx6ull-tqma6ull2l-mba6ulx', 'tq,imx6ull-tqma6ull2l-mba6ulxl']
+	'sb-iotgimx8' is not one of ['bsh,imx6ulz-bsh-smm-m2', 'fsl,imx6ulz-14x14-evk']
+	'sb-iotgimx8' is not one of ['element14,imx7s-warp', 'toradex,colibri-imx7s']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx7s-aster', 'toradex,colibri-imx7s-eval-v3', 'toradex,colibri-imx7s-iris', 'toradex,colibri-imx7s-iris-v2']
+	'tq,imx7s-mba7' was expected
+	'sb-iotgimx8' is not one of ['boundary,imx7d-nitrogen7', 'compulab,cl-som-imx7', 'fsl,imx7d-sdb', 'fsl,imx7d-sdb-reva', 'kam,imx7d-flex-concentrator', 'kam,imx7d-flex-concentrator-mfg', 'novtech,imx7d-meerkat96', 'remarkable,imx7d-remarkable2', 'storopack,imx7d-smegw01', 'technexion,imx7d-pico-dwarf', 'technexion,imx7d-pico-hobbit', 'technexion,imx7d-pico-nymph', 'technexion,imx7d-pico-pi', 'toradex,colibri-imx7d', 'toradex,colibri-imx7d-emmc', 'zii,imx7d-rmu2', 'zii,imx7d-rpu2']
+	'tq,imx7d-mba7' was expected
+	'compulab,sbc-imx7' was expected
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx7d-aster', 'toradex,colibri-imx7d-eval-v3', 'toradex,colibri-imx7d-iris', 'toradex,colibri-imx7d-iris-v2']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx7d-emmc-aster', 'toradex,colibri-imx7d-emmc-eval-v3', 'toradex,colibri-imx7d-emmc-iris', 'toradex,colibri-imx7d-emmc-iris-v2']
+	'sb-iotgimx8' is not one of ['ea,imx7ulp-com', 'fsl,imx7ulp-evk']
+	'sb-iotgimx8' is not one of ['beacon,imx8mm-beacon-kit', 'boundary,imx8mm-nitrogen8mm', 'dmo,imx8mm-data-modul-edm-sbc', 'emtrion,emcon-mx8mm-avari', 'fsl,imx8mm-ddr4-evk', 'fsl,imx8mm-evk', 'fsl,imx8mm-evkb', 'gateworks,imx8mm-gw7904', 'gw,imx8mm-gw71xx-0x', 'gw,imx8mm-gw72xx-0x', 'gw,imx8mm-gw73xx-0x', 'gw,imx8mm-gw7901', 'gw,imx8mm-gw7902', 'gw,imx8mm-gw7903', 'innocomm,wb15-evk', 'kontron,imx8mm-sl', 'kontron,imx8mm-osm-s', 'toradex,verdin-imx8mm', 'toradex,verdin-imx8mm-nonwifi', 'toradex,verdin-imx8mm-wifi', 'variscite,var-som-mx8mm', 'prt,prt8mm']
+	'ees,imx8mm-emtop-baseboard' was expected
+	'sb-iotgimx8' is not one of ['engicam,icore-mx8mm-ctouch2', 'engicam,icore-mx8mm-edimm2.2']
+	'kontron,imx8mm-bl' was expected
+	'kontron,imx8mm-bl-osm-s' was expected
+	'sb-iotgimx8' is not one of ['menlo,mx8menlo', 'toradex,verdin-imx8mm-nonwifi-dahlia', 'toradex,verdin-imx8mm-nonwifi-dev', 'toradex,verdin-imx8mm-nonwifi-yavia']
+	'sb-iotgimx8' is not one of ['toradex,verdin-imx8mm-wifi-dahlia', 'toradex,verdin-imx8mm-wifi-dev', 'toradex,verdin-imx8mm-wifi-yavia']
+	'phytec,imx8mm-phyboard-polis-rdk' was expected
+	'variscite,var-som-mx8mm-symphony' was expected
+	'sb-iotgimx8' is not one of ['cloos,imx8mm-phg', 'tq,imx8mm-tqma8mqml-mba8mx']
+	'sb-iotgimx8' is not one of ['beacon,imx8mn-beacon-kit', 'bsh,imx8mn-bsh-smm-s2', 'bsh,imx8mn-bsh-smm-s2pro', 'fsl,imx8mn-ddr3l-evk', 'fsl,imx8mn-ddr4-evk', 'fsl,imx8mn-evk', 'gw,imx8mn-gw7902']
+	'variscite,var-som-mx8mn-symphony' was expected
+	'sb-iotgimx8' is not one of ['tq,imx8mn-tqma8mqnl-mba8mx']
+	'sb-iotgimx8' is not one of ['beacon,imx8mp-beacon-kit', 'dmo,imx8mp-data-modul-edm-sbc', 'fsl,imx8mp-evk', 'gateworks,imx8mp-gw74xx', 'gateworks,imx8mp-gw7905-2x', 'polyhex,imx8mp-debix', 'polyhex,imx8mp-debix-model-a', 'toradex,verdin-imx8mp', 'toradex,verdin-imx8mp-nonwifi', 'toradex,verdin-imx8mp-wifi']
+	'avnet,sm2s-imx8mp-14N0600E-ep1' was expected
+	'sb-iotgimx8' is not one of ['dh,imx8mp-dhcom-pdk2', 'dh,imx8mp-dhcom-pdk3']
+	'sb-iotgimx8' is not one of ['engicam,icore-mx8mp-edimm2.2']
+	'phytec,imx8mp-phyboard-pollux-rdk' was expected
+	'sb-iotgimx8' is not one of ['toradex,verdin-imx8mp-nonwifi-dahlia', 'toradex,verdin-imx8mp-nonwifi-dev', 'toradex,verdin-imx8mp-nonwifi-yavia']
+	'sb-iotgimx8' is not one of ['toradex,verdin-imx8mp-wifi-dahlia', 'toradex,verdin-imx8mp-wifi-dev', 'toradex,verdin-imx8mp-wifi-yavia']
+	'sb-iotgimx8' is not one of ['tq,imx8mp-tqma8mpql-mba8mpxl']
+	'sb-iotgimx8' is not one of ['boundary,imx8mq-nitrogen8m', 'boundary,imx8mq-nitrogen8m-som', 'einfochips,imx8mq-thor96', 'fsl,imx8mq-evk', 'google,imx8mq-phanbell', 'kontron,pitx-imx8m', 'purism,librem5-devkit', 'solidrun,hummingboard-pulse', 'technexion,pico-pi-imx8m']
+	'mntre,reform2' was expected
+	'sb-iotgimx8' is not one of ['purism,librem5r2', 'purism,librem5r3', 'purism,librem5r4']
+	'sb-iotgimx8' is not one of ['tq,imx8mq-tqma8mq-mba8mx']
+	'sb-iotgimx8' is not one of ['zii,imx8mq-ultra-rmb3', 'zii,imx8mq-ultra-zest']
+	'sb-iotgimx8' is not one of ['fsl,imx8qm-mek', 'toradex,apalis-imx8', 'toradex,apalis-imx8-v1.1']
+	'sb-iotgimx8' is not one of ['toradex,apalis-imx8-eval', 'toradex,apalis-imx8-ixora-v1.1']
+	'sb-iotgimx8' is not one of ['toradex,apalis-imx8-v1.1-eval', 'toradex,apalis-imx8-v1.1-ixora-v1.1', 'toradex,apalis-imx8-v1.1-ixora-v1.2']
+	'sb-iotgimx8' is not one of ['einfochips,imx8qxp-ai_ml', 'fsl,imx8qxp-mek', 'toradex,colibri-imx8x']
+	'sb-iotgimx8' is not one of ['fsl,imx8dxl-evk']
+	'sb-iotgimx8' is not one of ['toradex,colibri-imx8x-aster', 'toradex,colibri-imx8x-eval-v3', 'toradex,colibri-imx8x-iris', 'toradex,colibri-imx8x-iris-v2']
+	'sb-iotgimx8' is not one of ['fsl,imx8ulp-evk']
+	'sb-iotgimx8' is not one of ['fsl,imx93-11x11-evk']
+	'sb-iotgimx8' is not one of ['fsl,imxrt1050-evk']
+	'sb-iotgimx8' is not one of ['fsl,imxrt1170-evk']
+	'sb-iotgimx8' is not one of ['fsl,vf500', 'fsl,vf510', 'fsl,vf600', 'fsl,vf610', 'fsl,vf610m4']
+	'toradex,vf500-colibri_vf50-on-eval' was expected
+	'sb-iotgimx8' is not one of ['fsl,vf610-twr', 'lwn,bk4', 'phytec,vf610-cosmic', 'toradex,vf610-colibri_vf61']
+	'toradex,vf610-colibri_vf61-on-eval' was expected
+	'sb-iotgimx8' is not one of ['zii,vf610cfu1', 'zii,vf610dev-c', 'zii,vf610dev-b', 'zii,vf610scu4-aib', 'zii,vf610dtu', 'zii,vf610spu3', 'zii,vf610spb4']
+	'sb-iotgimx8' is not one of ['ebs-systart,oxalis', 'fsl,ls1012a-rdb', 'fsl,ls1012a-frdm', 'fsl,ls1012a-frwy', 'fsl,ls1012a-qds']
+	'sb-iotgimx8' is not one of ['fsl,ls1021a-iot', 'fsl,ls1021a-moxa-uc-8410a', 'fsl,ls1021a-qds', 'fsl,ls1021a-tsn', 'fsl,ls1021a-twr']
+	'sb-iotgimx8' is not one of ['fsl,ls1028a-qds', 'fsl,ls1028a-rdb']
+	'kontron,kbox-a-230-ls' was expected
+	'sb-iotgimx8' is not one of ['kontron,sl28-var1-ads2', 'kontron,sl28-var2-ads2', 'kontron,sl28-var3-ads2', 'kontron,sl28-var4-ads2']
+	'sb-iotgimx8' is not one of ['kontron,sl28-var1', 'kontron,sl28-var2', 'kontron,sl28-var3', 'kontron,sl28-var4']
+	'kontron,sl28' was expected
+	'sb-iotgimx8' is not one of ['fsl,ls1043a-rdb', 'fsl,ls1043a-qds']
+	'sb-iotgimx8' is not one of ['fsl,ls1046a-frwy', 'fsl,ls1046a-qds', 'fsl,ls1046a-rdb']
+	'sb-iotgimx8' is not one of ['fsl,ls1088a-qds', 'fsl,ls1088a-rdb']
+	'sb-iotgimx8' is not one of ['fsl,ls2080a-simu', 'fsl,ls2080a-qds', 'fsl,ls2080a-rdb']
+	'sb-iotgimx8' is not one of ['fsl,ls2088a-qds', 'fsl,ls2088a-rdb']
+	'sb-iotgimx8' is not one of ['fsl,lx2160a-bluebox3', 'fsl,lx2160a-bluebox3-rev-a', 'fsl,lx2160a-qds', 'fsl,lx2160a-rdb', 'fsl,lx2162a-qds']
+	'sb-iotgimx8' is not one of ['solidrun,clearfog-cx', 'solidrun,honeycomb']
+	'sb-iotgimx8' is not one of ['nxp,s32g274a-evb', 'nxp,s32g274a-rdb2']
+	'sb-iotgimx8' is not one of ['fsl,s32v234-evb']
+	'sb-iotgimx8' is not one of ['traverse,ten64']
+	'fsl,imx1' was expected
+	'fsl,imx23' was expected
+	'fsl,imx25' was expected
+	'eukrea,cpuimx25' was expected
+	'eukrea,mbimxsd25-baseboard' was expected
+	'fsl,imx27' was expected
+	'armadeus,imx27-apf27' was expected
+	'eukrea,cpuimx27' was expected
+	'phytec,imx27-pca100' was expected
+	'phytec,imx27-pcm038' was expected
+	'fsl,imx28' was expected
+	'denx,m28' was expected
+	'denx,m28evk' was expected
+	'armadeus,imx28-apf28' was expected
+	'crystalfontz,cfa10036' was expected
+	'crystalfontz,cfa10037' was expected
+	'i2se,duckbill-2' was expected
+	'eukrea,mbmx28lc' was expected
+	'fsl,imx31' was expected
+	'fsl,imx35' was expected
+	'eukrea,cpuimx35' was expected
+	'fsl,imx50' was expected
+	'fsl,imx51' was expected
+	'armadeus,imx51-apf51' was expected
+	'digi,connectcore-ccxmx51-som' was expected
+	'eukrea,cpuimx51' was expected
+	'fsl,imx53' was expected
+	'denx,imx53-m53evk' was expected
+	'tq,tqma53' was expected
+	'fsl,imx6q' was expected
+	'advantech,imx6q-ba16' was expected
+	'armadeus,imx6q-apf6' was expected
+	'compulab,cm-fx6' was expected
+	'dfi,fs700e-m60' was expected
+	'dh,imx6q-dhcom-som' was expected
+	'gw,ventana' was expected
+	'phytec,imx6q-pbac06' was expected
+	'phytec,imx6q-pfla02' was expected
+	'toradex,apalis_imx6q' was expected
+	'tq,mba6a' was expected
+	'tq,mba6b' was expected
+	'fsl,imx6qp' was expected
+	'phytec,imx6qp-pbac06' was expected
+	'fsl,imx6dl' was expected
+	'armadeus,imx6dl-apf6' was expected
+	'congatec,qmx6' was expected
+	'dh,imx6dl-dhcom-som' was expected
+	'phytec,imx6dl-pbac06' was expected
+	'phytec,imx6dl-pfla02' was expected
+	'toradex,colibri_imx6dl' was expected
+	'dh,imx6s-dhcom-som' was expected
+	'fsl,imx6sl' was expected
+	'fsl,imx6sll' was expected
+	'fsl,imx6sx' was expected
+	'fsl,imx6ul' was expected
+	'armadeus,imx6ul-opos6ul' was expected
+	'digi,ccimx6ulsom' was expected
+	'grinn,imx6ul-litesom' was expected
+	'phytec,imx6ul-pbacd10' was expected
+	'kontron,sl-imx6ul' was expected
+	'tq,imx6ul-tqma6ul1' was expected
+	'tq,imx6ul-tqma6ul2' was expected
+	'tq,imx6ul-tqma6ul2l' was expected
+	'fsl,imx6ull' was expected
+	'armadeus,imx6ull-opos6ul' was expected
+	'dh,imx6ull-dhcom-som' was expected
+	'dh,imx6ull-dhcor-som' was expected
+	'phytec,imx6ull-pbacd10' was expected
+	'phytec,imx6ull-phygate-tauri' was expected
+	'toradex,colibri-imx6ull' was expected
+	'toradex,colibri-imx6ull-emmc' was expected
+	'toradex,colibri-imx6ull-wifi' was expected
+	'kontron,sl-imx6ull' was expected
+	'tq,imx6ull-tqma6ull2' was expected
+	'tq,imx6ull-tqma6ull2l' was expected
+	'fsl,imx7s' was expected
+	'toradex,colibri-imx7s' was expected
+	'tq,imx7s-tqma7' was expected
+	'fsl,imx7d' was expected
+	'tq,imx7d-tqma7' was expected
+	'compulab,cl-som-imx7' was expected
+	'toradex,colibri-imx7d' was expected
+	'toradex,colibri-imx7d-emmc' was expected
+	'fsl,imx7ulp' was expected
+	'fsl,imx8mm' was expected
+	'ees,imx8mm-emtop-som' was expected
+	'engicam,icore-mx8mm' was expected
+	'kontron,imx8mm-sl' was expected
+	'kontron,imx8mm-osm-s' was expected
+	'toradex,verdin-imx8mm-nonwifi' was expected
+	'toradex,verdin-imx8mm-wifi' was expected
+	'phytec,imx8mm-phycore-som' was expected
+	'variscite,var-som-mx8mm' was expected
+	'tq,imx8mm-tqma8mqml' was expected
+	'fsl,imx8mn' was expected
+	'variscite,var-som-mx8mn' was expected
+	'tq,imx8mn-tqma8mqnl' was expected
+	'fsl,imx8mp' was expected
+	'avnet,sm2s-imx8mp-14N0600E' was expected
+	'dh,imx8mp-dhcom-som' was expected
+	'engicam,icore-mx8mp' was expected
+	'phytec,imx8mp-phycore-som' was expected
+	'toradex,verdin-imx8mp-nonwifi' was expected
+	'toradex,verdin-imx8mp-wifi' was expected
+	'tq,imx8mp-tqma8mpql' was expected
+	'fsl,imx8mq' was expected
+	'boundary,imx8mq-nitrogen8m-som' was expected
+	'purism,librem5' was expected
+	'tq,imx8mq-tqma8mq' was expected
+	'zii,imx8mq-ultra' was expected
+	'fsl,imx8qm' was expected
+	'toradex,apalis-imx8' was expected
+	'toradex,apalis-imx8-v1.1' was expected
+	'fsl,imx8qxp' was expected
+	'fsl,imx8dxl' was expected
+	'toradex,colibri-imx8x' was expected
+	'fsl,imx8ulp' was expected
+	'fsl,imx93' was expected
+	'fsl,imxrt1050' was expected
+	'fsl,imxrt1170' was expected
+	'toradex,vf500-colibri_vf50' was expected
+	'fsl,vf610' was expected
+	'toradex,vf610-colibri_vf61' was expected
+	'zii,vf610dev' was expected
+	'fsl,ls1012a' was expected
+	'fsl,ls1021a' was expected
+	'fsl,ls1028a' was expected
+	'kontron,sl28-var4' was expected
+	'cpl,ucm-imx8m-mini' is not one of ['kontron,sl28-var1', 'kontron,sl28-var2', 'kontron,sl28-var3', 'kontron,sl28-var4']
+	'fsl,ls1043a' was expected
+	'fsl,ls1046a' was expected
+	'fsl,ls1088a' was expected
+	'fsl,ls2080a' was expected
+	'fsl,ls2088a' was expected
+	'fsl,lx2160a' was expected
+	'solidrun,lx2160a-cex7' was expected
+	'nxp,s32g2' was expected
+	'fsl,s32v234' was expected
+	'phytec,imx6qdl-pcm058' was expected
+	'tq,imx6q-tqma6q-a' was expected
+	'tq,imx6q-tqma6q-b' was expected
+	'tq,imx6qp-tqma6qp-b' was expected
+	'tq,imx6dl-tqma6dl-a' was expected
+	'tq,imx6dl-tqma6dl-b' was expected
+	'phytec,imx6ul-pcl063' was expected
+	'phytec,imx6ull-pcl063' was expected
+	'fsl,imx6ulz' was expected
+	'toradex,verdin-imx8mm' was expected
+	'avnet,sm2s-imx8mp' was expected
+	'toradex,verdin-imx8mp' was expected
+	'fsl,vf500' was expected
+	from schema $id: http://devicetree.org/schemas/arm/fsl.yaml#
+/home/root/fdt/fdt: /: memory: False schema does not allow {'reg': [[0, 1073741824, 0, 1040187392], [0, 2147483648, 0, 1073741824]], 'device_type': ['memory']}
+	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+/home/root/fdt/fdt: /: failed to match any schema with compatible: ['sb-iotgimx8', 'cpl,ucm-imx8m-mini', 'fsl,imx8mm-evk', 'fsl,imx8mm']
+/home/root/fdt/fdt: /: failed to match any schema with compatible: ['sb-iotgimx8', 'cpl,ucm-imx8m-mini', 'fsl,imx8mm-evk', 'fsl,imx8mm']
+/home/root/fdt/fdt: l2-cache0: 'cache-level' is a required property
+	from schema $id: http://devicetree.org/schemas/cache.yaml#
+/home/root/fdt/fdt: l2-cache0: 'cache-level' is a required property
+	from schema $id: http://devicetree.org/schemas/cache.yaml#
+/home/root/fdt/fdt: l2-cache0: 'cache-unified' is a required property
+	from schema $id: http://devicetree.org/schemas/cache.yaml#
+/home/root/fdt/fdt: clock-osc-24m: 'u-boot,dm-pre-reloc', 'u-boot,dm-spl' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/clock/fixed-clock.yaml#
+/home/root/fdt/fdt: usbphynop1: '#phy-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/usb-nop-xceiv.yaml#
+/home/root/fdt/fdt: usbphynop2: '#phy-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/usb-nop-xceiv.yaml#
+/home/root/fdt/fdt: gpio@30200000: 'u-boot,dm-spl' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/fsl-imx-gpio.yaml#
+/home/root/fdt/fdt: gpio@30210000: 'u-boot,dm-spl' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/fsl-imx-gpio.yaml#
+/home/root/fdt/fdt: gpio@30220000: 'u-boot,dm-spl' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/fsl-imx-gpio.yaml#
+/home/root/fdt/fdt: gpio@30230000: 'u-boot,dm-spl' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/fsl-imx-gpio.yaml#
+/home/root/fdt/fdt: gpio@30240000: 'u-boot,dm-spl' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/gpio/fsl-imx-gpio.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: i2c2grp: 'u-boot,dm-spl' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: uart1grp: 'u-boot,dm-spl' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: usdhc2grp: 'u-boot,dm-spl' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: usdhc3grp: 'u-boot,dm-spl' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: 'hoggrp-1', 'pmicirq', 'u-boot,dm-spl', 'usdhc2grp100mhz', 'usdhc2grp200mhz', 'usdhc2grpgpio', 'usdhc3grp100mhz', 'usdhc3grp200mhz' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+/home/root/fdt/fdt: pinctrl@30330000: 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml#
+/home/root/fdt/fdt: anatop@30360000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx8mm-anatop', 'syscon'] is too long
+	'fsl,imx8mm-anatop' is not one of ['fsl,imx8mn-anatop', 'fsl,imx8mp-anatop']
+	'fsl,imx8mm-anatop' was expected
+	from schema $id: http://devicetree.org/schemas/clock/fsl,imx8m-anatop.yaml#
+/home/root/fdt/fdt: anatop@30360000: '#clock-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/fsl,imx8m-anatop.yaml#
+/home/root/fdt/fdt: clock-controller@30380000: 'u-boot,dm-pre-reloc', 'u-boot,dm-spl' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/clock/imx8m-clock.yaml#
+/home/root/fdt/fdt: gpc@303a0000: 'oneOf' conditional failed, one must be fixed:
+	'interrupts' is a required property
+	'interrupts-extended' is a required property
+	from schema $id: http://devicetree.org/schemas/power/fsl,imx-gpcv2.yaml#
+/home/root/fdt/fdt: serial@30880000: Unevaluated properties are not allowed ('u-boot,dm-spl' was unexpected)
+	from schema $id: http://devicetree.org/schemas/serial/fsl-imx-uart.yaml#
+/home/root/fdt/fdt: i2c@30a20000: Unevaluated properties are not allowed ('u-boot,dm-spl' was unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-imx.yaml#
+/home/root/fdt/fdt: i2c@30a30000: Unevaluated properties are not allowed ('u-boot,dm-spl' was unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-imx.yaml#
+/home/root/fdt/fdt: /soc@0/bus@30800000/i2c@30a30000/rtc@69: failed to match any schema with compatible: ['abracon,ab1805']
+/home/root/fdt/fdt: pmic@4b: regulators:LDO1:regulator-name:0: 'LDO1' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO2:regulator-name:0: 'LDO2' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO3:regulator-name:0: 'LDO3' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO4:regulator-name:0: 'LDO4' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO5:regulator-name:0: 'LDO5' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO6:regulator-name:0: 'LDO6' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:LDO7:regulator-name:0: 'LDO7' does not match '^ldo[1-7]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK1:regulator-name:0: 'BUCK1' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK2:regulator-name:0: 'BUCK2' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK3:regulator-name:0: 'BUCK3' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK4:regulator-name:0: 'BUCK4' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK5:regulator-name:0: 'BUCK5' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK6:regulator-name:0: 'BUCK6' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK7:regulator-name:0: 'BUCK7' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators:BUCK8:regulator-name:0: 'BUCK8' does not match '^buck[1-8]$'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: regulators: 'bd71837,pmic-buck2-dvs-voltage', 'bd71837,pmic-buck2-uses-i2c-dvs', 'u-boot,dm-spl' do not match any of the regexes: '^BUCK[1-8]$', '^LDO[1-7]$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: 'clocks' is a required property
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: '#clock-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: pmic@4b: 'gpio_intr', 'gpo', 'u-boot,dm-spl' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/mfd/rohm,bd71837-pmic.yaml#
+/home/root/fdt/fdt: regulators: 'bd71837,pmic-buck2-dvs-voltage', 'bd71837,pmic-buck2-uses-i2c-dvs' do not match any of the regexes: '^#.*', '^(at25|bm|devbus|dmacap|dsa|exynos|fsi[ab]|gpio-fan|gpio-key|gpio|gpmc|hdmi|i2c-gpio),.*', '^(keypad|m25p|max8952|max8997|max8998|mpmc),.*', '^(pinctrl-single|#pinctrl-single|PowerPC),.*', '^(pl022|pxa-mmc|rcar_sound|rotary-encoder|s5m8767|sdhci),.*', '^(simple-audio-card|st-plgpio|st-spics|ts),.*', '^100ask,.*', '^70mai,.*', '^8dev,.*', '^GEFanuc,.*', '^ORCL,.*', '^SUNW,.*', '^[a-zA-Z0-9#_][a-zA-Z0-9+\\-._@]{0,63}$', '^[a-zA-Z0-9+\\-._]*@[0-9a-zA-Z,]*$', '^abb,.*', '^abilis,.*', '^abracon,.*', '^abt,.*', '^acbel,.*', '^acer,.*', '^acme,.*', '^actions,.*', '^active-semi,.*', '^ad,.*', '^adafruit,.*', '^adapteva,.*', '^adaptrum,.*', '^adh,.*', '^adi,.*', '^advantech,.*', '^aeroflexgaisler,.*', '^aesop,.*', '^airoha,.*', '^al,.*', '^alcatel,.*', '^aldec,.*', '^alfa-network,.*', '^allegro,.*', '^allo,.*', '^allwinner,.*', '^alphascale,.*', '^alps,.*', '^alt,.*', '^altr,.*', '^amarula,.*', '^amazon,.*', '^amcc,.*', '^amd,.*', '^amediatech,.*', '^amlogic,.*', '^ampere,.*', '^ampire,.*', '^ams,.*', '^amstaos,.*', '^analogix,.*', '^anbernic,.*', '^andestech,.*', '^anvo,.*', '^apm,.*', '^apple,.*', '^aptina,.*', '^arasan,.*', '^archermind,.*', '^arctic,.*', '^arcx,.*', '^aries,.*', '^arm,.*', '^armadeus,.*', '^arrow,.*', '^artesyn,.*', '^asahi-kasei,.*', '^asc,.*', '^asix,.*', '^aspeed,.*', '^asrock,.*', '^asus,.*', '^atheros,.*', '^atlas,.*', '^atmel,.*', '^auo,.*', '^auvidea,.*', '^avago,.*', '^avia,.*', '^avic,.*', '^avnet,.*', '^awinic,.*', '^axentia,.*', '^axis,.*', '^azoteq,.*', '^azw,.*', '^baikal,.*', '^bananapi,.*', '^beacon,.*', '^beagle,.*', '^bhf,.*', '^bitmain,.*', '^blutek,.*', '^boe,.*', '^bosch,.*', '^boundary,.*', '^brcm,.*', '^broadmobi,.*', '^bsh,.*', '^bticino,.*', '^buffalo,.*', '^bur,.*', '^bytedance,.*', '^calamp,.*', '^calaosystems,.*', '^calxeda,.*', '^canaan,.*', '^caninos,.*', '^capella,.*', '^cascoda,.*', '^catalyst,.*', '^cavium,.*', '^cdns,.*', '^cdtech,.*', '^cellwise,.*', '^ceva,.*', '^chargebyte,.*', '^checkpoint,.*', '^chefree,.*', '^chipidea,.*', '^chipone,.*', '^chipspark,.*', '^chongzhou,.*', '^chrontel,.*', '^chrp,.*', '^chunghwa,.*', '^chuwi,.*', '^ciaa,.*', '^cirrus,.*', '^cisco,.*', '^clockwork,.*', '^cloos,.*', '^cloudengines,.*', '^cnm,.*', '^cnxt,.*', '^colorfly,.*', '^compulab,.*', '^congatec,.*', '^coreriver,.*', '^corpro,.*', '^cortina,.*', '^cosmic,.*', '^crane,.*', '^creative,.*', '^crystalfontz,.*', '^csky,.*', '^csq,.*', '^ctera,.*', '^ctu,.*', '^cubietech,.*', '^cui,.*', '^cypress,.*', '^cyx,.*', '^cznic,.*', '^dallas,.*', '^dataimage,.*', '^davicom,.*', '^dell,.*', '^delta,.*', '^densitron,.*', '^denx,.*', '^devantech,.*', '^dfi,.*', '^dh,.*', '^difrnce,.*', '^digi,.*', '^digilent,.*', '^diodes,.*', '^dioo,.*', '^dlc,.*', '^dlg,.*', '^dlink,.*', '^dmo,.*', '^domintech,.*', '^dongwoon,.*', '^dptechnics,.*', '^dragino,.*', '^ds,.*', '^dserve,.*', '^dynaimage,.*', '^ea,.*', '^ebang,.*', '^ebbg,.*', '^ebs-systart,.*', '^ebv,.*', '^eckelmann,.*', '^edgeble,.*', '^edimax,.*', '^edt,.*', '^ees,.*', '^eeti,.*', '^einfochips,.*', '^eink,.*', '^elan,.*', '^element14,.*', '^elgin,.*', '^elida,.*', '^elimo,.*', '^elpida,.*', '^embedfire,.*', '^embest,.*', '^emlid,.*', '^emmicro,.*', '^empire-electronix,.*', '^emtrion,.*', '^enclustra,.*', '^endless,.*', '^ene,.*', '^energymicro,.*', '^engicam,.*', '^engleder,.*', '^epcos,.*', '^epfl,.*', '^epson,.*', '^esp,.*', '^est,.*', '^ettus,.*', '^eukrea,.*', '^everest,.*', '^everspin,.*', '^evervision,.*', '^exar,.*', '^excito,.*', '^exegin,.*', '^ezchip,.*', '^facebook,.*', '^fairphone,.*', '^faraday,.*', '^fastrax,.*', '^fcs,.*', '^feixin,.*', '^feiyang,.*', '^fii,.*', '^firefly,.*', '^focaltech,.*', '^forlinx,.*', '^frida,.*', '^friendlyarm,.*', '^fsl,.*', '^fujitsu,.*', '^fxtec,.*', '^gardena,.*', '^gateworks,.*', '^gcw,.*', '^ge,.*', '^geekbuying,.*', '^gef,.*', '^gemei,.*', '^genesys,.*', '^geniatech,.*', '^giantec,.*', '^giantplus,.*', '^globalscale,.*', '^globaltop,.*', '^gmt,.*', '^goldelico,.*', '^goodix,.*', '^google,.*', '^gplus,.*', '^grinn,.*', '^grmn,.*', '^gumstix,.*', '^gw,.*', '^hannstar,.*', '^haochuangyi,.*', '^haoyu,.*', '^hardkernel,.*', '^hechuang,.*', '^hideep,.*', '^himax,.*', '^hirschmann,.*', '^hisi,.*', '^hisilicon,.*', '^hit,.*', '^hitex,.*', '^holt,.*', '^holtek,.*', '^honestar,.*', '^honeywell,.*', '^hoperun,.*', '^hp,.*', '^hpe,.*', '^hsg,.*', '^huawei,.*', '^hugsun,.*', '^hwacom,.*', '^hxt,.*', '^hycon,.*', '^hydis,.*', '^hynitron,.*', '^hynix,.*', '^hyundai,.*', '^i2se,.*', '^ibm,.*', '^icplus,.*', '^idt,.*', '^ifi,.*', '^ilitek,.*', '^imagis,.*', '^img,.*', '^imi,.*', '^incircuit,.*', '^indiedroid,.*', '^inet-tek,.*', '^infineon,.*', '^inforce,.*', '^ingenic,.*', '^ingrasys,.*', '^injoinic,.*', '^innocomm,.*', '^innolux,.*', '^inside-secure,.*', '^insignal,.*', '^inspur,.*', '^intel,.*', '^intercontrol,.*', '^invensense,.*', '^inventec,.*', '^inversepath,.*', '^iom,.*', '^irondevice,.*', '^isee,.*', '^isil,.*', '^issi,.*', '^ite,.*', '^itead,.*', '^itian,.*', '^ivo,.*', '^iwave,.*', '^jadard,.*', '^jdi,.*', '^jedec,.*', '^jesurun,.*', '^jethome,.*', '^jianda,.*', '^joz,.*', '^kam,.*', '^karo,.*', '^keithkoep,.*', '^keymile,.*', '^khadas,.*', '^kiebackpeter,.*', '^kinetic,.*', '^kingdisplay,.*', '^kingnovel,.*', '^kionix,.*', '^kobo,.*', '^kobol,.*', '^koe,.*', '^kontron,.*', '^kosagi,.*', '^kvg,.*', '^kyo,.*', '^lacie,.*', '^laird,.*', '^lamobo,.*', '^lantiq,.*', '^lattice,.*', '^lctech,.*', '^leadtek,.*', '^leez,.*', '^lego,.*', '^lemaker,.*', '^lenovo,.*', '^lg,.*', '^lgphilips,.*', '^libretech,.*', '^licheepi,.*', '^linaro,.*', '^lineartechnology,.*', '^linksprite,.*', '^linksys,.*', '^linutronix,.*', '^linux,.*', '^linx,.*', '^liteon,.*', '^litex,.*', '^lltc,.*', '^logicpd,.*', '^logictechno,.*', '^longcheer,.*', '^lontium,.*', '^loongmasses,.*', '^loongson,.*', '^lsi,.*', '^lunzn,.*', '^lwn,.*', '^lxa,.*', '^m5stack,.*', '^macnica,.*', '^mantix,.*', '^mapleboard,.*', '^marvell,.*', '^maxbotix,.*', '^maxim,.*', '^maxlinear,.*', '^mbvl,.*', '^mcube,.*', '^meas,.*', '^mecer,.*', '^mediatek,.*', '^megachips,.*', '^mele,.*', '^melexis,.*', '^melfas,.*', '^mellanox,.*', '^memsensing,.*', '^memsic,.*', '^menlo,.*', '^mentor,.*', '^meraki,.*', '^merrii,.*', '^methode,.*', '^micrel,.*', '^microchip,.*', '^microcrystal,.*', '^micron,.*', '^microsoft,.*', '^microsys,.*', '^mikroe,.*', '^mikrotik,.*', '^miniand,.*', '^minix,.*', '^miramems,.*', '^mitsubishi,.*', '^mixel,.*', '^miyoo,.*', '^mntre,.*', '^modtronix,.*', '^moortec,.*', '^mosaixtech,.*', '^motorcomm,.*', '^motorola,.*', '^moxa,.*', '^mpl,.*', '^mps,.*', '^mqmaker,.*', '^mrvl,.*', '^mscc,.*', '^msi,.*', '^mstar,.*', '^mti,.*', '^multi-inno,.*', '^mundoreader,.*', '^murata,.*', '^mxic,.*', '^mxicy,.*', '^myir,.*', '^national,.*', '^nec,.*', '^neonode,.*', '^netgear,.*', '^netlogic,.*', '^netron-dy,.*', '^netronix,.*', '^netxeon,.*', '^neweast,.*', '^newhaven,.*', '^newvision,.*', '^nexbox,.*', '^nextthing,.*', '^ni,.*', '^nintendo,.*', '^nlt,.*', '^nokia,.*', '^nordic,.*', '^novatek,.*', '^novtech,.*', '^nutsboard,.*', '^nuvoton,.*', '^nvd,.*', '^nvidia,.*', '^nxp,.*', '^oceanic,.*', '^ocs,.*', '^oct,.*', '^okaya,.*', '^oki,.*', '^olimex,.*', '^olpc,.*', '^oneplus,.*', '^onie,.*', '^onion,.*', '^onnn,.*', '^ontat,.*', '^opalkelly,.*', '^openailab,.*', '^opencores,.*', '^openembed,.*', '^openpandora,.*', '^openrisc,.*', '^option,.*', '^oranth,.*', '^orisetech,.*', '^ortustech,.*', '^osddisplays,.*', '^osmc,.*', '^ouya,.*', '^overkiz,.*', '^ovti,.*', '^oxsemi,.*', '^ozzmaker,.*', '^panasonic,.*', '^parade,.*', '^parallax,.*', '^pda,.*', '^pericom,.*', '^pervasive,.*', '^phicomm,.*', '^phytec,.*', '^picochip,.*', '^pine64,.*', '^pineriver,.*', '^pixcir,.*', '^plantower,.*', '^plathome,.*', '^plda,.*', '^plx,.*', '^ply,.*', '^pni,.*', '^pocketbook,.*', '^polaroid,.*', '^polyhex,.*', '^portwell,.*', '^poslab,.*', '^pov,.*', '^powertip,.*', '^powervr,.*', '^primux,.*', '^probox2,.*', '^prt,.*', '^pulsedlight,.*', '^purism,.*', '^qca,.*', '^qcom,.*', '^qemu,.*', '^qi,.*', '^qiaodian,.*', '^qihua,.*', '^qishenglong,.*', '^qnap,.*', '^quanta,.*', '^radxa,.*', '^raidsonic,.*', '^ralink,.*', '^ramtron,.*', '^raspberrypi,.*', '^raydium,.*', '^rda,.*', '^realtek,.*', '^remarkable,.*', '^renesas,.*', '^rervision,.*', '^revotics,.*', '^rex,.*', '^richtek,.*', '^ricoh,.*', '^rikomagic,.*', '^riot,.*', '^riscv,.*', '^rockchip,.*', '^rocktech,.*', '^rohm,.*', '^ronbo,.*', '^roofull,.*', '^roseapplepi,.*', '^samsung,.*', '^samtec,.*', '^sancloud,.*', '^sandisk,.*', '^satoz,.*', '^sbs,.*', '^schindler,.*', '^seagate,.*', '^seeed,.*', '^seirobotics,.*', '^semtech,.*', '^senseair,.*', '^sensirion,.*', '^sensortek,.*', '^sercomm,.*', '^sff,.*', '^sgd,.*', '^sgmicro,.*', '^sgx,.*', '^sharp,.*', '^shift,.*', '^shimafuji,.*', '^shineworld,.*', '^shiratech,.*', '^si-en,.*', '^si-linux,.*', '^siemens,.*', '^sifive,.*', '^sigma,.*', '^sii,.*', '^sil,.*', '^silabs,.*', '^silan,.*', '^silead,.*', '^silergy,.*', '^silex-insight,.*', '^siliconfile,.*', '^siliconmitus,.*', '^silvaco,.*', '^simtek,.*', '^sinlinx,.*', '^sinovoip,.*', '^sinowealth,.*', '^sipeed,.*', '^sirf,.*', '^sis,.*', '^sitronix,.*', '^skov,.*', '^skyworks,.*', '^smartlabs,.*', '^smsc,.*', '^snps,.*', '^sochip,.*', '^socionext,.*', '^solidrun,.*', '^solomon,.*', '^sony,.*', '^sourceparts,.*', '^spansion,.*', '^sparkfun,.*', '^spinalhdl,.*', '^sprd,.*', '^square,.*', '^ssi,.*', '^sst,.*', '^sstar,.*', '^st,.*', '^st-ericsson,.*', '^starfive,.*', '^starry,.*', '^startek,.*', '^starterkit,.*', '^ste,.*', '^stericsson,.*', '^storlink,.*', '^storm,.*', '^storopack,.*', '^summit,.*', '^sunchip,.*', '^sundance,.*', '^sunplus,.*', '^supermicro,.*', '^swir,.*', '^syna,.*', '^synology,.*', '^synopsys,.*', '^tbs,.*', '^tbs-biometrics,.*', '^tcg,.*', '^tcl,.*', '^tcs,.*', '^tdo,.*', '^team-source-display,.*', '^technexion,.*', '^technologic,.*', '^techstar,.*', '^teejet,.*', '^teltonika,.*', '^tempo,.*', '^terasic,.*', '^tesla,.*', '^tfc,.*', '^thead,.*', '^thine,.*', '^thingyjp,.*', '^thundercomm,.*', '^thwc,.*', '^ti,.*', '^tianma,.*', '^tlm,.*', '^tmt,.*', '^topeet,.*', '^topic,.*', '^toppoly,.*', '^topwise,.*', '^toradex,.*', '^toshiba,.*', '^toumaz,.*', '^tpk,.*', '^tplink,.*', '^tpo,.*', '^tq,.*', '^traverse,.*', '^tronfy,.*', '^tronsmart,.*', '^truly,.*', '^tsd,.*', '^tyan,.*', '^u-blox,.*', '^u-boot,.*', '^ubnt,.*', '^ucrobotics,.*', '^udoo,.*', '^ufispace,.*', '^ugoos,.*', '^uniwest,.*', '^upisemi,.*', '^urt,.*', '^usi,.*', '^utoo,.*', '^v3,.*', '^vaisala,.*', '^vamrs,.*', '^variscite,.*', '^vdl,.*', '^vertexcom,.*', '^via,.*', '^vialab,.*', '^vicor,.*', '^videostrong,.*', '^virtio,.*', '^virtual,.*', '^vishay,.*', '^visionox,.*', '^vitesse,.*', '^vivante,.*', '^vivax,.*', '^vocore,.*', '^voipac,.*', '^vot,.*', '^vxt,.*', '^wanchanglong,.*', '^wand,.*', '^waveshare,.*', '^wd,.*', '^we,.*', '^welltech,.*', '^wetek,.*', '^wexler,.*', '^whwave,.*', '^wi2wi,.*', '^widora,.*', '^wiligear,.*', '^willsemi,.*', '^winbond,.*', '^wingtech,.*', '^winlink,.*', '^winstar,.*', '^wirelesstag,.*', '^wits,.*', '^wlf,.*', '^wm,.*', '^wobo,.*', '^x-powers,.*', '^xen,.*', '^xes,.*', '^xiaomi,.*', '^xillybus,.*', '^xingbangda,.*', '^xinpeng,.*', '^xiphera,.*', '^xlnx,.*', '^xnano,.*', '^xunlong,.*', '^xylon,.*', '^yadro,.*', '^yamaha,.*', '^yes-optoelectronics,.*', '^yic,.*', '^yiming,.*', '^ylm,.*', '^yna,.*', '^yones-toptech,.*', '^ys,.*', '^ysoft,.*', '^zarlink,.*', '^zealz,.*', '^zeitec,.*', '^zidoo,.*', '^zii,.*', '^zinitix,.*', '^zkmagic,.*', '^zte,.*', '^zyxel,.*', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/vendor-prefixes.yaml#
+/home/root/fdt/fdt: tcpc@50: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+/home/root/fdt/fdt: mmc@30b50000: Unevaluated properties are not allowed ('u-boot,dm-spl' was unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/fsl-imx-esdhc.yaml#
+/home/root/fdt/fdt: mmc@30b60000: pinctrl-names: 'oneOf' conditional failed, one must be fixed:
+	['default', 'state_100mhz'] is too short
+	'sleep' was expected
+	from schema $id: http://devicetree.org/schemas/mmc/fsl-imx-esdhc.yaml#
+/home/root/fdt/fdt: mmc@30b60000: Unevaluated properties are not allowed ('pinctrl-names', 'u-boot,dm-spl' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/fsl-imx-esdhc.yaml#
+/home/root/fdt/fdt: spi@30bb0000: clock-names:0: 'fspi_en' was expected
+	from schema $id: http://devicetree.org/schemas/spi/spi-nxp-fspi.yaml#
+/home/root/fdt/fdt: spi@30bb0000: clock-names:1: 'fspi' was expected
+	from schema $id: http://devicetree.org/schemas/spi/spi-nxp-fspi.yaml#
+/home/root/fdt/fdt: ethernet@30be0000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx8mm-fec', 'fsl,imx6sx-fec'] is too long
+	['fsl,imx8mm-fec', 'fsl,imx6sx-fec'] is too short
+	'fsl,imx8mm-fec' is not one of ['fsl,imx25-fec', 'fsl,imx27-fec', 'fsl,imx28-fec', 'fsl,imx6q-fec', 'fsl,mvf600-fec', 'fsl,s32v234-fec']
+	'fsl,imx8mm-fec' is not one of ['fsl,imx53-fec', 'fsl,imx6sl-fec']
+	'fsl,imx8mm-fec' is not one of ['fsl,imx35-fec', 'fsl,imx51-fec']
+	'fsl,imx8mm-fec' is not one of ['fsl,imx6ul-fec', 'fsl,imx6sx-fec']
+	'fsl,imx8mm-fec' is not one of ['fsl,imx7d-fec']
+	'fsl,imx8mq-fec' was expected
+	'fsl,imx8qm-fec' was expected
+	'fsl,imx8mm-fec' is not one of ['fsl,imx8qxp-fec']
+	'fsl,imx8mm-fec' is not one of ['fsl,imx8ulp-fec']
+	'fsl,imx25-fec' was expected
+	'fsl,imx27-fec' was expected
+	'fsl,imx6q-fec' was expected
+	'fsl,imx6ul-fec' was expected
+	from schema $id: http://devicetree.org/schemas/net/fsl,fec.yaml#
+/home/root/fdt/fdt: ethernet@30be0000: Unevaluated properties are not allowed ('compatible' was unexpected)
+	from schema $id: http://devicetree.org/schemas/net/fsl,fec.yaml#
+/home/root/fdt/fdt: ethernet-phy@0: 'at803x,eee-okay', 'at803x,led-act-blind-workaround', 'at803x,vddio-1p8v' do not match any of the regexes: '^#.*', '^(at25|bm|devbus|dmacap|dsa|exynos|fsi[ab]|gpio-fan|gpio-key|gpio|gpmc|hdmi|i2c-gpio),.*', '^(keypad|m25p|max8952|max8997|max8998|mpmc),.*', '^(pinctrl-single|#pinctrl-single|PowerPC),.*', '^(pl022|pxa-mmc|rcar_sound|rotary-encoder|s5m8767|sdhci),.*', '^(simple-audio-card|st-plgpio|st-spics|ts),.*', '^100ask,.*', '^70mai,.*', '^8dev,.*', '^GEFanuc,.*', '^ORCL,.*', '^SUNW,.*', '^[a-zA-Z0-9#_][a-zA-Z0-9+\\-._@]{0,63}$', '^[a-zA-Z0-9+\\-._]*@[0-9a-zA-Z,]*$', '^abb,.*', '^abilis,.*', '^abracon,.*', '^abt,.*', '^acbel,.*', '^acer,.*', '^acme,.*', '^actions,.*', '^active-semi,.*', '^ad,.*', '^adafruit,.*', '^adapteva,.*', '^adaptrum,.*', '^adh,.*', '^adi,.*', '^advantech,.*', '^aeroflexgaisler,.*', '^aesop,.*', '^airoha,.*', '^al,.*', '^alcatel,.*', '^aldec,.*', '^alfa-network,.*', '^allegro,.*', '^allo,.*', '^allwinner,.*', '^alphascale,.*', '^alps,.*', '^alt,.*', '^altr,.*', '^amarula,.*', '^amazon,.*', '^amcc,.*', '^amd,.*', '^amediatech,.*', '^amlogic,.*', '^ampere,.*', '^ampire,.*', '^ams,.*', '^amstaos,.*', '^analogix,.*', '^anbernic,.*', '^andestech,.*', '^anvo,.*', '^apm,.*', '^apple,.*', '^aptina,.*', '^arasan,.*', '^archermind,.*', '^arctic,.*', '^arcx,.*', '^aries,.*', '^arm,.*', '^armadeus,.*', '^arrow,.*', '^artesyn,.*', '^asahi-kasei,.*', '^asc,.*', '^asix,.*', '^aspeed,.*', '^asrock,.*', '^asus,.*', '^atheros,.*', '^atlas,.*', '^atmel,.*', '^auo,.*', '^auvidea,.*', '^avago,.*', '^avia,.*', '^avic,.*', '^avnet,.*', '^awinic,.*', '^axentia,.*', '^axis,.*', '^azoteq,.*', '^azw,.*', '^baikal,.*', '^bananapi,.*', '^beacon,.*', '^beagle,.*', '^bhf,.*', '^bitmain,.*', '^blutek,.*', '^boe,.*', '^bosch,.*', '^boundary,.*', '^brcm,.*', '^broadmobi,.*', '^bsh,.*', '^bticino,.*', '^buffalo,.*', '^bur,.*', '^bytedance,.*', '^calamp,.*', '^calaosystems,.*', '^calxeda,.*', '^canaan,.*', '^caninos,.*', '^capella,.*', '^cascoda,.*', '^catalyst,.*', '^cavium,.*', '^cdns,.*', '^cdtech,.*', '^cellwise,.*', '^ceva,.*', '^chargebyte,.*', '^checkpoint,.*', '^chefree,.*', '^chipidea,.*', '^chipone,.*', '^chipspark,.*', '^chongzhou,.*', '^chrontel,.*', '^chrp,.*', '^chunghwa,.*', '^chuwi,.*', '^ciaa,.*', '^cirrus,.*', '^cisco,.*', '^clockwork,.*', '^cloos,.*', '^cloudengines,.*', '^cnm,.*', '^cnxt,.*', '^colorfly,.*', '^compulab,.*', '^congatec,.*', '^coreriver,.*', '^corpro,.*', '^cortina,.*', '^cosmic,.*', '^crane,.*', '^creative,.*', '^crystalfontz,.*', '^csky,.*', '^csq,.*', '^ctera,.*', '^ctu,.*', '^cubietech,.*', '^cui,.*', '^cypress,.*', '^cyx,.*', '^cznic,.*', '^dallas,.*', '^dataimage,.*', '^davicom,.*', '^dell,.*', '^delta,.*', '^densitron,.*', '^denx,.*', '^devantech,.*', '^dfi,.*', '^dh,.*', '^difrnce,.*', '^digi,.*', '^digilent,.*', '^diodes,.*', '^dioo,.*', '^dlc,.*', '^dlg,.*', '^dlink,.*', '^dmo,.*', '^domintech,.*', '^dongwoon,.*', '^dptechnics,.*', '^dragino,.*', '^ds,.*', '^dserve,.*', '^dynaimage,.*', '^ea,.*', '^ebang,.*', '^ebbg,.*', '^ebs-systart,.*', '^ebv,.*', '^eckelmann,.*', '^edgeble,.*', '^edimax,.*', '^edt,.*', '^ees,.*', '^eeti,.*', '^einfochips,.*', '^eink,.*', '^elan,.*', '^element14,.*', '^elgin,.*', '^elida,.*', '^elimo,.*', '^elpida,.*', '^embedfire,.*', '^embest,.*', '^emlid,.*', '^emmicro,.*', '^empire-electronix,.*', '^emtrion,.*', '^enclustra,.*', '^endless,.*', '^ene,.*', '^energymicro,.*', '^engicam,.*', '^engleder,.*', '^epcos,.*', '^epfl,.*', '^epson,.*', '^esp,.*', '^est,.*', '^ettus,.*', '^eukrea,.*', '^everest,.*', '^everspin,.*', '^evervision,.*', '^exar,.*', '^excito,.*', '^exegin,.*', '^ezchip,.*', '^facebook,.*', '^fairphone,.*', '^faraday,.*', '^fastrax,.*', '^fcs,.*', '^feixin,.*', '^feiyang,.*', '^fii,.*', '^firefly,.*', '^focaltech,.*', '^forlinx,.*', '^frida,.*', '^friendlyarm,.*', '^fsl,.*', '^fujitsu,.*', '^fxtec,.*', '^gardena,.*', '^gateworks,.*', '^gcw,.*', '^ge,.*', '^geekbuying,.*', '^gef,.*', '^gemei,.*', '^genesys,.*', '^geniatech,.*', '^giantec,.*', '^giantplus,.*', '^globalscale,.*', '^globaltop,.*', '^gmt,.*', '^goldelico,.*', '^goodix,.*', '^google,.*', '^gplus,.*', '^grinn,.*', '^grmn,.*', '^gumstix,.*', '^gw,.*', '^hannstar,.*', '^haochuangyi,.*', '^haoyu,.*', '^hardkernel,.*', '^hechuang,.*', '^hideep,.*', '^himax,.*', '^hirschmann,.*', '^hisi,.*', '^hisilicon,.*', '^hit,.*', '^hitex,.*', '^holt,.*', '^holtek,.*', '^honestar,.*', '^honeywell,.*', '^hoperun,.*', '^hp,.*', '^hpe,.*', '^hsg,.*', '^huawei,.*', '^hugsun,.*', '^hwacom,.*', '^hxt,.*', '^hycon,.*', '^hydis,.*', '^hynitron,.*', '^hynix,.*', '^hyundai,.*', '^i2se,.*', '^ibm,.*', '^icplus,.*', '^idt,.*', '^ifi,.*', '^ilitek,.*', '^imagis,.*', '^img,.*', '^imi,.*', '^incircuit,.*', '^indiedroid,.*', '^inet-tek,.*', '^infineon,.*', '^inforce,.*', '^ingenic,.*', '^ingrasys,.*', '^injoinic,.*', '^innocomm,.*', '^innolux,.*', '^inside-secure,.*', '^insignal,.*', '^inspur,.*', '^intel,.*', '^intercontrol,.*', '^invensense,.*', '^inventec,.*', '^inversepath,.*', '^iom,.*', '^irondevice,.*', '^isee,.*', '^isil,.*', '^issi,.*', '^ite,.*', '^itead,.*', '^itian,.*', '^ivo,.*', '^iwave,.*', '^jadard,.*', '^jdi,.*', '^jedec,.*', '^jesurun,.*', '^jethome,.*', '^jianda,.*', '^joz,.*', '^kam,.*', '^karo,.*', '^keithkoep,.*', '^keymile,.*', '^khadas,.*', '^kiebackpeter,.*', '^kinetic,.*', '^kingdisplay,.*', '^kingnovel,.*', '^kionix,.*', '^kobo,.*', '^kobol,.*', '^koe,.*', '^kontron,.*', '^kosagi,.*', '^kvg,.*', '^kyo,.*', '^lacie,.*', '^laird,.*', '^lamobo,.*', '^lantiq,.*', '^lattice,.*', '^lctech,.*', '^leadtek,.*', '^leez,.*', '^lego,.*', '^lemaker,.*', '^lenovo,.*', '^lg,.*', '^lgphilips,.*', '^libretech,.*', '^licheepi,.*', '^linaro,.*', '^lineartechnology,.*', '^linksprite,.*', '^linksys,.*', '^linutronix,.*', '^linux,.*', '^linx,.*', '^liteon,.*', '^litex,.*', '^lltc,.*', '^logicpd,.*', '^logictechno,.*', '^longcheer,.*', '^lontium,.*', '^loongmasses,.*', '^loongson,.*', '^lsi,.*', '^lunzn,.*', '^lwn,.*', '^lxa,.*', '^m5stack,.*', '^macnica,.*', '^mantix,.*', '^mapleboard,.*', '^marvell,.*', '^maxbotix,.*', '^maxim,.*', '^maxlinear,.*', '^mbvl,.*', '^mcube,.*', '^meas,.*', '^mecer,.*', '^mediatek,.*', '^megachips,.*', '^mele,.*', '^melexis,.*', '^melfas,.*', '^mellanox,.*', '^memsensing,.*', '^memsic,.*', '^menlo,.*', '^mentor,.*', '^meraki,.*', '^merrii,.*', '^methode,.*', '^micrel,.*', '^microchip,.*', '^microcrystal,.*', '^micron,.*', '^microsoft,.*', '^microsys,.*', '^mikroe,.*', '^mikrotik,.*', '^miniand,.*', '^minix,.*', '^miramems,.*', '^mitsubishi,.*', '^mixel,.*', '^miyoo,.*', '^mntre,.*', '^modtronix,.*', '^moortec,.*', '^mosaixtech,.*', '^motorcomm,.*', '^motorola,.*', '^moxa,.*', '^mpl,.*', '^mps,.*', '^mqmaker,.*', '^mrvl,.*', '^mscc,.*', '^msi,.*', '^mstar,.*', '^mti,.*', '^multi-inno,.*', '^mundoreader,.*', '^murata,.*', '^mxic,.*', '^mxicy,.*', '^myir,.*', '^national,.*', '^nec,.*', '^neonode,.*', '^netgear,.*', '^netlogic,.*', '^netron-dy,.*', '^netronix,.*', '^netxeon,.*', '^neweast,.*', '^newhaven,.*', '^newvision,.*', '^nexbox,.*', '^nextthing,.*', '^ni,.*', '^nintendo,.*', '^nlt,.*', '^nokia,.*', '^nordic,.*', '^novatek,.*', '^novtech,.*', '^nutsboard,.*', '^nuvoton,.*', '^nvd,.*', '^nvidia,.*', '^nxp,.*', '^oceanic,.*', '^ocs,.*', '^oct,.*', '^okaya,.*', '^oki,.*', '^olimex,.*', '^olpc,.*', '^oneplus,.*', '^onie,.*', '^onion,.*', '^onnn,.*', '^ontat,.*', '^opalkelly,.*', '^openailab,.*', '^opencores,.*', '^openembed,.*', '^openpandora,.*', '^openrisc,.*', '^option,.*', '^oranth,.*', '^orisetech,.*', '^ortustech,.*', '^osddisplays,.*', '^osmc,.*', '^ouya,.*', '^overkiz,.*', '^ovti,.*', '^oxsemi,.*', '^ozzmaker,.*', '^panasonic,.*', '^parade,.*', '^parallax,.*', '^pda,.*', '^pericom,.*', '^pervasive,.*', '^phicomm,.*', '^phytec,.*', '^picochip,.*', '^pine64,.*', '^pineriver,.*', '^pixcir,.*', '^plantower,.*', '^plathome,.*', '^plda,.*', '^plx,.*', '^ply,.*', '^pni,.*', '^pocketbook,.*', '^polaroid,.*', '^polyhex,.*', '^portwell,.*', '^poslab,.*', '^pov,.*', '^powertip,.*', '^powervr,.*', '^primux,.*', '^probox2,.*', '^prt,.*', '^pulsedlight,.*', '^purism,.*', '^qca,.*', '^qcom,.*', '^qemu,.*', '^qi,.*', '^qiaodian,.*', '^qihua,.*', '^qishenglong,.*', '^qnap,.*', '^quanta,.*', '^radxa,.*', '^raidsonic,.*', '^ralink,.*', '^ramtron,.*', '^raspberrypi,.*', '^raydium,.*', '^rda,.*', '^realtek,.*', '^remarkable,.*', '^renesas,.*', '^rervision,.*', '^revotics,.*', '^rex,.*', '^richtek,.*', '^ricoh,.*', '^rikomagic,.*', '^riot,.*', '^riscv,.*', '^rockchip,.*', '^rocktech,.*', '^rohm,.*', '^ronbo,.*', '^roofull,.*', '^roseapplepi,.*', '^samsung,.*', '^samtec,.*', '^sancloud,.*', '^sandisk,.*', '^satoz,.*', '^sbs,.*', '^schindler,.*', '^seagate,.*', '^seeed,.*', '^seirobotics,.*', '^semtech,.*', '^senseair,.*', '^sensirion,.*', '^sensortek,.*', '^sercomm,.*', '^sff,.*', '^sgd,.*', '^sgmicro,.*', '^sgx,.*', '^sharp,.*', '^shift,.*', '^shimafuji,.*', '^shineworld,.*', '^shiratech,.*', '^si-en,.*', '^si-linux,.*', '^siemens,.*', '^sifive,.*', '^sigma,.*', '^sii,.*', '^sil,.*', '^silabs,.*', '^silan,.*', '^silead,.*', '^silergy,.*', '^silex-insight,.*', '^siliconfile,.*', '^siliconmitus,.*', '^silvaco,.*', '^simtek,.*', '^sinlinx,.*', '^sinovoip,.*', '^sinowealth,.*', '^sipeed,.*', '^sirf,.*', '^sis,.*', '^sitronix,.*', '^skov,.*', '^skyworks,.*', '^smartlabs,.*', '^smsc,.*', '^snps,.*', '^sochip,.*', '^socionext,.*', '^solidrun,.*', '^solomon,.*', '^sony,.*', '^sourceparts,.*', '^spansion,.*', '^sparkfun,.*', '^spinalhdl,.*', '^sprd,.*', '^square,.*', '^ssi,.*', '^sst,.*', '^sstar,.*', '^st,.*', '^st-ericsson,.*', '^starfive,.*', '^starry,.*', '^startek,.*', '^starterkit,.*', '^ste,.*', '^stericsson,.*', '^storlink,.*', '^storm,.*', '^storopack,.*', '^summit,.*', '^sunchip,.*', '^sundance,.*', '^sunplus,.*', '^supermicro,.*', '^swir,.*', '^syna,.*', '^synology,.*', '^synopsys,.*', '^tbs,.*', '^tbs-biometrics,.*', '^tcg,.*', '^tcl,.*', '^tcs,.*', '^tdo,.*', '^team-source-display,.*', '^technexion,.*', '^technologic,.*', '^techstar,.*', '^teejet,.*', '^teltonika,.*', '^tempo,.*', '^terasic,.*', '^tesla,.*', '^tfc,.*', '^thead,.*', '^thine,.*', '^thingyjp,.*', '^thundercomm,.*', '^thwc,.*', '^ti,.*', '^tianma,.*', '^tlm,.*', '^tmt,.*', '^topeet,.*', '^topic,.*', '^toppoly,.*', '^topwise,.*', '^toradex,.*', '^toshiba,.*', '^toumaz,.*', '^tpk,.*', '^tplink,.*', '^tpo,.*', '^tq,.*', '^traverse,.*', '^tronfy,.*', '^tronsmart,.*', '^truly,.*', '^tsd,.*', '^tyan,.*', '^u-blox,.*', '^u-boot,.*', '^ubnt,.*', '^ucrobotics,.*', '^udoo,.*', '^ufispace,.*', '^ugoos,.*', '^uniwest,.*', '^upisemi,.*', '^urt,.*', '^usi,.*', '^utoo,.*', '^v3,.*', '^vaisala,.*', '^vamrs,.*', '^variscite,.*', '^vdl,.*', '^vertexcom,.*', '^via,.*', '^vialab,.*', '^vicor,.*', '^videostrong,.*', '^virtio,.*', '^virtual,.*', '^vishay,.*', '^visionox,.*', '^vitesse,.*', '^vivante,.*', '^vivax,.*', '^vocore,.*', '^voipac,.*', '^vot,.*', '^vxt,.*', '^wanchanglong,.*', '^wand,.*', '^waveshare,.*', '^wd,.*', '^we,.*', '^welltech,.*', '^wetek,.*', '^wexler,.*', '^whwave,.*', '^wi2wi,.*', '^widora,.*', '^wiligear,.*', '^willsemi,.*', '^winbond,.*', '^wingtech,.*', '^winlink,.*', '^winstar,.*', '^wirelesstag,.*', '^wits,.*', '^wlf,.*', '^wm,.*', '^wobo,.*', '^x-powers,.*', '^xen,.*', '^xes,.*', '^xiaomi,.*', '^xillybus,.*', '^xingbangda,.*', '^xinpeng,.*', '^xiphera,.*', '^xlnx,.*', '^xnano,.*', '^xunlong,.*', '^xylon,.*', '^yadro,.*', '^yamaha,.*', '^yes-optoelectronics,.*', '^yic,.*', '^yiming,.*', '^ylm,.*', '^yna,.*', '^yones-toptech,.*', '^ys,.*', '^ysoft,.*', '^zarlink,.*', '^zealz,.*', '^zeitec,.*', '^zidoo,.*', '^zii,.*', '^zinitix,.*', '^zkmagic,.*', '^zte,.*', '^zyxel,.*', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/vendor-prefixes.yaml#
+/home/root/fdt/fdt: usbmisc@32e40200: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx8mm-usbmisc', 'fsl,imx7d-usbmisc'] is too long
+	['fsl,imx8mm-usbmisc', 'fsl,imx7d-usbmisc'] is too short
+	'fsl,imx8mm-usbmisc' is not one of ['fsl,imx25-usbmisc', 'fsl,imx27-usbmisc', 'fsl,imx35-usbmisc', 'fsl,imx51-usbmisc', 'fsl,imx53-usbmisc', 'fsl,imx6q-usbmisc', 'fsl,vf610-usbmisc']
+	'fsl,imx8mm-usbmisc' is not one of ['fsl,imx6ul-usbmisc', 'fsl,imx6sl-usbmisc', 'fsl,imx6sx-usbmisc', 'fsl,imx7d-usbmisc']
+	'fsl,imx6sll-usbmisc' was expected
+	'fsl,imx6q-usbmisc' was expected
+	'fsl,imx6ul-usbmisc' was expected
+	from schema $id: http://devicetree.org/schemas/usb/fsl,usbmisc.yaml#
+/home/root/fdt/fdt: usbmisc@32e50200: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,imx8mm-usbmisc', 'fsl,imx7d-usbmisc'] is too long
+	['fsl,imx8mm-usbmisc', 'fsl,imx7d-usbmisc'] is too short
+	'fsl,imx8mm-usbmisc' is not one of ['fsl,imx25-usbmisc', 'fsl,imx27-usbmisc', 'fsl,imx35-usbmisc', 'fsl,imx51-usbmisc', 'fsl,imx53-usbmisc', 'fsl,imx6q-usbmisc', 'fsl,vf610-usbmisc']
+	'fsl,imx8mm-usbmisc' is not one of ['fsl,imx6ul-usbmisc', 'fsl,imx6sl-usbmisc', 'fsl,imx6sx-usbmisc', 'fsl,imx7d-usbmisc']
+	'fsl,imx6sll-usbmisc' was expected
+	'fsl,imx6q-usbmisc' was expected
+	'fsl,imx6ul-usbmisc' was expected
+	from schema $id: http://devicetree.org/schemas/usb/fsl,usbmisc.yaml#
+/home/root/fdt/fdt: dma-controller@33000000: 'interrupt-names' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+/home/root/fdt/fdt: nand-controller@33002000: #size-cells:0:0: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+/home/root/fdt/fdt: nand-controller@33002000: #size-cells:0:0: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+/home/root/fdt/fdt: fit: 'fit,external-offset' does not match any of the regexes: '^#.*', '^(at25|bm|devbus|dmacap|dsa|exynos|fsi[ab]|gpio-fan|gpio-key|gpio|gpmc|hdmi|i2c-gpio),.*', '^(keypad|m25p|max8952|max8997|max8998|mpmc),.*', '^(pinctrl-single|#pinctrl-single|PowerPC),.*', '^(pl022|pxa-mmc|rcar_sound|rotary-encoder|s5m8767|sdhci),.*', '^(simple-audio-card|st-plgpio|st-spics|ts),.*', '^100ask,.*', '^70mai,.*', '^8dev,.*', '^GEFanuc,.*', '^ORCL,.*', '^SUNW,.*', '^[a-zA-Z0-9#_][a-zA-Z0-9+\\-._@]{0,63}$', '^[a-zA-Z0-9+\\-._]*@[0-9a-zA-Z,]*$', '^abb,.*', '^abilis,.*', '^abracon,.*', '^abt,.*', '^acbel,.*', '^acer,.*', '^acme,.*', '^actions,.*', '^active-semi,.*', '^ad,.*', '^adafruit,.*', '^adapteva,.*', '^adaptrum,.*', '^adh,.*', '^adi,.*', '^advantech,.*', '^aeroflexgaisler,.*', '^aesop,.*', '^airoha,.*', '^al,.*', '^alcatel,.*', '^aldec,.*', '^alfa-network,.*', '^allegro,.*', '^allo,.*', '^allwinner,.*', '^alphascale,.*', '^alps,.*', '^alt,.*', '^altr,.*', '^amarula,.*', '^amazon,.*', '^amcc,.*', '^amd,.*', '^amediatech,.*', '^amlogic,.*', '^ampere,.*', '^ampire,.*', '^ams,.*', '^amstaos,.*', '^analogix,.*', '^anbernic,.*', '^andestech,.*', '^anvo,.*', '^apm,.*', '^apple,.*', '^aptina,.*', '^arasan,.*', '^archermind,.*', '^arctic,.*', '^arcx,.*', '^aries,.*', '^arm,.*', '^armadeus,.*', '^arrow,.*', '^artesyn,.*', '^asahi-kasei,.*', '^asc,.*', '^asix,.*', '^aspeed,.*', '^asrock,.*', '^asus,.*', '^atheros,.*', '^atlas,.*', '^atmel,.*', '^auo,.*', '^auvidea,.*', '^avago,.*', '^avia,.*', '^avic,.*', '^avnet,.*', '^awinic,.*', '^axentia,.*', '^axis,.*', '^azoteq,.*', '^azw,.*', '^baikal,.*', '^bananapi,.*', '^beacon,.*', '^beagle,.*', '^bhf,.*', '^bitmain,.*', '^blutek,.*', '^boe,.*', '^bosch,.*', '^boundary,.*', '^brcm,.*', '^broadmobi,.*', '^bsh,.*', '^bticino,.*', '^buffalo,.*', '^bur,.*', '^bytedance,.*', '^calamp,.*', '^calaosystems,.*', '^calxeda,.*', '^canaan,.*', '^caninos,.*', '^capella,.*', '^cascoda,.*', '^catalyst,.*', '^cavium,.*', '^cdns,.*', '^cdtech,.*', '^cellwise,.*', '^ceva,.*', '^chargebyte,.*', '^checkpoint,.*', '^chefree,.*', '^chipidea,.*', '^chipone,.*', '^chipspark,.*', '^chongzhou,.*', '^chrontel,.*', '^chrp,.*', '^chunghwa,.*', '^chuwi,.*', '^ciaa,.*', '^cirrus,.*', '^cisco,.*', '^clockwork,.*', '^cloos,.*', '^cloudengines,.*', '^cnm,.*', '^cnxt,.*', '^colorfly,.*', '^compulab,.*', '^congatec,.*', '^coreriver,.*', '^corpro,.*', '^cortina,.*', '^cosmic,.*', '^crane,.*', '^creative,.*', '^crystalfontz,.*', '^csky,.*', '^csq,.*', '^ctera,.*', '^ctu,.*', '^cubietech,.*', '^cui,.*', '^cypress,.*', '^cyx,.*', '^cznic,.*', '^dallas,.*', '^dataimage,.*', '^davicom,.*', '^dell,.*', '^delta,.*', '^densitron,.*', '^denx,.*', '^devantech,.*', '^dfi,.*', '^dh,.*', '^difrnce,.*', '^digi,.*', '^digilent,.*', '^diodes,.*', '^dioo,.*', '^dlc,.*', '^dlg,.*', '^dlink,.*', '^dmo,.*', '^domintech,.*', '^dongwoon,.*', '^dptechnics,.*', '^dragino,.*', '^ds,.*', '^dserve,.*', '^dynaimage,.*', '^ea,.*', '^ebang,.*', '^ebbg,.*', '^ebs-systart,.*', '^ebv,.*', '^eckelmann,.*', '^edgeble,.*', '^edimax,.*', '^edt,.*', '^ees,.*', '^eeti,.*', '^einfochips,.*', '^eink,.*', '^elan,.*', '^element14,.*', '^elgin,.*', '^elida,.*', '^elimo,.*', '^elpida,.*', '^embedfire,.*', '^embest,.*', '^emlid,.*', '^emmicro,.*', '^empire-electronix,.*', '^emtrion,.*', '^enclustra,.*', '^endless,.*', '^ene,.*', '^energymicro,.*', '^engicam,.*', '^engleder,.*', '^epcos,.*', '^epfl,.*', '^epson,.*', '^esp,.*', '^est,.*', '^ettus,.*', '^eukrea,.*', '^everest,.*', '^everspin,.*', '^evervision,.*', '^exar,.*', '^excito,.*', '^exegin,.*', '^ezchip,.*', '^facebook,.*', '^fairphone,.*', '^faraday,.*', '^fastrax,.*', '^fcs,.*', '^feixin,.*', '^feiyang,.*', '^fii,.*', '^firefly,.*', '^focaltech,.*', '^forlinx,.*', '^frida,.*', '^friendlyarm,.*', '^fsl,.*', '^fujitsu,.*', '^fxtec,.*', '^gardena,.*', '^gateworks,.*', '^gcw,.*', '^ge,.*', '^geekbuying,.*', '^gef,.*', '^gemei,.*', '^genesys,.*', '^geniatech,.*', '^giantec,.*', '^giantplus,.*', '^globalscale,.*', '^globaltop,.*', '^gmt,.*', '^goldelico,.*', '^goodix,.*', '^google,.*', '^gplus,.*', '^grinn,.*', '^grmn,.*', '^gumstix,.*', '^gw,.*', '^hannstar,.*', '^haochuangyi,.*', '^haoyu,.*', '^hardkernel,.*', '^hechuang,.*', '^hideep,.*', '^himax,.*', '^hirschmann,.*', '^hisi,.*', '^hisilicon,.*', '^hit,.*', '^hitex,.*', '^holt,.*', '^holtek,.*', '^honestar,.*', '^honeywell,.*', '^hoperun,.*', '^hp,.*', '^hpe,.*', '^hsg,.*', '^huawei,.*', '^hugsun,.*', '^hwacom,.*', '^hxt,.*', '^hycon,.*', '^hydis,.*', '^hynitron,.*', '^hynix,.*', '^hyundai,.*', '^i2se,.*', '^ibm,.*', '^icplus,.*', '^idt,.*', '^ifi,.*', '^ilitek,.*', '^imagis,.*', '^img,.*', '^imi,.*', '^incircuit,.*', '^indiedroid,.*', '^inet-tek,.*', '^infineon,.*', '^inforce,.*', '^ingenic,.*', '^ingrasys,.*', '^injoinic,.*', '^innocomm,.*', '^innolux,.*', '^inside-secure,.*', '^insignal,.*', '^inspur,.*', '^intel,.*', '^intercontrol,.*', '^invensense,.*', '^inventec,.*', '^inversepath,.*', '^iom,.*', '^irondevice,.*', '^isee,.*', '^isil,.*', '^issi,.*', '^ite,.*', '^itead,.*', '^itian,.*', '^ivo,.*', '^iwave,.*', '^jadard,.*', '^jdi,.*', '^jedec,.*', '^jesurun,.*', '^jethome,.*', '^jianda,.*', '^joz,.*', '^kam,.*', '^karo,.*', '^keithkoep,.*', '^keymile,.*', '^khadas,.*', '^kiebackpeter,.*', '^kinetic,.*', '^kingdisplay,.*', '^kingnovel,.*', '^kionix,.*', '^kobo,.*', '^kobol,.*', '^koe,.*', '^kontron,.*', '^kosagi,.*', '^kvg,.*', '^kyo,.*', '^lacie,.*', '^laird,.*', '^lamobo,.*', '^lantiq,.*', '^lattice,.*', '^lctech,.*', '^leadtek,.*', '^leez,.*', '^lego,.*', '^lemaker,.*', '^lenovo,.*', '^lg,.*', '^lgphilips,.*', '^libretech,.*', '^licheepi,.*', '^linaro,.*', '^lineartechnology,.*', '^linksprite,.*', '^linksys,.*', '^linutronix,.*', '^linux,.*', '^linx,.*', '^liteon,.*', '^litex,.*', '^lltc,.*', '^logicpd,.*', '^logictechno,.*', '^longcheer,.*', '^lontium,.*', '^loongmasses,.*', '^loongson,.*', '^lsi,.*', '^lunzn,.*', '^lwn,.*', '^lxa,.*', '^m5stack,.*', '^macnica,.*', '^mantix,.*', '^mapleboard,.*', '^marvell,.*', '^maxbotix,.*', '^maxim,.*', '^maxlinear,.*', '^mbvl,.*', '^mcube,.*', '^meas,.*', '^mecer,.*', '^mediatek,.*', '^megachips,.*', '^mele,.*', '^melexis,.*', '^melfas,.*', '^mellanox,.*', '^memsensing,.*', '^memsic,.*', '^menlo,.*', '^mentor,.*', '^meraki,.*', '^merrii,.*', '^methode,.*', '^micrel,.*', '^microchip,.*', '^microcrystal,.*', '^micron,.*', '^microsoft,.*', '^microsys,.*', '^mikroe,.*', '^mikrotik,.*', '^miniand,.*', '^minix,.*', '^miramems,.*', '^mitsubishi,.*', '^mixel,.*', '^miyoo,.*', '^mntre,.*', '^modtronix,.*', '^moortec,.*', '^mosaixtech,.*', '^motorcomm,.*', '^motorola,.*', '^moxa,.*', '^mpl,.*', '^mps,.*', '^mqmaker,.*', '^mrvl,.*', '^mscc,.*', '^msi,.*', '^mstar,.*', '^mti,.*', '^multi-inno,.*', '^mundoreader,.*', '^murata,.*', '^mxic,.*', '^mxicy,.*', '^myir,.*', '^national,.*', '^nec,.*', '^neonode,.*', '^netgear,.*', '^netlogic,.*', '^netron-dy,.*', '^netronix,.*', '^netxeon,.*', '^neweast,.*', '^newhaven,.*', '^newvision,.*', '^nexbox,.*', '^nextthing,.*', '^ni,.*', '^nintendo,.*', '^nlt,.*', '^nokia,.*', '^nordic,.*', '^novatek,.*', '^novtech,.*', '^nutsboard,.*', '^nuvoton,.*', '^nvd,.*', '^nvidia,.*', '^nxp,.*', '^oceanic,.*', '^ocs,.*', '^oct,.*', '^okaya,.*', '^oki,.*', '^olimex,.*', '^olpc,.*', '^oneplus,.*', '^onie,.*', '^onion,.*', '^onnn,.*', '^ontat,.*', '^opalkelly,.*', '^openailab,.*', '^opencores,.*', '^openembed,.*', '^openpandora,.*', '^openrisc,.*', '^option,.*', '^oranth,.*', '^orisetech,.*', '^ortustech,.*', '^osddisplays,.*', '^osmc,.*', '^ouya,.*', '^overkiz,.*', '^ovti,.*', '^oxsemi,.*', '^ozzmaker,.*', '^panasonic,.*', '^parade,.*', '^parallax,.*', '^pda,.*', '^pericom,.*', '^pervasive,.*', '^phicomm,.*', '^phytec,.*', '^picochip,.*', '^pine64,.*', '^pineriver,.*', '^pixcir,.*', '^plantower,.*', '^plathome,.*', '^plda,.*', '^plx,.*', '^ply,.*', '^pni,.*', '^pocketbook,.*', '^polaroid,.*', '^polyhex,.*', '^portwell,.*', '^poslab,.*', '^pov,.*', '^powertip,.*', '^powervr,.*', '^primux,.*', '^probox2,.*', '^prt,.*', '^pulsedlight,.*', '^purism,.*', '^qca,.*', '^qcom,.*', '^qemu,.*', '^qi,.*', '^qiaodian,.*', '^qihua,.*', '^qishenglong,.*', '^qnap,.*', '^quanta,.*', '^radxa,.*', '^raidsonic,.*', '^ralink,.*', '^ramtron,.*', '^raspberrypi,.*', '^raydium,.*', '^rda,.*', '^realtek,.*', '^remarkable,.*', '^renesas,.*', '^rervision,.*', '^revotics,.*', '^rex,.*', '^richtek,.*', '^ricoh,.*', '^rikomagic,.*', '^riot,.*', '^riscv,.*', '^rockchip,.*', '^rocktech,.*', '^rohm,.*', '^ronbo,.*', '^roofull,.*', '^roseapplepi,.*', '^samsung,.*', '^samtec,.*', '^sancloud,.*', '^sandisk,.*', '^satoz,.*', '^sbs,.*', '^schindler,.*', '^seagate,.*', '^seeed,.*', '^seirobotics,.*', '^semtech,.*', '^senseair,.*', '^sensirion,.*', '^sensortek,.*', '^sercomm,.*', '^sff,.*', '^sgd,.*', '^sgmicro,.*', '^sgx,.*', '^sharp,.*', '^shift,.*', '^shimafuji,.*', '^shineworld,.*', '^shiratech,.*', '^si-en,.*', '^si-linux,.*', '^siemens,.*', '^sifive,.*', '^sigma,.*', '^sii,.*', '^sil,.*', '^silabs,.*', '^silan,.*', '^silead,.*', '^silergy,.*', '^silex-insight,.*', '^siliconfile,.*', '^siliconmitus,.*', '^silvaco,.*', '^simtek,.*', '^sinlinx,.*', '^sinovoip,.*', '^sinowealth,.*', '^sipeed,.*', '^sirf,.*', '^sis,.*', '^sitronix,.*', '^skov,.*', '^skyworks,.*', '^smartlabs,.*', '^smsc,.*', '^snps,.*', '^sochip,.*', '^socionext,.*', '^solidrun,.*', '^solomon,.*', '^sony,.*', '^sourceparts,.*', '^spansion,.*', '^sparkfun,.*', '^spinalhdl,.*', '^sprd,.*', '^square,.*', '^ssi,.*', '^sst,.*', '^sstar,.*', '^st,.*', '^st-ericsson,.*', '^starfive,.*', '^starry,.*', '^startek,.*', '^starterkit,.*', '^ste,.*', '^stericsson,.*', '^storlink,.*', '^storm,.*', '^storopack,.*', '^summit,.*', '^sunchip,.*', '^sundance,.*', '^sunplus,.*', '^supermicro,.*', '^swir,.*', '^syna,.*', '^synology,.*', '^synopsys,.*', '^tbs,.*', '^tbs-biometrics,.*', '^tcg,.*', '^tcl,.*', '^tcs,.*', '^tdo,.*', '^team-source-display,.*', '^technexion,.*', '^technologic,.*', '^techstar,.*', '^teejet,.*', '^teltonika,.*', '^tempo,.*', '^terasic,.*', '^tesla,.*', '^tfc,.*', '^thead,.*', '^thine,.*', '^thingyjp,.*', '^thundercomm,.*', '^thwc,.*', '^ti,.*', '^tianma,.*', '^tlm,.*', '^tmt,.*', '^topeet,.*', '^topic,.*', '^toppoly,.*', '^topwise,.*', '^toradex,.*', '^toshiba,.*', '^toumaz,.*', '^tpk,.*', '^tplink,.*', '^tpo,.*', '^tq,.*', '^traverse,.*', '^tronfy,.*', '^tronsmart,.*', '^truly,.*', '^tsd,.*', '^tyan,.*', '^u-blox,.*', '^u-boot,.*', '^ubnt,.*', '^ucrobotics,.*', '^udoo,.*', '^ufispace,.*', '^ugoos,.*', '^uniwest,.*', '^upisemi,.*', '^urt,.*', '^usi,.*', '^utoo,.*', '^v3,.*', '^vaisala,.*', '^vamrs,.*', '^variscite,.*', '^vdl,.*', '^vertexcom,.*', '^via,.*', '^vialab,.*', '^vicor,.*', '^videostrong,.*', '^virtio,.*', '^virtual,.*', '^vishay,.*', '^visionox,.*', '^vitesse,.*', '^vivante,.*', '^vivax,.*', '^vocore,.*', '^voipac,.*', '^vot,.*', '^vxt,.*', '^wanchanglong,.*', '^wand,.*', '^waveshare,.*', '^wd,.*', '^we,.*', '^welltech,.*', '^wetek,.*', '^wexler,.*', '^whwave,.*', '^wi2wi,.*', '^widora,.*', '^wiligear,.*', '^willsemi,.*', '^winbond,.*', '^wingtech,.*', '^winlink,.*', '^winstar,.*', '^wirelesstag,.*', '^wits,.*', '^wlf,.*', '^wm,.*', '^wobo,.*', '^x-powers,.*', '^xen,.*', '^xes,.*', '^xiaomi,.*', '^xillybus,.*', '^xingbangda,.*', '^xinpeng,.*', '^xiphera,.*', '^xlnx,.*', '^xnano,.*', '^xunlong,.*', '^xylon,.*', '^yadro,.*', '^yamaha,.*', '^yes-optoelectronics,.*', '^yic,.*', '^yiming,.*', '^ylm,.*', '^yna,.*', '^yones-toptech,.*', '^ys,.*', '^ysoft,.*', '^zarlink,.*', '^zealz,.*', '^zeitec,.*', '^zidoo,.*', '^zii,.*', '^zinitix,.*', '^zkmagic,.*', '^zte,.*', '^zyxel,.*', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/vendor-prefixes.yaml#
+/home/root/fdt/fdt: /wdt-reboot: failed to match any schema with compatible: ['wdt-reboot']

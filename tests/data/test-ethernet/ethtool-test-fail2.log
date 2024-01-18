@@ -1,0 +1,215 @@
+****************************************************************
+ 
+                         Running ethtool
+ 
+****************************************************************
+INFO: Detected following [ 1260.207652] smsc95xx 2-1.1:1.0 enu1u1: Link is Down
+ethernet interfaces via ip command :
+0: end0
+1: enu1u1
+ 
+INFO: Br[ 1260.221688] smsc95xx 2-1.1:1.0 enu1u1: hardware isn't capable of remote wakeup
+inging down all ethernet interfaces using ifconfig
+ifconfig end0 down
+ifconfig enu1u1 down
+ 
+****************************************************************
+ 
+ 
+INFO: Bringing up ethernet interface: end0
+[ 1260.300986] Qualcomm Atheros AR8031/AR8033 30be0000.ethernet-1:00: attached PHY driver (mii_bus:phy_addr=30be0000.ethernet-1:00, irq=POLL)
+[ 1272.604545] fec 30be0000.ethernet end0: Link is Up - 100Mbps/Full - flow control rx/tx
+[ 1272.612557] IPv6: ADDRCONF(NETDEV_CHANGE): end0: link becomes ready
+INFO: Running "ethtool end0 " :
+Settings for end0:
+        Supported ports: [ TP    MII ]
+        Supported link modes:   10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Supported pause frame use: Symmetric
+        Supports auto-negotiation: Yes
+        Supported FEC modes: Not reported
+        Advertised link modes:  10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Advertised pause frame use: Symmetric
+        Advertised auto-negotiation: Yes
+        Advertised FEC modes: Not reported
+        Link partner advertised link modes:  10baseT/Half 10baseT/Full
+                                             100baseT/Half 100baseT/Full
+        Link partner advertised pause frame use: Symmetric Receive-only
+        Link partner advertised auto-negotiation: Yes
+        Link partner advertised FEC modes: Not reported
+        Speed: 100Mb/s
+        Duplex: Full
+        Auto-negotiation: on
+        Port: Twisted Pair
+        PHYAD: 0
+        Transceiver: external
+        MDI-X: off (auto)
+        Supports Wake-on: g
+        Wake-on: d
+        Link detected: yes
+ 
+ 
+INFO: Ethernet interface end0 supports ethtool self test.
+INFO: Running ethtool -t end0 :
+The test result is FAIL
+The test extra info:
+ 1. Carrier                      0
+ 2. PHY dev is present           0
+ 3. PHY internal loopback, enab  0
+ 4. PHY internal loopback, UDP   0
+ 5. PHY internal loopback, MTU   0
+ 6. PHY internal loopback, TCP   0
+ 7. PHY internal loopback, disa  0
+ 
+ 
+ 
+INFO: Link detected on end0
+INFO: Running ip address show dev end0 :
+3: end0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq qlen 1000
+    link/ether 52:a2:74:1a:4e:4b brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.143/24 brd 192.168.1.255 scope global dynamic end0
+       valid_lft 86393sec preferred_lft 86393sec
+    inet6 fe80::50a2:74ff:fe1a:4e4b/64 scope link
+       valid_lft forever preferred_lft forever
+ 
+ 
+INFO: end0 support DHCP
+INFO: Running ip route show dev end0 :
+default via 192.168.1.254 dev end0  src 192.168.1.143  metric 10
+192.168.1.0/24 dev end0 scope link  src 192.168.1.143  metric 10
+192.168.1.254 dev end0 scope link  src 192.168.1.143  metric 10
+ 
+ 
+INFO: Router/Gateway IP for end0 : 192.168.1.254
+INFO: Running ifconfig end0 up :
+[ 1280.795344] fec 30be0000.ethernet end0: Link is Down
+[ 1282.844129] fec 30be0000.ethernet end0: Link is Up - 100Mbps/Full - flow control rx/tx
+INFO: Running ping -w 10000 -c 3 -I end0 192.168.1.254 :
+PING 192.168.1.254 (192.168.1.254): 56 data bytes
+64 bytes from 192.168.1.254: seq=0 ttl=64 time=1.178 ms
+64 bytes from 192.168.1.254: seq=1 ttl=64 time=1.132 ms
+64 bytes from 192.168.1.254: seq=2 ttl=64 time=1.079 ms
+ 
+--- 192.168.1.254 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 1.079/1.129/1.178 ms
+ 
+ 
+INFO: Ping to router/gateway[192.168.1.254] for end0 is successful
+INFO: Running ping -w 10000 -c 3 -I end0 www.arm.com :
+PING www.arm.com (23.3.70.177): 56 data bytes
+64 bytes from 23.3.70.177: seq=0 ttl=59 time=3.767 ms
+64 bytes from 23.3.70.177: seq=1 ttl=59 time=3.625 ms
+64 bytes from 23.3.70.177: seq=2 ttl=59 time=3.597 ms
+ 
+--- www.arm.com ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 3.597/3.663/3.767 ms
+ 
+ 
+INFO: Ping to www.arm.com is successful
+ 
+****************************************************************
+ 
+ 
+INFO: Bringing down ethernet interface: end0
+ 
+INFO: Bringing up ethernet interface: enu1u1
+[ 1324.456937] smsc95xx 2-1.1:1.0 enu1u1: hardware isn't capable of remote wakeup
+[ 1324.459895] smsc95xx 2-1.1:1.0 enu1u1: Link is Down
+[ 1325.970426] IPv6: ADDRCONF(NETDEV_CHANGE): enu1u1: link becomes ready
+[ 1325.976924] smsc95xx 2-1.1:1.0 enu1u1: Link is Up - 100Mbps/Full - flow control off
+INFO: Running "ethtool enu1u1 " :
+Settings for enu1u1:
+        Supported ports: [ TP    MII ]
+        Supported link modes:   10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+        Supported pause frame use: Symmetric Receive-only
+        Supports auto-negotiation: Yes
+        Supported FEC modes: Not reported
+        Advertised link modes:  10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+        Advertised pause frame use: No
+        Advertised auto-negotiation: Yes
+        Advertised FEC modes: Not reported
+        Link partner advertised link modes:  10baseT/Half 10baseT/Full
+                                             100baseT/Half 100baseT/Full
+        Link partner advertised pause frame use: Symmetric Receive-only
+        Link partner advertised auto-negotiation: Yes
+        Link partner advertised FEC modes: Not reported
+        Speed: 100Mb/s
+        Duplex: Full
+        Auto-negotiation: on
+        Port: Twisted Pair
+        PHYAD: 1
+        Transceiver: internal
+        MDI-X: Unknown
+        Supports Wake-on: pumbag
+        Wake-on: d
+        Current message level: 0x00000007 (7)
+                               drv probe link
+        Link detected: yes
+ 
+ 
+INFO: Ethernet interface enu1u1 supports ethtool self test.
+INFO: Running ethtool -t enu1u1 :
+The test result is FAIL
+The test extra info:
+ 1. Carrier                      0
+ 2. PHY dev is present           0
+ 3. PHY internal loopback, enab  0
+ 4. PHY internal loopback, UDP   0
+ 5. PHY internal loopback, MTU   0
+ 6. PHY internal loopback, TCP   0
+ 7. PHY internal loopback, disa  0
+ 
+ 
+ 
+INFO: Link detected on enu1u1
+INFO: Running ip address show dev enu1u1 :
+4: enu1u1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel qlen 1000
+    link/ether 00:01:c0:2b:7b:85 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.144/24 brd 192.168.1.255 scope global dynamic enu1u1
+       valid_lft 86382sec preferred_lft 86382sec
+    inet6 fe80::201:c0ff:fe2b:7b85/64 scope link
+       valid_lft forever preferred_lft forever
+ 
+ 
+INFO: enu1u1 support DHCP
+INFO: Running ip route show dev enu1u1 :
+default via 192.168.1.254 dev enu1u1  src 192.168.1.144  metric 10
+192.168.1.0/24 dev enu1u1 scope link  src 192.168.1.144  metric 10
+192.168.1.254 dev enu1u1 scope link  src 192.168.1.144  metric 10
+ 
+ 
+INFO: Router/Gateway IP for enu1u1 : 192.168.1.254
+INFO: Running ifconfig enu1u1 up :
+INFO: Running ping -w 10000 -c 3 -I enu1u1 192.168.1.254 :
+PING 192.168.1.254 (192.168.1.254): 56 data bytes
+64 bytes from 192.168.1.254: seq=0 ttl=64 time=0.928 ms
+64 bytes from 192.168.1.254: seq=1 ttl=64 time=0.872 ms
+64 bytes from 192.168.1.254: seq=2 ttl=64 time=0.792 ms
+ 
+--- 192.168.1.254 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.792/0.864/0.928 ms
+ 
+ 
+INFO: Ping to router/gateway[192.168.1.254] for enu1u1 is successful
+INFO: Running ping -w 10000 -c 3 -I enu1u1 www.arm.com :
+PING www.arm.com (23.3.70.177): 56 data bytes
+64 bytes from 23.3.70.177: seq=0 ttl=59 time=4.491 ms
+64 bytes from 23.3.70.177: seq=1 ttl=59 time=4.415 ms
+64 bytes from 23.3.70.177: seq=2 ttl=59 time=4.492 ms
+ 
+--- www.arm.com ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 4.415/4.466/4.492 ms
+ 
+ 
+INFO: Ping to www.arm.com is failed
+ 
+****************************************************************

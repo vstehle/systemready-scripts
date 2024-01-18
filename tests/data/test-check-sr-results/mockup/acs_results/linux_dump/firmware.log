@@ -1,0 +1,2272 @@
+/sys/firmware:
+total 0
+drwxr-xr-x 3 root root     0 Mar  3 09:49 devicetree
+drwxr-xr-x 4 root root     0 Mar  3 09:49 dmi
+drwxr-xr-x 4 root root     0 Mar  3 09:49 efi
+-r-------- 1 root root 40721 Mar  3 09:49 fdt
+
+/sys/firmware/devicetree:
+total 0
+drwxr-xr-x 27 root root 0 Mar  3 09:49 base
+
+/sys/firmware/devicetree/base:
+total 0
+-r--r--r--  1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r--  1 root root  4 Mar  3 09:49 #size-cells
+drwxr-xr-x  2 root root  0 Mar  3 09:49 __symbols__
+drwxr-xr-x  2 root root  0 Mar  3 09:49 aliases
+drwxr-xr-x  5 root root  0 Mar  3 09:49 binman
+drwxr-xr-x  2 root root  0 Mar  3 09:49 chosen
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-ext1
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-ext2
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-ext3
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-ext4
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-osc-24m
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-osc-32k
+-r--r--r--  1 root root 57 Mar  3 09:49 compatible
+drwxr-xr-x  7 root root  0 Mar  3 09:49 cpus
+drwxr-xr-x  3 root root  0 Mar  3 09:49 firmware
+-r--r--r--  1 root root  4 Mar  3 09:49 interrupt-parent
+drwxr-xr-x  2 root root  0 Mar  3 09:49 memory
+-r--r--r--  1 root root 23 Mar  3 09:49 model
+-r--r--r--  1 root root  1 Mar  3 09:49 name
+drwxr-xr-x  5 root root  0 Mar  3 09:49 opp-table
+drwxr-xr-x  2 root root  0 Mar  3 09:49 pmu
+drwxr-xr-x  2 root root  0 Mar  3 09:49 psci
+drwxr-xr-x  2 root root  0 Mar  3 09:49 regulator-usdhc2
+drwxr-xr-x  2 root root  0 Mar  3 09:49 regulator-usdhc2-vmmc
+drwxr-xr-x  2 root root  0 Mar  3 09:49 regulator-usdhc2_1v8
+drwxr-xr-x 11 root root  0 Mar  3 09:49 soc@0
+drwxr-xr-x  3 root root  0 Mar  3 09:49 thermal-zones
+drwxr-xr-x  2 root root  0 Mar  3 09:49 timer
+drwxr-xr-x  2 root root  0 Mar  3 09:49 usbphynop1
+drwxr-xr-x  2 root root  0 Mar  3 09:49 usbphynop2
+drwxr-xr-x  2 root root  0 Mar  3 09:49 wdt-reboot
+
+/sys/firmware/devicetree/base/__symbols__:
+total 0
+-r--r--r-- 1 root root 12 Mar  3 09:49 A53_0
+-r--r--r-- 1 root root 12 Mar  3 09:49 A53_1
+-r--r--r-- 1 root root 12 Mar  3 09:49 A53_2
+-r--r--r-- 1 root root 12 Mar  3 09:49 A53_3
+-r--r--r-- 1 root root 16 Mar  3 09:49 A53_L2
+-r--r--r-- 1 root root 11 Mar  3 09:49 a53_opp_table
+-r--r--r-- 1 root root 20 Mar  3 09:49 aips1
+-r--r--r-- 1 root root 20 Mar  3 09:49 aips2
+-r--r--r-- 1 root root 20 Mar  3 09:49 aips3
+-r--r--r-- 1 root root 20 Mar  3 09:49 aips4
+-r--r--r-- 1 root root 36 Mar  3 09:49 anatop
+-r--r--r-- 1 root root 36 Mar  3 09:49 atf_blob
+-r--r--r-- 1 root root  8 Mar  3 09:49 binman
+-r--r--r-- 1 root root 34 Mar  3 09:49 blob_1
+-r--r--r-- 1 root root 34 Mar  3 09:49 blob_2
+-r--r--r-- 1 root root 34 Mar  3 09:49 blob_3
+-r--r--r-- 1 root root 34 Mar  3 09:49 blob_4
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck1_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck2_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck3_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck4_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck5_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck6_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck7_reg
+-r--r--r-- 1 root root 58 Mar  3 09:49 buck8_reg
+-r--r--r-- 1 root root 46 Mar  3 09:49 clk
+-r--r--r-- 1 root root 12 Mar  3 09:49 clk_ext1
+-r--r--r-- 1 root root 12 Mar  3 09:49 clk_ext2
+-r--r--r-- 1 root root 12 Mar  3 09:49 clk_ext3
+-r--r--r-- 1 root root 12 Mar  3 09:49 clk_ext4
+-r--r--r-- 1 root root 39 Mar  3 09:49 cpu_alert0
+-r--r--r-- 1 root root 39 Mar  3 09:49 cpu_crit0
+-r--r--r-- 1 root root 50 Mar  3 09:49 cpu_speed_grade
+-r--r--r-- 1 root root 36 Mar  3 09:49 crypto
+-r--r--r-- 1 root root 34 Mar  3 09:49 ddrc
+-r--r--r-- 1 root root 53 Mar  3 09:49 dispmix_pd
+-r--r--r-- 1 root root 31 Mar  3 09:49 dma_apbh
+-r--r--r-- 1 root root 33 Mar  3 09:49 ecspi1
+-r--r--r-- 1 root root 33 Mar  3 09:49 ecspi2
+-r--r--r-- 1 root root 33 Mar  3 09:49 ecspi3
+-r--r--r-- 1 root root 58 Mar  3 09:49 ethphy0
+-r--r--r-- 1 root root 38 Mar  3 09:49 fec1
+-r--r--r-- 1 root root 36 Mar  3 09:49 fip_blob
+-r--r--r-- 1 root root 33 Mar  3 09:49 flexspi
+-r--r--r-- 1 root root 37 Mar  3 09:49 gic
+-r--r--r-- 1 root root 33 Mar  3 09:49 gpc
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio1
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio2
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio3
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio4
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio5
+-r--r--r-- 1 root root 32 Mar  3 09:49 gpmi
+-r--r--r-- 1 root root 40 Mar  3 09:49 gpr
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c1
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c2
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c3
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c4
+-r--r--r-- 1 root root 37 Mar  3 09:49 iomuxc
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo1_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo2_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo3_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo4_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo5_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo6_reg
+-r--r--r-- 1 root root 57 Mar  3 09:49 ldo7_reg
+-r--r--r-- 1 root root 46 Mar  3 09:49 micfil
+-r--r--r-- 1 root root 53 Mar  3 09:49 mipi_pd
+-r--r--r-- 1 root root 37 Mar  3 09:49 mu
+-r--r--r-- 1 root root 12 Mar  3 09:49 name
+-r--r--r-- 1 root root 35 Mar  3 09:49 ocotp
+-r--r--r-- 1 root root 15 Mar  3 09:49 osc_24m
+-r--r--r-- 1 root root 15 Mar  3 09:49 osc_32k
+-r--r--r-- 1 root root 41 Mar  3 09:49 pca9555
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_gpu
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_gpumix
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_hsiomix
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_otg1
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_otg2
+-r--r--r-- 1 root root 52 Mar  3 09:49 pgc_pcie
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_fec1
+-r--r--r-- 1 root root 49 Mar  3 09:49 pinctrl_flexspi0
+-r--r--r-- 1 root root 44 Mar  3 09:49 pinctrl_hog
+-r--r--r-- 1 root root 46 Mar  3 09:49 pinctrl_hog_1
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_i2c1
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_i2c2
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_i2c3
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_i2c4
+-r--r--r-- 1 root root 45 Mar  3 09:49 pinctrl_pmic
+-r--r--r-- 1 root root 47 Mar  3 09:49 pinctrl_typec1
+-r--r--r-- 1 root root 46 Mar  3 09:49 pinctrl_uart3
+-r--r--r-- 1 root root 46 Mar  3 09:49 pinctrl_uart4
+-r--r--r-- 1 root root 47 Mar  3 09:49 pinctrl_usdhc2
+-r--r--r-- 1 root root 53 Mar  3 09:49 pinctrl_usdhc2_100mhz
+-r--r--r-- 1 root root 53 Mar  3 09:49 pinctrl_usdhc2_200mhz
+-r--r--r-- 1 root root 51 Mar  3 09:49 pinctrl_usdhc2_gpio
+-r--r--r-- 1 root root 47 Mar  3 09:49 pinctrl_usdhc3
+-r--r--r-- 1 root root 53 Mar  3 09:49 pinctrl_usdhc3_100mhz
+-r--r--r-- 1 root root 53 Mar  3 09:49 pinctrl_usdhc3_200mhz
+-r--r--r-- 1 root root 41 Mar  3 09:49 ptn5110
+-r--r--r-- 1 root root 33 Mar  3 09:49 pwm1
+-r--r--r-- 1 root root 33 Mar  3 09:49 pwm2
+-r--r--r-- 1 root root 33 Mar  3 09:49 pwm3
+-r--r--r-- 1 root root 33 Mar  3 09:49 pwm4
+-r--r--r-- 1 root root 23 Mar  3 09:49 reg_usdhc2_vmmc
+-r--r--r-- 1 root root 22 Mar  3 09:49 reg_usdhc2_vqmmc
+-r--r--r-- 1 root root 18 Mar  3 09:49 reg_vusb_5v
+-r--r--r-- 1 root root 33 Mar  3 09:49 sai1
+-r--r--r-- 1 root root 33 Mar  3 09:49 sai2
+-r--r--r-- 1 root root 33 Mar  3 09:49 sai3
+-r--r--r-- 1 root root 33 Mar  3 09:49 sai5
+-r--r--r-- 1 root root 33 Mar  3 09:49 sai6
+-r--r--r-- 1 root root 44 Mar  3 09:49 sdma1
+-r--r--r-- 1 root root 44 Mar  3 09:49 sdma2
+-r--r--r-- 1 root root 44 Mar  3 09:49 sdma3
+-r--r--r-- 1 root root 44 Mar  3 09:49 sec_jr0
+-r--r--r-- 1 root root 44 Mar  3 09:49 sec_jr1
+-r--r--r-- 1 root root 44 Mar  3 09:49 sec_jr2
+-r--r--r-- 1 root root 34 Mar  3 09:49 snvs
+-r--r--r-- 1 root root 48 Mar  3 09:49 snvs_pwrkey
+-r--r--r-- 1 root root 46 Mar  3 09:49 snvs_rtc
+-r--r--r-- 1 root root 35 Mar  3 09:49 spdif1
+-r--r--r-- 1 root root 46 Mar  3 09:49 src
+-r--r--r-- 1 root root 35 Mar  3 09:49 system_counter
+-r--r--r-- 1 root root 33 Mar  3 09:49 tmu
+-r--r--r-- 1 root root 51 Mar  3 09:49 typec1_con
+-r--r--r-- 1 root root 55 Mar  3 09:49 typec1_dr_sw
+-r--r--r-- 1 root root 36 Mar  3 09:49 uart1
+-r--r--r-- 1 root root 36 Mar  3 09:49 uart2
+-r--r--r-- 1 root root 36 Mar  3 09:49 uart3
+-r--r--r-- 1 root root 36 Mar  3 09:49 uart4
+-r--r--r-- 1 root root 38 Mar  3 09:49 uboot_blob
+-r--r--r-- 1 root root 36 Mar  3 09:49 uboot_fdt_blob
+-r--r--r-- 1 root root 47 Mar  3 09:49 usb1_drd_sw
+-r--r--r-- 1 root root 37 Mar  3 09:49 usbmisc1
+-r--r--r-- 1 root root 37 Mar  3 09:49 usbmisc2
+-r--r--r-- 1 root root 33 Mar  3 09:49 usbotg1
+-r--r--r-- 1 root root 33 Mar  3 09:49 usbotg2
+-r--r--r-- 1 root root 12 Mar  3 09:49 usbphynop1
+-r--r--r-- 1 root root 12 Mar  3 09:49 usbphynop2
+-r--r--r-- 1 root root 33 Mar  3 09:49 usdhc1
+-r--r--r-- 1 root root 33 Mar  3 09:49 usdhc2
+-r--r--r-- 1 root root 33 Mar  3 09:49 usdhc3
+-r--r--r-- 1 root root 38 Mar  3 09:49 wdog1
+-r--r--r-- 1 root root 38 Mar  3 09:49 wdog2
+-r--r--r-- 1 root root 38 Mar  3 09:49 wdog3
+
+/sys/firmware/devicetree/base/aliases:
+total 0
+-r--r--r-- 1 root root 38 Mar  3 09:49 ethernet0
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio0
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio1
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio2
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio3
+-r--r--r-- 1 root root 34 Mar  3 09:49 gpio4
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c0
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c1
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c2
+-r--r--r-- 1 root root 33 Mar  3 09:49 i2c3
+-r--r--r-- 1 root root 33 Mar  3 09:49 mmc0
+-r--r--r-- 1 root root 33 Mar  3 09:49 mmc1
+-r--r--r-- 1 root root 33 Mar  3 09:49 mmc2
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root 36 Mar  3 09:49 serial0
+-r--r--r-- 1 root root 36 Mar  3 09:49 serial1
+-r--r--r-- 1 root root 36 Mar  3 09:49 serial2
+-r--r--r-- 1 root root 36 Mar  3 09:49 serial3
+-r--r--r-- 1 root root 33 Mar  3 09:49 spi0
+-r--r--r-- 1 root root 33 Mar  3 09:49 spi1
+-r--r--r-- 1 root root 33 Mar  3 09:49 spi2
+
+/sys/firmware/devicetree/base/binman:
+total 0
+drwxr-xr-x 3 root root 0 Mar  3 09:49 flash
+drwxr-xr-x 3 root root 0 Mar  3 09:49 itb
+-r--r--r-- 1 root root 0 Mar  3 09:49 multiple-images
+-r--r--r-- 1 root root 7 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+drwxr-xr-x 7 root root 0 Mar  3 09:49 u-boot-spl-ddr
+
+/sys/firmware/devicetree/base/binman/flash:
+total 0
+drwxr-xr-x 3 root root 0 Mar  3 09:49 mkimage
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/flash/mkimage:
+total 0
+-r--r--r-- 1 root root 51 Mar  3 09:49 args
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/flash/mkimage/blob:
+total 0
+-r--r--r-- 1 root root 19 Mar  3 09:49 filename
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/itb:
+total 0
+-r--r--r-- 1 root root 11 Mar  3 09:49 filename
+drwxr-xr-x 4 root root  0 Mar  3 09:49 fit
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/itb/fit:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+drwxr-xr-x 3 root root  0 Mar  3 09:49 configurations
+-r--r--r-- 1 root root 40 Mar  3 09:49 description
+-r--r--r-- 1 root root  4 Mar  3 09:49 fit,external-offset
+drwxr-xr-x 6 root root  0 Mar  3 09:49 images
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/itb/fit/configurations:
+total 0
+drwxr-xr-x 2 root root  0 Mar  3 09:49 conf
+-r--r--r-- 1 root root  5 Mar  3 09:49 default
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/itb/fit/configurations/conf:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 description
+-r--r--r-- 1 root root 4 Mar  3 09:49 fdt
+-r--r--r-- 1 root root 6 Mar  3 09:49 firmware
+-r--r--r-- 1 root root 8 Mar  3 09:49 loadables
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/binman/itb/fit/images:
+total 0
+drwxr-xr-x 3 root root 0 Mar  3 09:49 atf
+drwxr-xr-x 3 root root 0 Mar  3 09:49 fdt
+drwxr-xr-x 3 root root 0 Mar  3 09:49 fip
+-r--r--r-- 1 root root 7 Mar  3 09:49 name
+drwxr-xr-x 3 root root 0 Mar  3 09:49 uboot
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/atf:
+total 0
+-r--r--r-- 1 root root  6 Mar  3 09:49 arch
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext
+-r--r--r-- 1 root root  5 Mar  3 09:49 compression
+-r--r--r-- 1 root root 21 Mar  3 09:49 description
+-r--r--r-- 1 root root  4 Mar  3 09:49 entry
+-r--r--r-- 1 root root  4 Mar  3 09:49 load
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  9 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/atf/blob-ext:
+total 0
+-r--r--r-- 1 root root 9 Mar  3 09:49 filename
+-r--r--r-- 1 root root 9 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/fdt:
+total 0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 blob-ext
+-r--r--r-- 1 root root 5 Mar  3 09:49 compression
+-r--r--r-- 1 root root 5 Mar  3 09:49 description
+-r--r--r-- 1 root root 4 Mar  3 09:49 name
+-r--r--r-- 1 root root 8 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/fdt/blob-ext:
+total 0
+-r--r--r-- 1 root root 11 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/fip:
+total 0
+-r--r--r-- 1 root root  6 Mar  3 09:49 arch
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext
+-r--r--r-- 1 root root  5 Mar  3 09:49 compression
+-r--r--r-- 1 root root 21 Mar  3 09:49 description
+-r--r--r-- 1 root root  4 Mar  3 09:49 load
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  9 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/fip/blob-ext:
+total 0
+-r--r--r-- 1 root root 8 Mar  3 09:49 filename
+-r--r--r-- 1 root root 9 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/uboot:
+total 0
+-r--r--r-- 1 root root  6 Mar  3 09:49 arch
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext
+-r--r--r-- 1 root root  5 Mar  3 09:49 compression
+-r--r--r-- 1 root root 16 Mar  3 09:49 description
+-r--r--r-- 1 root root  4 Mar  3 09:49 load
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+-r--r--r-- 1 root root 11 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/binman/itb/fit/images/uboot/blob-ext:
+total 0
+-r--r--r-- 1 root root 17 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 align
+-r--r--r-- 1 root root  4 Mar  3 09:49 align-size
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext@1
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext@2
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext@3
+drwxr-xr-x 2 root root  0 Mar  3 09:49 blob-ext@4
+-r--r--r-- 1 root root 19 Mar  3 09:49 filename
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 pad-byte
+drwxr-xr-x 2 root root  0 Mar  3 09:49 u-boot-spl
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr/blob-ext@1:
+total 0
+-r--r--r-- 1 root root 29 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 size
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr/blob-ext@2:
+total 0
+-r--r--r-- 1 root root 29 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 size
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr/blob-ext@3:
+total 0
+-r--r--r-- 1 root root 29 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 size
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr/blob-ext@4:
+total 0
+-r--r--r-- 1 root root 29 Mar  3 09:49 filename
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 size
+
+/sys/firmware/devicetree/base/binman/u-boot-spl-ddr/u-boot-spl:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 align-end
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/chosen:
+total 0
+-r--r--r-- 1 root root 82 Mar  3 09:49 bootargs
+-r--r--r-- 1 root root  4 Mar  3 09:49 linux,uefi-mmap-desc-size
+-r--r--r-- 1 root root  4 Mar  3 09:49 linux,uefi-mmap-desc-ver
+-r--r--r-- 1 root root  4 Mar  3 09:49 linux,uefi-mmap-size
+-r--r--r-- 1 root root  8 Mar  3 09:49 linux,uefi-mmap-start
+-r--r--r-- 1 root root  8 Mar  3 09:49 linux,uefi-system-table
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root 36 Mar  3 09:49 stdout-path
+
+/sys/firmware/devicetree/base/clock-ext1:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/clock-ext2:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/clock-ext3:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/clock-ext4:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/clock-osc-24m:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 14 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-pre-reloc
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/clock-osc-32k:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-output-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 14 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/cpus:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root 4 Mar  3 09:49 #size-cells
+drwxr-xr-x 2 root root 0 Mar  3 09:49 cpu@0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 cpu@1
+drwxr-xr-x 2 root root 0 Mar  3 09:49 cpu@2
+drwxr-xr-x 2 root root 0 Mar  3 09:49 cpu@3
+drwxr-xr-x 2 root root 0 Mar  3 09:49 l2-cache0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/cpus/cpu@0:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #cooling-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 cpu-supply
+-r--r--r-- 1 root root  4 Mar  3 09:49 device_type
+-r--r--r-- 1 root root  5 Mar  3 09:49 enable-method
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 next-level-cache
+-r--r--r-- 1 root root 12 Mar  3 09:49 nvmem-cell-names
+-r--r--r-- 1 root root  4 Mar  3 09:49 nvmem-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 operating-points-v2
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/cpus/cpu@1:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #cooling-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 device_type
+-r--r--r-- 1 root root  5 Mar  3 09:49 enable-method
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 next-level-cache
+-r--r--r-- 1 root root  4 Mar  3 09:49 operating-points-v2
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/cpus/cpu@2:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #cooling-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 device_type
+-r--r--r-- 1 root root  5 Mar  3 09:49 enable-method
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 next-level-cache
+-r--r--r-- 1 root root  4 Mar  3 09:49 operating-points-v2
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/cpus/cpu@3:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #cooling-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 device_type
+-r--r--r-- 1 root root  5 Mar  3 09:49 enable-method
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 next-level-cache
+-r--r--r-- 1 root root  4 Mar  3 09:49 operating-points-v2
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/cpus/l2-cache0:
+total 0
+-r--r--r-- 1 root root  6 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 10 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/firmware:
+total 0
+-r--r--r-- 1 root root 9 Mar  3 09:49 name
+drwxr-xr-x 2 root root 0 Mar  3 09:49 optee
+
+/sys/firmware/devicetree/base/firmware/optee:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 method
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/memory:
+total 0
+-r--r--r-- 1 root root  7 Mar  3 09:49 device_type
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root 32 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/opp-table:
+total 0
+-r--r--r-- 1 root root 20 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 10 Mar  3 09:49 name
+drwxr-xr-x 2 root root  0 Mar  3 09:49 opp-1200000000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 opp-1600000000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 opp-1800000000
+-r--r--r-- 1 root root  0 Mar  3 09:49 opp-shared
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/opp-table/opp-1200000000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency-ns
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-hz
+-r--r--r-- 1 root root  4 Mar  3 09:49 opp-microvolt
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-supported-hw
+-r--r--r-- 1 root root  0 Mar  3 09:49 opp-suspend
+
+/sys/firmware/devicetree/base/opp-table/opp-1600000000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency-ns
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-hz
+-r--r--r-- 1 root root  4 Mar  3 09:49 opp-microvolt
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-supported-hw
+-r--r--r-- 1 root root  0 Mar  3 09:49 opp-suspend
+
+/sys/firmware/devicetree/base/opp-table/opp-1800000000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-latency-ns
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-hz
+-r--r--r-- 1 root root  4 Mar  3 09:49 opp-microvolt
+-r--r--r-- 1 root root  8 Mar  3 09:49 opp-supported-hw
+-r--r--r-- 1 root root  0 Mar  3 09:49 opp-suspend
+
+/sys/firmware/devicetree/base/pmu:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 16 Mar  3 09:49 interrupt-affinity
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/psci:
+total 0
+-r--r--r-- 1 root root 13 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 method
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/regulator-usdhc2:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 enable-active-high
+-r--r--r-- 1 root root 12 Mar  3 09:49 gpio
+-r--r--r-- 1 root root 17 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root  8 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/regulator-usdhc2-vmmc:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 enable-active-high
+-r--r--r-- 1 root root 12 Mar  3 09:49 gpio
+-r--r--r-- 1 root root 22 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 off-on-delay-us
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root  8 Mar  3 09:49 regulator-name
+-r--r--r-- 1 root root  4 Mar  3 09:49 startup-delay-us
+
+/sys/firmware/devicetree/base/regulator-usdhc2_1v8:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 21 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root  4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 11 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0:
+total 0
+-r--r--r--  1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r--  1 root root  4 Mar  3 09:49 #size-cells
+drwxr-xr-x 28 root root  0 Mar  3 09:49 bus@30000000
+drwxr-xr-x  7 root root  0 Mar  3 09:49 bus@30400000
+drwxr-xr-x 21 root root  0 Mar  3 09:49 bus@30800000
+drwxr-xr-x  6 root root  0 Mar  3 09:49 bus@32c00000
+-r--r--r--  1 root root 11 Mar  3 09:49 compatible
+drwxr-xr-x  2 root root  0 Mar  3 09:49 ddr-pmu@3d800000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 dma-controller@33000000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 interrupt-controller@38800000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 memory-controller@3d400000
+-r--r--r--  1 root root  4 Mar  3 09:49 name
+drwxr-xr-x  2 root root  0 Mar  3 09:49 nand-controller@33002000
+-r--r--r--  1 root root 16 Mar  3 09:49 ranges
+-r--r--r--  1 root root  0 Mar  3 09:49 u-boot,dm-pre-reloc
+-r--r--r--  1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000:
+total 0
+-r--r--r--  1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r--  1 root root  4 Mar  3 09:49 #size-cells
+drwxr-xr-x  2 root root  0 Mar  3 09:49 anatop@30360000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 audio-controller@30080000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 clock-controller@30380000
+-r--r--r--  1 root root 24 Mar  3 09:49 compatible
+drwxr-xr-x  2 root root  0 Mar  3 09:49 dma-controller@302b0000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 dma-controller@302c0000
+drwxr-xr-x  3 root root  0 Mar  3 09:49 efuse@30350000
+drwxr-xr-x  3 root root  0 Mar  3 09:49 gpc@303a0000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpio@30200000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpio@30210000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpio@30220000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpio@30230000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpio@30240000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 iomuxc-gpr@30340000
+-r--r--r--  1 root root  4 Mar  3 09:49 name
+-r--r--r--  1 root root  4 Mar  3 09:49 phandle
+drwxr-xr-x 21 root root  0 Mar  3 09:49 pinctrl@30330000
+-r--r--r--  1 root root 12 Mar  3 09:49 ranges
+-r--r--r--  1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x  2 root root  0 Mar  3 09:49 reset-controller@30390000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 sai@30010000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 sai@30020000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 sai@30030000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 sai@30050000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 sai@30060000
+drwxr-xr-x  4 root root  0 Mar  3 09:49 snvs@30370000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 spdif@30090000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 tmu@30260000
+-r--r--r--  1 root root  0 Mar  3 09:49 u-boot,dm-pre-reloc
+-r--r--r--  1 root root  0 Mar  3 09:49 u-boot,dm-spl
+drwxr-xr-x  2 root root  0 Mar  3 09:49 watchdog@30280000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 watchdog@30290000
+drwxr-xr-x  2 root root  0 Mar  3 09:49 watchdog@302a0000
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/anatop@30360000:
+total 0
+-r--r--r-- 1 root root 25 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/audio-controller@30080000:
+total 0
+-r--r--r-- 1 root root 41 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 40 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 18 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  3 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 48 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 17 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/clock-controller@30380000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #clock-cells
+-r--r--r-- 1 root root 52 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 24 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 17 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-pre-reloc
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/dma-controller@302b0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #dma-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 32 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,sdma-ram-script-name
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/dma-controller@302c0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #dma-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 32 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,sdma-ram-script-name
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/efuse@30350000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 24 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 speed-grade@10
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/efuse@30350000/speed-grade@10:
+total 0
+-r--r--r-- 1 root root 12 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000:
+total 0
+-r--r--r--  1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r--  1 root root 15 Mar  3 09:49 compatible
+-r--r--r--  1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r--  1 root root  4 Mar  3 09:49 interrupt-parent
+-r--r--r--  1 root root  4 Mar  3 09:49 name
+drwxr-xr-x 10 root root  0 Mar  3 09:49 pgc
+-r--r--r--  1 root root  4 Mar  3 09:49 phandle
+-r--r--r--  1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root 4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 4 Mar  3 09:49 name
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@1
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@10
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@11
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@2
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@3
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@4
+drwxr-xr-x 2 root root 0 Mar  3 09:49 power-domain@5
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@0:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@1:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 power-domains
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@10:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 24 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@11:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 power-domains
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@2:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 power-domains
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@3:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 power-domains
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@4:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@5:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #power-domain-cells
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 power-domains
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+-r--r--r-- 1 root root  8 Mar  3 09:49 resets
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpio@30200000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root 16 Mar  3 09:49 gpio-ranges
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpio@30210000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root 16 Mar  3 09:49 gpio-ranges
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpio@30220000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root 16 Mar  3 09:49 gpio-ranges
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpio@30230000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root 16 Mar  3 09:49 gpio-ranges
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/gpio@30240000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root 16 Mar  3 09:49 gpio-ranges
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/iomuxc-gpr@30340000:
+total 0
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000:
+total 0
+-r--r--r-- 1 root root 18 Mar  3 09:49 compatible
+drwxr-xr-x 2 root root  0 Mar  3 09:49 fec1grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 flexspi0grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 hoggrp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 hoggrp-1
+drwxr-xr-x 2 root root  0 Mar  3 09:49 i2c1grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 i2c2grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 i2c3grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 i2c4grp
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+drwxr-xr-x 2 root root  0 Mar  3 09:49 pmicirq
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 typec1grp
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+drwxr-xr-x 2 root root  0 Mar  3 09:49 uart1grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 uart4grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc2grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc2grp100mhz
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc2grp200mhz
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc2grpgpio
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc3grp
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc3grp100mhz
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usdhc3grp200mhz
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/fec1grp:
+total 0
+-r--r--r-- 1 root root 360 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root   8 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/flexspi0grp:
+total 0
+-r--r--r-- 1 root root 144 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  12 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/hoggrp:
+total 0
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/hoggrp-1:
+total 0
+-r--r--r-- 1 root root 72 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/i2c1grp:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/i2c2grp:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/i2c3grp:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/i2c4grp:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/pmicirq:
+total 0
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/typec1grp:
+total 0
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root 10 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/uart1grp:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/uart4grp:
+total 0
+-r--r--r-- 1 root root 96 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc2grp:
+total 0
+-r--r--r-- 1 root root 168 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  10 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root   0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc2grp100mhz:
+total 0
+-r--r--r-- 1 root root 168 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  16 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc2grp200mhz:
+total 0
+-r--r--r-- 1 root root 168 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  16 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc2grpgpio:
+total 0
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root 14 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc3grp:
+total 0
+-r--r--r-- 1 root root 264 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  10 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root   0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc3grp100mhz:
+total 0
+-r--r--r-- 1 root root 264 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  16 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/pinctrl@30330000/usdhc3grp200mhz:
+total 0
+-r--r--r-- 1 root root 264 Mar  3 09:49 fsl,pins
+-r--r--r-- 1 root root  16 Mar  3 09:49 name
+-r--r--r-- 1 root root   4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/reset-controller@30390000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #reset-cells
+-r--r--r-- 1 root root 37 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 17 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/sai@30010000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #sound-dai-cells
+-r--r--r-- 1 root root 22 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/sai@30020000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #sound-dai-cells
+-r--r--r-- 1 root root 22 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/sai@30030000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #sound-dai-cells
+-r--r--r-- 1 root root 22 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/sai@30050000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #sound-dai-cells
+-r--r--r-- 1 root root 22 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/sai@30060000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #sound-dai-cells
+-r--r--r-- 1 root root 22 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/snvs@30370000:
+total 0
+-r--r--r-- 1 root root 35 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 snvs-powerkey
+drwxr-xr-x 2 root root  0 Mar  3 09:49 snvs-rtc-lp
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/snvs@30370000/snvs-powerkey:
+total 0
+-r--r--r-- 1 root root 12 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 20 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 linux,keycode
+-r--r--r-- 1 root root 14 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 regmap
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 wakeup-source
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/snvs@30370000/snvs-rtc-lp:
+total 0
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 24 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 12 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 offset
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 regmap
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/spdif@30090000:
+total 0
+-r--r--r-- 1 root root 58 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 80 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/tmu@30260000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #thermal-sensor-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/watchdog@30280000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/watchdog@30290000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30000000/watchdog@302a0000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 24 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+drwxr-xr-x 2 root root  0 Mar  3 09:49 pwm@30660000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 pwm@30670000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 pwm@30680000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 pwm@30690000
+-r--r--r-- 1 root root 12 Mar  3 09:49 ranges
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 timer@306a0000
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000/pwm@30660000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #pwm-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000/pwm@30670000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #pwm-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000/pwm@30680000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #pwm-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000/pwm@30690000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #pwm-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30400000/timer@306a0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  4 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 17 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 24 Mar  3 09:49 compatible
+drwxr-xr-x 5 root root  0 Mar  3 09:49 crypto@30900000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 dma-controller@30bd0000
+drwxr-xr-x 3 root root  0 Mar  3 09:49 ethernet@30be0000
+drwxr-xr-x 3 root root  0 Mar  3 09:49 i2c@30a20000
+drwxr-xr-x 5 root root  0 Mar  3 09:49 i2c@30a30000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 i2c@30a40000
+drwxr-xr-x 3 root root  0 Mar  3 09:49 i2c@30a50000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 mailbox@30aa0000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 mmc@30b40000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 mmc@30b50000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 mmc@30b60000
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 24 Mar  3 09:49 ranges
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 serial@30860000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 serial@30880000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 serial@30890000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 serial@30a60000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 spi@30820000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 spi@30830000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 spi@30840000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 spi@30bb0000
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/crypto@30900000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 13 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+drwxr-xr-x 2 root root  0 Mar  3 09:49 jr@1000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 jr@2000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 jr@3000
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 12 Mar  3 09:49 ranges
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/crypto@30900000/jr@1000:
+total 0
+-r--r--r-- 1 root root 22 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  3 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/crypto@30900000/jr@2000:
+total 0
+-r--r--r-- 1 root root 22 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  3 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/crypto@30900000/jr@3000:
+total 0
+-r--r--r-- 1 root root 22 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  3 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/dma-controller@30bd0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #dma-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 32 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 24 Mar  3 09:49 fsl,sdma-ram-script-name
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/ethernet@30be0000:
+total 0
+-r--r--r-- 1 root root 24 Mar  3 09:49 assigned-clock-parents
+-r--r--r-- 1 root root 16 Mar  3 09:49 assigned-clock-rates
+-r--r--r-- 1 root root 32 Mar  3 09:49 assigned-clocks
+-r--r--r-- 1 root root 34 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 40 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 30 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 fsl,magic-packet
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,num-rx-queues
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,num-tx-queues
+-r--r--r-- 1 root root 48 Mar  3 09:49 interrupts
+drwxr-xr-x 3 root root  0 Mar  3 09:49 mdio
+-r--r--r-- 1 root root  9 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 phy-handle
+-r--r--r-- 1 root root  9 Mar  3 09:49 phy-mode
+-r--r--r-- 1 root root 12 Mar  3 09:49 phy-reset-gpios
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/ethernet@30be0000/mdio:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root 4 Mar  3 09:49 #size-cells
+drwxr-xr-x 2 root root 0 Mar  3 09:49 ethernet-phy@0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/ethernet@30be0000/mdio/ethernet-phy@0:
+total 0
+-r--r--r-- 1 root root  0 Mar  3 09:49 at803x,eee-okay
+-r--r--r-- 1 root root  0 Mar  3 09:49 at803x,led-act-blind-workaround
+-r--r--r-- 1 root root  0 Mar  3 09:49 at803x,vddio-1p8v
+-r--r--r-- 1 root root 27 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a20000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+drwxr-xr-x 2 root root  0 Mar  3 09:49 eeprom@54
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a20000/eeprom@54:
+total 0
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 pagesize
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+drwxr-xr-x 4 root root  0 Mar  3 09:49 pmic@4b
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 2 root root  0 Mar  3 09:49 rtc@69
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+drwxr-xr-x 4 root root  0 Mar  3 09:49 tcpc@50
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b:
+total 0
+-r--r--r--  1 root root 13 Mar  3 09:49 compatible
+-r--r--r--  1 root root 12 Mar  3 09:49 gpio_intr
+drwxr-xr-x  2 root root  0 Mar  3 09:49 gpo
+-r--r--r--  1 root root  4 Mar  3 09:49 interrupt-parent
+-r--r--r--  1 root root  8 Mar  3 09:49 interrupts
+-r--r--r--  1 root root  5 Mar  3 09:49 name
+-r--r--r--  1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r--  1 root root  4 Mar  3 09:49 reg
+drwxr-xr-x 17 root root  0 Mar  3 09:49 regulators
+-r--r--r--  1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/gpo:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 rohm,drv
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators:
+total 0
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK1
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK2
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK3
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK4
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK5
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK6
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK7
+drwxr-xr-x 2 root root  0 Mar  3 09:49 BUCK8
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO1
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO2
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO3
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO4
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO5
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO6
+drwxr-xr-x 2 root root  0 Mar  3 09:49 LDO7
+-r--r--r-- 1 root root 12 Mar  3 09:49 bd71837,pmic-buck2-dvs-voltage
+-r--r--r-- 1 root root  0 Mar  3 09:49 bd71837,pmic-buck2-uses-i2c-dvs
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK1:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-ramp-delay
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK2:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-ramp-delay
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK3:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK4:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK5:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK6:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK7:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/BUCK8:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 6 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO1:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO2:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO3:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO4:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO5:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO6:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-always-on
+-r--r--r-- 1 root root 0 Mar  3 09:49 regulator-boot-on
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/pmic@4b/regulators/LDO7:
+total 0
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-max-microvolt
+-r--r--r-- 1 root root 4 Mar  3 09:49 regulator-min-microvolt
+-r--r--r-- 1 root root 5 Mar  3 09:49 regulator-name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/rtc@69:
+total 0
+-r--r--r-- 1 root root 15 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 pagesize
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/tcpc@50:
+total 0
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+drwxr-xr-x 2 root root  0 Mar  3 09:49 connector
+-r--r--r-- 1 root root  4 Mar  3 09:49 interrupt-parent
+-r--r--r-- 1 root root  8 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+drwxr-xr-x 3 root root  0 Mar  3 09:49 port
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/tcpc@50/connector:
+total 0
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  5 Mar  3 09:49 data-role
+-r--r--r-- 1 root root  6 Mar  3 09:49 label
+-r--r--r-- 1 root root 10 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 op-sink-microwatt
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  5 Mar  3 09:49 power-role
+-r--r--r-- 1 root root  0 Mar  3 09:49 self-powered
+-r--r--r-- 1 root root  8 Mar  3 09:49 sink-pdos
+-r--r--r-- 1 root root  4 Mar  3 09:49 source-pdos
+-r--r--r-- 1 root root  5 Mar  3 09:49 try-power-role
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/tcpc@50/port:
+total 0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 endpoint
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a30000/tcpc@50/port/endpoint:
+total 0
+-r--r--r-- 1 root root 9 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 remote-endpoint
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a40000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a50000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 29 Mar  3 09:49 compatible
+drwxr-xr-x 2 root root  0 Mar  3 09:49 gpio@22
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/i2c@30a50000/gpio@22:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #gpio-cells
+-r--r--r-- 1 root root 12 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 gpio-controller
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/mailbox@30aa0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #mbox-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 28 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/mmc@30b40000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 bus-width
+-r--r--r-- 1 root root 12 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 24 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-start-tap
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-step
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/mmc@30b50000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 bus-width
+-r--r--r-- 1 root root 12 Mar  3 09:49 cd-gpios
+-r--r--r-- 1 root root 12 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 24 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-start-tap
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-step
+-r--r--r-- 1 root root  0 Mar  3 09:49 fsl,wp-controller
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  0 Mar  3 09:49 mmc-ddr-1_8v
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  0 Mar  3 09:49 no-1-8-v
+-r--r--r-- 1 root root  0 Mar  3 09:49 non-removable
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-1
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-2
+-r--r--r-- 1 root root 34 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+-r--r--r-- 1 root root  4 Mar  3 09:49 vmmc-supply
+-r--r--r-- 1 root root  4 Mar  3 09:49 vqmmc-supply
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/mmc@30b60000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 bus-width
+-r--r--r-- 1 root root 12 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 24 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-start-tap
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,tuning-step
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  0 Mar  3 09:49 non-removable
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-1
+-r--r--r-- 1 root root 21 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30860000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30880000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  4 Mar  3 09:49 pinctrl-0
+-r--r--r-- 1 root root  8 Mar  3 09:49 pinctrl-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30890000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30a60000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  7 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/spi@30820000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/spi@30830000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/spi@30840000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 33 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 dmas
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@30800000/spi@30bb0000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 13 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 16 Mar  3 09:49 reg
+-r--r--r-- 1 root root 20 Mar  3 09:49 reg-names
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 24 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 12 Mar  3 09:49 ranges
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+drwxr-xr-x 3 root root  0 Mar  3 09:49 usb@32e40000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usb@32e50000
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usbmisc@32e40200
+drwxr-xr-x 2 root root  0 Mar  3 09:49 usbmisc@32e50200
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usb@32e40000:
+total 0
+-r--r--r-- 1 root root  0 Mar  3 09:49 adp-disable
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clock-parents
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clocks
+-r--r--r-- 1 root root 19 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 43 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  5 Mar  3 09:49 dr_mode
+-r--r--r-- 1 root root  8 Mar  3 09:49 fsl,usbmisc
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,usbphy
+-r--r--r-- 1 root root  0 Mar  3 09:49 hnp-disable
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+drwxr-xr-x 3 root root  0 Mar  3 09:49 port
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  0 Mar  3 09:49 srp-disable
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+-r--r--r-- 1 root root  0 Mar  3 09:49 usb-role-switch
+-r--r--r-- 1 root root  4 Mar  3 09:49 vbus-supply
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usb@32e40000/port:
+total 0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 endpoint
+-r--r--r-- 1 root root 5 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usb@32e40000/port/endpoint:
+total 0
+-r--r--r-- 1 root root 9 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 remote-endpoint
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usb@32e50000:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clock-parents
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clocks
+-r--r--r-- 1 root root 19 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 43 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  5 Mar  3 09:49 dr_mode
+-r--r--r-- 1 root root  8 Mar  3 09:49 fsl,usbmisc
+-r--r--r-- 1 root root  4 Mar  3 09:49 fsl,usbphy
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  4 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+-r--r--r-- 1 root root  5 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usbmisc@32e40200:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #index-cells
+-r--r--r-- 1 root root 37 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/bus@32c00000/usbmisc@32e50200:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #index-cells
+-r--r--r-- 1 root root 37 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/ddr-pmu@3d800000:
+total 0
+-r--r--r-- 1 root root 37 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  8 Mar  3 09:49 name
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/dma-controller@33000000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #dma-cells
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 38 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  4 Mar  3 09:49 dma-channels
+-r--r--r-- 1 root root 24 Mar  3 09:49 interrupt-names
+-r--r--r-- 1 root root 48 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 15 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/interrupt-controller@38800000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #interrupt-cells
+-r--r--r-- 1 root root 11 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  0 Mar  3 09:49 interrupt-controller
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 21 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 16 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/memory-controller@3d400000:
+total 0
+-r--r--r-- 1 root root 17 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 32 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 31 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 18 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root  8 Mar  3 09:49 reg
+
+/sys/firmware/devicetree/base/soc@0/nand-controller@33002000:
+total 0
+-r--r--r-- 1 root root  4 Mar  3 09:49 #address-cells
+-r--r--r-- 1 root root  4 Mar  3 09:49 #size-cells
+-r--r--r-- 1 root root 21 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root 16 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 41 Mar  3 09:49 compatible
+-r--r--r-- 1 root root  6 Mar  3 09:49 dma-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 dmas
+-r--r--r-- 1 root root  4 Mar  3 09:49 interrupt-names
+-r--r--r-- 1 root root 12 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root 16 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 16 Mar  3 09:49 reg
+-r--r--r-- 1 root root 14 Mar  3 09:49 reg-names
+-r--r--r-- 1 root root  9 Mar  3 09:49 status
+
+/sys/firmware/devicetree/base/thermal-zones:
+total 0
+drwxr-xr-x 4 root root  0 Mar  3 09:49 cpu-thermal
+-r--r--r-- 1 root root 14 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal:
+total 0
+drwxr-xr-x 3 root root  0 Mar  3 09:49 cooling-maps
+-r--r--r-- 1 root root 12 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 polling-delay
+-r--r--r-- 1 root root  4 Mar  3 09:49 polling-delay-passive
+-r--r--r-- 1 root root  4 Mar  3 09:49 thermal-sensors
+drwxr-xr-x 4 root root  0 Mar  3 09:49 trips
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal/cooling-maps:
+total 0
+drwxr-xr-x 2 root root  0 Mar  3 09:49 map0
+-r--r--r-- 1 root root 13 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal/cooling-maps/map0:
+total 0
+-r--r--r-- 1 root root 48 Mar  3 09:49 cooling-device
+-r--r--r-- 1 root root  5 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 trip
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal/trips:
+total 0
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+drwxr-xr-x 2 root root 0 Mar  3 09:49 trip0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 trip1
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal/trips/trip0:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 hysteresis
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 temperature
+-r--r--r-- 1 root root 8 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/thermal-zones/cpu-thermal/trips/trip1:
+total 0
+-r--r--r-- 1 root root 4 Mar  3 09:49 hysteresis
+-r--r--r-- 1 root root 6 Mar  3 09:49 name
+-r--r--r-- 1 root root 4 Mar  3 09:49 phandle
+-r--r--r-- 1 root root 4 Mar  3 09:49 temperature
+-r--r--r-- 1 root root 9 Mar  3 09:49 type
+
+/sys/firmware/devicetree/base/timer:
+total 0
+-r--r--r-- 1 root root  0 Mar  3 09:49 arm,no-tick-in-suspend
+-r--r--r-- 1 root root  4 Mar  3 09:49 clock-frequency
+-r--r--r-- 1 root root 16 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 48 Mar  3 09:49 interrupts
+-r--r--r-- 1 root root  6 Mar  3 09:49 name
+
+/sys/firmware/devicetree/base/usbphynop1:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clock-parents
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clocks
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 14 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/usbphynop2:
+total 0
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clock-parents
+-r--r--r-- 1 root root  8 Mar  3 09:49 assigned-clocks
+-r--r--r-- 1 root root  9 Mar  3 09:49 clock-names
+-r--r--r-- 1 root root  8 Mar  3 09:49 clocks
+-r--r--r-- 1 root root 14 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  4 Mar  3 09:49 phandle
+
+/sys/firmware/devicetree/base/wdt-reboot:
+total 0
+-r--r--r-- 1 root root 11 Mar  3 09:49 compatible
+-r--r--r-- 1 root root 11 Mar  3 09:49 name
+-r--r--r-- 1 root root  0 Mar  3 09:49 u-boot,dm-spl
+-r--r--r-- 1 root root  4 Mar  3 09:49 wdt
+
+/sys/firmware/dmi:
+total 0
+drwxr-xr-x 9 root root 0 Mar  3 09:49 entries
+drwxr-xr-x 2 root root 0 Mar  3 09:49 tables
+
+/sys/firmware/dmi/entries:
+total 0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 0-0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 0-1
+drwxr-xr-x 2 root root 0 Mar  3 09:49 0-2
+drwxr-xr-x 2 root root 0 Mar  3 09:49 0-3
+drwxr-xr-x 2 root root 0 Mar  3 09:49 1-0
+drwxr-xr-x 2 root root 0 Mar  3 09:49 1-1
+drwxr-xr-x 2 root root 0 Mar  3 09:49 3-0
+
+/sys/firmware/dmi/entries/0-0:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/0-1:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/0-2:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/0-3:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/1-0:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/1-1:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/entries/3-0:
+total 0
+-r-------- 1 root root 4096 Mar  3 09:49 handle
+-r-------- 1 root root 4096 Mar  3 09:49 instance
+-r-------- 1 root root 4096 Mar  3 09:49 length
+-r-------- 1 root root 4096 Mar  3 09:49 position
+-r-------- 1 root root    0 Mar  3 09:49 raw
+-r-------- 1 root root 4096 Mar  3 09:49 type
+
+/sys/firmware/dmi/tables:
+total 0
+-r-------- 1 root root 131 Mar  3 09:49 DMI
+-r-------- 1 root root  31 Mar  3 09:49 smbios_entry_point
+
+/sys/firmware/efi:
+total 0
+drwxr-xr-x 2 root root    0 Mar  3 09:49 efivars
+drwxr-xr-x 3 root root    0 Mar  3 09:49 esrt
+-r--r--r-- 1 root root 4096 Mar  3 09:49 fw_platform_size
+-r-------- 1 root root 4096 Mar  3 09:49 systab
+
+/sys/firmware/efi/efivars:
+total 0
+-rw-r--r-- 1 root root  5 Mar  3 09:49 AuditMode-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root  5 Mar  3 09:49 DeployedMode-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root 12 Mar  3 09:49 OsIndicationsSupported-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root 10 Mar  3 09:49 PlatformLang-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root 10 Mar  3 09:49 PlatformLangCodes-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root  5 Mar  3 09:49 SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root  5 Mar  3 09:49 SetupMode-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root 36 Mar  3 09:49 SignatureSupport-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root  5 Mar  3 09:49 VendorKeys-8be4df61-93ca-11d2-aa0d-00e098032b8c
+
+/sys/firmware/efi/esrt:
+total 0
+drwxr-xr-x 2 root root    0 Mar  3 09:49 entries
+-r-------- 1 root root 4096 Mar  3 09:49 fw_resource_count
+-r-------- 1 root root 4096 Mar  3 09:49 fw_resource_count_max
+-r-------- 1 root root 4096 Mar  3 09:49 fw_resource_version
+
+/sys/firmware/efi/esrt/entries:
+total 0

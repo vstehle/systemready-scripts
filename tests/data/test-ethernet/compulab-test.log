@@ -1,0 +1,112 @@
+
+****************************************************************
+
+                         Running ethtool
+
+****************************************************************
+INFO: Detected following ethernet interfaces via ip command :
+0: end0
+1: enu1u1
+
+INFO: Bringing down all ethernet interfaces using ifconfig
+ifconfig end0 down
+ifconfig enu1u1 down
+
+****************************************************************
+
+
+INFO: Bringing up ethernet interface: end0
+INFO: Running "ethtool end0 " :
+Settings for end0:
+	Supported ports: [ TP	 MII ]
+	Supported link modes:   10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Full
+	Supported pause frame use: Symmetric
+	Supports auto-negotiation: Yes
+	Supported FEC modes: Not reported
+	Advertised link modes:  10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Full
+	Advertised pause frame use: Symmetric
+	Advertised auto-negotiation: Yes
+	Advertised FEC modes: Not reported
+	Speed: Unknown!
+	Duplex: Unknown! (255)
+	Auto-negotiation: on
+	Port: Twisted Pair
+	PHYAD: 0
+	Transceiver: external
+	MDI-X: Unknown
+	Supports Wake-on: g
+	Wake-on: d
+	Link detected: no
+
+
+INFO: Ethernet interface end0 supports ethtool self test.
+INFO: Running ethtool -t end0 :
+The test result is FAIL
+The test extra info:
+ 1. Carrier                    	 -67
+ 2. PHY dev is present         	 0
+ 3. PHY internal loopback, enab	 0
+ 4. PHY internal loopback, UDP 	 -101
+ 5. PHY internal loopback, MTU 	 -101
+ 6. PHY internal loopback, TCP 	 -101
+ 7. PHY internal loopback, disa	 0
+
+
+
+INFO: Link not detected for end0
+
+****************************************************************
+
+
+INFO: Bringing down ethernet interface: end0
+
+INFO: Bringing up ethernet interface: enu1u1
+INFO: Running "ethtool enu1u1 " :
+Settings for enu1u1:
+	Supported ports: [ TP	 MII ]
+	Supported link modes:   10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	Supported pause frame use: Symmetric Receive-only
+	Supports auto-negotiation: Yes
+	Supported FEC modes: Not reported
+	Advertised link modes:  10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Advertised FEC modes: Not reported
+	Speed: Unknown!
+	Duplex: Unknown! (255)
+	Auto-negotiation: on
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	MDI-X: Unknown
+	Supports Wake-on: pumbag
+	Wake-on: d
+        Current message level: 0x00000007 (7)
+                               drv probe link
+	Link detected: no
+
+
+INFO: Ethernet interface enu1u1 supports ethtool self test.
+INFO: Running ethtool -t enu1u1 :
+The test result is FAIL
+The test extra info:
+ 1. Carrier                    	 -67
+ 2. PHY dev is present         	 0
+ 3. PHY internal loopback, enab	 -110
+ 4. PHY internal loopback, UDP 	 -101
+ 5. PHY internal loopback, MTU 	 -101
+ 6. PHY internal loopback, TCP 	 -101
+ 7. PHY internal loopback, disa	 -22
+
+
+
+INFO: Link not detected for enu1u1
+
+****************************************************************
+
