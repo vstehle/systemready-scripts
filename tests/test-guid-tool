@@ -51,13 +51,13 @@ fi
 grep Invalid "$out"
 echo -n 'invalid guid rejected, ' >&3
 
-guid-tool.py --details $(uuidgen -t) |& tee "$out"
+guid-tool.py --details "$(uuidgen -t)" |& tee "$out"
 grep 'version: 1 (time-based)' "$out"
 grep 'datetime:' "$out"
 grep 'multicast/global:' "$out"
 echo -n 'time-based details, ' >&3
 
-guid-tool.py --details $(uuidgen -r) |& tee "$out"
+guid-tool.py --details "$(uuidgen -r)" |& tee "$out"
 grep 'version: 4 (randomly generated)' "$out"
 echo -n 'random details, ' >&3
 

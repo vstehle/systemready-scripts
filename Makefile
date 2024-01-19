@@ -53,6 +53,7 @@ valid:	$(VALID_TARGETS)
 # Sequential (small) tests.
 seq:
 	yamllint .
+	shellcheck tests/test-*
 	flake8
 	mypy .
 	pylint --rcfile .pylint.rc *.py
