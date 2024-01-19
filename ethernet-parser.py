@@ -4,9 +4,9 @@ import argparse
 import re
 import logging
 import os
-import yaml
 import sys
 from typing import List, Any, Optional, cast
+import yaml
 
 
 # Colors
@@ -102,23 +102,22 @@ def apply_criteria(db: DbType) -> str:
     # look for the different combinations PASS/FAIL
     # and update the device register with the criteria
     # and recommendations from the database
-    for index, i in enumerate(device_results):
+    for dr in device_results:
         found_match = False
 
         for ii in db['criterias']:
-            if i == ii['results']:
-                logging.debug(f"match found: {i}")
-                device_results[index].append({'result': ii['criteria']})
-                device_results[index].append({'quality': ii['quality']})
-                device_results[index].append({'recommendation':
-                                              ii['recommendation']})
+            if dr == ii['results']:
+                logging.debug(f"match found: {dr}")
+                dr.append({'result': ii['criteria']})
+                dr.append({'quality': ii['quality']})
+                dr.append({'recommendation': ii['recommendation']})
                 found_match = True
                 # don't care what other devices are. the end result is FAIL
                 if result == 'FAIL':
                     result = 'FAIL'
                 # if new device result is BAD,
                 # the end result gets downgraded to overall
-                elif (ii['quality'] == 'BAD'):
+                elif ii['quality'] == 'BAD':
                     result = 'FAIL'
                 elif (result == 'PASS' and (ii['quality'] == 'POOR' or
                                             ii['quality'] == 'BEST')):
@@ -127,7 +126,7 @@ def apply_criteria(db: DbType) -> str:
                 break
 
         if not found_match:
-            logging.error(f"not validating match found for: {i}")
+            logging.error(f"not validating match found for: {dr}")
 
     if num_pass_devices == int(args.num_devices):
         logging.info("ethernet-parser passed for",

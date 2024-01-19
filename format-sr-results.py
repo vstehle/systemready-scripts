@@ -3,12 +3,12 @@
 import argparse
 import logging
 import sys
-import yaml
 import os
 import curses
 import pprint
-import logreader
 from typing import cast, TypedDict, Optional
+import yaml
+import logreader
 
 try:
     from packaging import version

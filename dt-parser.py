@@ -5,10 +5,10 @@ import logging
 import os
 import re
 import pprint
-import yaml
 import json
 import sys
 from typing import Any, Optional, cast, TypedDict
+import yaml
 
 
 class ConfigEntry(TypedDict):

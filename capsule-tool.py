@@ -2,13 +2,13 @@
 
 import argparse
 import logging
-import construct
 import sys
 import random
 import os
-import guid
 import subprocess
 from typing import TypedDict, Callable, Final
+import construct
+import guid
 
 
 # Define the GUID structure so that it is visually similar to the definitions

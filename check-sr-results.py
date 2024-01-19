@@ -3,20 +3,20 @@
 import argparse
 import logging
 import sys
-import yaml
 import os
 import curses
 import glob
 import re
 import subprocess
-import guid
 import fnmatch
-import requests
 import tempfile
 import shutil
-import logreader
 import time
 from typing import Final, cast, Any, Optional, Literal, IO, TypedDict
+import requests
+import yaml
+import guid
+import logreader
 
 SctParserResultMdType = TypedDict('SctParserResultMdType', {'seq-file': str})
 
@@ -195,7 +195,7 @@ def maybe_plural(n: int, word: str) -> str:
 
     ll = word[len(word) - 1].lower()
 
-    if ll == 'd' or ll == 's':
+    if ll in ('d', 's'):
         return word
     else:
         return f'{word}s'
@@ -256,7 +256,7 @@ def download_file(url: str, filename: str) -> None:
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
         with open(filename, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=(1024 * 1024)):
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
                 f.write(chunk)
 
 
@@ -909,7 +909,7 @@ def check_must_have_esp(filename: str) -> Stats:
         stats.inc_pass()
 
         # Record the device path(s) for deferred check against the ESPs.
-        for x in dp.keys():
+        for x in dp:
             dev_paths.append({'dev-path': x, 'filename': filename})
 
     else:
@@ -1535,10 +1535,7 @@ def evaluate_when_condition(
             logging.debug(f"Did not find `{c}'")
             found_all = False
 
-    if not any_not_all and found_all or any_not_all and found_some:
-        return True
-    else:
-        return False
+    return bool(not any_not_all and found_all or any_not_all and found_some)
 
 
 # Apply all the overlays conditionaly to the main tree.
@@ -1622,7 +1619,7 @@ if __name__ == '__main__':
         help='Output all warnings, even the "once" ones.')
     parser.add_argument(
         '--cache-dir', help='Specify cache directory',
-        default=f"{os.path.expanduser('~')}/.check-sr-results"),
+        default=f"{os.path.expanduser('~')}/.check-sr-results")
     parser.add_argument(
         '--capsule-tool', help='Specify capsule-tool.py path',
         default=f'{here}/capsule-tool.py')

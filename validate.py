@@ -2,11 +2,11 @@
 
 import argparse
 import sys
-import yaml
-import jsonschema
 import os
 import logging
 from typing import Any
+import yaml
+import jsonschema
 
 try:
     from packaging import version

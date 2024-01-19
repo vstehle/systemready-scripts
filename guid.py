@@ -7,7 +7,7 @@ import datetime
 
 
 @dataclass(frozen=True)
-class Guid(object):
+class Guid():
     """The Guid class handle UEFI GUIDs.
 
     We store the GUID internally as bytes.
@@ -213,7 +213,7 @@ class Guid(object):
         ns100 = u.time
 
         return (datetime.datetime(1582, 10, 15)
-                + datetime.timedelta(microseconds=(ns100 / 10)))
+                + datetime.timedelta(microseconds=ns100 / 10))
 
     def details(self) -> str:
         """Get details about our GUID as a string.

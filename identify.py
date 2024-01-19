@@ -3,9 +3,9 @@
 import argparse
 import logging
 import os
-import yaml
 import hashlib
 from typing import Optional, cast, TypedDict
+import yaml
 
 
 class KnownFileType(TypedDict, total=False):

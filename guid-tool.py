@@ -3,10 +3,10 @@
 import argparse
 import logging
 import os
-import yaml
 import sys
-import guid
 from typing import cast, Optional, TypedDict
+import yaml
+import guid
 
 
 class KnownGuidType(TypedDict, total=False):

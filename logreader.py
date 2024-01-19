@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-from chardet.universaldetector import UniversalDetector
 import re
 import collections.abc
 import sys
 from typing import Optional, Iterator
+from chardet.universaldetector import UniversalDetector
 
 # Maximum number of lines to examine for file encoding detection.
 detect_file_encoding_limit = 999
