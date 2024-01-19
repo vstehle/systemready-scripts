@@ -1,6 +1,6 @@
 # Simple makefile to perform static checks and generate the documentation with
 # pandoc.
-.PHONY: all doc help clean check %.run-test %.valid test valid
+.PHONY: all doc help clean check %.run-test %.valid test valid seq
 
 TESTS = $(wildcard tests/test-*)
 TEST_TARGETS = $(addsuffix .run-test,$(TESTS))
@@ -50,11 +50,17 @@ test:	$(TEST_TARGETS)
 
 valid:	$(VALID_TARGETS)
 
-check:	test valid
+# Sequential (small) tests.
+seq:
 	yamllint .
 	flake8
 	mypy .
 	python3 -m doctest guid.py
+
+check:	seq test valid
+
+# Run the tests last, after yaml files validation and sequential tests.
+$(TEST_TARGETS): | $(VALID_TARGETS) seq
 
 clean:
 	-rm -f README.pdf $(TEST_LOGS)
