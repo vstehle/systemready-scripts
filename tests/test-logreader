@@ -38,4 +38,10 @@ echo -n 'tests, ' >&3
 logreader.py "$data/tests/log" |& tee "$out"
 diff -u "$out" "$data/tests/ref"
 
+echo -n 'limit, ' >&3
+logreader.py "$data/tests/limit" |& tee "$out"
+grep 'Press' "$out"
+grep 'snip' "$out"
+grep 'Boot' "$out"
+
 echo 'ok.' >&3

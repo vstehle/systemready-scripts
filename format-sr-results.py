@@ -249,6 +249,9 @@ if __name__ == '__main__':
                'SystemReady IR template '
                '(https://gitlab.arm.com/systemready/systemready-ir-template).')
     parser.add_argument(
+        '--cleanup-line-limit', type=int, default=99,
+        help='Specify maximum number of iterations for line cleanup')
+    parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to analyze', default='.')
@@ -273,6 +276,7 @@ if __name__ == '__main__':
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
     logreader.detect_file_encoding_limit = args.detect_file_encoding_limit
+    logreader.cleanup_line_limit = args.cleanup_line_limit
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
     conf = load_config(f'{here}/format-sr-results.yaml')

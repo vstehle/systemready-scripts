@@ -10,6 +10,9 @@ from chardet.universaldetector import UniversalDetector
 # Maximum number of lines to examine for file encoding detection.
 detect_file_encoding_limit = 999
 
+# Maximum number of iterations for line cleanup.
+cleanup_line_limit = 99
+
 
 # Detect file encoding
 # We return the encoding or None
@@ -40,17 +43,24 @@ def logreader_detect_file_encoding(filename: str) -> Optional[str]:
 # - Right-strip the line
 # - Remove the most annoying escape sequences
 # Returns the cleaned-up line.
+# If we reach the limit, stop and truncate the unclean right part.
 def logreader_cleanup_line(line: str) -> str:
     line = line.rstrip()
     line = re.sub(r'\x1B\[K', '', line)
     line = re.sub(r'\x1B\(B', '', line)
     line = re.sub(r'\x07', '', line)
     line = re.sub(r'\x1B\[[\x30-\x3F]*[\x20-\x2F]*[\x40-\x7E]', '', line)
+    i = 0
 
     while True:
         m = re.search(r'\x08|\r', line)
 
         if not m:
+            break
+
+        if i > cleanup_line_limit:
+            logging.debug('Giving up; truncating')
+            line = line[:m.start()] + '(snip)'
             break
 
         if m[0] == '\r':
@@ -59,6 +69,8 @@ def logreader_cleanup_line(line: str) -> str:
             line = re.sub(r'.?\x08', '', line, count=1)
         else:
             raise
+
+        i += 1
 
     line = re.sub(r'\x00', ' ', line)
     return line

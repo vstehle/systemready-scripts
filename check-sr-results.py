@@ -1624,6 +1624,9 @@ if __name__ == '__main__':
         '--capsule-tool', help='Specify capsule-tool.py path',
         default=f'{here}/capsule-tool.py')
     parser.add_argument(
+        '--cleanup-line-limit', type=int, default=99,
+        help='Specify maximum number of iterations for line cleanup')
+    parser.add_argument(
         '--compatibles', help='Specify compatibles path',
         default=f"{here}/compatibles")
     parser.add_argument('--config', help='Specify YAML configuration file')
@@ -1680,6 +1683,7 @@ if __name__ == '__main__':
     logging.addLevelName(logging.ERROR, f"{red}{ln}{normal}")
 
     logreader.detect_file_encoding_limit = args.detect_file_encoding_limit
+    logreader.cleanup_line_limit = args.cleanup_line_limit
     guid_tool = args.guid_tool + (' --debug' if args.debug else '')
     capsule_tool = args.capsule_tool + (' --debug' if args.debug else '')
     dtc = args.dtc
