@@ -10,7 +10,7 @@ check-job:
     - apt-get install -y make python3 python3-construct python3-yaml
       python3-chardet python3-jsonschema u-boot-tools python3-requests
       uuid-runtime python3-packaging device-tree-compiler bsdextrautils
-      python3-pip swig yamllint flake8 git mypy
+      python3-pip swig yamllint flake8 git mypy pylint
     - pip3 install --break-system-packages dtschema
     - make -k check
 

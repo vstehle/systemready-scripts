@@ -55,6 +55,7 @@ seq:
 	yamllint .
 	flake8
 	mypy .
+	pylint --rcfile .pylint.rc *.py
 	python3 -m doctest guid.py
 
 check:	seq test valid
