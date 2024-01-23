@@ -138,7 +138,8 @@ tree:
               - Handle dump
               - DevicePath
               - SimpleTextOut
-              - Shell
+              # We cannot check for Shell as the order relative to
+              # SimpleTextOut is not stable from system to system.
           - file: dmpstore.log
             must-contain:
               - Variable
@@ -319,6 +320,10 @@ overlays:
                 optional:
                 can-be-empty:
                 must-contain: DELETE
+      - dir: os-logs
+        tree:
+          - dir: '*-*'
+            min-occurrences: 1
 
   # (Ab)use the overlay mechanism to emit an error about ir1 branch.
   - when-any: ['']
