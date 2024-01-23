@@ -38,7 +38,7 @@ echo -n 'ref, ' >&3
 format-sr-results.py --dir "$data/ref/input" --jira "$tmp/jira.txt" \
 	--md "$tmp/out.md" --dump "$tmp/dump.txt"
 
-p=$(pwd)
+p=$(realpath .)
 files=(jira.txt out.md)
 
 # Cleanup paths as a first path (this should not stop).
