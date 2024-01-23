@@ -27,6 +27,7 @@ tree:
       - -dirty
       - 'EFI stub: ERROR:'
       - 'FIRMWARE BUG:'
+      - OVERLAP DETECTED
       - No EFI system partition
       - Failed to persist EFI variables
   - dir: acs_results
@@ -182,6 +183,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
           - No EFI system partition
           - Failed to persist EFI variables
       - file: uefi-sniff.log
@@ -200,6 +202,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
           - No EFI system partition
           - Failed to persist EFI variables
       - file: capsule-update.log
@@ -210,6 +213,7 @@ tree:
           - -dirty
           - 'EFI stub: ERROR:'
           - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
           - No EFI system partition
           - Failed to persist EFI variables
   - dir: manual-results
@@ -247,6 +251,7 @@ tree:
               - -dirty
               - 'EFI stub: ERROR:'
               - 'FIRMWARE BUG:'
+              - OVERLAP DETECTED
               - No EFI system partition
               - Failed to persist EFI variables
           - file: '*sys-firmware.tar.gz'
@@ -255,6 +260,8 @@ tree:
     must-contain:
       - General information
       - Test Logs collected
+    warn-if-contains:
+      - '[ ]'
 
 overlays:
   # A few files were not present in ACS-IR v21.05_0.8_BETA-0; make them
