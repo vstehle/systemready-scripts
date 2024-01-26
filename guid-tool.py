@@ -9,11 +9,10 @@ import yaml
 import guid
 
 
-class KnownGuidType(TypedDict, total=False):
-    guid: str
-    description: str
-    _Guid: guid.Guid
-
+KnownGuidType = TypedDict('KnownGuidType', {
+    'guid': str,
+    'description': str,
+    '_Guid': guid.Guid}, total=False)
 
 DbType = TypedDict('DbType', {
     'guid-tool-database': None,
@@ -65,7 +64,7 @@ def load_guids_db(filename: str) -> DbType:
             'known-guids': []}
 
     validate_guids_db(db)
-    logging.debug('{} entries'.format(len(db)))
+    logging.debug(f"{len(db)} entries")
 
     # Create _Guid entries holding Guid objects.
     for x in db['known-guids']:

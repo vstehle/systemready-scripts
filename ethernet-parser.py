@@ -47,7 +47,7 @@ def detect_eth_devices(log_path: str) -> int:
     return device_count
 
 
-def parse_eth_log(db: DbType, log_path: str, num_devices: int) -> None:
+def parse_eth_log(log_path: str) -> None:
     ethtool_pattern = re.compile(r'The test result is (PASS|FAIL)')
     ping_pattern = re.compile(r'Ping to www.arm.com is (successful|.*)')
     link_pattern = re.compile(r'INFO: Link not detected')
@@ -129,13 +129,13 @@ def apply_criteria(db: DbType) -> str:
             logging.error(f"not validating match found for: {dr}")
 
     if num_pass_devices == int(args.num_devices):
-        logging.info("ethernet-parser passed for",
+        logging.info(f"ethernet-parser passed for"
                      f"{num_pass_devices} and requested {args.num_devices}")
         return "PASS"
-    else:
-        logging.error("ethernet-parser passed for",
-                      f"{num_pass_devices} and requested {args.num_devices}")
-        return "FAIL"
+
+    logging.error(f"ethernet-parser passed for"
+                  f"{num_pass_devices} and requested {args.num_devices}")
+    return "FAIL"
 
 
 if __name__ == "__main__":
@@ -172,7 +172,7 @@ if __name__ == "__main__":
                       'and expected a bigger number of ethernets:',
                       f'{num_expected_devices}')
     else:
-        parse_eth_log(db, args.log, num_actual_devices)
+        parse_eth_log(args.log)
         result = apply_criteria(db)
 
     logging.info(f'Ethernet parser tests result is: {result}')

@@ -4,7 +4,7 @@ import logging
 import re
 import collections.abc
 import sys
-from typing import Optional, Iterator
+from typing import Optional, Iterator, IO
 from chardet.universaldetector import UniversalDetector
 
 # Maximum number of lines to examine for file encoding detection.
@@ -68,7 +68,7 @@ def logreader_cleanup_line(line: str) -> str:
         elif m[0] == '\x08':
             line = re.sub(r'.?\x08', '', line, count=1)
         else:
-            raise
+            raise Exception(f"Bad match {m[0]}")
 
         i += 1
 
@@ -81,19 +81,29 @@ def logreader_cleanup_line(line: str) -> str:
 # right-stripping).
 class LogReader(collections.abc.Iterator[str]):
     i: Iterator[str]
+    f: IO[str]
 
     def __init__(self, filename: str) -> None:
         logging.debug(f"LogReader `{filename}'")
         enc = logreader_detect_file_encoding(filename)
 
         # Open the file with the proper encoding
-        f = open(filename, encoding=enc, errors='replace', newline='\n')
+        # pylint: disable=consider-using-with
+        self.f = open(filename, encoding=enc, errors='replace', newline='\n')
 
-        self.i = iter(f)
+        self.i = iter(self.f)
 
     def __next__(self) -> str:
+        # Get next line
+        try:
+            next_line = self.i.__next__()
+
+        except Exception:
+            self.f.close()
+            raise
+
         # Cleanup each line
-        return logreader_cleanup_line(self.i.__next__())
+        return logreader_cleanup_line(next_line)
 
 
 if __name__ == '__main__':

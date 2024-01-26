@@ -136,11 +136,13 @@ def extract(x: ExtractType, dirname: str) -> ElementType:
 
             if isinstance(ll, int) and ln > found + int(ll):
                 break
-            elif isinstance(ll, str) and line.find(ll) >= 0:
+
+            if isinstance(ll, str) and line.find(ll) >= 0:
                 logging.debug(
                     f"{green}Found{normal} `{ll}' at line {ln}, `{line}'")
                 break
-            elif ll is None and line == '':
+
+            if ll is None and line == '':
                 logging.debug(f"{green}Found{normal} empty line {ln}")
                 break
 

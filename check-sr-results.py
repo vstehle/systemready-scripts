@@ -197,8 +197,8 @@ def maybe_plural(n: int, word: str) -> str:
 
     if ll in ('d', 's'):
         return word
-    else:
-        return f'{word}s'
+
+    return f'{word}s'
 
 
 # A class to account for statistics
@@ -223,8 +223,7 @@ class Stats:
         return f'{color}{n} {maybe_plural(n, x)}{normal}'
 
     def __str__(self) -> str:
-        return ', '.join(
-            map(lambda x: self._counter_str(x), Stats.COUNTERS))
+        return ', '.join(map(self._counter_str, Stats.COUNTERS))
 
     # Add the counters of a Stats objects to self.
     def add(self, x: 'Stats') -> None:
@@ -253,7 +252,7 @@ class Stats:
 def download_file(url: str, filename: str) -> None:
     logging.debug(f"Download {url} -> `{filename}'")
 
-    with requests.get(url, stream=True) as r:
+    with requests.get(url, stream=True, timeout=42) as r:
         r.raise_for_status()
         with open(filename, 'wb') as f:
             for chunk in r.iter_content(chunk_size=1024 * 1024):
@@ -392,7 +391,7 @@ def check_file_contains(must_contain: list[str], filename: str) -> Stats:
                 f"`{pat}' {green}found{normal} at line {i + 1}: `{line}'")
             stats.inc_pass()
 
-            if not len(q):
+            if len(q) == 0:
                 pat = None
                 break
 
@@ -482,7 +481,7 @@ def error_if_contains(strings: list[str], filename: str) -> Stats:
 # subprocess.run() wrapper
 def run(cmd: str) -> subprocess.CompletedProcess[bytes]:
     logging.debug(f"Running {args}")
-    cp = subprocess.run(cmd, shell=True, capture_output=True)
+    cp = subprocess.run(cmd, shell=True, capture_output=True, check=False)
     logging.debug(cp)
     return cp
 
@@ -674,18 +673,18 @@ def check_ethernet(filename: str) -> Stats:
             f"Double check this is correct.")
         stats.inc_warning()
         return stats
-    else:
-        cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
 
-        if cp.returncode:
-            logging.error(
-                f'ethernet-parser {red}failed{normal} on {filename}')
-            stats.inc_error()
-            return stats
+    cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
 
-        logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
-        stats.inc_pass()
+    if cp.returncode:
+        logging.error(
+            f'ethernet-parser {red}failed{normal} on {filename}')
+        stats.inc_error()
         return stats
+
+    logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
+    stats.inc_pass()
+    return stats
 
 
 # Check Devicetree blob.
@@ -902,7 +901,7 @@ def check_must_have_esp(filename: str) -> Stats:
                 state = 'await shell'
 
         else:
-            raise
+            raise Exception(f"Bad state {state}")
 
     if len(dp):
         logging.debug(f"{green}Found{normal} device path(s): `{dp.keys()}'")
@@ -1285,12 +1284,7 @@ def deferred_check_uefi_logs_esp() -> Stats:
 def check_min_occurences(m: int, confpath: str) -> Stats:
     logging.debug(f"Check >= {m} occurrences for {confpath}")
     stats = Stats()
-
-    if confpath in occurrences:
-        o = occurrences[confpath]
-    else:
-        o = []
-
+    o = occurrences.get(confpath, [])
     logging.debug(f"Occurences {o}")
     n = len(o)
 
@@ -1494,7 +1488,7 @@ def overlay_tree(src: TreeType, dst: TreeType) -> None:
             d = cast(DirType, x)
             dirs[d['dir']] = d
         else:
-            raise
+            raise Exception(f"Bad x not file or dir {x}")
 
     # Overlay each entry.
     for x in src:
@@ -1513,7 +1507,7 @@ def overlay_tree(src: TreeType, dst: TreeType) -> None:
                 logging.debug(f"Adding dir {d['dir']}")
                 dst.append(d)
         else:
-            raise
+            raise Exception(f"Bad x not file or dir {x}")
 
 
 # Evaluate if a when-condition is true.
@@ -1577,8 +1571,8 @@ def git_commit(dirname: str) -> Optional[str]:
     if cp.returncode:
         logging.debug(f"No git or {dirname} not versioned")
         return None
-    else:
-        return cp.stdout.decode().rstrip()
+
+    return cp.stdout.decode().rstrip()
 
 
 # Capture initial meta-data.

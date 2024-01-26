@@ -22,10 +22,10 @@ efi_guid: Final = construct.Struct(
     "Node" / construct.Hex(construct.Int8ul)[6]
 )
 
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID: Final = efi_guid.build(dict(
-    TimeLow=0x6dcbd5ed, TimeMid=0xe82d, TimeHighAndVersion=0x4c44,
-    ClockSeqHighAndReserved=0xbd, ClockSeqLow=0xa1,
-    Node=[0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a]))
+EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID: Final = efi_guid.build({
+    'TimeLow': 0x6dcbd5ed, 'TimeMid': 0xe82d, 'TimeHighAndVersion': 0x4c44,
+    'ClockSeqHighAndReserved': 0xbd, 'ClockSeqLow': 0xa1,
+    'Node': [0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a]})
 
 CAPSULE_FLAGS_PERSIST_ACROSS_RESET: Final = 0x10000
 CAPSULE_FLAGS_POPULATE_SYSTEM_TABLE: Final = 0x20000
@@ -36,11 +36,12 @@ CAPSULE_SUPPORT_DEPENDENCY: Final = 2
 
 WIN_CERT_TYPE_EFI_GUID: Final = 0xEF1
 
-EFI_CERT_TYPE_PKCS7_GUID: Final = efi_guid.build(dict(
-    TimeLow=0x4aafd29d, TimeMid=0x68df, TimeHighAndVersion=0x49ee,
-    ClockSeqHighAndReserved=0x8a, ClockSeqLow=0xa9,
-    Node=[0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7]))
+EFI_CERT_TYPE_PKCS7_GUID: Final = efi_guid.build({
+    'TimeLow': 0x4aafd29d, 'TimeMid': 0x68df, 'TimeHighAndVersion': 0x49ee,
+    'ClockSeqHighAndReserved': 0x8a, 'ClockSeqLow': 0xa9,
+    'Node': [0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7]})
 
+# pylint: disable=protected-access
 efi_capsule: Final = construct.Struct(
     "CapsuleHeader" / construct.Struct(
         "CapsuleGuid" / efi_guid,
@@ -141,6 +142,10 @@ efi_capsule: Final = construct.Struct(
 # When force, we run all checks to the end and return True in all cases.
 def sanity_check_capsule(
         capsule: construct.Struct, force: bool = False) -> bool:
+
+    # As an exception, we use explicit string formatting here to better cope
+    # with line length.
+    # pylint: disable=consider-using-f-string
 
     r = True
 
@@ -440,7 +445,7 @@ def sanity_check_capsule(
         # TODO! Check FirmwareImage
         # Remaining Bytes
         {
-            'check': lambda c: not len(c.RemainingBytes),
+            'check': lambda c: len(c.RemainingBytes) == 0,
             'error': lambda c: f"Remaining {len(c.RemainingBytes)} byte(s)!",
             'debug': lambda c: 'No remaining byte'
         }
@@ -490,7 +495,7 @@ def check_capsule_guid(
     # Identify
     cmd = f"{guid_tool} {g}"
     logging.debug(f"Run {cmd}")
-    cp = subprocess.run(cmd, shell=True, capture_output=True)
+    cp = subprocess.run(cmd, shell=True, capture_output=True, check=False)
     logging.debug(cp)
 
     if cp.returncode:

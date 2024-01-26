@@ -44,7 +44,7 @@ def load_config(filename: str) -> ConfigType:
     if conf is None:
         conf = []
 
-    logging.debug('{} rules'.format(len(conf)))
+    logging.debug(f"{len(conf)} rules")
 
     # Verify that rules names are unique.
     s = set()
@@ -327,7 +327,7 @@ def add_compatibles(parsed: list[EntryType], compatibles: set[str]) -> None:
                 logging.debug(f"entry {i} 'no schema', {c} in compatibles")
                 t.append(c)
 
-        if len(t):
+        if len(t) > 0:
             x['in_compatibles'] = ', '.join(t)
             n += 1
         else:
@@ -394,7 +394,9 @@ def filter_entries(parsed: list[EntryType], Filter: str) -> list[EntryType]:
     before = len(parsed)
 
     # This function "wraps" the filter and is called for each test
+    # `x' is referred to from the filter expression.
     def function(x: EntryType) -> bool:
+        # pylint: disable=unused-argument eval-used
         return bool(eval(Filter))
 
     r = list(filter(function, parsed))

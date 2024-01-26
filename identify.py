@@ -105,12 +105,12 @@ def search_file(filename: str, strings: list[str]) -> list[str]:
                     logging.debug(f"""Found "{s}" at line {i + 1}: `{line}'""")
                     del remain[s]
 
-            if not len(remain):
+            if len(remain) == 0:
                 break
 
     ret = list(remain.keys())
 
-    if len(ret):
+    if len(ret) > 0:
         logging.debug(f"Did not find {ret}")
 
     return ret
@@ -143,11 +143,11 @@ def identify_files(db: DbType, dirname: str) -> FilesType:
             # This does not benefit from caching.
             remain = search_file(filename, search)
 
-            if not len(remain):
+            if len(remain) == 0:
                 logging.debug(f"""Identified `{filename}' as "{x['name']}".""")
                 r.append({'path': filename, 'name': x['name']})
 
-    if not len(r):
+    if len(r) == 0:
         logging.debug('Could not identify any file...')
 
     return r
