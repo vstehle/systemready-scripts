@@ -480,7 +480,7 @@ def error_if_contains(strings: list[str], filename: str) -> Stats:
 
 # subprocess.run() wrapper
 def run(cmd: str) -> subprocess.CompletedProcess[bytes]:
-    logging.debug(f"Running {args}")
+    logging.debug(f"Running {cmd}")
     cp = subprocess.run(cmd, shell=True, capture_output=True, check=False)
     logging.debug(cp)
     return cp
