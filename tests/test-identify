@@ -63,6 +63,16 @@ grep 'SystemReady IR v1.2' "$out"
 identify.py --dir "$data/v21.09_1.0" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v21.09_1.0' "$out"
 
+echo -n 'ir1.2 linux 6.7, ' >&3
+identify.py --dir "$data/v24.01_1.0-Linux-v6.7" |& tee "$out"
+grep 'SystemReady IR v1.2' "$out"
+
+identify.py --dir "$data/v24.01_1.0-Linux-v6.7" --ebbr-seq |& tee "$out"
+grep 'ACS-IR v21.09_1.0' "$out"
+
+identify.py --dir "$data/v24.01_1.0-Linux-v6.7" --known-files |& tee "$out"
+grep 'FWTSResults.log from ACS-IR v24.01_1.0-Linux-v6.7' "$out"
+
 echo -n 'sie 1.0, ' >&3
 identify.py --dir "$data/v21.10_SIE_REL1.0" |& tee "$out"
 grep 'SystemReady SIE v1.0' "$out"
