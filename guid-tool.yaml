@@ -53,6 +53,18 @@ known-guids:
     description: U-Boot v2022.07 XILINX_BOOT_IMAGE_GUID Zynq common
   - guid: 1a5178f0-87d3-4f36-ac63-3b31a23be305
     description: U-Boot v2022.07 XILINX_UBOOT_IMAGE_GUID Zynq common
+  - guid: 19d5df83-11b0-457b-be2c-7559c13142a5
+    description: U-Boot v2023.01 STM32MP_FIP_IMAGE_GUID
+  - guid: 02f4d760-cfd5-43bd-8e2d-a42acb33c660
+    description: U-Boot v2023.01 ROCKPI_4B_IDBLOADER_IMAGE_GUID
+  - guid: 4ce292da-1dd8-428d-a1c2-77743ef8b96e
+    description: U-Boot v2023.01 ROCKPI_4B_UBOOT_IMAGE_GUID
+  - guid: fd68510c-12d3-4f0a-b8d3-d879e1d3a540
+    description: U-Boot v2023.01 ROCKPI_4C_IDBLOADER_IMAGE_GUID
+  - guid: b81fb4ae-e4f3-471b-99b4-0b3da549ce13
+    description: U-Boot v2023.01 ROCKPI_4C_UBOOT_IMAGE_GUID
+  - guid: 7d6dc310-52ca-43b8-b7b9-f9d6c501d108
+    description: U-Boot v2023.07.01 DEVELOPERBOX_FIP_IMAGE_GUID (multi-bank)
   - guid: EAD2005E-7780-400B-9348-A282EB858B6B
     description: NXP i.MX8M Mini EVK
   - guid: 296119CF-DD70-43DE-8AC8-A7051F312577
