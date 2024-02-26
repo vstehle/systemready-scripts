@@ -172,9 +172,10 @@ if __name__ == "__main__":
     device_results: ResType = [[] for _ in
                                range(num_actual_devices)]
     if num_expected_devices > num_actual_devices:
-        logging.error(f'detected {num_actual_devices} ',
-                      'and expected a bigger number of ethernets:',
+        logging.error(f'detected {num_actual_devices} '
+                      f'and expected a bigger number of ethernets:'
                       f'{num_expected_devices}')
+        result = 'FAIL'
     else:
         parse_eth_log(args.log, device_results)
         result = apply_criteria(db, args.num_devices, device_results)
