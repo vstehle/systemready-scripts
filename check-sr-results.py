@@ -1641,7 +1641,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--ethernet-parser',
         help='Specify ethernet-parser.py path and arguments',
-        default='ethernet-parser.py')
+        default=f'{here}/ethernet-parser.py')
     parser.add_argument(
         '--ethernet-devices',
         help='Specify how many ethernet devices should be checked',
