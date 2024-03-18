@@ -269,6 +269,37 @@ class Guid():
 
         return r
 
+    def as_c_define(self, define_name: str = 'GUID') -> str:
+        """Convert to C define, as found in the UEFI specification.
+
+        >>> g = Guid('12345678-1234-4678-9234-06789abcdef0')
+        >>> print(g.as_c_define())
+        #define GUID \\
+        {0x12345678, 0x1234, 0x4678, \\
+        {0x92, 0x34, 0x06, 0x78, 0x9a, 0xbc, 0xde, 0xf0}}
+
+        The define's name can be specified:
+
+        >>> g = Guid('12345678-1234-4678-9234-06789abcdef0')
+        >>> print(g.as_c_define('MY_GUID'))
+        #define MY_GUID \\
+        {0x12345678, 0x1234, 0x4678, \\
+        {0x92, 0x34, 0x06, 0x78, 0x9a, 0xbc, 0xde, 0xf0}}
+        """
+        f = self.fields()
+        a = self.b[10]
+        b = self.b[11]
+        c = self.b[12]
+        d = self.b[13]
+        e = self.b[14]
+        g = self.b[15]
+
+        return (
+            f"#define {define_name} \\\n"
+            f"{{{f[0]:#010x}, {f[1]:#06x}, {f[2]:#06x}, \\\n"
+            f"{{{f[3]:#04x}, {f[4]:#04x}, "
+            f"{a:#04x}, {b:#04x}, {c:#04x}, {d:#04x}, {e:#04x}, {g:#04x}}}}}")
+
 
 if __name__ == '__main__':
     import doctest
