@@ -28,7 +28,9 @@ else
 	trap 'rm -fr "$tmp"' EXIT
 fi
 
+data="$here/data/$(basename "$0")"
 out="$tmp/out"
+
 guid-tool.py 12345678-1234-4234-9234-56789abcdef0 |& tee "$out"
 grep Unknown "$out"
 echo -n 'unknown guid not recognized, ' >&3
@@ -60,5 +62,10 @@ echo -n 'time-based details, ' >&3
 guid-tool.py --details "$(uuidgen -r)" |& tee "$out"
 grep 'version: 4 (randomly generated)' "$out"
 echo -n 'random details, ' >&3
+
+echo -n 'c def, ' >&3
+a="$tmp/guid.h"
+guid-tool.py 12345678-1234-4234-9234-56789abcdef0 --print-c-define |& tee "$a"
+diff -u "$data/c-def/guid.h" "$a"
 
 echo 'ok.' >&3

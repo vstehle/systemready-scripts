@@ -101,6 +101,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--guids-db', help='GUIDs database YAML file',
         default=f'{here}/guid-tool.yaml')
+    parser.add_argument(
+        '--print-c-define', action='store_true',
+        help='Print GUID as C define and exit')
     parser.add_argument('guid', help='Input GUID')
     args = parser.parse_args()
 
@@ -117,6 +120,10 @@ if __name__ == '__main__':
 
     if args.details:
         print(g.details())
+        sys.exit(0)
+
+    if args.print_c_define:
+        print(g.as_c_define())
         sys.exit(0)
 
     db = load_guids_db(args.guids_db)
