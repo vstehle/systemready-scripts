@@ -1,0 +1,9 @@
+---
+check-sr-results-configuration:
+tree:
+  - file: a
+    should-contain:
+      - a
+  - file: b
+    should-contain:
+      - will not be found

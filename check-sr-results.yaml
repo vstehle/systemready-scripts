@@ -382,7 +382,7 @@ tree:
           - file: pci.log
           - file: smbiosview.log
             optional:
-            must-contain:
+            should-contain:
               - 'SMBIOS Entry Point Structure:'
           - file: uefi_version.log
             must-contain:

@@ -154,7 +154,7 @@ tree:
               - 'Total Memory:'
           - file: pci.log
           - file: smbiosview.log
-            must-contain:
+            should-contain:
               - 'SMBIOS Entry Point Structure:'
   - dir: docs
     optional:

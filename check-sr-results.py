@@ -33,6 +33,7 @@ FileType = TypedDict('FileType', {
     'warn-if-not-named': str,
     'sct-parser-result-md': SctParserResultMdType,
     'must-contain': list[str],
+    'should-contain': list[str],
     'warn-once-if-contains': list[str],
     'warn-if-contains': list[str],
     'error-if-contains': list[str]},
@@ -373,9 +374,15 @@ def load_config(filename: str) -> ConfigType:
 # Check that a file contains what it must.
 # must_contain is a list of strings to look for in the file, in order.
 # We can deal with utf-16.
+# When error_not_warn is True we issue an error on failure, otherwise we issue
+# a warning.
 # We return a Stats object.
-def check_file_contains(must_contain: list[str], filename: str) -> Stats:
-    logging.debug(f"Check that file `{filename}' contains {must_contain}")
+def check_file_contains(
+        must_contain: list[str], filename: str, error_not_warn: bool) -> Stats:
+
+    action = 'error' if error_not_warn else 'warn'
+    logging.debug(
+        f"Check that file `{filename}' contains {must_contain} and {action}")
     assert len(must_contain)
 
     q = list(must_contain)
@@ -399,8 +406,14 @@ def check_file_contains(must_contain: list[str], filename: str) -> Stats:
             logging.debug(f"Looking for `{pat}'")
 
     if pat is not None:
-        logging.error(f"{red}Could not find{normal} `{pat}' in `{filename}'")
-        stats.inc_error()
+        if error_not_warn:
+            logging.error(
+                f"{red}Could not find{normal} `{pat}' in `{filename}'")
+            stats.inc_error()
+        else:
+            logging.warning(
+                f"{yellow}Could not find{normal} `{pat}' in `{filename}'")
+            stats.inc_warning()
 
     return stats
 
@@ -974,7 +987,8 @@ def warn_if_not_named(name: str, pattern: str) -> Stats:
 # - optional
 # - can-be-empty
 # If the file has a 'must-contain' property, we look for all signatures in its
-# contents in order.
+# contents in order. Same for 'should-contain', but when this fails it results
+# in a warning only.
 # We perform some more checks on archives.
 # We try to re-create SCT parser result.md files.
 # We return a Stats object.
@@ -1005,7 +1019,13 @@ def check_file(conffile: FileType, confpath: str, filename: str) -> Stats:
 
             if 'must-contain' in conffile:
                 stats.add(
-                    check_file_contains(conffile['must-contain'], filename))
+                    check_file_contains(conffile['must-contain'], filename,
+                                        True))
+
+            if 'should-contain' in conffile:
+                stats.add(
+                    check_file_contains(conffile['should-contain'], filename,
+                                        False))
 
             if 'warn-if-contains' in conffile:
                 stats.add(

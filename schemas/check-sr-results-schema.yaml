@@ -38,6 +38,10 @@ $defs:
                 oneOf:
                     - '$ref': '#/$defs/array-of-strings'
                     - const: 'DELETE'  # For overlays.
+            should-contain:
+                oneOf:
+                    - '$ref': '#/$defs/array-of-strings'
+                    - const: 'DELETE'  # For overlays.
             warn-if-contains:
                 '$ref': '#/$defs/array-of-strings'
             warn-once-if-contains:

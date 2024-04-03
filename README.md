@@ -96,6 +96,9 @@ tree:
     must-contain:               # If present, the file contents is checked
       - <string>                # This string must be present in the file
       - ...
+    should-contain:             # If present, the file contents is checked
+      - <string>                # This string should be present in the file,
+      - ...                     # otherwise a warning is issued
     warn-if-contains:           # If present, the file contents is checked
       - <string>                # We warn if this string is present in the file
       - ...

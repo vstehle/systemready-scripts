@@ -90,6 +90,16 @@ for d in b ab; do
 	grep ' 1 warning' "$out"
 done
 
+echo -n 'should contain, ' >&3
+"${csr[@]}" --config "$data/should-contain.yaml" --dir "$data/a" |& tee "$out"
+grep "/b' missing" "$out"
+grep ' 0 warning, 1 error' "$out"
+
+"${csr[@]}" --config "$data/should-contain.yaml" --dir "$data/b" |& tee "$out"
+grep "/a' missing" "$out"
+grep "WARNING .* Could not find .*will not be found.* in .*/b'" "$out"
+grep ' 1 warning, 1 error' "$out"
+
 echo -n 'once, ' >&3
 "${csr[@]}" --config "$data/once.yaml" --dir "$data/once" |& tee "$out"
 grep 'WARNING .* found in .*warning once' "$out"
