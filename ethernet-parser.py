@@ -8,13 +8,6 @@ import sys
 from typing import Any, Optional, cast
 import yaml
 
-
-# Colors
-normal = ''
-red = ''
-yellow = ''
-green = ''
-
 DbType = dict[str, Any]
 ResType = list[list[dict[str, Any]]]
 
