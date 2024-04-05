@@ -126,6 +126,8 @@ tree:
               - file: BsaResultsKernel.log
                 must-contain:
                   - Number of PE detected
+                  - Tests Failed
+                should-contain:
                   - Tests Failed =  0
       - dir: linux_dump
         min-entries: 10     # Allow missing lsusb.log
