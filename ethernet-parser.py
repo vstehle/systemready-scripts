@@ -24,8 +24,9 @@ def load_ethernet_db(filename: str) -> DbType:
         logging.error(f'filename {filename} does not exist')
 
     if db is None:
-        db = {}
+        db = {'ethernet_parser-database': None}
 
+    assert 'ethernet_parser-database' in db
     return db
 
 
