@@ -54,8 +54,6 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
     link_pattern = re.compile(r'INFO: Link not detected')
 
     device_count = 0
-    ethtool_pattern_count = 0
-    ping_pattern_count = 0
     lookforping = False
 
     with open(log_path, 'r') as log_file:
@@ -71,7 +69,6 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
                     if result == 'PASS':
                         logging.debug(f" Ethtool: device {device_count},"
                                       f" PASSED")
-                        ethtool_pattern_count += 1
                     elif result == 'FAIL':
                         logging.debug(f" Ethtool: device {device_count}, "
                                       f" FAILED")
@@ -88,7 +85,6 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
                     if result == 'successful':
                         logging.debug(f" Ping: device {device_count}, PASSED")
                         device_results[device_count-1].append({'ping': 'PASS'})
-                        ping_pattern_count += 1
                     elif result != 'successful':
                         logging.debug(f" Ping: device {device_count}, FAILED")
                         device_results[device_count-1].append({'ping': 'FAIL'})
