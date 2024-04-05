@@ -37,6 +37,7 @@ def detect_eth_devices(log_path: str) -> int:
         for line in log_file:
             match_device = ethtool_pattern.search(line)
             if match_device:
+                logging.debug(f"Got `{line.rstrip()}'")
                 device_count += 1
     logging.debug(f' ethernet devices detected: {device_count}')
     return device_count
@@ -52,11 +53,10 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
 
     with open(log_path, 'r') as log_file:
         for line in log_file:
-            match_ethtool = ethtool_pattern.search(line)
-            match_ping = ping_pattern.search(line)
-            match_no_link = link_pattern.search(line)
             if lookforping is False:
+                match_ethtool = ethtool_pattern.search(line)
                 if match_ethtool:
+                    logging.debug(f"Got `{line.rstrip()}'")
                     device_count += 1
                     result = match_ethtool.group(1)
                     device_results[device_count-1].append({'ethtool': result})
@@ -69,11 +69,15 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
                     lookforping = True
 
             if lookforping is True:
+                match_no_link = link_pattern.search(line)
+                match_ping = ping_pattern.search(line)
                 if match_no_link:
+                    logging.debug(f"Got `{line.rstrip()}'")
                     logging.debug(f" Ping: device {device_count}, FAILED")
                     device_results[device_count-1].append({'ping': 'FAIL'})
                     lookforping = False
                 elif match_ping:
+                    logging.debug(f"Got `{line.rstrip()}'")
                     result = match_ping.group(1)
                     lookforping = False
                     if result == 'successful':
@@ -120,11 +124,11 @@ def apply_criteria(
             logging.error(f"not validating match found for: {dr}")
 
     if num_pass_devices == num_devices:
-        logging.info(f"ethernet-parser passed for"
+        logging.info(f"ethernet-parser passed for "
                      f"{num_pass_devices} and requested {num_devices}")
         return "PASS"
 
-    logging.error(f"ethernet-parser passed for"
+    logging.error(f"ethernet-parser passed for "
                   f"{num_pass_devices} and requested {num_devices}")
     return "FAIL"
 
@@ -161,7 +165,7 @@ if __name__ == "__main__":
                                range(num_actual_devices)]
     if num_expected_devices > num_actual_devices:
         logging.error(f'detected {num_actual_devices} '
-                      f'and expected a bigger number of ethernets:'
+                      f'and expected a bigger number of ethernets: '
                       f'{num_expected_devices}')
         result = 'FAIL'
     else:
