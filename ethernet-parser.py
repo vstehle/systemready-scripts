@@ -56,7 +56,6 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
     device_count = 0
     ethtool_pattern_count = 0
     ping_pattern_count = 0
-    expectping = True
     lookforping = False
 
     with open(log_path, 'r') as log_file:
@@ -73,11 +72,10 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
                         logging.debug(f" Ethtool: device {device_count},"
                                       f" PASSED")
                         ethtool_pattern_count += 1
-                        lookforping = True | expectping
                     elif result == 'FAIL':
                         logging.debug(f" Ethtool: device {device_count}, "
                                       f" FAILED")
-                        lookforping = False | expectping
+                    lookforping = True
 
             if lookforping is True:
                 if match_no_link:
