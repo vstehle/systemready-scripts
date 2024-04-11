@@ -45,6 +45,7 @@ def detect_eth_devices(log_path: str) -> int:
 
 def parse_eth_log(log_path: str, device_results: ResType) -> None:
     ethtool_pattern = re.compile(r'The test result is (PASS|FAIL)')
+    unsup_pattern = re.compile(r" doesn't supports ethtool self test")
     ping_pattern = re.compile(r'Ping to www.arm.com is (successful|.*)')
     link_pattern = re.compile(r'INFO: Link not detected')
 
@@ -55,6 +56,7 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
         for line in log_file:
             if lookforping is False:
                 match_ethtool = ethtool_pattern.search(line)
+                match_unsup = unsup_pattern.search(line)
                 if match_ethtool:
                     logging.debug(f"Got `{line.rstrip()}'")
                     device_count += 1
@@ -66,6 +68,15 @@ def parse_eth_log(log_path: str, device_results: ResType) -> None:
                     elif result == 'FAIL':
                         logging.debug(f" Ethtool: device {device_count}, "
                                       f" FAILED")
+                    lookforping = True
+                elif match_unsup:
+                    logging.debug(f"Got `{line.rstrip()}'")
+                    device_count += 1
+                    logging.debug(
+                        f" Ethtool: device {device_count}, "
+                        "selftest unsupported")
+                    device_results[device_count-1].append(
+                        {'ethtool': 'FAIL'})
                     lookforping = True
 
             if lookforping is True:

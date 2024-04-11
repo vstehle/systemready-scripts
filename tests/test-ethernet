@@ -70,4 +70,11 @@ fi
 
 grep 'expected a bigger number of ethernets' "$out"
 
+echo -n ', test 7: unsup' >&3
+ethernet-parser.py --debug "$data/ethtool-test-unsup.log" 1 |& tee "$out"
+grep 'DEBUG .* Ethtool: device 1, selftest unsupported' "$out"
+grep 'DEBUG .* Ping: device 1, PASSED' "$out"
+grep 'DEBUG .* match found: .*ethtool.*FAIL.*ping.*PASS' "$out"
+grep 'Ethernet parser tests result is: PASS' "$out"
+
 echo ', ok.' >&3

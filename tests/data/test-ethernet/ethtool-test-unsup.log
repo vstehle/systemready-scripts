@@ -1,0 +1,98 @@
+
+****************************************************************
+
+                         Running ethtool
+
+****************************************************************
+INFO: Detected following ethernet interfaces via ip command :
+0: eth0
+
+INFO: Bringing down all ethernet interfaces using ifconfig
+ifconfig eth0 down
+
+****************************************************************
+
+
+INFO: Bringing up ethernet interface: eth0
+INFO: Running "ethtool eth0 " :
+Settings for eth0:
+	Supported ports: [ TP	 MII ]
+	Supported link modes:   10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Half 1000baseT/Full
+	Supported pause frame use: Symmetric Receive-only
+	Supports auto-negotiation: Yes
+	Supported FEC modes: Not reported
+	Advertised link modes:  10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Half 1000baseT/Full
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Advertised FEC modes: Not reported
+	Link partner advertised link modes:  10baseT/Half 10baseT/Full
+	                                     100baseT/Half 100baseT/Full
+	                                     1000baseT/Full
+	Link partner advertised pause frame use: Symmetric
+	Link partner advertised auto-negotiation: Yes
+	Link partner advertised FEC modes: Not reported
+	Speed: 1000Mb/s
+	Duplex: Full
+	Auto-negotiation: on
+	master-slave cfg: preferred slave
+	master-slave status: slave
+	Port: Twisted Pair
+	PHYAD: 7
+	Transceiver: external
+	MDI-X: Unknown
+        Current message level: 0x00002087 (8327)
+                               drv probe link tx_err hw
+	Link detected: yes
+
+
+INFO: Ethernet interface eth0 doesn't supports ethtool self test
+INFO: Link detected on eth0
+INFO: Running ip address show dev eth0 :
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel qlen 1000
+    link/ether 11:22:33:44:55:66 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.0.27/24 brd 10.0.0.255 scope global dynamic eth0
+       valid_lft 690992sec preferred_lft 690992sec
+
+
+INFO: eth0 support DHCP
+INFO: Running ip route show dev eth0 :
+default via 10.0.0.1 dev eth0  src 10.0.0.27  metric 10 
+10.1.103.129 via 10.0.0.1 dev eth0  src 10.0.0.27  metric 10 
+10.1.103.130 via 10.0.0.1 dev eth0  src 10.0.0.27  metric 10 
+10.0.0.0/24 dev eth0 scope link  src 10.0.0.27  metric 10 
+10.0.0.1 dev eth0 scope link  src 10.0.0.27  metric 10 
+
+
+INFO: Router/Gateway IP for eth0 : 10.0.0.1
+INFO: Running ifconfig eth0 up :
+INFO: Running ping -w 10000 -c 3 -I eth0 10.0.0.1 :
+PING 10.0.0.1 (10.0.0.1): 56 data bytes
+64 bytes from 10.0.0.1: seq=0 ttl=255 time=10.196 ms
+64 bytes from 10.0.0.1: seq=1 ttl=255 time=11.163 ms
+64 bytes from 10.0.0.1: seq=2 ttl=255 time=12.133 ms
+
+--- 10.0.0.1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 10.196/11.164/12.133 ms
+
+
+INFO: Ping to router/gateway[10.0.0.1] for eth0 is successful
+INFO: Running ping -w 10000 -c 3 -I eth0 www.arm.com :
+PING www.arm.com (192.168.0.144): 56 data bytes
+64 bytes from 192.168.0.144: seq=0 ttl=53 time=54.699 ms
+64 bytes from 192.168.0.144: seq=1 ttl=53 time=51.677 ms
+64 bytes from 192.168.0.144: seq=2 ttl=53 time=58.333 ms
+
+--- www.arm.com ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 51.677/54.903/58.333 ms
+
+
+INFO: Ping to www.arm.com is successful
+
+****************************************************************
+
