@@ -169,6 +169,11 @@ dev_paths = []
 # are added and ensure uniqueness like with a set().
 esp_dev_paths: dict[str, None] = {}
 
+# Logs to check for ethernet.
+# This is populated when checking for ethernet, and is deferred checked later
+# on.
+ethernets = set()
+
 # Linux bindings folder relative path under the cache folder.
 BINDINGS_REL_PATH: Final = 'bindings'
 
@@ -673,33 +678,6 @@ def need_regen(filename: str, deps: list[str], margin: int = 0) -> bool:
     return False
 
 
-# Check ethernet results
-# Verify the log with ethernet.
-# We return a Stats object
-def check_ethernet(filename: str) -> Stats:
-    logging.debug(f"Check Ethernet `{filename}'")
-    stats = Stats()
-
-    if num_eth_devices == 0:
-        logging.warning(
-            f"Number of ethernet devices {yellow}is set to 0{normal}. "
-            f"Double check this is correct.")
-        stats.inc_warning()
-        return stats
-
-    cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
-
-    if cp.returncode:
-        logging.error(
-            f'ethernet-parser {red}failed{normal} on {filename}')
-        stats.inc_error()
-        return stats
-
-    logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
-    stats.inc_pass()
-    return stats
-
-
 # Check Devicetree blob.
 # We run dtc and dt-validate to produce the log when needed.
 # We add markers to the log, which will be ignored by dt-parser.py.
@@ -1054,7 +1032,10 @@ def check_file(conffile: FileType, confpath: str, filename: str) -> Stats:
                 stats.add(check_devicetree(filename))
 
             if 'ethernet' in conffile:
-                stats.add(check_ethernet(filename))
+                logging.debug(
+                    f"Record `{filename}' for deferred ethernet check.")
+                assert filename not in ethernets
+                ethernets.add(filename)
 
             if 'uefi-sniff' in conffile:
                 stats.add(check_uefi_sniff(filename))
@@ -1358,6 +1339,36 @@ def deferred_check_min_occurrences(conftree: TreeType) -> Stats:
     return deferred_check_min_occurrences_recurse(conftree, '')
 
 
+# Deferred check ethernet logs.
+# Those checks are run after checking all files and dirs.
+# We return a Stats object.
+def deferred_check_ethernet() -> Stats:
+    logging.debug('Deferred check ethernet')
+    stats = Stats()
+
+    if len(ethernets) > 0 and num_eth_devices == 0:
+        logging.warning(
+            f"Number of ethernet devices {yellow}is set to 0{normal}. "
+            f"Double check this is correct.")
+        stats.inc_warning()
+        return stats
+
+    for filename in ethernets:
+        logging.debug(f"Check Ethernet `{filename}'")
+        cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
+
+        if cp.returncode:
+            logging.error(
+                f'ethernet-parser {red}failed{normal} on {filename}')
+            stats.inc_error()
+            return stats
+
+        logging.debug(f"{green} ethernet-parser {normal} with `{filename}'")
+        stats.inc_pass()
+
+    return stats
+
+
 # Deferred checks
 # Those checks are run after checking all files and dirs.
 # This allows to decouple checks from the configuration file order.
@@ -1371,6 +1382,7 @@ def deferred_checks(conftree: TreeType) -> Stats:
     stats.add(deferred_check_capsule_guids_in_esrt())
     stats.add(deferred_check_uefi_logs_esp())
     stats.add(deferred_check_min_occurrences(conftree))
+    stats.add(deferred_check_ethernet())
     return stats
 
 
