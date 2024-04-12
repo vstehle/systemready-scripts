@@ -1663,7 +1663,7 @@ if __name__ == '__main__':
         help='Specify ethernet-parser.py path and arguments',
         default=f'{here}/ethernet-parser.py')
     parser.add_argument(
-        '--ethernet-devices',
+        '--ethernet-devices', type=int,
         help='Specify how many ethernet devices should be checked',
         default=0)
     parser.add_argument('--dump-config', help='Output yaml config filename')
@@ -1705,7 +1705,7 @@ if __name__ == '__main__':
     parser = args.parser + (' --debug' if args.debug else '')
     dt_validate = args.dt_validate
     ethernet_parser = args.ethernet_parser + (' --debug' if args.debug else '')
-    num_eth_devices = int(args.ethernet_devices)
+    num_eth_devices = args.ethernet_devices
     compatibles = args.compatibles
     linux_url = args.linux_url
     cache_dir = args.cache_dir
