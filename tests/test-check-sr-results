@@ -112,6 +112,14 @@ grep 'WARNING .* found in ' "$out"
 n=$(grep -c 'WARNING .* found in ' "$out")
 ((n == 2))
 
+echo -n 'no net, ' >&3
+"${csr[@]}" --dir "$data/report-txt/no-net" |& tee "$out"
+grep 'ERROR .* Could not extract all patterns from .*report\.txt' "$out"
+
+echo -n 'two net, ' >&3
+"${csr[@]}" --dir "$data/report-txt/two-net" |& tee "$out"
+grep 'INFO .* Total number of network controllers = 2' "$out"
+
 echo -n 'force id, ' >&3
 mkdir -v "$tmp/empty"
 "${csr[@]}" --dir "$tmp/empty" --identify "sh -c 'echo Forced ID'" |& tee "$out"

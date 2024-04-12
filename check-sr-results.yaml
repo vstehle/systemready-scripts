@@ -535,6 +535,7 @@ tree:
           - file: '*sys-firmware.tar.gz'
             warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt
+    report-txt:
     must-contain:
       - General information
       - System information

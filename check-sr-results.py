@@ -29,6 +29,7 @@ FileType = TypedDict('FileType', {
     'uefi-capsule': None,
     'devicetree': None,
     'uefi-sniff': None,
+    'report-txt': None,
     'min-occurrences': int,
     'warn-if-not-named': str,
     'sct-parser-result-md': SctParserResultMdType,
@@ -173,6 +174,10 @@ esp_dev_paths: dict[str, None] = {}
 # This is populated when checking for ethernet, and is deferred checked later
 # on.
 ethernets = set()
+
+# Fields from report.txt.
+# This is populated when checking the report.txt, and is used later on.
+report_txt: dict[str, Any] = {}
 
 # Linux bindings folder relative path under the cache folder.
 BINDINGS_REL_PATH: Final = 'bindings'
@@ -910,6 +915,43 @@ def check_must_have_esp(filename: str) -> Stats:
     return stats
 
 
+# Check template report.txt.
+# We extract fields from template report.txt.
+# We return a Stats object.
+def check_report_txt(filename: str) -> Stats:
+    logging.debug(f"Check report txt `{filename}'")
+    stats = Stats()
+
+    patterns = [
+        r'^- (Total number of network controllers): (\d+)',
+    ]
+
+    assert len(report_txt) == 0
+
+    # Open the file with the proper encoding and look for patterns.
+    with open(filename, encoding='utf-8') as f:
+        for line in f:
+            line = line.rstrip()
+
+            for pat in patterns:
+                m = re.match(pat, line)
+                if m:
+                    assert m.lastindex == 2
+                    logging.debug(f"{green}Matched{normal} `{line}'")
+                    logging.info(f"{m[1]} = {m[2]}")
+                    assert m[1] not in report_txt
+                    report_txt[m[1]] = m[2]
+                    stats.inc_pass()
+
+    # Verify that we found everything.
+    if len(report_txt) != len(patterns):
+        logging.error(
+            f"{red}Could not extract all patterns{normal} from `{filename}'")
+        stats.inc_error()
+
+    return stats
+
+
 # Try to re-create result.md with the SCT parser.
 # If we do not have parser.py at hand or if parsing fails, we do not treat that
 # as an error here but rather rely on subsequent checks.
@@ -1042,6 +1084,9 @@ def check_file(conffile: FileType, confpath: str, filename: str) -> Stats:
 
             if 'must-have-esp' in conffile:
                 stats.add(check_must_have_esp(filename))
+
+            if 'report-txt' in conffile:
+                stats.add(check_report_txt(filename))
 
         elif 'can-be-empty' in conffile:
             logging.debug(f"`{filename}' {yellow}empty (allowed){normal}")

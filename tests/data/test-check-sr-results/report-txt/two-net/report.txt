@@ -1,0 +1,3 @@
+System information
+------------------
+- Total number of network controllers: 2

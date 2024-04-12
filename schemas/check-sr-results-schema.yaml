@@ -76,6 +76,8 @@ $defs:
                 const: null
             must-have-esp:
                 const: null
+            report-txt:
+                const: null
             min-occurrences:
                 type: integer
         required:
@@ -94,6 +96,7 @@ $defs:
             # warn-if-not-named is optional
             # uefi-sniff is optional
             # must-have-esp is optional
+            # report-txt is optional
             # min-occurrences is optional
         additionalProperties: false
     dir:
