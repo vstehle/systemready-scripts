@@ -73,6 +73,7 @@ properties:
                         - IR v2.0 with SIE
                         - IR v2.1 with SIE
                         - SIE v1.0
+                        - SR v2.5
             required:
                 - files
                 - version
