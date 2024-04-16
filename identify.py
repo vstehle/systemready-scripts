@@ -213,6 +213,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--bbsr-seq', action='store_true', help='Print the BBSR.seq id')
     parser.add_argument(
+        '--sbbr-seq', action='store_true', help='Print the SBBR.seq id')
+    parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
         '--dir', help='Specify directory to check', default='.')
@@ -237,8 +239,12 @@ if __name__ == '__main__':
     for f in files:
         path = f['path']
 
-        if (args.known_files or args.ebbr_seq and 'EBBR.seq' in path
-           or args.bbsr_seq and 'BBSR.seq' in path):
+        is_ebbr_file = args.ebbr_seq and 'EBBR.seq' in path
+        is_bbsr_file = args.bbsr_seq and 'BBSR.seq' in path
+        is_sbbr_file = args.sbbr_seq and 'SBBR.seq' in path
+
+        if (args.known_files or is_ebbr_file
+           or is_bbsr_file or is_sbbr_file):
             print(f"{path}: {f['name']}")
 
     if ver is None:

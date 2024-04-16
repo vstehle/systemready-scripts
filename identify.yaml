@@ -31,7 +31,7 @@ known-files:
     path: acs_results/sct_results/Sequence/EBBR.seq
   - sha256: 7cb231d17fa9f580e75fee01c0295c9bd800fa6ba27501c7a1b941cbbdeaebfb
     name: BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
-      .. v23.09_2.1.0
+      .. v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
     path: acs_results/sct_results/Sequence/BBSR.seq
   - sha256: a1682187e16336c71f82b73c7e4e475e56561e44b2b3fd4c9b4ca653c76d29b7
     name: EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
@@ -39,6 +39,9 @@ known-files:
   - sha256: 7cb231d17fa9f580e75fee01c0295c9bd800fa6ba27501c7a1b941cbbdeaebfb
     name: BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
     path: acs_results/SIE/sct_results/Sequence/BBSR.seq
+  - sha256: 555ec00989f416b4fe29c11bf0018b7dccf3de2b358c083967b20c252d421330
+    name: SBBR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+    path: acs_results/sct_results/Sequence/SBBR.seq
 
 
   # We recognize the following files by searching for matches into their
@@ -159,16 +162,26 @@ known-files:
       - BSA v1.0.6
       - Version 1.0.6
 
+  - name: SbsaResultsApp.log from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+    path: acs_results/linux/SbsaResultsApp.log
+    search:
+      - SystemReady SR ACS v2
 
 versions:
 
   # The following will be tried in order therefore put the most constrained
   # matches first.
+  - files:
+      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
+        .. v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+      - SBBR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+      - SbsaResultsApp.log from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+    version: SR v2.5
 
   - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - BSALinuxResults.log from ACS-IR v22.10_2.0.0_BETA-1
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
@@ -179,7 +192,7 @@ versions:
   - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - BSALinuxResults.log from ACS-IR v23.03_2.0.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
@@ -199,7 +212,7 @@ versions:
       - BSALinuxResults.log from ACS-IR v23.09_2.1.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - FWTSResults.log from ACS-IR v23.09_2.1.0
     version: IR v2.1
 
@@ -207,13 +220,13 @@ versions:
       - BSALinuxResults.log from ACS-IR v23.03_2.0.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - FWTSResults.log from ACS-IR v23.03_2.0.0
     version: IR v2.0
 
   - files:
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - BSALinuxResults.log from ACS-IR v22.10_2.0.0_BETA-1
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
       - FWTSResults.log from ACS-IR v22.10_2.0.0_BETA-1
@@ -263,7 +276,7 @@ versions:
 
   - files:
       - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
-        v23.09_2.1.0
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - ~EBBR.seq
     version: SIE v1.0
 
