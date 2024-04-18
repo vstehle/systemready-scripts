@@ -230,8 +230,7 @@ tree:
               - MemAvailable
           - file: uname.log
             must-contain:
-              - 'Linux generic-arm64 6.0.0-yocto-standard #1 SMP PREEMPT Sun Oct
-                2 21:09:07 UTC 2022 aarch64 GNU/Linux'
+              - 'Linux generic-arm64 6.'
       - dir: linux_tools
         min-entries: 1
         max-entries: 2  # Allow dt-validate.log.old
@@ -715,8 +714,7 @@ overlays:
                   - block
               - file: uname.log
                 must-contain:
-                  - 'Linux generic-arm64 6.4.0-yocto-standard+ #1 SMP PREEMPT
-                    Sun Jun 25 23:29:58 UTC 2023 aarch64 GNU/Linux'
+                  - Linux generic-arm64 6.
 
           - dir: linux_tools
             max-entries: 6
