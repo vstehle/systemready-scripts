@@ -152,6 +152,13 @@ known-files:
       - BSA v1.0.4
       - Version 1.0.4
 
+  - name: BSALinuxResults.log from ACS-IR v23.03_2.0.0-Linux-v6.4
+    path: acs_results/linux_acs/bsa_acs_app/BSALinuxResults.log
+    search:
+      - SystemReady IR ACS v2.0.0
+      - BSA v1.0.4
+      - Version 1.0.6
+
   - name: BSALinuxResults.log from ACS-IR v23.09_2.1.0
     path: acs_results/linux_acs/bsa_acs_app/BSALinuxResults.log
     search:
@@ -202,6 +209,12 @@ versions:
         v23.09_2.1.0
       - FWTSResults.log from ACS-IR v23.09_2.1.0
     version: IR v2.1
+
+  - files:
+      - BSALinuxResults.log from ACS-IR v23.03_2.0.0-Linux-v6.4
+      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0
+      - FWTSResults.log from ACS-IR v23.03_2.0.0
+    version: IR v2.0
 
   - files:
       - BSALinuxResults.log from ACS-IR v23.03_2.0.0
