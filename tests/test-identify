@@ -108,6 +108,13 @@ grep 'SystemReady IR v2.0' "$out"
 identify.py --dir "$data/v23.03_2.0.0" --ebbr-seq |& tee "$out"
 grep 'v23.03_2.0.0' "$out"
 
+echo -n 'ir2.0 linux 6.4, ' >&3
+identify.py --dir "$data/v23.03_2.0.0-Linux-v6.4" |& tee "$out"
+grep 'SystemReady IR v2.0' "$out"
+
+identify.py --dir "$data/v23.03_2.0.0-Linux-v6.4" --ebbr-seq |& tee "$out"
+grep 'v23.03_2.0.0' "$out"
+
 echo -n 'ir2.0 + sie, ' >&3
 identify.py --dir "$data/v23.03_2.0.0_with_SIE" |& tee "$out"
 grep 'SystemReady IR v2.0 with SIE' "$out"
