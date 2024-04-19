@@ -682,7 +682,7 @@ def check_ethernet(filename: str) -> Stats:
 
     if num_eth_devices == 0:
         logging.warning(
-            f"Number of ethernet devices {red}is set to 0{normal}. "
+            f"Number of ethernet devices {yellow}is set to 0{normal}. "
             f"Double check this is correct.")
         stats.inc_warning()
         return stats
