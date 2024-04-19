@@ -158,6 +158,7 @@ tree:
               - 'SMBIOS Entry Point Structure:'
   - dir: docs
     optional:
+    min-entries: 0
   - dir: fw
     min-entries: 2
     tree:

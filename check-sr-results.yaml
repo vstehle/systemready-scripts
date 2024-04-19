@@ -502,6 +502,7 @@ tree:
         uefi-capsule:
   - dir: manual-results
     optional:
+    min-entries: 0
   - dir: os-logs
     min-entries: 2
     tree:
