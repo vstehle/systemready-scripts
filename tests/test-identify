@@ -143,9 +143,13 @@ grep 'SystemReady IR v2.1 with SIE' "$out"
 identify.py --dir "$data/v23.09_2.1.0_with_SIE" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE' "$out"
 
-echo -n 'sr2.5, ' >&3
+echo -n 'sr2.5 acs v24.03, ' >&3
 identify.py --dir "$data/v24.03_2.1.0_SR" --sbbr-seq |& tee "$out"
-grep 'ACS-SR v24.03_2.1.0 .. v23.09_2.0.0' "$out"
+grep 'SR v2.5 with ACS v24.03_2.1.0' "$out"
+
+echo -n 'sr2.5 acs v23.09, ' >&3
+identify.py --dir "$data/v23.09_2.0.0_SR" --sbbr-seq |& tee "$out"
+grep 'SR v2.5 with ACS v23.09_2.0.0' "$out"
 
 
 echo -n 'no sie, ' >&3
