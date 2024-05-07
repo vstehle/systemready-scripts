@@ -39,9 +39,12 @@ known-files:
   - sha256: 7cb231d17fa9f580e75fee01c0295c9bd800fa6ba27501c7a1b941cbbdeaebfb
     name: BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
     path: acs_results/SIE/sct_results/Sequence/BBSR.seq
+  - sha256: 7cb231d17fa9f580e75fee01c0295c9bd800fa6ba27501c7a1b941cbbdeaebfb
+    name: BBSR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+    path: acs-auto-results/sct_results/Sequence/BBSR.seq
   - sha256: 555ec00989f416b4fe29c11bf0018b7dccf3de2b358c083967b20c252d421330
     name: SBBR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
-    path: acs_results/sct_results/Sequence/SBBR.seq
+    path: acs-auto-results/sct_results/Sequence/SBBR.seq
 
 
   # We recognize the following files by searching for matches into their
@@ -169,21 +172,31 @@ known-files:
       - BSA v1.0.6
       - Version 1.0.6
 
-  - name: SbsaResultsApp.log from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
-    path: acs_results/linux/SbsaResultsApp.log
+  - name: SbsaResultsApp.log from v23.09_2.0.0
+    path: acs-auto-results/linux/SbsaResultsApp.log
     search:
-      - SystemReady SR ACS v2
+      - Version 7.1.3
+
+  - name: SbsaResultsApp.log from v24.03_2.1.0
+    path: acs-auto-results/linux/SbsaResultsApp.log
+    search:
+      - Version 7.1.5
 
 versions:
 
   # The following will be tried in order therefore put the most constrained
   # matches first.
   - files:
-      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1
-        .. v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+      - SbsaResultsApp.log from v23.09_2.0.0
+      - BBSR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
       - SBBR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
-      - SbsaResultsApp.log from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
-    version: SR v2.5
+    version: SR v2.5 with ACS v23.09_2.0.0
+
+  - files:
+      - SbsaResultsApp.log from v24.03_2.1.0
+      - BBSR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+      - SBBR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
+    version: SR v2.5 with ACS v24.03_2.1.0
 
   - files:
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE

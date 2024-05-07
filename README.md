@@ -225,6 +225,16 @@ Nevertheless, a `check-sr-results-ir1.yaml` configuration file is kept here for
 convenience. It allows to check IR v1.x results with the latest version of the
 script.
 
+## Checking SR v2.5 results
+
+Currently, versions SR ACS v23.09_2.0.0 and v24.03_2.1.0 are supported 
+by this script, which automatically identifies the ACS version.
+The script only verifies the ACS automation results
+in the 'acs-auto-results' folder.
+
+Sample command:
+`./check-sr-results.py --dir SystemReady-sr-partner-model-20240419` 
+
 ## Forcing identification
 
 By default, results are identified by `check-sr-results.py` using the
