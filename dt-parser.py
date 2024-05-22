@@ -105,7 +105,8 @@ def parse(filename: str) -> list[EntryType]:
             # This must be tried first
             if dt_val is not None:
                 #        From schema: /home/vinste01/...
-                m = re.match(r'\tFrom schema: (.*)', line)
+                #    from schema $id: http://devicetree.org/...
+                m = re.match(r'\tfrom schema:? (.*)', line, flags=re.I)
 
                 if m:
                     logging.debug(

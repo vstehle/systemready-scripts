@@ -96,4 +96,8 @@ grep 'error no schema .*legit,error' "$out"
 grep 'error no yaml schema .*known,compatible' "$out"
 echo -n 'compat, ' >&3
 
+dt-parser.py --dump "$data/new-schema.log" |& tee "$out"
+grep dt_validate_schema "$out"
+echo -n 'new schema, ' >&3
+
 echo 'ok.' >&3

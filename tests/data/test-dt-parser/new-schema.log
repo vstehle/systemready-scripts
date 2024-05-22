@@ -1,0 +1,2 @@
+/xxx/yyy.dtb: /zzz/: x: y z
+	from schema $id: http://devicetree.org/schemas/sss.yaml#
