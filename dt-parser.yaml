@@ -164,6 +164,35 @@
   update:
     type: ignored
 
+- rule: Ignore dt-validate warnings about U-Boot SPL chosen node properties.
+    Those are specific to U-Boot.
+  criteria:
+    devicetree_node: chosen
+    type: dt-validate warning
+    line: 'u-boot,spl-'
+    warning_message: 'is not of type ''object'', ''array'', ''boolean'',
+      ''null'''
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings (2) about U-Boot SPL chosen node properties.
+    Those are specific to U-Boot.
+  criteria:
+    devicetree_node: chosen
+    type: dt-validate warning
+    line: 'u-boot,spl-'
+    warning_message: 'does not match any of the regexes: '
+  update:
+    type: ignored
+
+- rule: Ignore dt-validate warnings about U-Boot SPL unevaluated properties.
+    Those are specific to U-Boot.
+  criteria:
+    type: dt-validate warning
+    warning_message: 'Unevaluated properties are not allowed (''u-boot,spl-'
+  update:
+    type: ignored
+
 # We force the following dt-validate warning entries corresponding to a Linux
 # kernel default DTC_FLAGS as `ignored'.
 
