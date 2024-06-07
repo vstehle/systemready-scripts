@@ -172,12 +172,17 @@ class Guid():
 
         >>> print(Guid('12345678-1234-4678-9234-56789abcdef0'))
         12345678-1234-4678-9234-56789abcdef0
+
+        This works fine now with leading zeroes:
+
+        >>> print(Guid('09D7CF52-0720-4710-91D1-08469B7FE9C8'))
+        09d7cf52-0720-4710-91d1-08469b7fe9c8
         """
         f = self.fields()
 
         return (
             f'{f[0]:08x}-{f[1]:04x}-{f[2]:04x}-'
-            f'{f[3]:02x}{f[4]:02x}-{f[5]:12x}')
+            f'{f[3]:02x}{f[4]:02x}-{f[5]:012x}')
 
     def as_uuid(self) -> uuid.UUID:
         """Convert to UUID object.
