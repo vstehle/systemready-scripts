@@ -55,6 +55,7 @@ valid:	$(VALID_TARGETS)
 seq:
 	yamllint .
 	shellcheck tests/test-*
+	shellcheck --exclude=SC2001,SC2034,SC2086,SC2181,SC2206,SC2320 ethtool-test.sh
 	flake8
 	mypy .
 	pylint --rcfile .pylint.rc *.py
