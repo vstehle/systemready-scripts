@@ -1386,21 +1386,42 @@ def deferred_check_min_occurrences(conftree: TreeType) -> Stats:
 
 # Deferred check ethernet logs.
 # Those checks are run after checking all files and dirs.
+# We rely on the "Total number of network controllers" information parsed from
+# the report.txt.
+# It can also be given from command line with num_eth_devices, which has
+# priority.
 # We return a Stats object.
 def deferred_check_ethernet() -> Stats:
     logging.debug('Deferred check ethernet')
     stats = Stats()
 
-    if len(ethernets) > 0 and num_eth_devices == 0:
+    if num_eth_devices is not None:
+        neth = num_eth_devices
+    elif 'Total number of network controllers' in report_txt:
+        neth = int(report_txt['Total number of network controllers'])
+    else:
+        logging.debug('Number of ethernet to expect was not given')
+        neth = 0
+
+    logging.info(f"We expect {neth} ethernet {maybe_plural(neth, 'device')}.")
+
+    if len(ethernets) > 0 and neth == 0:
         logging.warning(
             f"Number of ethernet devices {yellow}is set to 0{normal}. "
             f"Double check this is correct.")
         stats.inc_warning()
         return stats
 
+    if neth > 0 and len(ethernets) == 0:
+        logging.error(
+            f"Expected {neth} ethernet {maybe_plural(neth, 'device')} "
+            f"but {red}no ethernet log{normal}.")
+        stats.inc_error()
+        return stats
+
     for filename in ethernets:
         logging.debug(f"Check Ethernet `{filename}'")
-        cp = run(f"{ethernet_parser} {filename} {num_eth_devices}")
+        cp = run(f"{ethernet_parser} {filename} {neth}")
 
         if cp.returncode:
             logging.error(
@@ -1724,8 +1745,7 @@ if __name__ == '__main__':
         default=f'{here}/ethernet-parser.py')
     parser.add_argument(
         '--ethernet-devices', type=int,
-        help='Specify how many ethernet devices should be checked',
-        default=0)
+        help='Force how many ethernet devices should be checked')
     parser.add_argument('--dump-config', help='Output yaml config filename')
     parser.add_argument(
         '--force-regen', action='store_true',
