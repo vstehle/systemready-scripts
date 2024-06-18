@@ -1387,7 +1387,10 @@ def check_dt_validate() -> None:
     if w is None:
         # Install dt-schema (for dt-validate).
         logging.info('Installing dt-schema')
-        cp = run(f"{sys.executable} -m pip install dtschema")
+
+        cp = run(
+                f"{sys.executable} -m pip install --break-system-packages "
+                "dtschema")
 
         if cp.returncode:
             logging.error(f"{red}Installing dt-schema failed{normal}")
