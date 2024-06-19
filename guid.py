@@ -15,7 +15,7 @@ class Guid():
     """
     b: bytes
 
-    def __init__(self, x: str | bytes) -> None:
+    def __init__(self, x: str | bytes, validate: bool = True) -> None:
         """Init GUID from string or bytes.
 
         When given a string, we convert it to our internal bytes format,
@@ -29,7 +29,8 @@ class Guid():
         >>> Guid(b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
         Guid(b=b'xV4\\x124\\x12xF\\x924Vx\\x9a\\xbc\\xde\\xf0')
 
-        We raise an Exception if given an invalid GUID or an invalid type.
+        By default we raise an Exception if given an invalid GUID or an invalid
+        type.
 
         >>> Guid('Hello')
         Traceback (most recent call last):
@@ -60,6 +61,11 @@ class Guid():
         Traceback (most recent call last):
             ...
         ValueError: GUID ...: Time 5236-03-31 21:21:00.684704 is in the future
+
+        This can be avoided with the "validate" parameter:
+
+        >>> Guid('12345678-9abc-def0-1234-567890abcdef', validate=False)
+        Guid(b=b'xV4\\x12\\xbc\\x9a\\xf0\\xde\\x124Vx\\x90\\xab\\xcd\\xef')
 
         Guids are frozen, which means assigning to the member `b' directly will
         raise an exception:
@@ -124,17 +130,17 @@ class Guid():
         # Verify variant.
         var = u.variant
 
-        if var != uuid.RFC_4122:
+        if validate and var != uuid.RFC_4122:
             raise ValueError(f"GUID {self}: Bad variant {var}")
 
         # Verify version.
         ver = u.version
 
-        if ver not in [1, 3, 4, 5]:
+        if validate and ver not in [1, 3, 4, 5]:
             raise ValueError(f"GUID {self}: Bad version {ver}")
 
         # For version 1, verify that time is valid.
-        if u.version == 1:
+        if validate and u.version == 1:
             dt = self.get_datetime()
 
             if dt < datetime.datetime(1998, 1, 1):
@@ -192,26 +198,32 @@ class Guid():
         """
         return uuid.UUID(fields=self.fields())
 
-    def get_datetime(self) -> datetime.datetime:
+    def get_datetime(self, validate: bool = True) -> datetime.datetime:
         """Get the time in our GUID as a naive datetime object.
 
         >>> Guid('fb4e8912-6732-11ed-91ec-525400123456').get_datetime()
         datetime.datetime(2022, 11, 18, 11, 20, 18, 60724)
 
         Retrieving the time of our GUID works only with a time-based
-        (i.e. version 1) GUID. For all other versions this raises an
-        exception:
+        (i.e. version 1) GUID and by default for all other versions this raises
+        an exception:
 
         >>> g=Guid('12345678-1234-4678-8234-56789abcdef0')
         >>> g.get_datetime() # doctest: +ELLIPSIS
         Traceback (most recent call last):
             ...
         ValueError: GUID 1...0: Invalid get_datetime with version 4
+
+        This can be avoided with the "validate" parameter:
+
+        >>> g=Guid('12345678-1234-4678-8234-56789abcdef0')
+        >>> g.get_datetime(validate=False)
+        datetime.datetime(3059, 12, 7, 20, 53, 48, 586560)
         """
         u = self.as_uuid()
         ver = u.version
 
-        if ver != 1:
+        if validate and ver != 1:
             raise ValueError(
                 f"GUID {self}: Invalid get_datetime with version {ver}")
 
@@ -236,6 +248,23 @@ class Guid():
             variant: specified in RFC 4122
           Node: 56789abcdef0
         <BLANKLINE>
+
+        This can be useful to debug invalid GUIDs, too:
+
+        >>> g = Guid('01234567-89ab-cdef-0123-456789abcdef', validate=False)
+        >>> print(g.details())
+        GUID: 01234567-89ab-cdef-0123-456789abcdef
+          TimeLow: 1234567
+          TimeMid: 89ab
+          TimeHighAndVersion: cdef
+            timestamp: 1004172609478411623
+            version: None (Unknown)
+          ClockSeqHighAndReserved: 1
+          ClockSeqLow: 23
+            clock sequence: 291
+            variant: reserved for NCS compatibility
+          Node: 456789abcdef
+        <BLANKLINE>
         """
         f = self.fields()
         u = self.as_uuid()
@@ -249,7 +278,7 @@ class Guid():
             5: 'name-based SHA-1'
         }
 
-        vname = vnames[ver] if ver in vnames else 'Unknow'
+        vname = vnames[ver] if ver in vnames else 'Unknown'
 
         r = (
             f"GUID: {self}\n"
