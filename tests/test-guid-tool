@@ -68,4 +68,26 @@ a="$tmp/guid.h"
 guid-tool.py 12345678-1234-4234-9234-56789abcdef0 --print-c-define |& tee "$a"
 diff -u "$data/c-def/guid.h" "$a"
 
-echo 'ok.' >&3
+echo -n 'v3' >&3
+
+for g in \
+	9c03172b-0fc4-37e5-b777-54ec7f3ab1dc \
+	"$(uuidgen --namespace @url --name http://www.arm.com/ --md5)" \
+; do
+	echo -n '.' >&3
+	guid-tool.py --details "$g" |& tee "$out"
+	grep -F 'version: 3 (name-based MD5)' "$out"
+done
+
+echo -n ', v5' >&3
+
+for g in \
+	a8f6ae40-d8a7-58f0-be05-a22f94eca9ec \
+	"$(uuidgen --namespace @url --name http://www.arm.com/ --sha1)" \
+; do
+	echo -n '.' >&3
+	guid-tool.py --details "$g" |& tee "$out"
+	grep -F 'version: 5 (name-based SHA-1)' "$out"
+done
+
+echo ', ok.' >&3
