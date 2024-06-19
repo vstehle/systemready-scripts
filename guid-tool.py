@@ -99,6 +99,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--details', action='store_true', help='Dump GUID details and exit')
     parser.add_argument(
+        '--validate', action=argparse.BooleanOptionalAction,
+        help='Make sure the GUID is valid', default=True)
+    parser.add_argument(
         '--guids-db', help='GUIDs database YAML file',
         default=f'{here}/guid-tool.yaml')
     parser.add_argument(
@@ -112,7 +115,7 @@ if __name__ == '__main__':
         level=logging.DEBUG if args.debug else logging.INFO)
 
     try:
-        g = guid.Guid(args.guid)
+        g = guid.Guid(args.guid, validate=args.validate)
     except Exception as e:
         logging.debug(f"(Exception `{e}')")
         logging.error(f"Invalid GUID `{args.guid}'!")

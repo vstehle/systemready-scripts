@@ -90,4 +90,31 @@ for g in \
 	grep -F 'version: 5 (name-based SHA-1)' "$out"
 done
 
+echo -n ', validate' >&3
+
+for g in \
+	12345678-1234-c678-9234-56789abcdef0 \
+	FD5DB83C-12F3-A46B-80A9-E3007C7FF56E \
+; do
+	echo -n '.' >&3
+
+	if guid-tool.py --details "$g" |& tee "$out"; then
+		false
+	fi
+
+	grep "ERROR .* Invalid GUID .*$g" "$out"
+
+	if grep -Fi "GUID: $g" "$out"; then
+		false
+	fi
+
+	guid-tool.py --details "$g" --no-validate |& tee "$out"
+	grep -Fi "GUID: $g" "$out"
+	grep -F 'version: ' "$out"
+
+	if grep -F 'ERROR' "$out"; then
+		false
+	fi
+done
+
 echo ', ok.' >&3
