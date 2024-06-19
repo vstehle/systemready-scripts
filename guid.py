@@ -134,13 +134,13 @@ class Guid():
             raise ValueError(f"GUID {self}: Bad variant {var}")
 
         # Verify version.
-        ver = u.version
+        ver = self.get_version()
 
         if validate and ver not in [1, 3, 4, 5]:
             raise ValueError(f"GUID {self}: Bad version {ver}")
 
         # For version 1, verify that time is valid.
-        if validate and u.version == 1:
+        if validate and ver == 1:
             dt = self.get_datetime()
 
             if dt < datetime.datetime(1998, 1, 1):
@@ -149,6 +149,24 @@ class Guid():
             # We add a day of margin to account for timezones.
             if dt > datetime.datetime.now() + datetime.timedelta(days=1):
                 raise ValueError(f"GUID {self}: Time {dt} is in the future")
+
+    def get_version(self) -> int:
+        """Return the version of a GUID.
+
+        >>> g = Guid('12345678-1234-4678-9234-56789abcdef0')
+        >>> print(g.get_version())
+        4
+
+        We decode the version manually instead of relying on uuid,
+        to be able to deal with invalid variants, which is useful for
+        debugging.
+
+        >>> g = Guid('01234567-89ab-cdef-0123-456789abcdef', validate=False)
+        >>> print(g.get_version())
+        12
+        """
+        f = self.fields()
+        return (f[2] >> 12) & 0xf
 
     def __bytes__(self) -> bytes:
         """Return the GUID bytes, which we keep internally.
@@ -221,7 +239,7 @@ class Guid():
         datetime.datetime(3059, 12, 7, 20, 53, 48, 586560)
         """
         u = self.as_uuid()
-        ver = u.version
+        ver = self.get_version()
 
         if validate and ver != 1:
             raise ValueError(
@@ -258,7 +276,7 @@ class Guid():
           TimeMid: 89ab
           TimeHighAndVersion: cdef
             timestamp: 1004172609478411623
-            version: None (Unknown)
+            version: 12 (Unknown)
           ClockSeqHighAndReserved: 1
           ClockSeqLow: 23
             clock sequence: 291
@@ -268,7 +286,7 @@ class Guid():
         """
         f = self.fields()
         u = self.as_uuid()
-        ver = u.version
+        ver = self.get_version()
 
         vnames = {
             1: 'time-based',
@@ -288,7 +306,7 @@ class Guid():
             f"    timestamp: {u.time}\n"
             f"    version: {ver} ({vname})\n")
 
-        if u.version == 1:
+        if ver == 1:
             r += f"    datetime: {self.get_datetime()}\n"
 
         r += (
@@ -298,7 +316,7 @@ class Guid():
             f"    variant: {u.variant}\n"
             f"  Node: {f[5]:x}\n")
 
-        if u.version == 1:
+        if ver == 1:
             r += f"    multicast/global: {self.b[10] & 1}\n"
 
         return r
