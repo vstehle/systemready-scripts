@@ -68,6 +68,16 @@ a="$tmp/guid.h"
 guid-tool.py 12345678-1234-4234-9234-56789abcdef0 --print-c-define |& tee "$a"
 diff -u "$data/c-def/guid.h" "$a"
 
+echo -n 'v2, ' >&3
+g=000003e8-2e45-21ef-8100-325096b39f47
+
+if guid-tool.py --details "$g" |& tee "$out"; then
+	false
+fi
+
+guid-tool.py --details --no-validate "$g" |& tee "$out"
+grep -F 'version: 2 (DCE security)' "$out"
+
 echo -n 'v3' >&3
 
 for g in \
