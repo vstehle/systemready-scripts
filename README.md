@@ -496,9 +496,11 @@ sha256 sum or by searching for specific strings in their contents.
 
 The `versions` section describes how to deduce the SystemReady version when a
 number of specific files are all found.
-Each `versions' entry is considered in order.
-When all the filenames listed in `files' match with a (substring of) known
-files found, the SystemReady version is identified as `version'.
+The `versions` entries are sorted by decreasing number of files at load time.
+The entries are then tried in order when trying to identify a version, which
+results in the most constrained matches being tried first.
+When all the filenames listed in `files` match with a (substring of) known
+files found, the SystemReady version is identified as `version`.
 A file name starting with '!' or '~' means that it is an inverted match and it
 must not match with any (substring) of the known files found for the version to
 be selected.

@@ -54,6 +54,12 @@ def load_identify_db(filename: str) -> DbType:
     logging.debug(
         f"{len(db['known-files'])} known-files, "
         f"{len(db['versions'])} versions")
+
+    # Sort versions entries by decresing number of files, so that the most
+    # constrained matches are tried first.
+    db['versions'] = sorted(
+        db['versions'], key=lambda x: len(x['files']), reverse=True)
+
     return db
 
 

@@ -183,9 +183,6 @@ known-files:
       - Version 7.1.5
 
 versions:
-
-  # The following will be tried in order therefore put the most constrained
-  # matches first.
   - files:
       - SbsaResultsApp.log from v23.09_2.0.0
       - BBSR.seq from ACS-SR v24.03_2.1.0 .. v23.09_2.0.0
