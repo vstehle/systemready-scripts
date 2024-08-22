@@ -231,6 +231,9 @@ versions:
     version: IR v2.0 with SIE
 
   - files:
+      - BBSR.seq from SIE ACS v21.10_SIE_REL1.0 / ACS-IR v22.10_2.0.0_BETA-1 ..
+        v23.09_2.1.0 / ACS-SR v24.03_2.1.0 .. v24.03_2.1.1
+      - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v24.03_2.1.1
       - BSALinuxResults.log from ACS-IR v23.09_2.1.0
       - EBBR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
       - BBSR.seq from ACS-IR v22.10_2.0.0_BETA-1 .. v23.09_2.1.0 with SIE
