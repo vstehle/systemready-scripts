@@ -71,6 +71,10 @@ known-guids:
     description: NXP i.MX8M Quad EVK (MCIMX8M-EVKB)
   - guid: 928b33bc-e58b-4247-9f1d-3bf1ee1cdaff
     description: NXP i.MX8M Plus EVK
+  - guid: 5452a04a-462d-4433-9778-2b5259277bb3
+    description: Rockchip TB-RK3588X
+  - guid: b62dbe3f-385d-4bcf-8c0f-5cd75c983b08
+    description: ArmSoM Sige7
 
   # Tianocore/edk2 GUIDs
   - guid: e698490d-c1fa-47fd-8603-69cd678c5c39
