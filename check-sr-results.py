@@ -195,7 +195,7 @@ warn_once: set[str] = set()
 # Meta data about this run.
 meta_data = {}
 
-# Keep track of (min-)occurences.
+# Keep track of (min-)occurrences.
 occurrences: dict[str, list[str]] = {}
 
 
@@ -1331,7 +1331,7 @@ def check_min_occurences(m: int, confpath: str) -> Stats:
     logging.debug(f"Check >= {m} occurrences for {confpath}")
     stats = Stats()
     o = occurrences.get(confpath, [])
-    logging.debug(f"Occurences {o}")
+    logging.debug(f"Occurrences {o}")
     n = len(o)
 
     if n < m:
@@ -1633,7 +1633,7 @@ def evaluate_when_condition(
     return bool(not any_not_all and found_all or any_not_all and found_some)
 
 
-# Apply all the overlays conditionaly to the main tree.
+# Apply all the overlays conditionally to the main tree.
 def apply_overlays(conf: ConfigType, context: ContextType) -> None:
     for i, o in enumerate(conf['overlays']):
         if ('when-any' in o

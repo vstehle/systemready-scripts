@@ -91,7 +91,7 @@ def load_config(filename: str) -> ConfigType:
 # When it is an integer, we extract until this number of line after the found
 # line
 # When it is a string, we extract until we reach a line matching it
-# When it is None, we extract until an emtpy line
+# When it is None, we extract until an empty line
 # We deal somewhat gracefully with non-existing files.
 def extract(x: ExtractType, dirname: str) -> ElementType:
     filename = f"{dirname}/{x['filename']}"

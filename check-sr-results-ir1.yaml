@@ -229,7 +229,7 @@ tree:
               # not check it for now.
               # The 'BSA Architecture Compliance Suite' headline is sometimes
               # garbled in the UART log due to kernel messages. We therefore
-              # explicitely do not check it.
+              # explicitly do not check it.
               - BSA tests complete
   - dir: os-logs
     tree:
