@@ -407,6 +407,8 @@ tree:
           - printenv -e
           - bdinfo
           - rtc list
+        should-contain:
+          # Not all systems have the following commands in production.
           - efidebug devices
           - efidebug drivers
           - efidebug dh
@@ -418,8 +420,8 @@ tree:
           - efidebug query
           - efidebug boot dump
           - efidebug capsule esrt
-          # We omit the bootefi hello and selftest as not everybody keeps them
-          # in production.
+          - bootefi hello
+          - bootefi selftest
         warn-once-if-contains:
           - -dirty
           - 'EFI stub: ERROR:'
