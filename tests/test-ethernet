@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -eu -o pipefail
+set -eu -o pipefail
 
 # Unit test for ethernet-parser.py.
 # Usage: test-ethernet [keep]
@@ -12,18 +12,8 @@ log="$bn.log"
 exec 3>&1 >"$log" 2>&1
 set -x
 
-handle_error() {
-   local exit_code=$?
-   echo "ERROR! (see $log)" >&3
-   if [ $exit_code -eq 1 ]; then
-       exit 1
-   fi
-}
-
-
 echo -n 'Testing ethernet-parser... ' >&3
-#trap 'echo "ERROR! (see $log)" >&3' ERR
-trap 'handle_error' ERR
+trap 'echo "ERROR! (see $log)" >&3' ERR
 
 # Make sure ethernet-parser.py is in the path.
 me=$(realpath "$0")
@@ -42,7 +32,11 @@ data="$here/data/$(basename "$0")"
 out="$tmp/out"
 
 echo -n 'test 1: 1 of them fail' >&3
-ethernet-parser.py "$data/ethtool-test-fail.log" 2 --debug |& tee "$out"
+
+if ethernet-parser.py "$data/ethtool-test-fail.log" 2 --debug |& tee "$out"; then
+	false
+fi
+
 grep 'Ethernet parser tests result is: FAIL' "$out"
 
 echo -n ', test 5: two ethernets, 1 of them fail but only requested 1 to pass' >&3
@@ -50,7 +44,11 @@ ethernet-parser.py "$data/ethtool-test-fail.log" 1 --debug |& tee "$out"
 grep 'Ethernet parser tests result is: PASS' "$out"
 
 echo -n ', test 2: both of them fail' >&3
-ethernet-parser.py "$data/ethtool-test-fail2.log" 2 --debug |& tee "$out"
+
+if ethernet-parser.py "$data/ethtool-test-fail2.log" 2 --debug |& tee "$out"; then
+	false
+fi
+
 grep 'Ethernet parser tests result is: FAIL' "$out"
 
 echo -n ', test 3: both pass' >&3
@@ -58,11 +56,18 @@ ethernet-parser.py "$data/ethtool-test.log" 2 --debug |& tee "$out"
 grep 'Ethernet parser tests result is: PASS' "$out"
 
 echo -n ', test 4: no link connection' >&3
-ethernet-parser.py "$data/compulab-test.log" 2 --debug |& tee "$out"
+
+if ethernet-parser.py "$data/compulab-test.log" 2 --debug |& tee "$out"; then
+	false
+fi
+
 grep 'Ethernet parser tests result is: FAIL' "$out"
 
 echo -n ', test 6: too few' >&3
-ethernet-parser.py "$data/ethtool-test.log" 3 |& tee "$out"
+
+if ethernet-parser.py "$data/ethtool-test.log" 3 |& tee "$out"; then
+	false
+fi
 
 if grep Traceback "$out"; then
 	false
