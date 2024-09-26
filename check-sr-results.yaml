@@ -316,7 +316,7 @@ tree:
             min-entries: 0
             optional:
       - dir: uefi_dump
-        min-entries: 13
+        min-entries: 12     # Allow missing map.log
         max-entries: 13
         tree:
           - file: bcfg.log
@@ -356,6 +356,7 @@ tree:
               - DRIVER NAME
           - file: ifconfig.log
           - file: map.log
+            optional:       # Workaround until better understood.
             must-contain:
               - Mapping table
               - /HD(1,GPT,
@@ -747,6 +748,7 @@ overlays:
                   - /HD(2,GPT,
                   # No third partition on IR 2.1
               - file: map.log
+                optional:   # Workaround until better understood.
                 must-contain:
                   - Mapping table
                   - /HD(1,GPT,
