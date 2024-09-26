@@ -1,0 +1,12 @@
+---
+check-sr-results-configuration:
+tree:
+  - file: report.txt
+    report-txt:
+    must-contain:
+      - General information
+      - System information
+      - Total number of network controllers
+      - Test logs and results collected
+    warn-if-contains:
+      - '[ ]'

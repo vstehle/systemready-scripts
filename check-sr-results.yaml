@@ -538,11 +538,9 @@ tree:
           - file: '*sys-firmware.tar.gz'
             warn-if-not-named: sys-firmware.tar.gz
   - file: report.txt
-    report-txt:
     must-contain:
       - General information
       - System information
-      - Total number of network controllers
       - Test logs and results collected
     warn-if-contains:
       - '[ ]'
@@ -756,6 +754,17 @@ overlays:
                   - /HD(1,GPT,
                   - /HD(2,GPT,
                   # No third partition on IR 2.1
+      - file: report.txt
+        # Starting with IR 2.1, we extract the number of network controllers
+        # from there.
+        report-txt:
+        must-contain:
+          - General information
+          - System information
+          - Total number of network controllers
+          - Test logs and results collected
+        warn-if-contains:
+          - '[ ]'
 
   - when-any: [IR v2.1 with SIE]
     tree:

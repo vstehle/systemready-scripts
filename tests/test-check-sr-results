@@ -113,7 +113,10 @@ n=$(grep -c 'WARNING .* found in ' "$out")
 ((n == 2))
 
 echo -n 'no net, ' >&3
-"${csr[@]}" --dir "$data/report-txt/no-net" |& tee "$out"
+
+"${csr[@]}" --config "$data/report-txt/report-txt.yaml" \
+	--dir "$data/report-txt/no-net" |& tee "$out"
+
 grep 'ERROR .* Could not extract all patterns from .*report\.txt' "$out"
 grep 'INFO .* We expect 0 ethernet device\.' "$out"
 
@@ -122,13 +125,19 @@ if grep 'but no ethernet log' "$out"; then
 fi
 
 echo -n 'two net, ' >&3
-"${csr[@]}" --dir "$data/report-txt/two-net" |& tee "$out"
+
+"${csr[@]}" --config "$data/report-txt/report-txt.yaml" \
+	--dir "$data/report-txt/two-net" |& tee "$out"
+
 grep 'INFO .* Total number of network controllers = 2' "$out"
 grep 'INFO .* We expect 2 ethernet devices\.' "$out"
 grep 'but no ethernet log' "$out"
 
 echo -n 'force net, ' >&3
-"${csr[@]}" --dir "$data/report-txt/two-net" --ethernet-devices 42 |& tee "$out"
+
+"${csr[@]}" --config "$data/report-txt/report-txt.yaml" \
+	--dir "$data/report-txt/two-net" --ethernet-devices 42 |& tee "$out"
+
 grep 'INFO .* Total number of network controllers = 2' "$out"
 grep 'INFO .* We expect 42 ethernet devices\.' "$out"
 grep 'but no ethernet log' "$out"
