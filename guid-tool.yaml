@@ -75,6 +75,8 @@ known-guids:
     description: Rockchip TB-RK3588X
   - guid: b62dbe3f-385d-4bcf-8c0f-5cd75c983b08
     description: ArmSoM Sige7
+  - guid: 3adc889e-e14f-11ee-b43d-f766213eedfe
+    description: Renesas development GUID for RZG2UL-EVKIT or RZV2L-EVKIT
 
   # Tianocore/edk2 GUIDs
   - guid: e698490d-c1fa-47fd-8603-69cd678c5c39
