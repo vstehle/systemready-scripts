@@ -1,0 +1,37 @@
+###############################################################################
+#                   boot_sources_result.py configuration file                    #
+###############################################################################
+
+criterias:
+  - results:
+      - partition_table: 'PASS'
+        read: 'PASS'
+        write: 'PASS'
+    criteria: 'PASS'
+    quality: 'BEST'
+    recommendation: 'All tests passed. Block device is in excellent condition.'
+  - results:
+      - partition_table: 'PASS'
+        read: 'PASS'
+        write: 'FAIL'
+    criteria: 'FAIL'
+    quality: 'BAD'
+    recommendation: 'Write check failed. Check block device.'
+  - results:
+      - partition_table: 'PASS'
+        read: 'PASS'
+        write: 'SKIPPED'
+    criteria: 'PASS'
+    quality: 'OK'
+    recommendation: 'Write check was skipped. Device appears fine but needs further review.'
+  - results:
+      - partition_table: 'PASS'
+        read: 'FAIL'
+    criteria: 'FAIL'
+    quality: 'POOR'
+    recommendation: 'Read check failed. Check block device.'
+  - results:
+      - partition_table: 'FAIL'
+    criteria: 'FAIL'
+    quality: 'BAD'
+    recommendation: 'Partition table is invalid or not found.'
