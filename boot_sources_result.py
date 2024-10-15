@@ -180,6 +180,20 @@ def apply_criteria(db: DbType, num_devices: int, device_results: ResType) -> str
     logging.info(f"Block-device-diagnostics passed for {num_pass_devices} and requested {num_devices}")
     return result
 
+# Function to find the schema file
+def find_schema_file(filename):
+    me = os.path.realpath(__file__)
+    directories = [
+        os.path.join(os.path.dirname(me), 'schemas'),
+        os.path.join(os.path.dirname(os.path.dirname(me)), 'schemas'),
+        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(me))), 'schemas'),
+    ]
+    for schema_dir in directories:
+        schema_file = os.path.join(schema_dir, filename)
+        if os.path.isfile(schema_file):
+            return schema_file
+    return None
+
 if __name__ == "__main__":
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
@@ -191,8 +205,8 @@ if __name__ == "__main__":
         '--config', help='Configuration filename',
         default=f"{here}/boot_sources_result.yaml")
     parser.add_argument(
-        '--schema', help='Schema filename',
-        default=f"{here}/boot_sources_result_scehma.yaml")
+        '--schema', help='Schema filename. If not provided, the script will search for it automatically.',
+        default=None)
     parser.add_argument(
         '--debug', action='store_true', help='Turn on debug messages')
     parser.add_argument(
@@ -205,6 +219,12 @@ if __name__ == "__main__":
     logging.basicConfig(
         format='%(levelname)s %(funcName)s: %(message)s',
         level=logging.DEBUG if args.debug else logging.INFO)
+
+    if args.schema is None:
+        args.schema = find_schema_file('boot_sources_result_schema.yaml')
+        if args.schema is None:
+            logging.error('Schema file boot_sources_result_schema.yaml not found in schema directories')
+            sys.exit(1)
 
     db = load_diagnostics_db(args.config, args.schema)
     num_actual_devices = detect_block_devices(args.log)

@@ -1,0 +1,47 @@
+---
+$id: "https://gitlab.arm.com/systemready/systemready-scripts/-/raw/master/\
+    schemas/boot_sources_result_schema.yaml"
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Boot sources results post processing schema
+description: |
+    This schema is used by script which processes read_write_block_devices logs in systemready and give pass and fail on basis of boot_sources_result.py
+
+    This schema describes requirements on the configuration file. It can be used
+    by the valid.py script.
+
+    See the README for details.
+
+type: object
+properties:
+  criterias:
+    type: array
+    items:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              partition_table:
+                type: string
+              read:
+                type: string
+              write:
+                type: string
+            additionalProperties: false
+        criteria:
+          type: string
+        quality:
+          type: string
+        recommendation:
+          type: string
+      required:
+        - results
+        - criteria
+        - quality
+        - recommendation
+      additionalProperties: false
+required:
+  - criterias
+additionalProperties: false
