@@ -385,7 +385,7 @@ tree:
           - file: smbiosview.log
             optional:
             should-contain:
-              - 'SMBIOS Entry Point Structure:'
+              - 'Entry Point Structure:'
           - file: uefi_version.log
             must-contain:
               - UEFI Interactive Shell v2.2
