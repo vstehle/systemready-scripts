@@ -5,33 +5,21 @@ on: push
 
 jobs:
   check-job:
-    runs-on: ubuntu-latest
-    # We need a more recent version of e.g. u-boot-tools for this job, therefore
-    # use a container.
-    container: ubuntu:rolling
+    runs-on: ubuntu-24.04
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Install dependencies
-        # Notes:
-        # - Do this before checkout and be sure to install git. This is to have
-        #   git in the path at checkout time, to obtain the .git folder.
-        # - No need to use sudo in the container.
         run: |
-          apt-get update
-          apt-get install -y make python3 python3-construct python3-yaml \
+          sudo apt-get update
+          sudo apt-get install -y make python3 python3-construct python3-yaml \
             python3-chardet python3-jsonschema u-boot-tools python3-requests \
             uuid-runtime python3-packaging device-tree-compiler bsdextrautils \
             python3-pip swig yamllint flake8 git mypy pylint shellcheck \
             python3-rfc3987
           pip3 install --break-system-packages dtschema
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Add git safe directory
-        # We need this workaround in the container as the checkout action does
-        # not run under the same user.
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Check
         run: make -k check
