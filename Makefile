@@ -20,7 +20,8 @@ VALIDS = \
 	format-sr-results-schema.yaml__format-sr-results.yaml \
 	guid-tool-schema.yaml__guid-tool.yaml \
 	identify-schema.yaml__identify.yaml \
-	identify-schema.yaml__tests/data/test-check-sr-results/identify.yaml
+	identify-schema.yaml__tests/data/test-check-sr-results/identify.yaml \
+	boot_sources_result_schema.yaml__boot_sources_result.yaml
 
 VALID_TARGETS = $(addsuffix .valid,$(VALIDS))
 
@@ -47,7 +48,6 @@ test:	$(TEST_TARGETS)
 %.valid:
 	./validate.py --schema schemas/$(word 1,$(subst __, ,$@)) \
 		$(subst .valid,,$(word 2,$(subst __, ,$@)))
-
 
 valid:	$(VALID_TARGETS)
 
