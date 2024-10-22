@@ -24,7 +24,8 @@ criterias:
         write: 'SKIPPED'
     criteria: 'PASS'
     quality: 'OK'
-    recommendation: 'Write check was skipped. Device appears fine but needs further review.'
+    recommendation: 'Write check was skipped. Device appears fine but
+                     needs further review.'
   - results:
       - partition_table: 'PASS'
         read: 'FAIL'
