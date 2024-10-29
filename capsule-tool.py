@@ -584,6 +584,16 @@ def extract_image(capsule: construct.Struct, filename: str) -> None:
             capsule.CapsuleBody.Payload1.BinaryUpdateImage.FirmwareImage))
 
 
+# Extract the certificate data from a capsule and save it to a file.
+def extract_cert(capsule: construct.Struct, filename: str) -> None:
+    logging.info(f"Extracting certificate to `{filename}'")
+
+    with open(filename, 'wb') as f:
+        f.write(bytes(
+            capsule.CapsuleBody.Payload1.BinaryUpdateImage
+            .FirmwareImageAuthentication.AuthInfo.CertData))
+
+
 if __name__ == '__main__':
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
@@ -604,6 +614,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--expected-guid', help='Specify expected update image type id GUID')
     parser.add_argument('--extract', help='Extract image to file')
+    parser.add_argument('--extract-cert', help='Extract certificate to file')
     parser.add_argument(
         '--force', action='store_true', help='Force processing')
     parser.add_argument(
@@ -661,6 +672,9 @@ if __name__ == '__main__':
 
     if args.extract:
         extract_image(capsule, args.extract)
+
+    if args.extract_cert:
+        extract_cert(capsule, args.extract_cert)
 
     if args.output:
         logging.info(f"Saving to `{args.output}'")

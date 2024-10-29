@@ -219,4 +219,16 @@ echo -n 'print guid, ' >&3
 capsule-tool.py --print-guid "$auth" |& tee "$out"
 grep 'Image type id GUID: 058b7d83-50d5-4c47-a195-60d86ad341c4' "$out"
 
+echo -n 'extract cert, ' >&3
+cert="$tmp/cert.der"
+capsule-tool.py "$auth" --extract-cert "$cert" |& tee "$out"
+grep 'Extracting certificate' "$out"
+
+openssl pkcs7 -inform der -in "$cert" -print |& tee "$out"
+grep 'pkcs7' "$out"
+grep 'sha256' "$out"
+grep 'CN=CRT' "$out"
+grep 'X509' "$out"
+grep 'rsa' "$out"
+
 echo 'ok.' >&3
