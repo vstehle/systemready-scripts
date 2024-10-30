@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 
 import argparse
-import re
 import logging
 import os
+import re
 import sys
 from typing import Any, Dict, List
-import yaml
+
 import jsonschema
-from jsonschema import validate
+import yaml
 
 DbType = Dict[str, Any]
 ResType = List[Dict[str, Any]]  # Now each device result is a dictionary
+
 
 # Load YAML diagnostics database and validate against schema
 def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
@@ -20,7 +21,7 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
 
     # Check if the schema file exists
     if not os.path.isfile(schema_filename):
-        logging.error(f'Schema file `{schema_filename}` does not exist')
+        logging.error(f"Schema file `{schema_filename}` does not exist")
         sys.exit(1)
 
     # Load the schema from the schema file
@@ -28,12 +29,14 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
         try:
             schema = yaml.load(schemafile, Loader=yaml.FullLoader)
         except yaml.YAMLError as err:
-            logging.error(f"Error parsing schema file `{schema_filename}`: {err}")
+            logging.error(
+                f"Error parsing schema file `{schema_filename}`: {err}"
+            )
             sys.exit(1)
 
     # Check if the configuration file exists
     if not os.path.isfile(config_filename):
-        logging.error(f'Configuration file `{config_filename}` does not exist')
+        logging.error(f"Configuration file `{config_filename}` does not exist")
         sys.exit(1)
 
     # Load the configuration file
@@ -41,7 +44,9 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
         try:
             db = yaml.load(yamlfile, Loader=yaml.FullLoader)
         except yaml.YAMLError as err:
-            logging.error(f"Error parsing configuration file `{config_filename}`: {err}")
+            logging.error(
+                f"Error parsing configuration file `{config_filename}`: {err}"
+            )
             sys.exit(1)
 
     # Validate the configuration against the schema
@@ -54,6 +59,7 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
     logging.debug(f"YAML contents: {db}")
     return db
 
+
 # Detect block devices based on the log file
 def detect_block_devices(log_path: str) -> int:
     device_pattern = re.compile(r'INFO: Block device : /dev/\w+')
@@ -62,17 +68,28 @@ def detect_block_devices(log_path: str) -> int:
         for line in log_file:
             if device_pattern.search(line):
                 device_count += 1
-    logging.debug(f'Block devices detected: {device_count}')
+    logging.debug(f"Block devices detected: {device_count}")
     return device_count
+
 
 # Parse the log file to extract diagnostics results
 def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
     partition_pattern = re.compile(r'INFO: Partition table type : GPT|MBR')
-    read_pattern_success = re.compile(r'INFO: Block read on /dev/\w+.*successful')
-    read_pattern_fail = re.compile(r'INFO: Block read on /dev/\w+.*failed')
-    write_pattern_pass = re.compile(r'INFO: write check passed on /dev/\w+')
-    write_pattern_fail = re.compile(r'INFO: write check failed on /dev/\w+')
-    write_prompt_pattern = re.compile(r'Do you want to perform a write check on /dev/\w+\?')
+    read_pattern_success = re.compile(
+        r'INFO: Block read on /dev/\w+.*successful'
+    )
+    read_pattern_fail = re.compile(
+        r'INFO: Block read on /dev/\w+.*failed'
+    )
+    write_pattern_pass = re.compile(
+        r'INFO: write check passed on /dev/\w+'
+    )
+    write_pattern_fail = re.compile(
+        r'INFO: write check failed on /dev/\w+'
+    )
+    write_prompt_pattern = re.compile(
+        r'Do you want to perform a write check on /dev/\w+\?'
+    )
 
     current_device_results = {}
     awaiting_write_check = False
@@ -104,7 +121,7 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
             # Check block read success/failure
             if read_pattern_success.search(line):
                 logging.debug(f"Block read success: {line.strip()}")
-                current_device_results['read'] = 'PASS'  # Correctly set read status to PASS
+                current_device_results['read'] = 'PASS'
             elif read_pattern_fail.search(line):
                 logging.debug(f"Block read failure: {line.strip()}")
                 current_device_results['read'] = 'FAIL'
@@ -134,8 +151,11 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
 
     logging.debug(f"Parsed device results: {device_results}")
 
+
 # Apply criteria from the YAML to the parsed log results
-def apply_criteria(db: DbType, num_devices: int, device_results: ResType) -> str:
+def apply_criteria(
+    db: DbType, num_devices: int, device_results: ResType
+) -> str:
     logging.debug('Applying criterias from the database')
     num_pass_devices = 0
     num_fail_devices = 0
@@ -152,7 +172,10 @@ def apply_criteria(db: DbType, num_devices: int, device_results: ResType) -> str
             yaml_criteria = ii['results'][0]
 
             # Check all fields in yaml_criteria against ir (ignore extra fields in ir)
-            if all(key in ir and ir[key] == yaml_criteria.get(key) for key in yaml_criteria):
+            if all(
+                key in ir and ir[key] == yaml_criteria.get(key)
+                for key in yaml_criteria
+            ):
                 logging.debug(f"Match found: {ir}")
                 ir['result'] = ii['criteria']
                 ir['quality'] = ii['quality']
@@ -173,12 +196,19 @@ def apply_criteria(db: DbType, num_devices: int, device_results: ResType) -> str
     if num_pass_devices >= num_devices:
         result = 'PASS'
         if num_pass_devices > num_devices:
-            logging.info(f"More devices passed ({num_pass_devices}) than expected ({num_devices}).")
+            logging.info(
+                f"More devices passed ({num_pass_devices}) "
+                f"than expected ({num_devices})."
+            )
     else:
         result = 'FAIL'
 
-    logging.info(f"Block-device-diagnostics passed for {num_pass_devices} and requested {num_devices}")
+    logging.info(
+        f"Block-device-diagnostics passed for {num_pass_devices} "
+        f"and requested {num_devices}"
+    )
     return result
+
 
 # Function to find the schema file
 def find_schema_file(filename):
@@ -186,7 +216,9 @@ def find_schema_file(filename):
     directories = [
         os.path.join(os.path.dirname(me), 'schemas'),
         os.path.join(os.path.dirname(os.path.dirname(me)), 'schemas'),
-        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(me))), 'schemas'),
+        os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(me))), 'schemas'
+        ),
     ]
     for schema_dir in directories:
         schema_file = os.path.join(schema_dir, filename)
@@ -194,36 +226,52 @@ def find_schema_file(filename):
             return schema_file
     return None
 
+
 if __name__ == "__main__":
     me = os.path.realpath(__file__)
     here = os.path.dirname(me)
 
     parser = argparse.ArgumentParser(
         description='Parse Block Device Diagnostics logs.',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument(
-        '--config', help='Configuration filename',
-        default=f"{here}/boot_sources_result.yaml")
+        '--config',
+        help='Configuration filename',
+        default=f"{here}/boot_sources_result.yaml"
+    )
     parser.add_argument(
-        '--schema', help='Schema filename. If not provided, the script will search for it automatically.',
-        default=None)
+        '--schema',
+        help=(
+            'Schema filename. If not provided, the script will search '
+            'for it automatically.'
+        ),
+        default=None
+    )
     parser.add_argument(
-        '--debug', action='store_true', help='Turn on debug messages')
+        '--debug', action='store_true', help='Turn on debug messages'
+    )
     parser.add_argument(
-        'log', help="Input log filename")
+        'log', help="Input log filename"
+    )
     parser.add_argument(
         'num_devices', type=int,
-        help='Number of block devices expected to pass')
+        help='Number of block devices expected to pass'
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
         format='%(levelname)s %(funcName)s: %(message)s',
-        level=logging.DEBUG if args.debug else logging.INFO)
+        level=logging.DEBUG if args.debug else logging.INFO
+    )
 
     if args.schema is None:
         args.schema = find_schema_file('boot_sources_result_schema.yaml')
         if args.schema is None:
-            logging.error('Schema file boot_sources_result_schema.yaml not found in schema directories')
+            logging.error(
+                'Schema file boot_sources_result_schema.yaml '
+                'not found in schema directories'
+            )
             sys.exit(1)
 
     db = load_diagnostics_db(args.config, args.schema)
