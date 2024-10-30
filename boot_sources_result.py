@@ -5,7 +5,7 @@ import logging
 import os
 import re
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, cast
 
 import jsonschema
 import yaml
@@ -27,7 +27,7 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
     # Load the schema from the schema file
     with open(schema_filename, 'r') as schemafile:
         try:
-            schema = yaml.load(schemafile, Loader=yaml.FullLoader)
+            schema = cast(Dict[str, Any], yaml.safe_load(schemafile))
         except yaml.YAMLError as err:
             logging.error(
                 f"Error parsing schema file `{schema_filename}`: {err}"
@@ -42,7 +42,7 @@ def load_diagnostics_db(config_filename: str, schema_filename: str) -> DbType:
     # Load the configuration file
     with open(config_filename, 'r') as yamlfile:
         try:
-            db = yaml.load(yamlfile, Loader=yaml.FullLoader)
+            db = cast(DbType, yaml.safe_load(yamlfile))
         except yaml.YAMLError as err:
             logging.error(
                 f"Error parsing configuration file `{config_filename}`: {err}"
@@ -91,8 +91,8 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
         r'Do you want to perform a write check on /dev/\w+\?'
     )
 
-    current_device_results = {}
-    awaiting_write_check = False
+    current_device_results: Dict[str, str] = {}
+    awaiting_write_check: bool = False
 
     with open(log_path, 'r') as log_file:
         for line in log_file:
@@ -100,7 +100,7 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
             if re.search(r'INFO: Block device : /dev/\w+', line):
                 logging.debug(f"Detected device: {line.strip()}")
                 if current_device_results:
-                    # Ensure 'read' is only set to 'FAIL'
+                    # Ensure 'read' is only set to 'FAIL' if not explicitly set to 'PASS'
                     if 'read' not in current_device_results:
                         current_device_results['read'] = 'FAIL'
                     if awaiting_write_check:
@@ -211,7 +211,7 @@ def apply_criteria(
 
 
 # Function to find the schema file
-def find_schema_file(filename):
+def find_schema_file(filename: str) -> Optional[str]:
     me = os.path.realpath(__file__)
     directories = [
         os.path.join(os.path.dirname(me), 'schemas'),
