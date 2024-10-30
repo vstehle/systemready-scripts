@@ -100,7 +100,7 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
             if re.search(r'INFO: Block device : /dev/\w+', line):
                 logging.debug(f"Detected device: {line.strip()}")
                 if current_device_results:
-                    # Ensure 'read' is only set to 'FAIL' if not explicitly set to 'PASS'
+                    # Ensure 'read' is only set to 'FAIL'
                     if 'read' not in current_device_results:
                         current_device_results['read'] = 'FAIL'
                     if awaiting_write_check:
