@@ -100,7 +100,7 @@ def parse_diagnostics_log(log_path: str, device_results: ResType) -> None:
             if re.search(r'INFO: Block device : /dev/\w+', line):
                 logging.debug(f"Detected device: {line.strip()}")
                 if current_device_results:
-                    # Ensure 'read' is only set to 'FAIL' if not explicitly set to 'PASS'
+                    # Ensure 'read' is only set to 'FAIL'
                     if 'read' not in current_device_results:
                         current_device_results['read'] = 'FAIL'
                     if awaiting_write_check:
@@ -171,7 +171,7 @@ def apply_criteria(
         for ii in db['criterias']:
             yaml_criteria = ii['results'][0]
 
-            # Check all fields in yaml_criteria against ir (ignore extra fields in ir)
+            # Check all fields in yaml_criteria against ir
             if all(
                 key in ir and ir[key] == yaml_criteria.get(key)
                 for key in yaml_criteria
