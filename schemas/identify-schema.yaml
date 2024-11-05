@@ -70,8 +70,10 @@ properties:
                         - IR v1.2
                         - IR v2.0
                         - IR v2.1
+                        - DT v3.0
                         - IR v2.0 with SIE
                         - IR v2.1 with SIE
+                        - DT v3.0 with BBSR
                         - SIE v1.0
                         - SR v2.5 with ACS v23.09_2.0.0
                         - SR v2.5 with ACS v24.03_2.1.0
