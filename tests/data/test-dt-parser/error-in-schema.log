@@ -1,0 +1,7 @@
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: 
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: maintainers: 0
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: patternProperties: ^(x|y|z|t)+$: properties: a,b
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: properties
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: properties: #a,b
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: properties: #interrupt-cells: $ref
+/xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema: properties: a,b

@@ -190,6 +190,26 @@ def parse(filename: str) -> list[EntryType]:
                 })
                 continue
 
+            # single-line dt-validate error in schema warning
+            # /xxx/bindings/yyy/zzz,www.yaml: ignoring, error in schema:
+            # maintainers: 0
+            m = re.match(r'([^:]+): ignoring, error in schema: *(.*)', line)
+
+            if m:
+                logging.debug(
+                    f"line {i}: dt-validate error in schema warning "
+                    f"(`{line}')")
+
+                r.append({
+                    'devicetree_node': '',  # TODO! optional
+                    'file': m[1],   # Input file
+                    'line': line,
+                    'linenum': i + 1,
+                    'type': 'dt-validate error in schema',
+                    'warning_message': m[2]
+                })
+                continue
+
             # multi-lines dt-validate warning start
             # /home/vinste01/systemreadyir/dt/dump.dtb: pl061@9030000:
             # $nodename:0: 'pl061@9030000' does not match ...

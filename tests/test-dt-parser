@@ -100,4 +100,17 @@ dt-parser.py --dump "$data/new-schema.log" |& tee "$out"
 grep dt_validate_schema "$out"
 echo -n 'new schema, ' >&3
 
+dt-parser.py "$data/error-in-schema.log" |& tee "$out"
+
+if grep 'WARNING .*: Unparsed line ' "$out"; then
+	false
+fi
+
+if grep 'dt-validate warning' "$out"; then
+	false
+fi
+
+grep -F '7  dt-validate error in schema' "$out"
+echo -n 'error in schema, ' >&3
+
 echo 'ok.' >&3
