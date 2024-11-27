@@ -1,5 +1,5 @@
 ---
-image: ubuntu:rolling
+image: ubuntu:24.04
 
 check-job:
   tags:
