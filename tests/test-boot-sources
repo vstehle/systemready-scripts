@@ -32,7 +32,7 @@ data="$here/data/$(basename "$0")"
 out="$tmp/out"
 
 # Test 1: Expected number of devices pass.
-echo -n 'test 1: Expected number of devices pass' >&2
+echo -n 'test 1: Expected number of devices pass' >&3
 boot_sources_result.py "$data/read_write_check_blk_devices.log" 1 --debug |& tee "$out"
 grep 'Block device diagnostics result is: PASS' "$out"
 
@@ -43,4 +43,4 @@ if boot_sources_result.py "$data/read_write_check_blk_devices_FAIL.log" 2 --debu
 fi
 grep 'Block device diagnostics result is: FAIL' "$out"
 
-echo ', ok.' >&2
+echo ', ok.' >&3
