@@ -1,0 +1,136 @@
+********************************************************************************************************************************
+
+                                                    Read block devices tool
+
+********************************************************************************************************************************
+INFO: Detected following block devices with lsblk command :
+0: ram0
+1: ram1
+2: ram2
+3: ram3
+4: ram4
+5: ram5
+6: ram6
+7: ram7
+8: ram8
+9: ram9
+10: ram10
+11: ram11
+12: ram12
+13: ram13
+14: ram14
+15: ram15
+16: mtdblock0
+17: vda
+18: vdb
+
+********************************************************************************************************************************
+
+INFO: Block device : /dev/ram0
+INFO: Invalid partition table or not found for ram0
+INFO: Block device : /dev/ram1
+INFO: Invalid partition table or not found for ram1
+INFO: Block device : /dev/ram2
+INFO: Invalid partition table or not found for ram2
+INFO: Block device : /dev/ram3
+INFO: Invalid partition table or not found for ram3
+INFO: Block device : /dev/ram4
+INFO: Invalid partition table or not found for ram4
+INFO: Block device : /dev/ram5
+INFO: Invalid partition table or not found for ram5
+INFO: Block device : /dev/ram6
+INFO: Invalid partition table or not found for ram6
+INFO: Block device : /dev/ram7
+INFO: Invalid partition table or not found for ram7
+INFO: Block device : /dev/ram8
+INFO: Invalid partition table or not found for ram8
+INFO: Block device : /dev/ram9
+INFO: Invalid partition table or not found for ram9
+INFO: Block device : /dev/ram10
+INFO: Invalid partition table or not found for ram10
+INFO: Block device : /dev/ram11
+INFO: Invalid partition table or not found for ram11
+INFO: Block device : /dev/ram12
+INFO: Invalid partition table or not found for ram12
+INFO: Block device : /dev/ram13
+INFO: Invalid partition table or not found for ram13
+INFO: Block device : /dev/ram14
+INFO: Invalid partition table or not found for ram14
+INFO: Block device : /dev/ram15
+INFO: Invalid partition table or not found for ram15
+INFO: Block device : /dev/mtdblock0
+INFO: Invalid partition table or not found for mtdblock0
+INFO: Block device : /dev/vda
+INFO: Partition table type : GPT
+
+
+INFO: Partition : /dev/vda1 Partition type GUID : C12A7328-F81F-11D2-BA4B-00A0C93EC93B "Platform required bit" : 0
+INFO: vda1 partition is PRECIOUS.
+INFO: Number of 512B blocks used on /dev/vda1: (132552, 174304)
+      EFI System partition : C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+      Skipping block read/write...
+
+INFO: Partition : /dev/vda2 Partition type GUID : 0FC63DAF-8483-4772-8E79-3D69D8477DE4 "Platform required bit" : 0
+INFO: Performing block read on /dev/vda2 part_guid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+INFO: Block read on /dev/vda2 part_guid = 0FC63DAF-8483-4772-8E79-3D69D8477DE4 successful
+Do you want to perform a write check on /dev/vda2? (yes/no): yes
+INFO: Creating backup of the current block before write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.000566366 s, 904 kB/s
+INFO: Writing test data to the device for write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00111092 s, 461 kB/s
+INFO: Reading back the test data for verification...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.000566845 s, 903 kB/s
+Original SHA256: 5ba5b889a62d98368222cef5e53305af9da2960ad6ecab48271a293d3337fb92
+Read-back SHA256: 5ba5b889a62d98368222cef5e53305af9da2960ad6ecab48271a293d3337fb92
+INFO: write check passed on /dev/vda2.
+INFO: Restoring the backup to the device after write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.000530221 s, 966 kB/s
+INFO: Backup restored for /dev/vda2.
+
+********************************************************************************************************************************
+
+INFO: Block device : /dev/vdb
+[  336.395849]  vdb: vdb1 vdb2
+INFO: Partition table type : GPT
+
+
+INFO: Partition : /dev/vdb1 Partition type GUID : C12A7328-F81F-11D2-BA4B-00A0C93EC93B "Platform required bit" : 0
+INFO: vdb1 partition is PRECIOUS.
+INFO: Number of 512B blocks used on /dev/vdb1: (0, 869816)
+      EFI System partition : C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+      Skipping block read/write...
+
+INFO: Partition : /dev/vdb2 Partition type GUID : B921B045-1DF0-41C3-AF44-4C6F280D3FAE "Platform required bit" : 0
+INFO: Performing block read on /dev/vdb2 part_guid = B921B045-1DF0-41C3-AF44-4C6F280D3FAE
+INFO: Block read on /dev/vdb2 part_guid = B921B045-1DF0-41C3-AF44-4C6F280D3FAE successful
+Do you want to perform a write check on /dev/vdb2? (yes/no): yes
+INFO: Creating backup of the current block before write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00120164 s, 426 kB/s
+INFO: Writing test data to the device for write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00179417 s, 285 kB/s
+INFO: Reading back the test data for verification...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00102902 s, 498 kB/s
+Original SHA256: 5ba5b889a62d98368222cef5e53305af9da2960ad6ecab48271a293d3337fb92
+Read-back SHA256: 5ba5b889a62d98368222cef5e53305af9da2960ad6ecab48271a293d3337fb92
+INFO: write check passed on /dev/vdb2.
+INFO: Restoring the backup to the device after write check...
+1+0 records in
+1+0 records out
+512 bytes copied, 0.00139487 s, 367 kB/s
+INFO: Backup restored for /dev/vdb2.
+
+********************************************************************************************************************************

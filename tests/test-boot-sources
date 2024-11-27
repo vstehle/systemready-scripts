@@ -1,0 +1,46 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Unit test for boot_sources_result.py.
+# Usage: test-boot-sources [keep]
+# Keeps the temporary folder when 'keep' is specified.
+
+# Redirect all output to a log file in the current folder.
+# Keep stdout on fd 3.
+bn=$(basename "$0")
+log="$bn.log"
+exec 3>&1 >"$log" 2>&1
+set -x
+
+echo -n 'Testing boot_sources_result.py... ' >&3
+trap 'echo "ERROR! (see $log)" >&3' ERR
+
+# Ensure boot_sources_result.py is in the PATH.
+me=$(realpath "$0")
+here="${me%/*}"
+export PATH="$here/..:$PATH"
+
+# Create a temporary folder.
+if [ "${1:-unset}" == "keep" ]; then
+    tmp=$(mktemp -d "$(basename "$0").XXX")
+else
+    tmp=$(mktemp -d)
+    trap 'rm -fr "$tmp"' EXIT
+fi
+
+data="$here/data/$(basename "$0")"
+out="$tmp/out"
+
+# Test 1: Expected number of devices pass.
+echo -n 'test 1: Expected number of devices pass' >&3
+boot_sources_result.py "$data/read_write_check_blk_devices.log" 1 --debug |& tee "$out"
+grep 'Block device diagnostics result is: PASS' "$out"
+
+# Test 2: Devices fail to pass the diagnostics.
+echo -n ', test 2: Devices fail to pass the diagnostics' >&3
+if boot_sources_result.py "$data/read_write_check_blk_devices_FAIL.log" 2 --debug |& tee "$out"; then
+    false
+fi
+grep 'Block device diagnostics result is: FAIL' "$out"
+
+echo ', ok.' >&3
