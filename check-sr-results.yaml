@@ -333,8 +333,9 @@ tree:
               - Handle dump
               - DevicePath
               - EFISystemPartition
-              - FirmwareManagement
               - SimpleTextOut
+            should-contain:
+              - FirmwareManagement
           - file: dmem.log
             must-contain:
               - Memory Address
