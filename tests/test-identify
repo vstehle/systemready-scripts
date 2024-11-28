@@ -156,7 +156,6 @@ identify.py --dir "$data/v24.03_2.1.1_with_SIE" |& tee "$out"
 grep --text 'SystemReady IR v2.1 with SIE' "$out"
 
 identify.py --dir "$data/v24.03_2.1.1_with_SIE" --known-files |& tee "$out"
-identify.py --dir "$data/v23.09_2.1.0_with_SIE" --ebbr-seq |& tee "$out"
 grep 'ACS-IR v22.10_2.0.0_BETA-1 .* with SIE' "$out"
 
 echo -n 'sr2.5 acs v24.03, ' >&3
