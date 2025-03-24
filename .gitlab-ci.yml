@@ -3,7 +3,7 @@ image: ubuntu:24.04
 
 check-job:
   tags:
-    - arm64
+    - arm64-shared
 
   script:
     - apt-get update
@@ -23,7 +23,7 @@ check-job:
 
 doc-job:
   tags:
-    - arm64
+    - arm64-shared
 
   script:
     - apt-get update
