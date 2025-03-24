@@ -846,58 +846,59 @@ def check_must_have_esp(filename: str) -> Stats:
 
     # Open the file with the proper encoding and look for partitions.
     for i, line in enumerate(logreader.LogReader(filename)):
-        if state == 'await shell':
-            # UEFI Interactive Shell v2.2
-            if line.find('UEFI Interactive Shell v') == 0:
-                logging.debug(f"Matched shell line {i + 1}, `{line}'")
-                state = 'await edk2'
+        match state:
+            case 'await shell':
+                # UEFI Interactive Shell v2.2
+                if line.find('UEFI Interactive Shell v') == 0:
+                    logging.debug(f"Matched shell line {i + 1}, `{line}'")
+                    state = 'await edk2'
 
-        elif state == 'await edk2':
-            # EDK II
-            if line.find('EDK II') == 0:
-                logging.debug(f"Matched edk2 line {i + 1}, `{line}'")
-                state = 'await uefi'
-            else:
-                state = 'await shell'
+            case 'await edk2':
+                # EDK II
+                if line.find('EDK II') == 0:
+                    logging.debug(f"Matched edk2 line {i + 1}, `{line}'")
+                    state = 'await uefi'
+                else:
+                    state = 'await shell'
 
-        elif state == 'await uefi':
-            # UEFI v2.80 (Das U-Boot, 0x20211000)
-            if line.find('UEFI v') == 0:
-                logging.debug(f"Matched uefi line {i + 1}, `{line}'")
-                state = 'await map'
-            else:
-                state = 'await shell'
+            case 'await uefi':
+                # UEFI v2.80 (Das U-Boot, 0x20211000)
+                if line.find('UEFI v') == 0:
+                    logging.debug(f"Matched uefi line {i + 1}, `{line}'")
+                    state = 'await map'
+                else:
+                    state = 'await shell'
 
-        elif state == 'await map':
-            # Mapping table
-            if line.find('Mapping table') == 0:
-                logging.debug(f"Matched map line {i + 1}, `{line}'")
-                state = 'await alias'
-            else:
-                state = 'await shell'
+            case 'await map':
+                # Mapping table
+                if line.find('Mapping table') == 0:
+                    logging.debug(f"Matched map line {i + 1}, `{line}'")
+                    state = 'await alias'
+                else:
+                    state = 'await shell'
 
-        elif state == 'await alias':
-            # FS2: Alias(s):HD0b:;BLK5:
-            if line.find('Alias(s):') >= 0:
-                logging.debug(f"Matched alias line {i + 1}, `{line}'")
-                state = 'await path'
-            else:
-                logging.debug(f"No alias line {i + 1} -> done")
-                state = 'await shell'
+            case 'await alias':
+                # FS2: Alias(s):HD0b:;BLK5:
+                if line.find('Alias(s):') >= 0:
+                    logging.debug(f"Matched alias line {i + 1}, `{line}'")
+                    state = 'await path'
+                else:
+                    logging.debug(f"No alias line {i + 1} -> done")
+                    state = 'await shell'
 
-        elif state == 'await path':
-            # /VenHw(e61d73b9-a384-4acc-aeab-82e828f3628b)/SD(1)/SD(0)/HD(...
-            m = re.match(r'\s+(\S+)$', line)
+            case 'await path':
+                # /VenHw(e61d73b9-a384-4acc-aeab-82e828f3628b)/SD(1)/SD(...
+                m = re.match(r'\s+(\S+)$', line)
 
-            if m:
-                logging.debug(f"Matched path line {i + 1}, `{line}'")
-                dp[m[1]] = None
-                state = 'await alias'
-            else:
-                state = 'await shell'
+                if m:
+                    logging.debug(f"Matched path line {i + 1}, `{line}'")
+                    dp[m[1]] = None
+                    state = 'await alias'
+                else:
+                    state = 'await shell'
 
-        else:
-            raise Exception(f"Bad state {state}")
+            case _:
+                raise Exception(f"Bad state {state}")
 
     if len(dp):
         logging.debug(f"{green}Found{normal} device path(s): `{dp.keys()}'")
