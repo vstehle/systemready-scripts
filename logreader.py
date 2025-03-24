@@ -63,12 +63,13 @@ def logreader_cleanup_line(line: str) -> str:
             line = line[:m.start()] + '(snip)'
             break
 
-        if m[0] == '\r':
-            line = line[m.start() + 1:]
-        elif m[0] == '\x08':
-            line = re.sub(r'.?\x08', '', line, count=1)
-        else:
-            raise Exception(f"Bad match {m[0]}")
+        match m[0]:
+            case '\r':
+                line = line[m.start() + 1:]
+            case '\x08':
+                line = re.sub(r'.?\x08', '', line, count=1)
+            case _:
+                raise Exception(f"Bad match {m[0]}")
 
         i += 1
 
