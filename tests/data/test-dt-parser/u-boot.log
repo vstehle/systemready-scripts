@@ -1,0 +1,6 @@
+/xxx/u-boot/arch/arm/dts/armada-3720-eDPU.dtb: /smbios: failed to match any schema with compatible: ['u-boot,sysinfo-smbios']
+/xxx/u-boot/arch/arm/dts/corstone1000-fvp.dtb: /fwu-mdata: failed to match any schema with compatible: ['u-boot,fwu-mdata-gpt']
+/xxx/u-boot/arch/arm/dts/imx6dl-b1x5v2.dtb: /bootcount: failed to match any schema with compatible: ['u-boot,bootcount-spi-flash']
+/xxx/u-boot/arch/arm/dts/socfpga_arria10_chameleonv3_270_2.dtb: /fs-loader: failed to match any schema with compatible: ['u-boot,fs-loader']
+/xxx/u-boot/arch/arm/dts/socfpga_arria5_secu1.dtb: /bootcount@0: failed to match any schema with compatible: ['u-boot,bootcount-rtc']
+/xxx/u-boot/arch/arm/dts/synquacer-sc2a11-developerbox.dtb: /firmware/fwu-mdata: failed to match any schema with compatible: ['u-boot,fwu-mdata-mtd']

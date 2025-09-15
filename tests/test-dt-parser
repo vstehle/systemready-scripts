@@ -113,4 +113,13 @@ fi
 grep -F '7  dt-validate error in schema' "$out"
 echo -n 'error in schema, ' >&3
 
+dt-parser.py "$data/u-boot.log" |& tee "$out"
+
+if grep -F 'error no schema' "$out"; then
+	false
+fi
+
+grep -F '6  ignored' "$out"
+echo -n 'u-boot, ' >&3
+
 echo 'ok.' >&3
