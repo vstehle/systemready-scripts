@@ -193,6 +193,15 @@
   update:
     type: ignored
 
+- rule: Ignore dt-validate warnings about U-Boot nodes without a schema.
+    Those are specific to U-Boot and not meant for use by the OS.
+  criteria:
+    type: dt-validate warning
+    warning_message: 'failed to match any schema with compatible: [''u-boot,'
+    in_compatibles: '<none>'
+  update:
+    type: ignored
+
 # We force the following dt-validate warning entries corresponding to a Linux
 # kernel default DTC_FLAGS as `ignored'.
 
