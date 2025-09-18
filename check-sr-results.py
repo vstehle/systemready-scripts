@@ -1820,7 +1820,7 @@ if __name__ == '__main__':
         elif 'IR v2.' in ver:
             config = f'{here}/check-sr-results-ir2.yaml'
 
-    print(f"INFO config: using {config}", file=sys.stderr)
+    logging.info(f"INFO config: using {config}")
 
     if args.config:
         config = args.config
