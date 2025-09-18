@@ -1806,16 +1806,21 @@ if __name__ == '__main__':
     files, ver = run_identify(args.dir, identify)
 
     # Choose config.
-    # We default to IR 2.x.
+    # We default to DT 3.x
     # We use IR 1.x when detected.
+    # We used IR 2.x when detected
     # Command line takes precedence in all cases.
-    config = f'{here}/check-sr-results.yaml'
+    config = f'{here}/check-sr-results-dt3.yaml'
 
     if ver is not None:
         if ('IR v1.' in ver or 'IR 32b v1.' in ver):
             config = f'{here}/check-sr-results-ir1.yaml'
         elif 'SR v2.5' in ver:
             config = f'{here}/check-sr-results-sr.yaml'
+        elif 'IR v2.' in ver:
+            config = f'{here}/check-sr-results-ir2.yaml'
+
+    logging.info(f"INFO config: using {config}")
 
     if args.config:
         config = args.config

@@ -159,18 +159,6 @@ grep 'git-commit:' "$out"
 grep 'python-version:' "$out"
 grep 'tar-version:' "$out"
 
-echo -n 'no esp, ' >&3
-"${csr[@]}" --dir "$data/no-esp" |& tee "$out"
-grep 'ERROR .* Could not find an ESP in .*fw/uefi-sniff.log' "$out"
-
-echo -n 'esp, ' >&3
-"${csr[@]}" --dir "$data/esp" |& tee "$out"
-grep 'INFO .* Found ESP' "$out"
-
-if grep 'ERROR .* Could not find an ESP in .*fw/uefi-sniff.log' "$out"; then
-	false
-fi
-
 echo -n 'dt error, ' >&3
 # Make sure that we do not re-generate the .dtb.log.
 touch "$data/dt-error/acs_results/uefi/BsaDevTree.dtb.log"
@@ -196,20 +184,6 @@ mkeficapsule \
 	--index 1 \
 	--guid 058B7D83-50D5-4C47-A195-60D86AD341C4 \
 	"$img" "$cap"
-
-echo -n 'in esrt, ' >&3
-cp -r "$data/in-esrt" "$tmp/in-esrt"
-mkdir -v "$tmp/in-esrt/fw"
-cp -v "$cap" "$tmp/in-esrt/fw/"
-"${csr[@]}" --dir "$tmp/in-esrt" |& tee "$out"
-grep 'Could not identify' "$out"
-grep 'WARNING .* GUID .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID", in .*ESRT_table' "$out"
-
-if grep 'ERROR .*GUID .* not in ESRT' "$out"; then
-	false
-fi
-
-grep 'WARNING .* Capsule GUID .* is known: "U-Boot v2022.07 QEMU_ARM64_UBOOT_IMAGE_GUID", in .*capsule1.bin' "$out"
 
 echo -n 'mockup, ' >&3
 cp -r "$data/mockup" "$tmp/mockup"

@@ -1,0 +1,402 @@
+###############################################################################
+#                   check-sr-results-dt3.py configuration file                #
+###############################################################################
+
+# Note: for the moment, this checks for SystemReady DT 3.x results.
+---
+
+check-sr-results-configuration:
+
+# The following tree applies to all ACS-DT 3.x versions.
+tree:
+  - dir: acs_results
+    tree:
+      - dir: app_output
+        min-entries: 2
+        max-entries: 2
+        tree:
+          - file: CapsuleApp_ESRT_table_info.log
+            capsuleapp-esrt:
+            must-contain:
+              - ESRT TABLE
+              - 'EFI_SYSTEM_RESOURCE_TABLE:'
+              - EFI_SYSTEM_RESOURCE_ENTRY
+              - FwClass
+            error-if-contains:
+              - FwResourceCount    - 0x0
+              - FwResourceCountMax - 0x0
+              - ESRT - Not Found
+          - file: CapsuleApp_FMP_protocol_info.log
+            must-contain:
+              - FMP DATA
+      - dir: linux_dump
+        tree:
+          - dir: firmware
+            min-entries: 4
+            max-entries: 4
+            tree:
+              - dir: devicetree
+                min-entries: 1
+                max-entries: 1
+                tree:
+                  - dir: base
+                    tree:
+                      - dir: chosen
+                        min-entries: 7
+                        tree:
+                          - file: stdout-path
+                      - dir: psci
+                        min-entries: 3
+                        tree:
+                          - file: compatible
+                            must-contain:
+                              - arm,psci-
+                          - file: method
+                            warn-if-contains:
+                              - hvc
+                          - file: name
+                            must-contain:
+                              - psci
+              - dir: dmi
+              - dir: efi
+                min-entries: 1
+                tree:
+                  - dir: efivars
+                    tree:
+                      - file: OsIndicationsSupported-*
+                  - dir: esrt
+                    tree:
+                      - dir: entries
+                        tree:
+                          - dir: entry*
+                            tree:
+                              - file: capsule_flags
+                              - file: fw_class
+                              - file: fw_type
+                              - file: fw_version
+                              - file: last_attempt_status
+                              - file: last_attempt_version
+                              - file: lowest_supported_fw_version
+                      - file: fw_resource_count
+                        error-if-contains:
+                          - '0'
+                      - file: fw_resource_count_max
+                        error-if-contains:
+                          - '0'
+                      - file: fw_resource_version
+              - file: fdt
+          - file: firmware.log
+            must-contain:
+              - '/sys/firmware:'
+              - fdt
+      - dir: uefi
+        min-entries: 2
+        max-entries: 5  # Allow to generate BsaDevTree.dtb.log,temp dir,PFDI.log
+        tree:
+          - file: BsaDevTree.dtb
+            devicetree:
+          - file: BsaDevTree.dtb.log  # This will be generated
+            must-contain:
+              - + DTC
+              - + DT-VALIDATE
+              - + END
+      - dir: uefi_dump
+        tree:
+          - file: dh.log
+            must-contain:
+              - Handle dump
+              - DevicePath
+              - EFISystemPartition
+              - SimpleTextOut
+            should-contain:
+              - FirmwareManagement
+          - file: dmem.log
+            must-contain:
+              - Memory Address
+              - Valid EFI Header at Address
+              - 'System: Table Structure size'
+              - Runtime Services
+              - Boot Services
+              - SAL System Table
+              - ACPI Table
+              - ACPI 2.0 Table
+              - MPS Table
+              - SMBIOS Table
+          - file: dmpstore.log
+            must-contain:
+              - Variable
+              - SecureBoot
+  - dir: os-logs
+    min-entries: 3
+    tree:
+      - dir: 'linux-*'
+        min-occurrences: 3
+        tree:
+          - file: '*console.log'
+            warn-if-not-named: console.log
+            must-contain:
+              - dmesg
+              - Linux version
+              - lspci -vvv
+              - lscpu
+              - lsblk
+              - dmidecode
+              - uname -a
+              - efibootmgr
+              - tar
+            warn-once-if-contains:
+              - -dirty
+              - 'EFI stub: ERROR:'
+              - 'FIRMWARE BUG:'
+              - OVERLAP DETECTED
+            error-if-contains:
+              - No EFI system partition
+              - Failed to persist EFI variables
+          - file: '*sys-firmware.tar.gz'
+            warn-if-not-named: sys-firmware.tar.gz
+  - file: report.txt
+    must-contain:
+      - General information
+      - System information
+      - Test logs and results collected
+    warn-if-contains:
+      - '[ ]'
+
+overlays:
+
+  # (Ab)use the overlay mechanism to emit an error with IR v2.0.
+  - when-any: [IR v2.0]
+    tree:
+      - file: '!!! This is not the right branch to use for checking IR v2.0
+        results; use branch ir2.0 instead !!!'
+
+  - when-any: [IR v2.0 with SIE, IR v2.1 with SIE]
+    tree:
+      - file: sie-console.log
+        must-have-esp:
+        must-contain:
+          - Press any key to stop the SIE SCT running
+          - Test preparing...
+          - Done!
+          - SIE SCT test suite execution is complete. Resetting the system
+          - 'EFI stub: Booting Linux Kernel...'
+          - 'EFI stub: UEFI Secure Boot is enabled.'
+          - 'EFI stub: Using DTB from configuration table'
+          - Linux version
+          - 'efi: ESRT=0x'
+          - 'esrt: Reserving ESRT space from 0x'
+          - secureboot
+          - systemd
+          - Call SIE ACS in Linux
+          - SecureBoot enabled
+          - The system is in SecureBoot mode
+          - 'Test: Authenticated variable'
+          - SIE ACS run is completed
+          - Please press <Enter> to continue ...
+        warn-once-if-contains:
+          - -dirty
+          - 'EFI stub: ERROR:'
+          - 'FIRMWARE BUG:'
+          - OVERLAP DETECTED
+        error-if-contains:
+          - No EFI system partition
+          - Failed to persist EFI variables
+      - dir: acs_results
+        min-entries: 9   # Allow missing result.md
+        max-entries: 10  # Allow SIE folder
+        tree:
+          - dir: SIE
+            min-entries: 3  # Allow missing result.md
+            max-entries: 4
+            tree:
+              - file: result.md
+                sct-parser-result-md:
+                  seq-file: sct_results/Sequence/BBSR.seq
+                must-contain:
+                  - SCT Summary
+                  - Dropped:|0|
+                  - Failure:|0|
+                  - Warning:|0|
+                  - Dropped by group
+                  - Failure by group
+                  - Ignored by group
+                  - Warning by group
+              - dir: fwts
+                min-entries: 1
+                max-entries: 1
+                tree:
+                  - file: FWTSResults.log
+                    must-contain:
+                      - 'Results generated by fwts: Version V2'
+                      - 'Running tests: uefirtauthvar tpm2.'
+                      - Test Failure Summary
+                      - 'Critical failures: NONE'
+                      - 'High failures: NONE'
+                      - 'Medium failures: NONE'
+                      - 'Low failures: NONE'
+                      - 'Other failures: NONE'
+                      - 'Total:'
+                    warn-if-contains:
+                      - 'WARNING:'
+                    error-if-contains:
+                      - FAILED
+                      - 'uefirtauthvar: Failed to create authenticated variable
+                        with UEFI runtime service.'
+                      - 'uefirtauthvar: Failed to set authenticated variable
+                        with UEFI runtime service.'
+                      - 'uefirtauthvar: Set authenticated variable expected
+                        fail but success'
+                      - 'uefirtauthvar: Set authenticated variable fail'
+              - dir: sct_results
+                min-entries: 3
+                max-entries: 3
+                tree:
+                  - dir: EfiCompliantBBTest
+                    min-entries: 1
+                    max-entries: 1
+                    tree:
+                      - file: EfiCompliant.ini
+                        must-contain:
+                          - Test Configuration Specific
+                          - Platform Specific
+                  - dir: Overall
+                    min-entries: 2
+                    max-entries: 2
+                    tree:
+                      - file: Summary.ekl
+                        must-contain:
+                          - '|HEAD|'
+                          - '|TERM|'
+                      - file: Summary.log
+                        must-contain:
+                          - 'Arm ACS Version: SystemReady IR ACS v2.'
+                          - BBR ACS 1.0.
+                          - 'Test Finished:'
+                  - dir: Sequence
+                    min-entries: 3
+                    max-entries: 3
+                    tree:
+                      - file: BBSR.seq
+                        must-contain:
+                          - '[Test Case]'
+                          - Revision=
+                          - Guid=
+                          - Name=
+                          - Order=
+                          - Iterations=
+                      - file: EBBR_manual.seq
+                        must-contain:
+                          - '[Test Case]'
+                          - Revision=
+                          - Guid=
+                          - Name=
+                          - Order=
+                          - Iterations=
+                      - file: EBBR.seq
+                        must-contain:
+                          - '[Test Case]'
+                          - Revision=
+                          - Guid=
+                          - Name=
+                          - Order=
+                          - Iterations=
+              - dir: tpm2
+                min-entries: 0
+                optional:
+
+  - when-any: [IR v2.1]
+    tree:
+      - dir: acs_results
+        max-entries: 10  # Allow missing result.md
+        min-entries: 9
+        tree:
+          - dir: edk2-test-parser
+            max-entries: 1
+            min-entries: 1
+            tree:
+              - file: edk2-test-parser.log
+                must-contain:
+                  - SCT Summary
+                  - 'Dropped:'
+                  - 'Failure:'
+                  - 'Ignored:'
+                  - 'Pass:'
+                  - 'Warning:'
+
+          - dir: linux_dump
+            max-entries: 12
+            min-entries: 11
+            tree:
+              - file: sys_hierarchy.log
+                must-contain:
+                  - /sys
+                  - block
+              - file: uname.log
+                must-contain:
+                  - Linux generic-arm64 6.
+
+          - dir: linux_tools
+            max-entries: 6
+            min-entries: 4
+            tree:
+              - file: dt-validate.log*
+                must-contain:
+                  - 'DeviceTree bindings of Linux kernel version: '
+                  - 'dtschema version: 2023.7'
+              - file: device_tree.dts
+                must-contain:
+                  - compatible
+              - file: device_driver_info.log
+                optional: null
+              - ethernet: null
+                file: ethtool-test.log
+                must-contain:
+                  - 'INFO: Detected following ethernet interfaces
+                    via ip command :'
+              - file: read_blk_devices.log
+                must-contain:
+                  - 'INFO: Detected following block devices
+                    with lsblk command :'
+          - dir: uefi_dump
+            tree:
+              - file: devtree.log
+                must-contain:
+                  - /HD(1,GPT,
+                  - /HD(2,GPT,
+                  # No third partition on IR 2.1
+              - file: map.log
+                optional:   # Workaround until better understood.
+                must-contain:
+                  - Mapping table
+                  - /HD(1,GPT,
+                  - /HD(2,GPT,
+                  # No third partition on IR 2.1
+      - file: report.txt
+        # Starting with IR 2.1, we extract the number of network controllers
+        # from there.
+        report-txt:
+        must-contain:
+          - General information
+          - System information
+          - Total number of network controllers
+          - Test logs and results collected
+        warn-if-contains:
+          - '[ ]'
+
+  - when-any: [IR v2.1 with SIE]
+    tree:
+      - dir: acs_results
+        min-entries: 10   # Allow missing result.md
+        max-entries: 11  # Allow SIE folder
+
+  # (Ab)use the overlay mechanism to emit an error with IR v1.x.
+  - when-any: [IR v1.]
+    tree:
+      - file: '!!! This is not the right configuration to use for checking IR
+        v1.x results; use check-sr-results-ir1.yaml instead !!!'
+
+  # (Ab)use the overlay mechanism to emit an error with SIE.
+  - when-any: [SIE v1]
+    tree:
+      - file: '!!! This is not the right configuration to use for checking SIE
+        results !!!'
